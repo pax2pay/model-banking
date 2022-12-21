@@ -17,6 +17,7 @@ export namespace Creatable {
 			typeof value == "object" &&
 			Rail.is(value.account) &&
 			Rail.is(value.counterpart) &&
+			!Rail.hasSameIdentifiers(value.account, value.counterpart) &&
 			isoly.Currency.is(value.currency) &&
 			typeof value.amount == "number" &&
 			value.amount > 0 &&
