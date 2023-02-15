@@ -1,6 +1,7 @@
 import * as isoly from "isoly"
+import { BalanceEntry } from "./type"
 
-export type Balances = Partial<Record<isoly.Currency, Partial<Record<Balances.Entry, number>>>>
+export type Balances = Partial<Record<isoly.Currency, Partial<Record<BalanceEntry, number>>>>
 
 export namespace Balances {
 	export function is(value: Balances | any): value is Balances {
@@ -11,15 +12,11 @@ export namespace Balances {
 					isoly.Currency.is(k) &&
 					typeof v == "object" &&
 					Object.entries(v as Record<string, unknown>).every(
-						([kInner, vInner]) => Balances.Entry.is(kInner) && typeof vInner == "number"
+						([kInner, vInner]) => BalanceEntry.is(kInner) && typeof vInner == "number"
 					)
 			)
 		)
 	}
-	export type Entry = "actual" | "reserved"
-	export namespace Entry {
-		export function is(value: any | Entry): value is Entry {
-			return typeof value == "string" && (value == "actual" || value == "reserved")
-		}
-	}
+	export type Entry = BalanceEntry
+	export const Entry = BalanceEntry
 }

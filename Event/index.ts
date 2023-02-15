@@ -12,7 +12,7 @@ export interface Event {
 	data: any
 }
 
-type Entity = "account" | "transaction" | "operation" | "rail" | "organization" | "authorization"
+type Entity = "account" | "transaction" | "operation" | "rail" | "organization" | "authorization" | "supplier"
 export namespace Event {
 	export namespace Account {
 		export function created(account: modelAccount, organization: string): Event {
@@ -44,12 +44,12 @@ export namespace Event {
 				data: transaction,
 			}
 		}
-		export function settled(transaction: modelTransaction, organization: string, account: string): Event {
+		export function finalized(transaction: modelTransaction, organization: string, account: string): Event {
 			return {
 				organization: organization,
 				account: account,
 				entity: "transaction",
-				action: "settled",
+				action: "finalized",
 				data: transaction,
 			}
 		}
@@ -60,6 +60,37 @@ export namespace Event {
 				entity: "transaction",
 				action: "incoming",
 				data: transaction,
+			}
+		}
+		export function validated(transaction: modelTransaction, organization: string, account: string): Event {
+			return {
+				organization: organization,
+				account: account,
+				entity: "transaction",
+				action: "validated",
+				data: transaction,
+			}
+		}
+		export function expired(transaction: modelTransaction, organization: string, account: string): Event {
+			return {
+				organization: organization,
+				account: account,
+				entity: "transaction",
+				action: "expired",
+				data: transaction,
+			}
+		}
+	}
+	export namespace Supplier {
+		export namespace PaxGiro {
+			export function response(response: any, organization: string, account: string): Event {
+				return {
+					organization: organization,
+					account: account,
+					entity: "supplier",
+					action: "transaction response",
+					data: response,
+				}
 			}
 		}
 	}

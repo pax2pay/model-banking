@@ -7,17 +7,15 @@ export interface Organization extends OrganizationCreatable {
 
 export namespace Organization {
 	export function is(value: Organization | any): value is Organization {
-		return !!(
-			value &&
-			typeof value == "object" &&
-			cryptly.Identifier.is(value.id, 8) &&
-			typeof value.name == "string" &&
-			typeof value.value == "number"
-		)
+		return value && OrganizationCreatable.is({ ...value }) && typeof value.id == "string"
 	}
 	export function fromCreatable(organization: Creatable): Organization {
 		return { ...organization, id: cryptly.Identifier.generate(8) }
 	}
+	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
+		return cryptly.Identifier.is(value, 8)
+	}
+
 	export type Creatable = OrganizationCreatable
 	export const Creatable = OrganizationCreatable
 }

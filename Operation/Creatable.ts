@@ -1,9 +1,9 @@
 import * as isoly from "isoly"
 import { Balances } from "../Balances"
 
-export type OperationStatus = "pending" | "success" | "failed" //| "cancelled"
+export type Status = "pending" | "success" | "failed" //| "cancelled"
 
-type ChangeType = { type: "add" | "subtract"; amount: number; status: OperationStatus }
+type ChangeType = { type: "add" | "subtract"; amount: number; status: Status }
 export type Change = Partial<Record<Balances.Entry, ChangeType>>
 
 export namespace Change {
@@ -71,11 +71,5 @@ export namespace Creatable {
 			typeof value.change == "object" &&
 			Change.is(value.change)
 		)
-	}
-	export function openReservation(currency: isoly.Currency, amount: number): Creatable {
-		return { currency: currency, change: { reserved: { type: "add", amount: amount, status: "pending" } } }
-	}
-	export function openDeposit(currency: isoly.Currency, amount: number): Creatable {
-		return { currency: currency, change: { actual: { type: "add", amount: amount, status: "pending" } } }
 	}
 }

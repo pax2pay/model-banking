@@ -5,10 +5,10 @@ import { Creatable as TransactionCreatable } from "./Creatable"
 
 export interface Transaction extends TransactionCreatable {
 	readonly id: cryptly.Identifier
-	readonly timestamp: isoly.DateTime
+	readonly posted: isoly.DateTime
+	readonly transacted?: isoly.DateTime
 	type: "actual" | "available"
 	balance: number
-	//status: "pending" | "settled" | "rejected" | "cancelled"
 	operations: Operation[]
 }
 
@@ -18,7 +18,7 @@ export namespace Transaction {
 			typeof value == "object" &&
 			TransactionCreatable.is({ ...value }) &&
 			cryptly.Identifier.is(value.id, 8) &&
-			isoly.DateTime.is(value.timestamp) &&
+			isoly.DateTime.is(value.posted) &&
 			(value.type == "actual" || value.type == "available") &&
 			typeof value.balance == "number" &&
 			Array.isArray(value.operations) &&
@@ -32,9 +32,13 @@ export namespace Transaction {
 	): Transaction {
 		const id = cryptly.Identifier.generate(8)
 		const timestamp = isoly.DateTime.now()
+		if ("id" in transaction)
+			delete transaction.id
+		if ("posted" in transaction)
+			delete transaction.posted
 		return {
 			id: id,
-			timestamp: timestamp,
+			posted: timestamp,
 			type: type,
 			balance: result,
 			...transaction,
