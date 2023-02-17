@@ -35,7 +35,7 @@ export namespace Rail {
 				result = `pxg-${rail.identifier}`
 				break
 			case "internal":
-				result = ""
+				result = `internal-${rail.identifier}`
 				break
 			//case "swedish":
 			//	result = `swe-${rail.clearing}-${rail.account}`
