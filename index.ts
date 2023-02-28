@@ -1,9 +1,2 @@
-export { Account } from "./Account"
-export { Balances } from "./Balances"
-export { Event } from "./Event"
-export { Operation } from "./Operation"
-export { Organization } from "./Organization"
-export { Rail } from "./Rail"
-export { Transaction } from "./Transaction"
-export { Decision, Reviewable } from "./monitoring"
-export { Client } from "./Client"
+import * as pax2pay from "./pax2pay"
+export { pax2pay }

@@ -7,14 +7,10 @@ export class Transactions extends rest.Collection<gracely.Error> {
 	constructor(client: http.Client) {
 		super(client)
 	}
-	async create(
-		organization: string,
-		account: string,
-		transaction: Transaction.Creatable
-	): Promise<Transaction | gracely.Error> {
-		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction, { organization: organization })
+	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
+		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
 	}
-	async list(organization: string, account: string): Promise<Transaction[] | gracely.Error> {
-		return this.client.get<Transaction[]>(`/account/${account}/transaction`, { organization: organization })
+	async list(account: string): Promise<Transaction[] | gracely.Error> {
+		return this.client.get<Transaction[]>(`/account/${account}/transaction`)
 	}
 }
