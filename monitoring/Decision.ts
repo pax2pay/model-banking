@@ -1,12 +1,17 @@
 import * as isoly from "isoly"
 import { Transaction } from "../Transaction"
+import { Reviewable } from "./Reviewable"
 
 export interface Decision extends Decision.Creatable {
-	transaction: Transaction
+	reviewable: Reviewable
 	timestamp: isoly.DateTime
 }
 
 export namespace Decision {
+	export function open(decision: Decision.Creatable, reviewable: Reviewable): Decision {
+		return { reviewable: reviewable, timestamp: isoly.DateTime.now(), ...decision }
+	}
+
 	export function is(value: any | Decision): value is Decision {
 		return Creatable.is({ ...value }) && Transaction.is(value.transaction) && isoly.DateTime.is(value.timestamp)
 	}

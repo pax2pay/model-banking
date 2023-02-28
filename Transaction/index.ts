@@ -1,9 +1,12 @@
 import * as cryptly from "cryptly"
 import * as isoly from "isoly"
 import { Operation } from "../Operation"
+import { Rail } from "../Rail"
 import { Creatable as TransactionCreatable } from "./Creatable"
+import { Incoming as TransactionIncoming } from "./Incoming"
 
 export interface Transaction extends TransactionCreatable {
+	account: Rail
 	readonly id: cryptly.Identifier
 	readonly posted: isoly.DateTime
 	readonly transacted?: isoly.DateTime
@@ -26,7 +29,30 @@ export namespace Transaction {
 		)
 	}
 	export function fromCreatable(
+		account: Rail,
 		transaction: Creatable & { operations: Operation.Creatable[] },
+		type: "actual" | "available",
+		result: number
+	): Transaction {
+		const id = cryptly.Identifier.generate(8)
+		const timestamp = isoly.DateTime.now()
+		if ("id" in transaction)
+			delete transaction.id
+		if ("posted" in transaction)
+			delete transaction.posted
+		return {
+			account: account,
+			id: id,
+			posted: timestamp,
+			type: type,
+			balance: result,
+			...transaction,
+			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
+		}
+	}
+
+	export function fromIncoming(
+		transaction: Incoming & { operations: Operation.Creatable[] },
 		type: "actual" | "available",
 		result: number
 	): Transaction {
@@ -42,7 +68,7 @@ export namespace Transaction {
 			type: type,
 			balance: result,
 			...transaction,
-			operations: transaction.operations.map(Operation.fromCreatable),
+			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
 		}
 	}
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
@@ -51,4 +77,6 @@ export namespace Transaction {
 
 	export type Creatable = TransactionCreatable
 	export const Creatable = TransactionCreatable
+	export type Incoming = TransactionIncoming
+	export const Incoming = TransactionIncoming
 }

@@ -7,6 +7,7 @@ export interface Reviewable {
 	organization: cryptly.Identifier
 	account: cryptly.Identifier
 	rule: string
+	comments?: string[]
 }
 export namespace Reviewable {
 	export function open(

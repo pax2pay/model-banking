@@ -3,7 +3,6 @@ import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 
 export interface Creatable {
-	account: Rail
 	counterpart: Rail
 	currency: isoly.Currency
 	amount: number
@@ -15,9 +14,8 @@ export namespace Creatable {
 	export function is(value: any | Creatable): value is Creatable {
 		return (
 			typeof value == "object" &&
-			Rail.is(value.account) &&
+			//Rail.is(value.account) &&
 			Rail.is(value.counterpart) &&
-			!Rail.hasSameIdentifiers(value.account, value.counterpart) &&
 			isoly.Currency.is(value.currency) &&
 			typeof value.amount == "number" &&
 			(value.description == undefined || typeof value.description == "string") &&
