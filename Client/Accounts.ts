@@ -10,7 +10,7 @@ export class Accounts extends rest.Collection<gracely.Error> {
 	async create(account: Account.Creatable): Promise<Account | gracely.Error> {
 		return this.client.post<Account>("/account", account)
 	}
-	async list(organization: string, realm: string): Promise<Account.Info[] | gracely.Error> {
-		return this.client.get<Account.Info[]>("/account", { organization: organization, realm: realm })
+	async list(organization: string): Promise<Account.Info[] | gracely.Error> {
+		return this.client.get<Account.Info[]>("/account", { organization: organization })
 	}
 }
