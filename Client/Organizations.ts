@@ -8,7 +8,7 @@ export class Organizations extends rest.Collection<gracely.Error> {
 		super(client)
 	}
 	async list(): Promise<Organization[] | gracely.Error> {
-		return this.client.get<Organization[]>(`/organization/`)
+		return this.client.get<Organization[]>(`/organization`)
 	}
 	async create(organization: Organization.Creatable): Promise<Organization | gracely.Error> {
 		return this.client.post<Organization>(`/organization`, organization)
