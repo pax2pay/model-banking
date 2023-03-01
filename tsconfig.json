@@ -10,6 +10,6 @@
 		"types": []
 	},
 	"files": [
-		"pax2pay.ts",
+		"index.ts",
 	]
 }
