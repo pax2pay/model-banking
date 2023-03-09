@@ -2,17 +2,20 @@ import * as cryptly from "cryptly"
 import * as isoly from "isoly"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
+import { Comment as TransactionComment } from "./Comment"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
 
 export interface Transaction extends TransactionCreatable {
 	account: Rail
 	readonly id: cryptly.Identifier
+	readonly reference?: string
 	readonly posted: isoly.DateTime
 	readonly transacted?: isoly.DateTime
 	type: "actual" | "available"
 	balance: number
 	operations: Operation[]
+	comments?: TransactionComment[]
 }
 
 export namespace Transaction {
@@ -57,14 +60,12 @@ export namespace Transaction {
 		result: number
 	): Transaction {
 		const id = cryptly.Identifier.generate(8)
-		const timestamp = isoly.DateTime.now()
 		if ("id" in transaction)
 			delete transaction.id
-		if ("posted" in transaction)
-			delete transaction.posted
+		if ("transacted" in transaction)
+			delete transaction.transacted
 		return {
 			id: id,
-			posted: timestamp,
 			type: type,
 			balance: result,
 			...transaction,
@@ -79,4 +80,6 @@ export namespace Transaction {
 	export const Creatable = TransactionCreatable
 	export type Incoming = TransactionIncoming
 	export const Incoming = TransactionIncoming
+	export type Comment = TransactionComment
+	export const Comment = TransactionComment
 }

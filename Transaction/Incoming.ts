@@ -7,20 +7,23 @@ export interface Incoming extends TransactionCreatable {
 	counterpart: Rail
 	currency: isoly.Currency
 	amount: number
-	// some sort of timestamp
-	description?: string
+	reference?: string
+	posted: isoly.DateTime
+	description: string
 }
 
 export namespace Incoming {
 	export function is(value: any | Incoming): value is Incoming {
 		return (
+			value &&
 			typeof value == "object" &&
 			Rail.is(value.account) &&
 			Rail.is(value.counterpart) &&
-			!Rail.hasSameIdentifiers(value.account, value.counterpart) &&
 			isoly.Currency.is(value.currency) &&
 			typeof value.amount == "number" &&
-			(value.description == undefined || typeof value.description == "string")
+			(value.reference == "undefined" || typeof value.reference == "string") &&
+			isoly.DateTime.is(value.posted) &&
+			typeof value.description == "string"
 		)
 	}
 }

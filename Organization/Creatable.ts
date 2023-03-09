@@ -1,7 +1,9 @@
+import { Rule } from "./Rule"
+
 export interface Creatable {
 	name: string
 	realm: "test" | "uk" | "eu"
-	rule: { incoming: string; outgoing: string }
+	rules: Rule[]
 }
 
 export namespace Creatable {
@@ -11,10 +13,10 @@ export namespace Creatable {
 			typeof value == "object" &&
 			typeof value.name == "string" &&
 			(value.realm == "test" || value.realm == "uk" || value.realm == "eu") &&
-			value.rule &&
-			typeof value.rule == "object" &&
-			typeof value.rule.incoming == "string" &&
-			typeof value.rule.outgoing == "string"
+			value.rules &&
+			typeof value.rules == "object" &&
+			Array.isArray(value.rules) &&
+			value.rules.every(Rule.is)
 		)
 	}
 }
