@@ -6,7 +6,7 @@ export interface Creatable {
 	counterpart: Rail
 	currency: isoly.Currency
 	amount: number
-	description?: string
+	description: string
 	operations?: Operation.Creatable[]
 }
 
@@ -14,11 +14,10 @@ export namespace Creatable {
 	export function is(value: any | Creatable): value is Creatable {
 		return (
 			typeof value == "object" &&
-			//Rail.is(value.account) &&
 			Rail.is(value.counterpart) &&
 			isoly.Currency.is(value.currency) &&
 			typeof value.amount == "number" &&
-			(value.description == undefined || typeof value.description == "string") &&
+			typeof value.description == "string" &&
 			(value.operations == undefined ||
 				(Array.isArray(value.operations) && value.operations.every(Operation.Creatable.is)))
 		)
