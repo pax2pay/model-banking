@@ -3,7 +3,7 @@ import { Internal as RailInternal } from "./internal"
 import { PaxGiro as RailPaxGiro } from "./PaxGiro"
 import { Type as RailType } from "./Type"
 
-export type Rail = RailPaxGiro | RailInternal | RailIban
+export type Rail = (RailPaxGiro | RailInternal | RailIban) & { reference?: { supplier: string; value: string } }
 
 export namespace Rail {
 	export function parse(value: string): Rail | undefined {
