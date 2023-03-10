@@ -7,7 +7,8 @@ export class Operations extends rest.Collection<gracely.Error> {
 	constructor(client: http.Client) {
 		super(client)
 	}
-	async list(realm: string): Promise<Operation[] | gracely.Error> {
-		return this.client.get<Operation[]>(`/operation/${realm}`)
+	async list(realm: string, start?: string, end?: string): Promise<Operation[] | gracely.Error> {
+		const search = start && end ? `?start=${start}&end=${end}` : start ? `?start=${start}` : end ? `?end=${end}` : ""
+		return this.client.get<Operation[]>(`/operation/${realm}${search}`)
 	}
 }
