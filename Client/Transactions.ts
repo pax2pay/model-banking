@@ -12,7 +12,8 @@ export class Transactions extends rest.Collection<gracely.Error> {
 	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
 		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
 	}
-	async list(account: string): Promise<Transaction[] | gracely.Error> {
-		return this.client.get<Transaction[]>(`/account/${account}/transaction`)
+	async list(account?: string): Promise<Transaction[] | gracely.Error> {
+		const path = account ? `/account/${account}/transaction` : "/transaction"
+		return this.client.get<Transaction[]>(path)
 	}
 }
