@@ -2,20 +2,22 @@ import * as cryptly from "cryptly"
 import * as isoly from "isoly"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
-import { Comment as TransactionComment } from "./Comment"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
+import { Note as TransactionNote } from "./Note"
 
 export interface Transaction extends TransactionCreatable {
+	organization: string
+	accountId: string
 	account: Rail
 	readonly id: cryptly.Identifier
 	readonly reference?: string
 	readonly posted: isoly.DateTime
 	readonly transacted?: isoly.DateTime
-	type: "actual" | "available"
 	balance: number
 	operations: Operation[]
-	comments?: TransactionComment[]
+	status: "created" | "approved" | "rejected" | "processing"
+	notes?: TransactionNote[]
 }
 
 export namespace Transaction {
@@ -32,9 +34,10 @@ export namespace Transaction {
 		)
 	}
 	export function fromCreatable(
+		organization: string,
+		accountId: string,
 		account: Rail,
 		transaction: Creatable & { operations: Operation.Creatable[] },
-		type: "actual" | "available",
 		result: number
 	): Transaction {
 		const id = cryptly.Identifier.generate(8)
@@ -44,19 +47,22 @@ export namespace Transaction {
 		if ("posted" in transaction)
 			delete transaction.posted
 		return {
+			organization: organization,
+			accountId: accountId,
 			account: account,
 			id: id,
 			posted: timestamp,
-			type: type,
 			balance: result,
 			...transaction,
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
+			status: "created",
 		}
 	}
 
 	export function fromIncoming(
+		organization: string,
+		accountId: string,
 		transaction: Incoming & { operations: Operation.Creatable[] },
-		type: "actual" | "available",
 		result: number
 	): Transaction {
 		const id = cryptly.Identifier.generate(8)
@@ -65,11 +71,13 @@ export namespace Transaction {
 		if ("transacted" in transaction)
 			delete transaction.transacted
 		return {
+			organization: organization,
+			accountId: accountId,
 			id: id,
-			type: type,
 			balance: result,
 			...transaction,
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
+			status: "created",
 		}
 	}
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
@@ -80,6 +88,9 @@ export namespace Transaction {
 	export const Creatable = TransactionCreatable
 	export type Incoming = TransactionIncoming
 	export const Incoming = TransactionIncoming
-	export type Comment = TransactionComment
-	export const Comment = TransactionComment
+	export type Note = TransactionNote
+	export const Note = TransactionNote
+	export namespace Note {
+		export type Creatable = TransactionNote.Creatable
+	}
 }
