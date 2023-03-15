@@ -93,11 +93,13 @@ export namespace Transaction {
 	export namespace Note {
 		export type Creatable = TransactionNote.Creatable
 	}
-	export type Indices = "dateTime" | "status" | "organization" | "account"
+	export type Indices = "dateTime" | "status" | "organization" | "account" | "currency"
 	export const Indices: Record<Indices, (t: Transaction) => string> = {
-		dateTime: item => `${item.transacted ?? item.posted}|${item.id}`,
-		status: item => `${item.status}|${item.transacted ?? item.posted}|${item.id}`,
-		organization: item => `${item.organization}|${item.transacted ?? item.posted}|${item.id}`,
-		account: item => `${item.organization}|${item.accountId}|${item.transacted ?? item.posted}|${item.id}`,
+		dateTime: item => `${isoly.DateTime.invert(item.transacted ?? item.posted)}|${item.id}`,
+		status: item => `${item.status}|${isoly.DateTime.invert(item.transacted ?? item.posted)}|${item.id}`,
+		organization: item => `${item.organization}|${isoly.DateTime.invert(item.transacted ?? item.posted)}|${item.id}`,
+		account: item =>
+			`${item.organization}|${item.accountId}|${isoly.DateTime.invert(item.transacted ?? item.posted)}|${item.id}`,
+		currency: item => `${item.currency}|${isoly.DateTime.invert(item.transacted ?? item.posted)}|${item.id}`,
 	}
 }
