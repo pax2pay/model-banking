@@ -93,4 +93,11 @@ export namespace Transaction {
 	export namespace Note {
 		export type Creatable = TransactionNote.Creatable
 	}
+	export type Indices = "dateTime" | "status" | "organization" | "account"
+	export const Indices: Record<Indices, (t: Transaction) => string> = {
+		dateTime: item => `${item.transacted ?? item.posted}|${item.id}`,
+		status: item => `${item.status}|${item.transacted ?? item.posted}|${item.id}`,
+		organization: item => `${item.organization}|${item.transacted ?? item.posted}|${item.id}`,
+		account: item => `${item.organization}|${item.accountId}|${item.transacted ?? item.posted}|${item.id}`,
+	}
 }
