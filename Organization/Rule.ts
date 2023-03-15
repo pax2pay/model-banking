@@ -8,13 +8,19 @@ export interface Rule {
 	description: string
 }
 
-export interface RuleResult {
+interface RuleResult {
 	rule: Rule
 	definition: selectively.Definition
 	outcome: boolean
 }
+namespace RuleResult {
+	export function stringify(data: RuleResult): string {
+		return `rule: ${data.rule}, \n definition: ${data.definition}, \n outcome: ${data.outcome}`
+	}
+}
 export namespace Rule {
 	export type Result = RuleResult
+	export const Result = RuleResult
 	export function is(value: Rule): value is Rule {
 		return (
 			value &&

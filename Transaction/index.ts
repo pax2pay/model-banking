@@ -55,7 +55,7 @@ export namespace Transaction {
 			balance: result,
 			...transaction,
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
-			status: "created",
+			status: "review",
 		}
 	}
 
@@ -77,7 +77,7 @@ export namespace Transaction {
 			balance: result,
 			...transaction,
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
-			status: "created",
+			status: "review",
 		}
 	}
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
