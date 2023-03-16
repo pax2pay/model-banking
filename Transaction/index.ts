@@ -17,7 +17,7 @@ export interface Transaction extends TransactionCreatable {
 	balance: number
 	operations: Operation[]
 	status: "review" | "approved" | "rejected" | "processing"
-	notes?: TransactionNote[]
+	notes: TransactionNote[]
 }
 
 export namespace Transaction {
@@ -56,6 +56,7 @@ export namespace Transaction {
 			...transaction,
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
 			status: "review",
+			notes: [],
 		}
 	}
 
@@ -78,6 +79,7 @@ export namespace Transaction {
 			...transaction,
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
 			status: "review",
+			notes: [],
 		}
 	}
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
