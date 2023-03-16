@@ -16,7 +16,7 @@ export interface Transaction extends TransactionCreatable {
 	readonly transacted?: isoly.DateTime
 	balance: number
 	operations: Operation[]
-	status: "review" | "approved" | "rejected" | "processing"
+	status: "review" | "approved" | "rejected" | "processing" | "finalized"
 	notes: TransactionNote[]
 }
 
