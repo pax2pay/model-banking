@@ -24,12 +24,14 @@ export namespace Transaction {
 	export function is(value: any | Transaction): value is Transaction {
 		return (
 			typeof value == "object" &&
-			TransactionCreatable.is({ ...value }) &&
+			typeof value.organization == "string" &&
+			typeof value.accountId == "string" &&
 			cryptly.Identifier.is(value.id, 8) &&
+			Rail.is(value.account) &&
+			Rail.is(value.counterpart) &&
 			isoly.DateTime.is(value.posted) &&
 			typeof value.balance == "number" &&
-			Array.isArray(value.operations) &&
-			value.operations.every(Operation.is)
+			Array.isArray(value.operations)
 		)
 	}
 	export function fromCreatable(
