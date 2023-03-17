@@ -27,7 +27,6 @@ export namespace Transaction {
 			TransactionCreatable.is({ ...value }) &&
 			cryptly.Identifier.is(value.id, 8) &&
 			isoly.DateTime.is(value.posted) &&
-			(value.type == "actual" || value.type == "available") &&
 			typeof value.balance == "number" &&
 			Array.isArray(value.operations) &&
 			value.operations.every(Operation.is)
