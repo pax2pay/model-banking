@@ -15,7 +15,9 @@ interface RuleResult {
 }
 namespace RuleResult {
 	export function stringify(data: RuleResult): string {
-		return `rule: ${data.rule}, \n definition: ${data.definition}, \n outcome: ${data.outcome}`
+		return `rule: ${Rule.stringify(data.rule)}, \n definition: { definition: ${
+			data.definition.definition
+		}, arguments: ${data.definition.arguments.toString()} }, \n outcome: ${data.outcome}`
 	}
 }
 export namespace Rule {
@@ -33,5 +35,8 @@ export namespace Rule {
 			typeof value.condition == "string" &&
 			typeof value.description == "string"
 		)
+	}
+	export function stringify(rule: Rule): string {
+		return `{ label: ${rule.label}, action: ${rule.action}, type: ${rule.type}, condition: ${rule.condition}, description: ${rule.description}. }`
 	}
 }

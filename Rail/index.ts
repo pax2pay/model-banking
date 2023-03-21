@@ -47,24 +47,6 @@ export namespace Rail {
 		return typeof value == "object" && (PaxGiro.is(value) || Iban.is(value) || Internal.is(value))
 	}
 
-	export function hasSameIdentifiers(sender: Rail, recipient: Rail): boolean {
-		let result = false
-		if (sender.type == recipient.type) {
-			switch (sender.type) {
-				case "iban":
-					result = sender.iban == (recipient as Iban).iban
-					break
-				case "paxgiro":
-					result = sender.identifier == (recipient as PaxGiro).identifier
-					break
-				case "internal":
-					result = sender.identifier == (recipient as Internal).identifier
-					break
-			}
-		}
-		return result
-	}
-
 	export type Type = RailType
 	export type PaxGiro = RailPaxGiro
 	export const PaxGiro = RailPaxGiro

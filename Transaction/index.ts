@@ -16,7 +16,8 @@ export interface Transaction extends TransactionCreatable {
 	readonly transacted?: isoly.DateTime
 	balance: number
 	operations: Operation[]
-	status: "review" | "approved" | "rejected" | "processing" | "finalized"
+	status: "created" | "approved" | "rejected" | "processing" | "finalized"
+	flags: ("review" | string)[]
 	notes: TransactionNote[]
 }
 
@@ -56,7 +57,8 @@ export namespace Transaction {
 			balance: result,
 			...transaction,
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
-			status: "review",
+			status: "created",
+			flags: [],
 			notes: [],
 		}
 	}
@@ -79,7 +81,8 @@ export namespace Transaction {
 			balance: result,
 			...transaction,
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
-			status: "review",
+			status: "created",
+			flags: [],
 			notes: [],
 		}
 	}
