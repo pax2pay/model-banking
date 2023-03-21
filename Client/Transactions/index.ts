@@ -14,21 +14,19 @@ export class Transactions extends rest.Collection<gracely.Error> {
 	}
 	async list(
 		account?: string,
-		currency?: string,
-		start?: string,
-		end?: string
+		search?: {
+			currency?: string
+			status?: string
+			start?: string
+			end?: string
+		}
 	): Promise<Transaction[] | gracely.Error> {
-		const search =
-			currency && start && end
-				? `?currency=${currency}&start=${start}&end=${end}`
-				: currency && start
-				? `?currency=${currency}&start=${start}`
-				: currency && end
-				? `?currency=${currency}&end=${end}`
-				: currency
-				? `?currency=${currency}`
-				: ""
-		const path = account ? `/account/${account}/transaction` : `/transaction${search}`
+		const query = search
+			? Object.entries(search)
+					.map(([k, v]) => `${k}=${v}`)
+					.reduce((prev, curr, i) => `${prev}${i == 0 ? "?" : "&"}${curr}`, "")
+			: ""
+		const path = account ? `/account/${account}/transaction` : `/transaction${query}`
 		return this.client.get<Transaction[]>(path)
 	}
 }
