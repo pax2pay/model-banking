@@ -12,32 +12,24 @@ export class Transactions extends rest.Collection<gracely.Error> {
 	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
 		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
 	}
-	async list(
-		args?:
-			| {
-					account: string
-					search?: {
-						currency?: string
-						start?: string
-						end?: string
-						reserved?: boolean
-					}
-			  }
-			| {
-					search?: {
-						currency?: string
-						status?: string
-						start?: string
-						end?: string
-					}
-			  }
-	): Promise<Transaction[] | gracely.Error> {
-		const query = args?.search
-			? Object.entries(args.search)
-					.map(([k, v]) => `${k}=${v}`)
-					.reduce((prev, curr, i) => `${prev}${i == 0 ? "?" : "&"}${curr}`, "")
-			: ""
-		const path = args && "account" in args ? `/account/${args.account}/transaction${query}` : `/transaction${query}`
-		return this.client.get<Transaction[]>(path)
+	async list(options?: {
+		account?: string
+		status?: "review" | "created" | "approved" | "rejected" | "processing" | "finalized"
+		currency?: string
+		start?: string
+		end?: string
+		limit?: number
+		cursor?: string
+	}): Promise<Transaction[] | gracely.Error> {
+		let query = ""
+		query += options?.currency ? `currency=${options?.currency}` : ""
+		query += options?.status ? `status=${options?.status}` : ""
+		query += options?.start ? `start=${options?.start}` : ""
+		query += options?.end ? `end=${options?.end}` : ""
+		const path = options && options.account ? `/account/${options.account}/transaction${query}` : `/transaction${query}`
+		return this.client.get<Transaction[]>(path, {
+			limit: options?.limit ? options.limit.toString() : undefined,
+			cursor: options?.cursor,
+		})
 	}
 }
