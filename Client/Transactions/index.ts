@@ -22,10 +22,10 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		cursor?: string
 	}): Promise<Transaction[] | gracely.Error> {
 		let query = ""
-		query += options?.currency ? `currency=${options?.currency}` : ""
-		query += options?.status ? `status=${options?.status}` : ""
-		query += options?.start ? `start=${options?.start}` : ""
-		query += options?.end ? `end=${options?.end}` : ""
+		query += options?.currency ? `?currency=${options?.currency}` : ""
+		query += options?.status ? `?status=${options?.status}` : ""
+		query += options?.start ? `&start=${options?.start}` : ""
+		query += options?.end ? `&end=${options?.end}` : ""
 		const path = options && options.account ? `/account/${options.account}/transaction${query}` : `/transaction${query}`
 		return this.client.get<Transaction[]>(path, {
 			limit: options?.limit ? options.limit.toString() : undefined,
