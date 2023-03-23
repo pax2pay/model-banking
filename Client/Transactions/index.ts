@@ -27,9 +27,6 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		query += options?.start ? `&start=${options?.start}` : ""
 		query += options?.end ? `&end=${options?.end}` : ""
 		const path = options && options.account ? `/account/${options.account}/transaction${query}` : `/transaction${query}`
-		return this.client.get<Transaction[]>(path, {
-			limit: options?.limit ? options.limit.toString() : undefined,
-			cursor: options?.cursor,
-		})
+		return this.client.get<Transaction[]>(path) //{ limit: options?.limit ? options.limit.toString() : undefined, cursor: options?.cursor, }
 	}
 }
