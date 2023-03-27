@@ -14,18 +14,21 @@ export class Transactions extends rest.Collection<gracely.Error> {
 	}
 	async list(options?: {
 		account?: string
-		status?: "review" | "created" | "approved" | "rejected" | "processing" | "finalized"
-		currency?: string
-		start?: string
-		end?: string
 		limit?: number
 		cursor?: string
+		status?: "review" | "created" | "approved" | "rejected" | "processing" | "finalized"
+		currency?: string
+		direction?: "inbound" | "outbound"
+		rail?: "internal"
+		start?: string
+		end?: string
 	}): Promise<Transaction[] | gracely.Error> {
-		let query = ""
-		query += options?.currency ? `?currency=${options?.currency}` : ""
-		query += options?.status ? `?status=${options?.status}` : ""
-		query += options?.start ? `&start=${options?.start}` : ""
-		query += options?.end ? `&end=${options?.end}` : ""
+		const searchOptions = options && (({ account, limit, cursor, ...search }) => search)(options)
+		const query = searchOptions
+			? Object.entries(searchOptions)
+					.map(([k, v]) => `${k}=${v}`)
+					.reduce((prev, curr, i) => `${prev}${i == 0 ? "?" : "&"}${curr}`, "")
+			: ""
 		const path = options && options.account ? `/account/${options.account}/transaction${query}` : `/transaction${query}`
 		return this.client.get<Transaction[]>(path) //{ limit: options?.limit ? options.limit.toString() : undefined, cursor: options?.cursor, }
 	}
