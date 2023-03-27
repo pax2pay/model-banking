@@ -4,7 +4,7 @@ import { Creatable as OperationCreatable } from "./Creatable"
 
 export interface Operation extends OperationCreatable {
 	id: cryptly.Identifier
-	transactionId: cryptly.Identifier
+	counter: number
 	created: isoly.DateTime
 }
 export namespace Operation {
@@ -12,18 +12,17 @@ export namespace Operation {
 		return (
 			typeof value == "object" &&
 			cryptly.Identifier.is(value.id, 8) &&
-			cryptly.Identifier.is(value.transactionId, 8) &&
+			typeof value.counter == "number" &&
 			isoly.DateTime.is(value.created) &&
 			OperationCreatable.is({ ...value })
 		)
 	}
-	export function fromCreatable(transaction: cryptly.Identifier, operation: Creatable): Operation {
-		const id = cryptly.Identifier.generate(8)
+	export function fromCreatable(transaction: cryptly.Identifier, counter: number, operation: Creatable): Operation {
 		const timestamp = isoly.DateTime.now()
 		return {
 			...operation,
-			id: id,
-			transactionId: transaction,
+			id: transaction,
+			counter: counter,
 			created: timestamp,
 		}
 	}

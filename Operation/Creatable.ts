@@ -1,3 +1,4 @@
+import * as cryptly from "cryptly"
 import * as isoly from "isoly"
 import { Balances } from "../Balances"
 
@@ -59,6 +60,7 @@ export namespace Change {
 }
 
 export interface Creatable {
+	account: cryptly.Identifier
 	currency: isoly.Currency
 	change: Change
 }
@@ -67,6 +69,7 @@ export namespace Creatable {
 	export function is(value: any | Creatable): value is Creatable {
 		return (
 			typeof value == "object" &&
+			cryptly.Identifier.is(value.account) &&
 			isoly.Currency.is(value.currency) &&
 			typeof value.change == "object" &&
 			Change.is(value.change)
