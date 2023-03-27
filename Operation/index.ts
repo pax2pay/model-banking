@@ -17,12 +17,12 @@ export namespace Operation {
 			OperationCreatable.is({ ...value })
 		)
 	}
-	export function fromCreatable(transaction: cryptly.Identifier, counter: number, operation: Creatable): Operation {
+	export function fromCreatable(transaction: cryptly.Identifier, operation: Creatable): Operation {
 		const timestamp = isoly.DateTime.now()
 		return {
 			...operation,
 			id: transaction,
-			counter: counter,
+			counter: 0,
 			created: timestamp,
 		}
 	}
