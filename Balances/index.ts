@@ -1,9 +1,10 @@
 import * as isoly from "isoly"
-import { BalanceEntry } from "./type"
+import { BalanceEntries, BalanceEntry } from "./type"
 
 export type Balances = Partial<Record<isoly.Currency, Partial<Record<BalanceEntry, number>>>>
 
 export namespace Balances {
+	export const entries: BalanceEntry[] = [...BalanceEntries]
 	export function is(value: Balances | any): value is Balances {
 		return (
 			typeof value == "object" &&
