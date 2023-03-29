@@ -1,8 +1,6 @@
 import * as cryptly from "cryptly"
 import * as isoly from "isoly"
 import { Rail } from "../../Rail"
-import { Realm } from "../../Realm"
-import { Supplier } from "../../Supplier"
 import { Balance } from "../Balance"
 import { Creatable as AccountCreatable } from "./Creatable"
 
@@ -17,16 +15,11 @@ export interface Account extends Account.Creatable {
 export namespace Account {
 	export function is(value: Account | any): value is Account {
 		return (
-			value &&
-			typeof value == "object" &&
+			Creatable.is({ ...value }) &&
 			cryptly.Identifier.is(value.id, 8) &&
 			isoly.DateTime.is(value.created) &&
 			typeof value.reference == "string" &&
-			typeof value.name == "string" &&
-			Realm.is(value.realm) &&
-			isoly.Currency.is(value.currency) &&
-			Supplier.is(value.supplier) &&
-			(value.type == "clientFundAccount" || value.type == "other")
+			Rail.is(value.rail)
 		)
 	}
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {

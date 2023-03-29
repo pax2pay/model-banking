@@ -1,5 +1,9 @@
 import * as isoly from "isoly"
 import { Balances } from "../Balances"
-import { Fiat } from "./Fiat"
+export { Account } from "./Account"
+export { Balance } from "./Balance"
+export { Client } from "./Client"
+import { Fiat as TreasuryFiat } from "./Fiat"
 
 export type Treasury = Record<isoly.Currency, { eMoney: Balances; fiat: Fiat }>
+export type Fiat = TreasuryFiat
