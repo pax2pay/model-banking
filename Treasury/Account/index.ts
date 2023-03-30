@@ -5,9 +5,9 @@ import { Balance } from "../Balance"
 import { Creatable as AccountCreatable } from "./Creatable"
 
 export interface Account extends Account.Creatable {
-	readonly id: cryptly.Identifier
-	readonly created: isoly.DateTime
-	readonly reference: string
+	id: cryptly.Identifier
+	created: isoly.DateTime
+	reference: string
 	rail: Rail[]
 	balance: Balance
 }
