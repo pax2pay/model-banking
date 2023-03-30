@@ -3,11 +3,10 @@ import { Realm } from "../../Realm"
 import { Supplier } from "../../Supplier"
 
 export interface Creatable {
-	meta?: { realm: Realm; supplier: Supplier }
 	name: string
 	realm: Realm
-	currencies: isoly.Currency[]
 	supplier: Supplier
+	currencies: isoly.Currency[]
 	type: "safeguarded" | "other"
 }
 

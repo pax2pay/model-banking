@@ -8,7 +8,7 @@ export interface Account extends Account.Creatable {
 	readonly id: cryptly.Identifier
 	readonly created: isoly.DateTime
 	readonly reference: string
-	rail: Rail
+	rail: Rail[]
 	balance: Balance
 }
 
