@@ -19,7 +19,8 @@ export namespace Account {
 			cryptly.Identifier.is(value.id, 8) &&
 			isoly.DateTime.is(value.created) &&
 			typeof value.reference == "string" &&
-			Rail.is(value.rail)
+			Array.isArray(value.rail) &&
+			value.rail.every(Rail.is)
 		)
 	}
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
