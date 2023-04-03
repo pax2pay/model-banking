@@ -2,7 +2,7 @@ import * as isoly from "isoly"
 
 export type Balance = Partial<Record<isoly.Currency, number>>
 
-export type Result = { account: string; balances: Balance }
+export type Result = { account: string; balance: number }
 
 export namespace Balance {
 	export function is(value: Balance | any): value is Balance {
@@ -14,7 +14,7 @@ export namespace Balance {
 	}
 }
 export namespace Result {
-	export function is(value: Balance | any): value is Result {
-		return value && typeof value == "object" && typeof value.account == "string" && Balance.is(value.balances)
+	export function is(value: Result | any): value is Result {
+		return value && typeof value == "object" && typeof value.account == "string" && typeof value.balance == "number"
 	}
 }
