@@ -18,5 +18,6 @@ export namespace Treasury {
 		export const Storable = TreasuryAccount.Storable
 		export type Fetchable = TreasuryAccount.Fetchable
 		export const Fetchable = TreasuryAccount.Fetchable
+		export const is = TreasuryAccount.is
 	}
 }
