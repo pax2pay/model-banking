@@ -9,7 +9,14 @@ export namespace Treasury {
 	export type Balance = TreasuryBalance
 	export type Fiat = TreasuryFiat
 	export type Client = TreasuryClient
-	export const Account = TreasuryAccount
 	export const Balance = TreasuryBalance
 	export const Client = TreasuryClient
+	export namespace Account {
+		export type Creatable = TreasuryAccount.Creatable
+		export const Creatable = TreasuryAccount.Creatable
+		export type Storable = TreasuryAccount.Storable
+		export const Storable = TreasuryAccount.Storable
+		export type Fetchable = TreasuryAccount.Fetchable
+		export const Fetchable = TreasuryAccount.Fetchable
+	}
 }
