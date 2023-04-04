@@ -17,9 +17,9 @@ export namespace Creatable {
 			typeof value == "object" &&
 			typeof value.name == "string" &&
 			Realm.is(value.realm) &&
+			Supplier.is(value.supplier) &&
 			Array.isArray(value.currencies) &&
 			value.currencies.every(isoly.Currency.is) &&
-			Supplier.is(value.supplier) &&
 			(value.type == "safeguarded" || value.type == "other")
 		)
 	}
