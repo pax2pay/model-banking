@@ -9,10 +9,6 @@ export namespace Realm {
 		//return value && realms.includes(value)
 	}
 	export function toString(): string {
-		let result = ""
-		for (const v of Realms) {
-			result = result + v + ", "
-		}
-		return result
+		return realms.toString().replaceAll(",", ", ") + "."
 	}
 }
