@@ -21,11 +21,6 @@ export class Client extends rest.Client<gracely.Error> {
 		const result: Client = new Client(
 			(httpClient = new http.Client<gracely.Error>(server, key, {
 				appendHeader: request => ({ ...request.header, realm: result.realm, organization: result.organization }),
-				onError: async (request: http.Request, response: http.Response) => {
-					const output = { ...response, body: await response.body }
-					console.error("client.onError", output)
-					return false
-				},
 			}))
 		)
 		if (load)
