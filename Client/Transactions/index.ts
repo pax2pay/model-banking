@@ -22,7 +22,7 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		rail?: "internal"
 		start?: string
 		end?: string
-	}): Promise<Transaction[] | gracely.Error> {
+	}): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
 		const searchOptions = options && (({ account, limit, cursor, ...search }) => search)(options)
 		const query = searchOptions
 			? Object.entries(searchOptions)
@@ -30,6 +30,13 @@ export class Transactions extends rest.Collection<gracely.Error> {
 					.reduce((prev, curr, i) => `${prev}${i == 0 ? "?" : "&"}${curr}`, "")
 			: ""
 		const path = options && options.account ? `/account/${options.account}/transaction${query}` : `/transaction${query}`
-		return this.client.get<Transaction[]>(path) //{ limit: options?.limit ? options.limit.toString() : undefined, cursor: options?.cursor, }
+		return this.client.get<Transaction[] & { cursor?: string | undefined }>(
+			path,
+			options &&
+				(({ limit, cursor }) =>
+					limit || cursor
+						? { ...(limit ? { limit: limit.toString() } : {}), ...(cursor ? { cursor: cursor } : {}) }
+						: undefined)(options)
+		)
 	}
 }
