@@ -7,8 +7,24 @@ export class Operations extends rest.Collection<gracely.Error> {
 	constructor(client: http.Client) {
 		super(client)
 	}
-	async list(start?: string, end?: string): Promise<Operation[] | gracely.Error> {
-		const search = start && end ? `?start=${start}&end=${end}` : start ? `?start=${start}` : end ? `?end=${end}` : ""
-		return this.client.get<Operation[]>(`/operation${search}`)
+	async list(options?: {
+		start?: string
+		end?: string
+		limit?: string
+		cursor?: string
+		prefix?: string
+	}): Promise<(Operation[] & { cursor?: string | undefined }) | gracely.Error> {
+		const search =
+			options?.start && options?.end
+				? `?start=${options?.start}&end=${options?.end}`
+				: options?.start
+				? `?start=${options?.start}`
+				: options?.end
+				? `?end=${options?.end}`
+				: ""
+		return this.client.get<Operation[] & { cursor?: string | undefined }>(
+			`/operation${search}`,
+			options && (({ start, end, ...headers }) => headers)(options)
+		)
 	}
 }
