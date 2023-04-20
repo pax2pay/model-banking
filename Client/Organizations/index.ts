@@ -2,8 +2,10 @@ import * as gracely from "gracely"
 import * as http from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Organization } from "../../Organization"
+import { Rules } from "./Rules"
 
 export class Organizations extends rest.Collection<gracely.Error> {
+	readonly Rules = new Rules(this.client)
 	constructor(client: http.Client) {
 		super(client)
 	}
