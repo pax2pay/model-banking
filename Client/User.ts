@@ -11,7 +11,7 @@ export interface EntityTags {
 }
 
 export class User extends rest.Collection<gracely.Error> {
-	constructor(client: http.Client, private readonly entityTags: EntityTags) {
+	constructor(client: http.Client, readonly entityTags: EntityTags) {
 		super(client)
 	}
 	async list(): Promise<userwidgets.User.Readable[] | gracely.Error> {
