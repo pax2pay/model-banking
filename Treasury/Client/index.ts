@@ -17,7 +17,7 @@ export interface EntityTags {
 export class Client extends rest.Client<gracely.Error> {
 	realm?: string
 	treasury = new Treasury(this.client)
-	private entityTags: EntityTags = { application: {}, organization: {}, user: {} }
+	entityTags: EntityTags = { application: {}, organization: {}, user: {} }
 	readonly userwidgets = {
 		me: new ClientMe(this.client),
 		user: new ClientUser(this.client, this.entityTags),
