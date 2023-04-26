@@ -1,5 +1,6 @@
 import * as gracely from "gracely"
 import * as isoly from "isoly"
+import * as userwidgetsui from "@userwidgets/ui"
 import * as http from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Application as ClientApplication } from "./../../Client/Application"
@@ -17,11 +18,20 @@ export interface EntityTags {
 export class Client extends rest.Client<gracely.Error> {
 	realm?: string
 	treasury = new Treasury(this.client)
-	protected entityTags: EntityTags = { application: {}, organization: {}, user: {} }
-	readonly user = new Client.User(this.client, this.entityTags)
-	readonly me = new Client.Me(this.client)
-	readonly organization = new Client.Organization(this.client, this.entityTags)
-	readonly application = new Client.Application(this.client, this.entityTags)
+	private entityTags: EntityTags = { application: {}, organization: {}, user: {} }
+	readonly userwidgets: {
+		me: userwidgetsui.Client.Me
+		user: userwidgetsui.Client.User
+		application: userwidgetsui.Client.Application
+		organization: userwidgetsui.Client.Organization
+		client: rest.Client<gracely.Error>
+	} = {
+		me: new userwidgetsui.Client.Me(this.client),
+		user: new userwidgetsui.Client.User(this.client, this.entityTags),
+		application: new userwidgetsui.Client.Application(this.client, this.entityTags),
+		organization: new userwidgetsui.Client.Organization(this.client, this.entityTags),
+		client: this,
+	}
 
 	static create<T = Record<string, any>>(server: string, key: string, load?: (client: http.Client) => T): Client & T {
 		let httpClient: http.Client<gracely.Error>
