@@ -7,8 +7,7 @@
 		"outDir": "dist",
 		"baseUrl": ".",
 		"lib": [
-			"dom",
-			"es2017"
+			"es2022"
 		],
 		"allowSyntheticDefaultImports": true,
 		"types": []

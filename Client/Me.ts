@@ -16,7 +16,6 @@ export class Me extends rest.Collection<gracely.Error> {
 				: (await userwidgets.User.Key.unpack(token)) ?? gracely.client.unauthorized("Failed to verify token.")
 			if (!gracely.Error.is(result)) {
 				this.client.key = result.token
-				sessionStorage.setItem("token", result.token)
 			}
 		}
 		return result
@@ -29,7 +28,7 @@ export class Me extends rest.Collection<gracely.Error> {
 		const result = gracely.Error.is(token)
 			? token
 			: (await userwidgets.User.Key.unpack(token)) ?? gracely.client.unauthorized("Failed to verify token.")
-		!gracely.Error.is(result) && (this.client.key = result.token) && sessionStorage.setItem("token", result.token)
+		!gracely.Error.is(result) && (this.client.key = result.token)
 		return result
 	}
 	async join(tag: userwidgets.User.Tag): Promise<userwidgets.User.Key | gracely.Error> {
@@ -37,7 +36,7 @@ export class Me extends rest.Collection<gracely.Error> {
 		const result = gracely.Error.is(response)
 			? response
 			: (await userwidgets.User.Key.unpack(response)) ?? gracely.client.unauthorized("Failed to verify token.")
-		!gracely.Error.is(result) && (this.client.key = result.token) && sessionStorage.setItem("token", result.token)
+		!gracely.Error.is(result) && (this.client.key = result.token)
 		return result
 	}
 }
