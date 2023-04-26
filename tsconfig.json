@@ -6,6 +6,10 @@
 		"sourceRoot": "../",
 		"outDir": "dist",
 		"baseUrl": ".",
+		"lib": [
+			"dom",
+			"es2017"
+		],
 		"allowSyntheticDefaultImports": true,
 		"types": []
 	},
