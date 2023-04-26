@@ -18,18 +18,15 @@ export class Client extends rest.Client<gracely.Error> {
 	realm?: string
 	treasury = new Treasury(this.client)
 	private entityTags: EntityTags = { application: {}, organization: {}, user: {} }
-	readonly userwidgets: {
-		me: ClientMe
-		user: ClientUser
-		application: ClientApplication
-		organization: ClientOrganization
-		client: rest.Client<gracely.Error>
-	} = {
+	readonly userwidgets = {
 		me: new ClientMe(this.client),
 		user: new ClientUser(this.client, this.entityTags),
 		application: new ClientApplication(this.client, this.entityTags),
 		organization: new ClientOrganization(this.client, this.entityTags),
-		client: this,
+		set onUnauthorized(callback: (client: rest.Client<never>) => Promise<boolean>) {
+			this.client.onUnauthorized = callback
+		},
+		client: this as Client,
 	}
 
 	static create<T = Record<string, any>>(server: string, key: string, load?: (client: http.Client) => T): Client & T {
