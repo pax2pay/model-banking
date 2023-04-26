@@ -6,9 +6,6 @@
 		"sourceRoot": "../",
 		"outDir": "dist",
 		"baseUrl": ".",
-		"lib": [
-			"es2022"
-		],
 		"allowSyntheticDefaultImports": true,
 		"types": []
 	},
