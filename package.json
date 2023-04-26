@@ -54,10 +54,10 @@
 		"clean": "rimraf dist node_modules coverage"
 	},
 	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20230321.0",
 		"@types/jest": "^29.5.0",
 		"@typescript-eslint/eslint-plugin": "5.57.0",
 		"@typescript-eslint/parser": "5.57.0",
-		"@cloudflare/workers-types": "^4.20230321.0",
 		"eslint": "^8.37.0",
 		"eslint-plugin-prettierx": "github:utily/eslint-plugin-prettierx#utily-20221229",
 		"eslint-plugin-simple-import-sort": "^10.0.0",
@@ -68,6 +68,7 @@
 		"typescript": "^5.0.2"
 	},
 	"dependencies": {
+		"@userwidgets/model": "^0.0.34",
 		"cloudly-http": "^0.1.3",
 		"cloudly-rest": "^0.1.1",
 		"cryptly": "^3.0.2",
