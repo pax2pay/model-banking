@@ -7,6 +7,6 @@ export class Version extends rest.Collection<gracely.Error> {
 		super(client)
 	}
 	async fetch() {
-		return this.client.get<any>("/version")
+		return this.client.get<any>("/api/version")
 	}
 }

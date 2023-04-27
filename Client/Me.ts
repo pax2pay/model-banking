@@ -8,7 +8,7 @@ export class Me extends rest.Collection<gracely.Error> {
 		if (credentials.password == undefined)
 			result = gracely.client.malformedContent("password", "string", "Password is required for login.")
 		else {
-			const token = await this.client.get<string>("/me", {
+			const token = await this.client.get<string>("/widgets/me", {
 				authorization: userwidgets.User.Credentials.toBasic({ user: credentials.user, password: credentials.password }),
 			})
 			result = gracely.Error.is(token)
@@ -24,7 +24,7 @@ export class Me extends rest.Collection<gracely.Error> {
 		tag: userwidgets.User.Tag,
 		credentials: userwidgets.User.Credentials.Register
 	): Promise<userwidgets.User.Key | gracely.Error> {
-		const token = await this.client.post<string>(`/me/${tag.token}`, credentials)
+		const token = await this.client.post<string>(`/widgets/me/${tag.token}`, credentials)
 		const result = gracely.Error.is(token)
 			? token
 			: (await userwidgets.User.Key.unpack(token)) ?? gracely.client.unauthorized("Failed to verify token.")
@@ -32,7 +32,7 @@ export class Me extends rest.Collection<gracely.Error> {
 		return result
 	}
 	async join(tag: userwidgets.User.Tag): Promise<userwidgets.User.Key | gracely.Error> {
-		const response = await this.client.patch<string>(`/me/${tag.token}`, undefined)
+		const response = await this.client.patch<string>(`/widgets/me/${tag.token}`, undefined)
 		const result = gracely.Error.is(response)
 			? response
 			: (await userwidgets.User.Key.unpack(response)) ?? gracely.client.unauthorized("Failed to verify token.")

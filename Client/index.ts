@@ -20,7 +20,7 @@ export interface EntityTags {
 
 export class Client extends rest.Client<gracely.Error> {
 	realm?: string
-	organizationId?: string
+	organization?: string
 	entityTags: EntityTags = { application: {}, organization: {}, user: {} }
 	readonly userwidgets = {
 		me: new ClientMe(this.client),
@@ -42,7 +42,7 @@ export class Client extends rest.Client<gracely.Error> {
 		let httpClient: http.Client<gracely.Error>
 		const result: Client = new Client(
 			(httpClient = new http.Client<gracely.Error>(server, key, {
-				appendHeader: request => ({ ...request.header, realm: result.realm, organization: result.organizationId }),
+				appendHeader: request => ({ ...request.header, realm: result.realm, organization: result.organization }),
 			}))
 		)
 		if (load)

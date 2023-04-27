@@ -23,7 +23,7 @@ export class Operations extends rest.Collection<gracely.Error> {
 				? `?end=${options?.end}`
 				: ""
 		return this.client.get<Operation[] & { cursor?: string | undefined }>(
-			`/operation${search}`,
+			`/api/operation${search}`,
 			options && (({ start, end, ...headers }) => headers)(options)
 		)
 	}
