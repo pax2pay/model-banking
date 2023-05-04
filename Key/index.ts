@@ -8,7 +8,12 @@ export interface Creatable extends userwidgets.User.Key.Creatable {
 	} & Permissions.Realms
 }
 
-export interface Key extends Creatable, userwidgets.User.Key {}
+export interface Key extends Creatable, userwidgets.User.Key {
+	permissions: {
+		"*"?: userwidgets.User.Permissions.Application | undefined
+		[organizationId: string]: userwidgets.User.Permissions.Organization | undefined
+	} & Permissions.Realms
+}
 
 export namespace Permissions {
 	export type Realms = Partial<
@@ -31,6 +36,4 @@ export namespace Permissions {
 		string | "*",
 		{ transactions: userwidgets.User.Permissions.Permission; rail: userwidgets.User.Permissions.Permission }
 	>
-
-
 }
