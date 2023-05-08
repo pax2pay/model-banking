@@ -29,7 +29,7 @@ export namespace Rule {
 			typeof value == "object" &&
 			typeof value.label == "string" &&
 			typeof value.action == "string" &&
-			(value.action == "approve" || value.action == "reject" || value.action == "review") &&
+			(value.action == "approve" || value.action == "reject" || value.action == "review" || value.action == "approveReview")) &&
 			typeof value.type == "string" &&
 			(value.type == "transaction" || value.type == "authorization") &&
 			typeof value.condition == "string" &&
