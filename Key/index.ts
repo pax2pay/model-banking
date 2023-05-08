@@ -1,17 +1,19 @@
+import * as cryptly from "cryptly"
 import { userwidgets } from "@userwidgets/model"
 import { Realm } from "../Realm"
 
 export interface Creatable extends userwidgets.User.Key.Creatable {
 	permissions: {
 		"*"?: userwidgets.User.Permissions.Application | undefined
-		[organizationId: string]: userwidgets.User.Permissions.Organization | undefined
+		[organization: string]: userwidgets.User.Permissions.Organization | undefined
 	} & Permissions.Realms
 }
 
 export interface Key extends Creatable, userwidgets.User.Key {
+	id: cryptly.Identifier
 	permissions: {
 		"*"?: userwidgets.User.Permissions.Application | undefined
-		[organizationId: string]: userwidgets.User.Permissions.Organization | undefined
+		[organization: string]: userwidgets.User.Permissions.Organization | undefined
 	} & Permissions.Realms
 }
 
