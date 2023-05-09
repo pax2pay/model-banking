@@ -11,10 +11,10 @@ export class Treasury extends rest.Collection<gracely.Error> {
 	}
 
 	async change(currency: isoly.Currency, changes: Result[]): Promise<gracely.Result> {
-		return this.client.patch(`/treasury/${currency}/fiat`, changes)
+		return this.client.patch(`/fiat/treasury/${currency}/fiat`, changes)
 	}
 	async fetch(hour?: isoly.DateTime): Promise<TreasuryModel | gracely.Error> {
 		const path = hour ? `?time=${hour}` : ""
-		return this.client.get<TreasuryModel>(`/treasury${path}`)
+		return this.client.get<TreasuryModel>(`/fiat/treasury${path}`)
 	}
 }
