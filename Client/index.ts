@@ -9,6 +9,7 @@ import { Operations } from "./Operations"
 import { Organization as ClientOrganization } from "./Organization"
 import { Organizations } from "./Organizations"
 import { Transactions } from "./Transactions"
+import { Treasury } from "./Treasury"
 import { User as ClientUser } from "./User"
 import { Version } from "./Version"
 
@@ -36,6 +37,7 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly operations = new Operations(this.client)
 	readonly organizations = new Organizations(this.client)
 	readonly transactions = new Transactions(this.client)
+	readonly treasury = new Treasury(this.client)
 	readonly version = new Version(this.client)
 
 	static create<T = Record<string, any>>(server: string, key: string, load?: (client: http.Client) => T): Client & T {
