@@ -68,7 +68,7 @@
 		"typescript": "^5.0.4"
 	},
 	"dependencies": {
-		"@userwidgets/model": "^0.2.3",
+		"@userwidgets/model": "^0.2.4",
 		"cloudly-http": "^0.1.5",
 		"cloudly-rest": "^0.1.2",
 		"cryptly": "^3.0.4",

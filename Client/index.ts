@@ -1,5 +1,6 @@
 import * as gracely from "gracely"
 import * as isoly from "isoly"
+import { userwidgets } from "@userwidgets/model"
 import * as http from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Accounts } from "./Accounts"
@@ -23,16 +24,7 @@ export class Client extends rest.Client<gracely.Error> {
 	realm?: string
 	organization?: string
 	entityTags: EntityTags = { application: {}, organization: {}, user: {} }
-	readonly userwidgets = {
-		me: new ClientMe(this.client),
-		user: new ClientUser(this.client, this.entityTags),
-		application: new ClientApplication(this.client, this.entityTags),
-		organization: new ClientOrganization(this.client, this.entityTags),
-		set onUnauthorized(callback: (client: rest.Client<never>) => Promise<boolean>) {
-			this.client.onUnauthorized = callback
-		},
-		client: this as Client,
-	}
+	readonly userwidgets = new userwidgets.ClientCollection(this.client, "/widgets")
 	readonly accounts = new Accounts(this.client)
 	readonly operations = new Operations(this.client)
 	readonly organizations = new Organizations(this.client)
