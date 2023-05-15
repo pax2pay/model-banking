@@ -13,7 +13,7 @@ export interface Transaction extends TransactionCreatable {
 	readonly id: cryptly.Identifier
 	readonly reference?: string
 	readonly posted: isoly.DateTime
-	readonly transacted?: isoly.DateTime
+	transacted?: isoly.DateTime
 	balance: number
 	operations: Operation[]
 	status: "created" | "approved" | "rejected" | "processing" | "finalized"
