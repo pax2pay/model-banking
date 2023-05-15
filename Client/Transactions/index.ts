@@ -29,7 +29,8 @@ export class Transactions extends rest.Collection<gracely.Error> {
 					.map(([k, v]) => `${k}=${v}`)
 					.reduce((prev, curr, i) => `${prev}${i == 0 ? "?" : "&"}${curr}`, "")
 			: ""
-		const path = options && options.account ? `/api/account/${options.account}/transaction${query}` : `/api/transaction${query}`
+		const path =
+			options && options.account ? `/api/account/${options.account}/transaction${query}` : `/api/transaction${query}`
 		return this.client.get<Transaction[] & { cursor?: string | undefined }>(
 			path,
 			options &&
