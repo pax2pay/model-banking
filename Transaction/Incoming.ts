@@ -1,13 +1,14 @@
 import * as isoly from "isoly"
 import { Rail } from "../Rail"
 import { Creatable as TransactionCreatable } from "./Creatable"
+import { Reference as TransactionReference } from "./Reference"
 
 export interface Incoming extends TransactionCreatable {
 	account: Rail
 	counterpart: Rail
 	currency: isoly.Currency
 	amount: number
-	reference?: string
+	reference?: TransactionReference
 	posted: isoly.DateTime
 	description: string
 }
@@ -21,7 +22,6 @@ export namespace Incoming {
 			Rail.is(value.counterpart) &&
 			isoly.Currency.is(value.currency) &&
 			typeof value.amount == "number" &&
-			(value.reference == "undefined" || typeof value.reference == "string") &&
 			isoly.DateTime.is(value.posted) &&
 			typeof value.description == "string"
 		)
