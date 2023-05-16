@@ -5,13 +5,14 @@ import { Rail } from "../Rail"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
+import { Reference as TransactionReference } from "./Reference"
 
 export interface Transaction extends TransactionCreatable {
 	organization: string
 	accountId: string
 	account: Rail
 	readonly id: cryptly.Identifier
-	readonly reference?: string
+	readonly reference?: TransactionReference
 	readonly posted: isoly.DateTime
 	transacted?: isoly.DateTime
 	balance: number
@@ -94,6 +95,7 @@ export namespace Transaction {
 	export const Creatable = TransactionCreatable
 	export type Incoming = TransactionIncoming
 	export const Incoming = TransactionIncoming
+	export type Reference = TransactionReference
 	export type Note = TransactionNote
 	export const Note = TransactionNote
 	export namespace Note {
