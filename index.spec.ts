@@ -1,9 +1,36 @@
+import { isoly } from "isoly"
 import "jest"
 import { pax2pay } from "./index"
 
 describe("library", () => {
+	const body = {
+		account: {
+			type: "iban",
+			iban: "GB54CLRB04081800000157",
+		},
+		counterpart: {
+			type: "iban",
+			iban: "GB26CLRB04081800000176",
+		},
+		reference: {
+			supplier: "clearbank",
+			reference: "LghIz_9W",
+			endToEndId: "LghIz_9W",
+			returnId: "82614c2b-87be-494a-a7ae-9445c8142936",
+		},
+		currency: "GBP",
+		amount: 201,
+		posted: "2023-05-17T07:24:16.72Z",
+		description: "Outgoing transaction returned by scheme. Old description: internal reversal .",
+	}
 	it("a", () => {
 		expect(true).toEqual(true)
+	})
+	it("incoming is", () => {
+		expect(pax2pay.Transaction.Incoming.is(body)).toBeTruthy()
+	})
+	it("DateTime is", () => {
+		expect(isoly.DateTime.is("2023-05-17T07:24:16.72Z")).toBeFalsy()
 	})
 	it("transaction is", () => {
 		expect(

@@ -9,7 +9,7 @@ export interface Incoming extends TransactionCreatable {
 	currency: isoly.Currency
 	amount: number
 	reference?: TransactionReference
-	posted: isoly.DateTime
+	posted: string
 	description: string
 }
 
@@ -22,7 +22,7 @@ export namespace Incoming {
 			Rail.is(value.counterpart) &&
 			isoly.Currency.is(value.currency) &&
 			typeof value.amount == "number" &&
-			isoly.DateTime.is(value.posted) &&
+			typeof value.posted == "string" &&
 			typeof value.description == "string"
 		)
 	}
