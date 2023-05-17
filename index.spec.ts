@@ -7,10 +7,12 @@ describe("library", () => {
 		account: {
 			type: "iban",
 			iban: "GB54CLRB04081800000157",
+			holder: "",
 		},
 		counterpart: {
 			type: "iban",
 			iban: "GB26CLRB04081800000176",
+			holder: "",
 		},
 		reference: {
 			supplier: "clearbank",
