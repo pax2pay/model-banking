@@ -1,8 +1,10 @@
+import { Realm } from "../Realm"
 import { Rule } from "./Rule"
 
 export interface Creatable {
 	name: string
-	realm: "test" | "uk" | "eu"
+	address: string
+	realm: Realm
 	rules: Rule[]
 }
 
@@ -12,7 +14,8 @@ export namespace Creatable {
 			value &&
 			typeof value == "object" &&
 			typeof value.name == "string" &&
-			(value.realm == "test" || value.realm == "uk" || value.realm == "eu") &&
+			typeof value.address == "string" &&
+			Realm.is(value.realm) &&
 			value.rules &&
 			typeof value.rules == "object" &&
 			Array.isArray(value.rules) &&
