@@ -2,6 +2,7 @@ import * as gracely from "gracely"
 import * as http from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Rail } from "../../Rail"
+
 export class Rails extends rest.Collection<gracely.Error> {
 	constructor(client: http.Client) {
 		super(client)
