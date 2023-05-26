@@ -1,1 +1,1 @@
-export type Type = "paxgiro" | "internal" | "iban" //| "scan" |  "swedish" |
+export type Type = "paxgiro" | "internal" | "iban" | "scan" //|  "swedish" |
