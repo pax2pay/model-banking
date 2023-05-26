@@ -62,7 +62,7 @@ export namespace Rail {
 				result = `${rail.identifier}`
 				break
 			case "scan":
-				result = `sort code: ${rail.sort} account number: ${rail.account}`
+				result = `${rail.sort} ${rail.account}`
 				break
 			//case "swedish":
 			//	result = `swe-${rail.clearing}-${rail.account}`
