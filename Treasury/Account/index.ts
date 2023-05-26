@@ -1,5 +1,5 @@
 import * as cryptly from "cryptly"
-import * as isoly from "isoly"
+import { isoly } from "isoly"
 import { Rail } from "../../Rail"
 import { Realm } from "../../Realm"
 import { Supplier } from "../../Supplier"

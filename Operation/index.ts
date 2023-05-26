@@ -1,5 +1,5 @@
 import * as cryptly from "cryptly"
-import * as isoly from "isoly"
+import { isoly } from "isoly"
 import { Creatable as OperationCreatable } from "./Creatable"
 
 export interface Operation extends OperationCreatable {

@@ -1,4 +1,4 @@
-import * as isoly from "isoly"
+import { isoly } from "isoly"
 import { BalanceEntries, BalanceEntry } from "./type"
 
 export type Balances = Partial<Record<isoly.Currency, Partial<Record<BalanceEntry, number>>>>

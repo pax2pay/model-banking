@@ -1,4 +1,4 @@
-import * as gracely from "gracely"
+import { gracely } from "gracely"
 import { userwidgets } from "@userwidgets/model"
 import * as rest from "cloudly-rest"
 

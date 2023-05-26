@@ -1,7 +1,7 @@
-import * as gracely from "gracely"
-import * as isoly from "isoly"
+import { gracely } from "gracely"
+import { isoly } from "isoly"
 import { userwidgets } from "@userwidgets/model"
-import * as http from "cloudly-http"
+import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
 
 export interface EntityTags {

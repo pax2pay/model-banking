@@ -1,7 +1,6 @@
-import * as gracely from "gracely"
-import * as isoly from "isoly"
+import { gracely } from "gracely"
 import { userwidgets } from "@userwidgets/model"
-import * as http from "cloudly-http"
+import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Accounts } from "./Accounts"
 import { Application as ClientApplication } from "./Application"
@@ -14,16 +13,9 @@ import { Treasury } from "./Treasury"
 import { User as ClientUser } from "./User"
 import { Version } from "./Version"
 
-export interface EntityTags {
-	application: Record<string, isoly.DateTime | undefined>
-	organization: Record<string, isoly.DateTime | undefined>
-	user: Record<string, isoly.DateTime | undefined>
-}
-
 export class Client extends rest.Client<gracely.Error> {
 	realm?: string
 	organization?: string
-	entityTags: EntityTags = { application: {}, organization: {}, user: {} }
 	readonly userwidgets = new userwidgets.ClientCollection(this.client, "/widgets")
 	readonly accounts = new Accounts(this.client)
 	readonly operations = new Operations(this.client)
