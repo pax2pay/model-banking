@@ -1,4 +1,4 @@
-import * as isoly from "isoly"
+import { isoly } from "isoly"
 import { Rail } from "../Rail"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Reference as TransactionReference } from "./Reference"

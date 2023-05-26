@@ -1,4 +1,4 @@
-import * as isoly from "isoly"
+import { isoly } from "isoly"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 

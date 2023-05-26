@@ -1,5 +1,5 @@
 import * as cryptly from "cryptly"
-import * as isoly from "isoly"
+import { isoly } from "isoly"
 import { Balances } from "../Balances"
 import { Rail } from "../Rail"
 import { Creatable as AccountCreatable } from "./Creatable"

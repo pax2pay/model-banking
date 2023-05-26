@@ -1,5 +1,5 @@
 import * as cryptly from "cryptly"
-import * as isoly from "isoly"
+import { isoly } from "isoly"
 import { Balances } from "../Balances"
 
 export type Status = "pending" | "success" | "failed" //| "cancelled"

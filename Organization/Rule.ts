@@ -1,4 +1,4 @@
-import * as selectively from "selectively"
+import { selectively } from "selectively"
 
 export interface Rule {
 	label: string
