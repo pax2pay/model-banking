@@ -49,6 +49,27 @@ export namespace Rail {
 		}
 		return result
 	}
+	export function beautify(rail: Rail): string {
+		let result: string
+		switch (rail.type) {
+			case "iban":
+				result = `${rail.iban}`
+				break
+			case "paxgiro":
+				result = `${rail.identifier}`
+				break
+			case "internal":
+				result = `${rail.identifier}`
+				break
+			case "scan":
+				result = `sort code: ${rail.sort} account number: ${rail.account}`
+				break
+			//case "swedish":
+			//	result = `swe-${rail.clearing}-${rail.account}`
+			//	break
+		}
+		return result
+	}
 	export function is(value: Rail | any): value is Rail {
 		return typeof value == "object" && (PaxGiro.is(value) || Iban.is(value) || Internal.is(value) || Scan.is(value))
 	}
