@@ -1,9 +1,12 @@
 import { Iban as RailIban } from "./Iban"
 import { Internal as RailInternal } from "./internal"
 import { PaxGiro as RailPaxGiro } from "./PaxGiro"
+import { Scan as RailScan } from "./Scan"
 import { Type as RailType } from "./Type"
 
-export type Rail = (RailPaxGiro | RailInternal | RailIban) & { reference?: { supplier: string; value: string } }
+export type Rail = (RailPaxGiro | RailInternal | RailIban | RailScan) & {
+	reference?: { supplier: string; value: string }
+}
 
 export namespace Rail {
 	export function parse(value: string): Rail | undefined {
@@ -37,6 +40,9 @@ export namespace Rail {
 			case "internal":
 				result = `internal-${rail.identifier}`
 				break
+			case "scan":
+				result = `scan-${rail.sort}-${rail.account}`
+				break
 			//case "swedish":
 			//	result = `swe-${rail.clearing}-${rail.account}`
 			//	break
@@ -44,7 +50,7 @@ export namespace Rail {
 		return result
 	}
 	export function is(value: Rail | any): value is Rail {
-		return typeof value == "object" && (PaxGiro.is(value) || Iban.is(value) || Internal.is(value))
+		return typeof value == "object" && (PaxGiro.is(value) || Iban.is(value) || Internal.is(value) || Scan.is(value))
 	}
 
 	export type Type = RailType
@@ -52,6 +58,8 @@ export namespace Rail {
 	export const PaxGiro = RailPaxGiro
 	export type Iban = RailIban
 	export const Iban = RailIban
+	export type Scan = RailScan
+	export const Scan = RailScan
 	export type Internal = RailInternal
 	export const Internal = RailInternal
 }
