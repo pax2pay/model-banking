@@ -1,5 +1,6 @@
 export { Account } from "./Account"
 export { Balances } from "./Balances"
+export { Card } from "./Card"
 export { Event } from "./Event"
 export { Operation } from "./Operation"
 export { Organization } from "./Organization"
