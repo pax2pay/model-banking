@@ -1,19 +1,23 @@
 import * as isoly from "isoly"
-import { Transaction } from "../Transaction"
 import { Creatable as CardCreatable } from "./Creatable"
+import { Meta } from "./Meta"
+
+type Operation = any
 
 export interface Card {
 	id: string
 	organization: string
 	account: string
+	iin: string
+	expiry: [number, number]
+	cardHolderName: string
 	created: isoly.DateTime
-	expires: isoly.DateTime
-	limits: Partial<Record<isoly.Currency, number>>
-	transactions: Record<string, Transaction>
-	singleUse?: boolean
-	state: "active" | "voided" | "suspended" // What statuses do we need?
+	limit: [isoly.Currency, number]
+	spent: [isoly.Currency, number]
+	status: "active" | "cancelled"
+	operation: Record<string, Operation>
 	rules: string[]
-	spent?: Partial<Record<isoly.Currency, number>> // Do we need this property?
+	meta?: Meta
 }
 
 export namespace Card {

@@ -1,10 +1,14 @@
 import * as isoly from "isoly"
+import { Meta } from "./Meta"
 
 export interface Creatable {
-	expires: isoly.DateTime | isoly.DateRange
-	limits: Partial<Record<isoly.Currency, number>>
-	singleUse?: boolean
-	rules: string[]
+	account: string
+	iin: string
+	expiry: [number, number]
+	cardHolderName: string
+	limit: [isoly.Currency, number]
+	rules?: string[]
+	meta?: Meta
 }
 
 export namespace Creatable {
