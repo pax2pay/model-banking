@@ -1,21 +1,21 @@
 import * as isoly from "isoly"
+import { Operation } from "../Operation"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Meta } from "./Meta"
-
-type Operation = any
-
+import { Preset } from "./Preset"
 export interface Card {
 	id: string
 	organization: string
 	account: string
 	iin: string
+	preset: Preset
 	expiry: [number, number]
-	cardHolderName: string
+	holder: string
 	created: isoly.DateTime
 	limit: [isoly.Currency, number]
 	spent: [isoly.Currency, number]
 	status: "active" | "cancelled"
-	operation: Record<string, Operation>
+	history: Operation[]
 	rules: string[]
 	meta?: Meta
 }

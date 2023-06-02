@@ -5,7 +5,7 @@ export interface Creatable {
 	account: string
 	iin: string
 	expiry: [number, number]
-	cardHolderName: string
+	holder: string
 	limit: [isoly.Currency, number]
 	rules?: string[]
 	meta?: Meta
