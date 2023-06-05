@@ -1,4 +1,4 @@
-const preset = <const>["example"]
+const preset = ["example"] as const
 
 export type Preset = typeof preset[number]
 

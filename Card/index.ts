@@ -3,6 +3,7 @@ import { Operation } from "../Operation"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Meta } from "./Meta"
 import { Preset } from "./Preset"
+
 export interface Card {
 	id: string
 	organization: string
