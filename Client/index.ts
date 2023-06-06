@@ -4,6 +4,7 @@ import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Accounts } from "./Accounts"
 import { Application as ClientApplication } from "./Application"
+import { Cards } from "./Cards"
 import { Me as ClientMe } from "./Me"
 import { Operations } from "./Operations"
 import { Organization as ClientOrganization } from "./Organization"
@@ -23,6 +24,7 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly transactions = new Transactions(this.client)
 	readonly treasury = new Treasury(this.client)
 	readonly version = new Version(this.client)
+	readonly cards = new Cards(this.client)
 
 	static create<T = Record<string, any>>(server: string, key: string, load?: (client: http.Client) => T): Client & T {
 		let httpClient: http.Client<gracely.Error>
