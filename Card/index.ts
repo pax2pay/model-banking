@@ -1,7 +1,8 @@
-import * as isoly from "isoly"
+import * as cryptly from "cryptly"
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Operation as BankingOperation } from "../Operation"
-import { Changable as CardChangable } from "./Changable"
+import { Changeable as CardChangeable } from "./Changeable"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Expiry as CardExpiry } from "./Expiry"
 import { Meta as CardMeta } from "./Meta"
@@ -32,6 +33,25 @@ export interface Card {
 }
 
 export namespace Card {
+	export function fromCreatable(card: Creatable, organization: string, last4: string, token: string): Card {
+		const created = isoly.DateTime.now()
+		return {
+			id: cryptly.Identifier.generate(8),
+			number: card.number,
+			token: token,
+			created: created,
+			organization: organization,
+			account: card.account,
+			preset: card.preset,
+			details: { iin: card.details.iin, last4: last4, expiry: card.details.expiry, holder: card.details.holder },
+			limit: card.limit,
+			spent: [card.limit[0], 0],
+			status: "active",
+			history: [{ type: "create", created: created }],
+			rules: card.rules ?? [],
+			meta: card.meta,
+		}
+	}
 	export const type = isly.object<Card>({
 		id: isly.string(),
 		number: isly.string().optional(),
@@ -63,6 +83,6 @@ export namespace Card {
 	export const Meta = CardMeta
 	export type Expiry = CardExpiry
 	export const Expiry = CardExpiry
-	export type Changable = CardChangable
-	export const Changable = CardChangable
+	export type Changeable = CardChangeable
+	export const Changeable = CardChangeable
 }
