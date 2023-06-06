@@ -2,13 +2,11 @@
 import * as isoly from "isoly"
 // import { isly } from "isly"
 import { Operation as BankingOperation } from "../Operation"
-// import { Card } from "./index"
 
 export type Operation =
 	| BankingOperation
 	| {
 			type: "created" | "changed" | "cancelled"
-			// change: Partial<Card>
 			created: isoly.DateTime
 	  }
 

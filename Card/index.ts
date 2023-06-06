@@ -8,6 +8,7 @@ import { Preset as CardPreset } from "./Preset"
 
 export interface Card {
 	id: string
+	token: string
 	created: isoly.DateTime
 	organization: string
 	account: string
@@ -30,6 +31,7 @@ export interface Card {
 export namespace Card {
 	export const type = isly.object<Card>({
 		id: isly.string(),
+		token: isly.string(),
 		created: isly.string(),
 		organization: isly.string(),
 		account: isly.string(),
