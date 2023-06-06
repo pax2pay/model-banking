@@ -1,13 +1,16 @@
 import * as isoly from "isoly"
 import { isly } from "isly"
+import { Operation as BankingOperation } from "../Operation"
+import { Changable as CardChangable } from "./Changable"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Expiry as CardExpiry } from "./Expiry"
 import { Meta as CardMeta } from "./Meta"
-// import { Operation } from "./Operation"
+import { Operation as CardOperation } from "./Operation"
 import { Preset as CardPreset } from "./Preset"
 
 export interface Card {
 	id: string
+	number?: string
 	token: string
 	created: isoly.DateTime
 	organization: string
@@ -23,7 +26,7 @@ export interface Card {
 	limit: [isoly.Currency, number]
 	spent: [isoly.Currency, number]
 	status: "active" | "cancelled"
-	// history: Operation[]
+	history: (BankingOperation | CardOperation)[]
 	rules: string[]
 	meta?: CardMeta
 }
@@ -31,6 +34,7 @@ export interface Card {
 export namespace Card {
 	export const type = isly.object<Card>({
 		id: isly.string(),
+		number: isly.string().optional(),
 		token: isly.string(),
 		created: isly.string(),
 		organization: isly.string(),
@@ -46,7 +50,7 @@ export namespace Card {
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		status: isly.union(isly.string("active"), isly.string("cancelled")),
-		// history: isly.fromIs("Card.Operation", Operation.is),
+		history: isly.union(CardOperation.type, isly.fromIs("Banking.Operation", BankingOperation.is)).array(),
 		rules: isly.string().array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 	})
@@ -59,4 +63,6 @@ export namespace Card {
 	export const Meta = CardMeta
 	export type Expiry = CardExpiry
 	export const Expiry = CardExpiry
+	export type Changable = CardChangable
+	export const Changable = CardChangable
 }

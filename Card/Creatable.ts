@@ -3,12 +3,10 @@ import { isly } from "isly"
 import { Expiry } from "./Expiry"
 import { Meta } from "./Meta"
 import { Preset } from "./Preset"
-/* 
-Add Organisation? 
-Add number?
-*/
+
 export interface Creatable {
 	account: string
+	number?: string
 	preset: Preset
 	details: {
 		iin: string
@@ -23,6 +21,7 @@ export interface Creatable {
 export namespace Creatable {
 	export const type = isly.object<Creatable>({
 		account: isly.string(),
+		number: isly.string().optional(),
 		preset: Preset.type,
 		details: isly.object({
 			iin: isly.string(),

@@ -1,6 +1,6 @@
 import { pax2pay } from "../index"
 
-const optional: string[] = ["meta", "rules"]
+const optional: string[] = ["meta", "rules", "number"]
 const Creatable: pax2pay.Card.Creatable = {
 	account: "example",
 	preset: "example1",
