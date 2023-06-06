@@ -1,9 +1,10 @@
-const preset = ["example"] as const
+import { isly } from "isly"
+
+const preset = ["example1"] as const
 
 export type Preset = typeof preset[number]
 
 export namespace Preset {
-	export function is(value: any | Preset): value is Preset {
-		return preset.includes(value)
-	}
+	export const type = isly.string(preset)
+	export const is = type.is
 }

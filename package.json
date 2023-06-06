@@ -29,7 +29,7 @@
 			"^.+\\.(j|t)sx?$": "ts-jest"
 		},
 		"transformIgnorePatterns": [
-			"<rootDir>/node_modules/(?!(cryptly|authly|isoly|gracely|cloudly-http|cloudly-rest|cloudly-router|cloudly-formdata|@userwidgets)/.*)"
+			"<rootDir>/node_modules/(?!(cryptly|authly|isly|isoly|gracely|cloudly-http|cloudly-rest|cloudly-router|cloudly-formdata|@userwidgets)/.*)"
 		],
 		"testEnvironment": "node",
 		"testRegex": "((\\.|/)(test|spec))(\\.|\\/.+)(jsx?|tsx?)$",
@@ -73,6 +73,7 @@
 		"cryptly": "^3.0.4",
 		"gracely": "^2.0.4",
 		"isoly": "^2.0.20",
+		"isly": "0.1.7",
 		"selectively": "^2.0.4"
 	}
 }
