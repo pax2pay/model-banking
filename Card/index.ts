@@ -85,4 +85,6 @@ export namespace Card {
 	export const Expiry = CardExpiry
 	export type Changeable = CardChangeable
 	export const Changeable = CardChangeable
+	export type Operation = CardOperation
+	export const Operation = CardOperation
 }
