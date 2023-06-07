@@ -1,17 +1,17 @@
-import * as isoly from "isoly"
+import { isoly } from "isoly"
 import { isly } from "isly"
-import { Changable } from "../Changable"
+import { Changeable } from "../Changeable"
 
 export interface Change {
 	type: "change"
-	from: Changable
+	from: Changeable
 	created: isoly.DateTime
 }
 
 export namespace Change {
 	export const type = isly.object<Change>({
 		type: isly.string("change"),
-		from: Changable.type,
+		from: Changeable.type,
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
 	export const is = type.is

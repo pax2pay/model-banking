@@ -1,4 +1,4 @@
-import * as isoly from "isoly"
+import { isoly } from "isoly"
 import { pax2pay } from "../index"
 
 const now = isoly.DateTime.now()
