@@ -1,10 +1,12 @@
 import { Iban as RailIban } from "./Iban"
 import { Internal as RailInternal } from "./internal"
+import { Mastercard as RailMastercard } from "./Mastercard"
 import { PaxGiro as RailPaxGiro } from "./PaxGiro"
 import { Scan as RailScan } from "./Scan"
 import { Type as RailType } from "./Type"
+import { Visa as RailVisa } from "./Visa"
 
-export type Rail = (RailPaxGiro | RailInternal | RailIban | RailScan) & {
+export type Rail = (RailPaxGiro | RailInternal | RailIban | RailScan | RailMastercard | RailVisa) & {
 	reference?: { supplier: string; value: string }
 }
 
@@ -43,6 +45,12 @@ export namespace Rail {
 			case "scan":
 				result = `scan-${rail.sort}-${rail.account}`
 				break
+			case "visa":
+				result = `visa-${rail.id}`
+				break
+			case "mastercard":
+				result = `mastercard-${rail.id}`
+				break
 			//case "swedish":
 			//	result = `swe-${rail.clearing}-${rail.account}`
 			//	break
@@ -64,6 +72,12 @@ export namespace Rail {
 			case "scan":
 				result = `${rail.sort} ${rail.account}`
 				break
+			case "visa":
+				result = `visa-${rail.id}`
+				break
+			case "mastercard":
+				result = `mastercard-${rail.id}`
+				break
 			//case "swedish":
 			//	result = `swe-${rail.clearing}-${rail.account}`
 			//	break
@@ -71,7 +85,16 @@ export namespace Rail {
 		return result
 	}
 	export function is(value: Rail | any): value is Rail {
-		return typeof value == "object" && (PaxGiro.is(value) || Iban.is(value) || Internal.is(value) || Scan.is(value))
+		return (
+			value &&
+			typeof value == "object" &&
+			(PaxGiro.is(value) ||
+				Iban.is(value) ||
+				Internal.is(value) ||
+				Scan.is(value) ||
+				Mastercard.is(value) ||
+				Visa.is(value))
+		)
 	}
 
 	export type Type = RailType
@@ -83,4 +106,8 @@ export namespace Rail {
 	export const Scan = RailScan
 	export type Internal = RailInternal
 	export const Internal = RailInternal
+	export type Visa = RailVisa
+	export const Visa = RailVisa
+	export type Mastercard = RailMastercard
+	export const Mastercard = RailMastercard
 }
