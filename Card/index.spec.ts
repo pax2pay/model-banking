@@ -9,6 +9,7 @@ const Card: pax2pay.Card = {
 	created: now,
 	organization: "example",
 	account: "example",
+	realm: "eu",
 	preset: "example1",
 	reference: "example",
 	details: {
