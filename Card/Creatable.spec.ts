@@ -4,6 +4,7 @@ const optional: string[] = ["meta", "rules", "number"]
 const Creatable: pax2pay.Card.Creatable = {
 	account: "example",
 	preset: "example1",
+	realm: "eu",
 	details: {
 		iin: "example",
 		expiry: [2024, 12],
