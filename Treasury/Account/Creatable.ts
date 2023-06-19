@@ -28,7 +28,7 @@ export namespace Creatable {
 		name: isly.string(),
 		realm: isly.fromIs("realm", Realm.is),
 		supplier: isly.fromIs("supplier", Supplier.is),
-		currencies: isly.array<isoly.Currency>(),
-		type: isly.string("safeguarded" | "other" | "external"),
+		currencies: isly.fromIs("Account.Creatable.currencies", isoly.Currency.is).array(),
+		type: isly.string(["safeguarded", "other", "external"]),
 	})
 }
