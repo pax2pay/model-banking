@@ -3,7 +3,7 @@ import { isly } from "isly"
 
 export interface Authorization {
 	type: "authorization"
-	status: "created" | "approved" | "declined"
+	status: "create" | "approve" | "decline"
 	reason?: string
 	created: isoly.DateTime
 }
@@ -11,7 +11,7 @@ export interface Authorization {
 export namespace Authorization {
 	export const type = isly.object<Authorization>({
 		type: isly.string("authorization"),
-		status: isly.union(isly.string("created"), isly.string("approved"), isly.string("declined")),
+		status: isly.union(isly.string("create"), isly.string("approve"), isly.string("decline")),
 		reason: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})

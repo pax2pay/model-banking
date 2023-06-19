@@ -4,7 +4,7 @@ import { Changeable } from "../Changeable"
 
 export interface Card {
 	type: "card"
-	status: "created" | "changed" | "cancelled"
+	status: "create" | "change" | "cancel"
 	from?: Changeable
 	created: isoly.DateTime
 }
@@ -12,7 +12,7 @@ export interface Card {
 export namespace Card {
 	export const type = isly.object<Card>({
 		type: isly.string("card"),
-		status: isly.union(isly.string("created"), isly.string("changed"), isly.string("cancelled")),
+		status: isly.union(isly.string("create"), isly.string("change"), isly.string("cancel")),
 		from: Changeable.type.optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
