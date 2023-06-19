@@ -2,6 +2,7 @@ import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Transaction } from "../Transaction"
+import { Entry as SettlementEntry } from "./Entry"
 
 export type Settlement = Succeeded | Failed
 
@@ -20,15 +21,7 @@ export interface Succeeded extends Base {
 	settled?: { user: string; created: isoly.DateTime; transaction: string }
 	amount: Record<isoly.Currency, number>
 	fee: Record<isoly.Currency, number>
-	entries: {
-		status: "succeeded" | "failed"
-		type: "capture" | "cancel" | "refund"
-		account: string
-		card: string
-		transaction: string
-		amount: [isoly.Currency, number]
-		fee: [isoly.Currency, number]
-	}[]
+	entries: SettlementEntry[]
 	status: "succeeded"
 }
 
@@ -47,25 +40,7 @@ export namespace Settlement {
 				.optional(),
 			amount: isly.record(isly.fromIs("Settlement.entries.amount", isoly.Currency.is), isly.number()),
 			fee: isly.record(isly.fromIs("Settlement.entries.fee", isoly.Currency.is), isly.number()),
-			entries: isly
-				.object<{
-					status: "succeeded" | "failed"
-					type: "capture" | "cancel" | "refund"
-					account: string
-					card: string
-					transaction: string
-					amount: [isoly.Currency, number]
-					fee: [isoly.Currency, number]
-				}>({
-					status: isly.string(),
-					type: isly.string(),
-					account: isly.string(),
-					card: isly.string(),
-					transaction: isly.string(),
-					amount: isly.tuple(isly.fromIs("Settlement.entries.amount", isoly.Currency.is), isly.number()),
-					fee: isly.tuple(isly.fromIs("Settlement.entries.amount", isoly.Currency.is), isly.number()),
-				})
-				.array(),
+			entries: SettlementEntry.type.array(),
 			status: isly.string("succeeded"),
 		}),
 		isly.object<Failed>({
@@ -78,4 +53,6 @@ export namespace Settlement {
 	export const is = type.is
 	export const flaw = type.flaw
 	export type Result = (Transaction | (gracely.Error & { id: string }))[]
+	export const Entry = SettlementEntry
+	export type Entry = SettlementEntry
 }
