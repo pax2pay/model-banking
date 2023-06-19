@@ -8,7 +8,7 @@ export interface Fetchable {
 	supplier: Supplier
 	reference: string
 	currencies: isoly.Currency[]
-	type: "safeguarded" | "other"
+	type: "safeguarded" | "other" | "external"
 	rail: Rail[]
 	balance: Balance
 }
