@@ -1,13 +1,17 @@
-export const Realms = ["test", "uk", "eu"] as const
+import { isly } from "isly"
+
+export const Realms = ["test", "testUK", "uk", "eu"] as const
 export type Realm = typeof Realms[number]
 
 export namespace Realm {
 	export const realms: Realm[] = [...Realms]
-
-	export function is(value: any | Realm): value is Realm {
-		return value && (value == "test" || value == "uk" || value == "eu")
-		//return value && realms.includes(value)
-	}
+	export const type: isly.Type<Realm> = isly.union(
+		isly.string("test"),
+		isly.string("testUK"),
+		isly.string("uk"),
+		isly.string("eu")
+	)
+	export const is = type.is
 	export function toString(): string {
 		return realms.toString().replaceAll(",", ", ") + "."
 	}
