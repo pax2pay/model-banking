@@ -54,7 +54,7 @@ export namespace Card {
 			limit: card.limit,
 			spent: [card.limit[0], 0],
 			status: "active",
-			history: [{ type: "card", status: "created", created: created }],
+			history: [{ type: "card", status: "create", created: created }],
 			rules: card.rules ?? [],
 			meta: card.meta,
 		}
