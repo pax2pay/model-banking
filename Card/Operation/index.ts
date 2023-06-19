@@ -1,11 +1,11 @@
 import { isly } from "isly"
-import { Cancel } from "./Cancel"
-import { Change } from "./Change"
-import { Create } from "./Create"
+import { Authorization } from "./Authorization"
+import { Card } from "./Card"
+import { Settlement } from "./Settlement"
 
-export type Operation = Cancel | Change | Create
+export type Operation = Card | Authorization | Settlement
 
 export namespace Operation {
-	export const type = isly.union(Cancel.type, Change.type, Create.type)
+	export const type = isly.union(Card.type, Authorization.type, Settlement.type)
 	export const is = type.is
 }

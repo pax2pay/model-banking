@@ -5,7 +5,6 @@ const now = isoly.DateTime.now()
 const optional: string[] = ["reference", "meta", "number"]
 const Card: pax2pay.Card = {
 	id: "example",
-	token: "example",
 	created: now,
 	organization: "example",
 	account: "example",
@@ -17,6 +16,7 @@ const Card: pax2pay.Card = {
 		last4: "example",
 		expiry: [2024, 12],
 		holder: "example",
+		token: "example",
 	},
 	limit: ["GBP", 2000],
 	spent: ["GBP", 300],
