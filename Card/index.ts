@@ -1,7 +1,6 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Operation as BankingOperation } from "../Operation"
 import { Realm } from "../Realm"
 import { Changeable as CardChangeable } from "./Changeable"
 import { Creatable as CardCreatable } from "./Creatable"
@@ -13,7 +12,6 @@ import { Preset as CardPreset } from "./Preset"
 export interface Card {
 	id: string
 	number?: string
-	token: string
 	created: isoly.DateTime
 	organization: string
 	account: string
@@ -25,11 +23,12 @@ export interface Card {
 		last4: string
 		expiry: CardExpiry
 		holder: string
+		token: string
 	}
 	limit: [isoly.Currency, number]
 	spent: [isoly.Currency, number]
 	status: "active" | "cancelled"
-	history: (BankingOperation | CardOperation)[]
+	history: CardOperation[]
 	rules: string[]
 	meta?: CardMeta
 }
@@ -40,17 +39,22 @@ export namespace Card {
 		return {
 			id: cryptly.Identifier.generate(8),
 			number: card.number,
-			token: token,
 			created: created,
 			organization: organization,
 			account: card.account,
 			realm: card.realm,
 			preset: card.preset,
-			details: { iin: card.details.iin, last4: last4, expiry: card.details.expiry, holder: card.details.holder },
+			details: {
+				iin: card.details.iin,
+				last4: last4,
+				expiry: card.details.expiry,
+				holder: card.details.holder,
+				token: token,
+			},
 			limit: card.limit,
 			spent: [card.limit[0], 0],
 			status: "active",
-			history: [{ type: "create", created: created }],
+			history: [{ type: "card", status: "create", created: created }],
 			rules: card.rules ?? [],
 			meta: card.meta,
 		}
@@ -58,7 +62,6 @@ export namespace Card {
 	export const type = isly.object<Card>({
 		id: isly.string(),
 		number: isly.string().optional(),
-		token: isly.string(),
 		created: isly.string(),
 		organization: isly.string(),
 		account: isly.string(),
@@ -70,11 +73,12 @@ export namespace Card {
 			last4: isly.string(),
 			expiry: CardExpiry.type,
 			holder: isly.string(),
+			token: isly.string(),
 		}),
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		status: isly.union(isly.string("active"), isly.string("cancelled")),
-		history: isly.union(CardOperation.type, isly.fromIs("Banking.Operation", BankingOperation.is)).array(),
+		history: isly.array(CardOperation.type),
 		rules: isly.string().array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 	})
