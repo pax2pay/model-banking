@@ -20,8 +20,8 @@ export interface Failed extends Base {
 
 export interface Succeeded extends Base {
 	settled?: { user: string; created: isoly.DateTime; transaction: string }
-	amount: Record<isoly.Currency, number>
-	fee: Record<isoly.Currency, number>
+	amount: Partial<Record<isoly.Currency, number>>
+	fee: Partial<Record<isoly.Currency, number>>
 	entries: SettlementEntry[]
 	status: "succeeded"
 }
