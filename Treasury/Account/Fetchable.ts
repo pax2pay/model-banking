@@ -1,4 +1,5 @@
 import { isoly } from "isoly"
+import { isly } from "isly"
 import { Rail } from "../../Rail"
 import { Supplier } from "../../Supplier"
 import { Balance } from "../Balance"
@@ -14,18 +15,15 @@ export interface Fetchable {
 }
 
 export namespace Fetchable {
-	export function is(value: Fetchable | any): value is Fetchable {
-		return (
-			value &&
-			typeof value == "object" &&
-			typeof value.name == "string" &&
-			Supplier.is(value.supplier) &&
-			typeof value.reference == "string" &&
-			Array.isArray(value.currencies) &&
-			value.currencies.every(isoly.Currency.is) &&
-			(value.type == "safeguarded" || value.type == "other") &&
-			Array.isArray(value.rail) &&
-			value.rail.every(Rail.is)
-		)
-	}
+	export const type = isly.object<Fetchable>({
+		name: isly.string(),
+		supplier: isly.fromIs("supplier", Supplier.is),
+		reference: isly.string(),
+		currencies: isly.fromIs("Account.Fetchable.currencies", isoly.Currency.is).array(),
+		type: isly.string(["safeguarded", "other", "external"]),
+		rail: isly.fromIs("Account.Fetchable.rail", Rail.is).array(),
+		balance: isly.fromIs("Account.Fetchable.rail", Balance.is),
+	})
+	export const is = type.is
+	export const flaw = type.flaw
 }

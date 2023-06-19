@@ -1,5 +1,6 @@
 import * as cryptly from "cryptly"
 import { isoly } from "isoly"
+import { isly } from "isly"
 import { Rail } from "../../Rail"
 import { Realm } from "../../Realm"
 import { Supplier } from "../../Supplier"
@@ -22,23 +23,20 @@ export interface Account {
 }
 
 export namespace Account {
-	export function is(value: Account | any): value is Account {
-		return (
-			value &&
-			typeof value == "object" &&
-			cryptly.Identifier.is(value.id, 8) &&
-			isoly.DateTime.is(value.created) &&
-			typeof value.name == "string" &&
-			Realm.is(value.realm) &&
-			Supplier.is(value.supplier) &&
-			typeof value.reference == "string" &&
-			Array.isArray(value.currencies) &&
-			value.currencies.every(isoly.Currency.is) &&
-			(value.type == "safeguarded" || value.type == "other") &&
-			Array.isArray(value.rail) &&
-			value.rail.every(Rail.is)
-		)
-	}
+	export const type = isly.object<Account>({
+		id: isly.string(),
+		created: isly.fromIs("Treasury.Account.Created", isoly.DateTime.is),
+		name: isly.string(),
+		realm: isly.fromIs("realm", Realm.is),
+		supplier: isly.fromIs("supplier", Supplier.is),
+		reference: isly.string(),
+		currencies: isly.fromIs("Treasury.Account.currencies", isoly.Currency.is).array(),
+		type: isly.string(["safeguarded", "other", "external"]),
+		rail: isly.fromIs("Treasury.Account.rail", Rail.is).array(),
+		balance: isly.fromIs("Treasury.Account.rail", Balance.is),
+	})
+	export const is = type.is
+	export const flaw = type.flaw
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
 		return cryptly.Identifier.is(value, 8)
 	}

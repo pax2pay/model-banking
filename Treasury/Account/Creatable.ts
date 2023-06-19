@@ -12,18 +12,6 @@ export interface Creatable {
 }
 
 export namespace Creatable {
-	export function is(value: Creatable | any): value is Creatable {
-		return (
-			value &&
-			typeof value == "object" &&
-			typeof value.name == "string" &&
-			Realm.is(value.realm) &&
-			Supplier.is(value.supplier) &&
-			Array.isArray(value.currencies) &&
-			value.currencies.every(isoly.Currency.is) &&
-			(value.type == "safeguarded" || value.type == "other")
-		)
-	}
 	export const type = isly.object<Creatable>({
 		name: isly.string(),
 		realm: isly.fromIs("realm", Realm.is),
@@ -31,4 +19,6 @@ export namespace Creatable {
 		currencies: isly.fromIs("Account.Creatable.currencies", isoly.Currency.is).array(),
 		type: isly.string(["safeguarded", "other", "external"]),
 	})
+	export const is = type.is
+	export const flaw = type.flaw
 }
