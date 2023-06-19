@@ -15,6 +15,7 @@ export interface Base {
 
 export interface Failed extends Base {
 	status: "failed"
+	reason: string
 }
 
 export interface Succeeded extends Base {
@@ -48,6 +49,7 @@ export namespace Settlement {
 			created: isly.tuple(isly.string(), isly.fromIs("Settlement.created", isoly.DateTime.is)),
 			configuration: isly.string(),
 			status: isly.string("failed"),
+			reason: isly.string(),
 		})
 	)
 	export const is = type.is
