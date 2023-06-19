@@ -1,5 +1,6 @@
 import * as cryptly from "cryptly"
 import { isoly } from "isoly"
+import { isly } from "isly"
 import { Realm } from "../../Realm"
 import { Supplier } from "../../Supplier"
 
@@ -12,15 +13,13 @@ export interface Storable {
 }
 
 export namespace Storable {
-	export function is(value: Storable | any): value is Storable {
-		return (
-			value &&
-			typeof value == "object" &&
-			cryptly.Identifier.is(value.id, 8) &&
-			isoly.DateTime.is(value.created) &&
-			Realm.is(value.realm) &&
-			Supplier.is(value.supplier) &&
-			typeof value.reference == "string"
-		)
-	}
+	export const type = isly.object<Storable>({
+		id: isly.string(),
+		created: isly.fromIs("Treasury.Account.Storable", isoly.DateTime.is),
+		realm: isly.fromIs("realm", Realm.is),
+		supplier: isly.fromIs("supplier", Supplier.is),
+		reference: isly.string(),
+	})
+	export const is = type.is
+	export const flaw = type.flaw
 }
