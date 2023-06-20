@@ -28,7 +28,6 @@ export namespace Realm {
 		eu: []
 	}
 	export type Supplier<P extends keyof Suppliers> = Pick<Suppliers, P>[P][number]
-	// const example: Realm.Supplier<"uk"> = "clearbank"
 	export namespace Supplier {
 		export function is(realm: Realm, supplier: modelSupplier | any): supplier is Supplier<Realm> {
 			return suppliers[realm].includes(supplier)
