@@ -1,12 +1,11 @@
+import { Card as RailCard } from "./Card"
 import { Iban as RailIban } from "./Iban"
 import { Internal as RailInternal } from "./internal"
-import { Mastercard as RailMastercard } from "./Mastercard"
 import { PaxGiro as RailPaxGiro } from "./PaxGiro"
 import { Scan as RailScan } from "./Scan"
 import { Type as RailType } from "./Type"
-import { Visa as RailVisa } from "./Visa"
 
-export type Rail = (RailPaxGiro | RailInternal | RailIban | RailScan | RailMastercard | RailVisa) & {
+export type Rail = (RailPaxGiro | RailInternal | RailIban | RailScan | RailCard) & {
 	reference?: { supplier: string; value: string }
 }
 
@@ -46,10 +45,8 @@ export namespace Rail {
 				result = `scan-${rail.sort}-${rail.account}`
 				break
 			case "visa":
-				result = `visa-${rail.id}`
-				break
 			case "mastercard":
-				result = `mastercard-${rail.id}`
+				result = `${rail.type}-${rail.id}`
 				break
 			//case "swedish":
 			//	result = `swe-${rail.clearing}-${rail.account}`
@@ -73,10 +70,8 @@ export namespace Rail {
 				result = `${rail.sort} ${rail.account}`
 				break
 			case "visa":
-				result = `visa-${rail.id}`
-				break
 			case "mastercard":
-				result = `mastercard-${rail.id}`
+				result = `${rail.type}-${rail.id}`
 				break
 			//case "swedish":
 			//	result = `swe-${rail.clearing}-${rail.account}`
@@ -88,12 +83,7 @@ export namespace Rail {
 		return (
 			value &&
 			typeof value == "object" &&
-			(PaxGiro.is(value) ||
-				Iban.is(value) ||
-				Internal.is(value) ||
-				Scan.is(value) ||
-				Mastercard.is(value) ||
-				Visa.is(value))
+			(PaxGiro.is(value) || Iban.is(value) || Internal.is(value) || Scan.is(value) || Card.is(value))
 		)
 	}
 
@@ -106,8 +96,6 @@ export namespace Rail {
 	export const Scan = RailScan
 	export type Internal = RailInternal
 	export const Internal = RailInternal
-	export type Visa = RailVisa
-	export const Visa = RailVisa
-	export type Mastercard = RailMastercard
-	export const Mastercard = RailMastercard
+	export type Card = RailCard
+	export const Card = RailCard
 }
