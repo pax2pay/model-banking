@@ -1,7 +1,5 @@
-import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Transaction } from "../Transaction"
 import { Entry as SettlementEntry } from "./Entry"
 
 export type Settlement = Settlement.Succeeded | Settlement.Failed
@@ -57,7 +55,6 @@ export namespace Settlement {
 	}
 	export const is = type.is
 	export const flaw = type.flaw
-	export type Result = (Transaction | (gracely.Error & { id: string }))[]
 	export const Entry = SettlementEntry
 	export type Entry = SettlementEntry
 }
