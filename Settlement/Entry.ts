@@ -24,8 +24,6 @@ export interface Failed {
 	data?: any
 }
 export namespace Entry {
-	export const type = isly.union<Entry, Succeeded, Failed>(Succeeded.type, Failed.type)
-	export const is = type.is
 	export namespace Succeeded {
 		export const type = isly.object<Succeeded>({
 			status: isly.string("succeeded"),
@@ -52,4 +50,6 @@ export namespace Entry {
 		})
 		export const is = type.is
 	}
+	export const type = isly.union<Entry, Succeeded, Failed>(Succeeded.type, Failed.type)
+	export const is = type.is
 }
