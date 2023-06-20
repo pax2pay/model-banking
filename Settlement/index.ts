@@ -5,7 +5,6 @@ import { Entry as SettlementEntry } from "./Entry"
 export type Settlement = Settlement.Succeeded | Settlement.Failed
 
 export namespace Settlement {
-	export const type = isly.union<Settlement, Succeeded, Failed>(Succeeded.type, Failed.type)
 	export interface Base {
 		id: string
 		created: [string, isoly.DateTime]
@@ -53,6 +52,7 @@ export namespace Settlement {
 		})
 		export const is = type.is
 	}
+	export const type = isly.union<Settlement, Succeeded, Failed>(Succeeded.type, Failed.type)
 	export const is = type.is
 	export const flaw = type.flaw
 	export const Entry = SettlementEntry
