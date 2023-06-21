@@ -2,7 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Entry as SettlementEntry } from "./Entry"
 
-export type Settlement = Settlement.Succeeded | Settlement.Failed
+export type Settlement = Settlement.Succeeded | Settlement.Failed | Settlement.Ongoing
 
 export namespace Settlement {
 	export interface Base {
@@ -21,6 +21,9 @@ export namespace Settlement {
 	export interface Failed extends Base {
 		status: "failed"
 		reason: string
+	}
+	export interface Ongoing extends Base {
+		status: "ongoing"
 	}
 
 	export namespace Succeeded {
@@ -52,7 +55,16 @@ export namespace Settlement {
 		})
 		export const is = type.is
 	}
-	export const type = isly.union<Settlement, Succeeded, Failed>(Succeeded.type, Failed.type)
+	export namespace Ongoing {
+		export const type = isly.object<Ongoing>({
+			id: isly.string(),
+			created: isly.tuple(isly.string(), isly.fromIs("Settlement.created", isoly.DateTime.is)),
+			configuration: isly.string(),
+			status: isly.string("ongoing"),
+		})
+		export const is = type.is
+	}
+	export const type = isly.union<Settlement, Succeeded, Failed, Ongoing>(Succeeded.type, Failed.type, Ongoing.type)
 	export const is = type.is
 	export const flaw = type.flaw
 	export const Entry = SettlementEntry
