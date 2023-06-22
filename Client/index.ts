@@ -22,7 +22,7 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly treasury = new Treasury(this.client)
 	readonly version = new Version(this.client)
 	readonly cards = new Cards(this.client)
-	readonly settlement = new Settlements(this.client)
+	readonly settlements = new Settlements(this.client)
 
 	static create<T = Record<string, any>>(server: string, key: string, load?: (client: http.Client) => T): Client & T {
 		let httpClient: http.Client<gracely.Error>
