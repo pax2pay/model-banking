@@ -11,7 +11,7 @@ export class Settlements extends rest.Collection<gracely.Error> {
 	async fetch(settlement: string): Promise<Settlement | gracely.Error> {
 		return this.client.get<Settlement>(`/card/settlement/${settlement}`)
 	}
-	async list(options?: { limit?: string; cursor?: string }): Promise<Omit<Settlement, "entries">[] | gracely.Error> {
-		return this.client.get<Omit<Settlement, "entries">[] & { cursor?: string | undefined }>(`/card/settlemnet`, options)
+	async list(): Promise<Omit<Settlement, "entries">[] | gracely.Error> {
+		return this.client.get<Omit<Settlement, "entries">[] & { cursor?: string | undefined }>(`/card/settlement`)
 	}
 }
