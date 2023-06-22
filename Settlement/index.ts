@@ -5,6 +5,11 @@ import { Entry as SettlementEntry } from "./Entry"
 export type Settlement = Settlement.Succeeded | Settlement.Failed | Settlement.Ongoing
 
 export namespace Settlement {
+	export function split(settlement: Settlement): [Omit<Settlement, "entry">, { entries?: Settlement.Entry[] }] {
+		return settlement.status == "succeeded"
+			? (({ entries, ...rest }) => [rest, { entries }])(settlement)
+			: [settlement, {}]
+	}
 	export interface Base {
 		id: string
 		created: [string, isoly.DateTime]
