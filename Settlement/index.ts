@@ -3,8 +3,8 @@ import { isly } from "isly"
 import { Entry as SettlementEntry } from "./Entry"
 
 export type Settlement = Settlement.Succeeded | Settlement.Failed | Settlement.Ongoing
-
 export namespace Settlement {
+	export type Summary = Omit<Settlement.Succeeded, "entries"> | Settlement.Failed | Settlement.Ongoing
 	export interface Base {
 		id: string
 		created: [string, isoly.DateTime]
