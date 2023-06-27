@@ -12,7 +12,7 @@ export namespace Settlement {
 		status: string
 	}
 	export interface Succeeded extends Base {
-		settled?: { user: string; created: isoly.DateTime; transactions: Record<string, number> }
+		settled?: { user: string; created: isoly.DateTime; transactions: Record<string, [isoly.Currency, number]> }
 		amount: Partial<Record<isoly.Currency, number>>
 		fee: Partial<Record<isoly.Currency, number>>
 		entries: SettlementEntry[]
@@ -32,10 +32,13 @@ export namespace Settlement {
 			created: isly.tuple(isly.string(), isly.fromIs("Settlement.created", isoly.DateTime.is)),
 			configuration: isly.string(),
 			settled: isly
-				.object<{ user: string; created: isoly.DateTime; transactions: Record<string, number> }>({
+				.object<{ user: string; created: isoly.DateTime; transactions: Record<string, [isoly.Currency, number]> }>({
 					user: isly.string(),
 					created: isly.fromIs("Settlement.settled.created", isoly.DateTime.is),
-					transactions: isly.record(isly.string(), isly.number()),
+					transactions: isly.record(
+						isly.string(),
+						isly.tuple(isly.fromIs("Settlement.settled.transactions.currency", isoly.Currency.is), isly.number())
+					),
 				})
 				.optional(),
 			amount: isly.record(isly.fromIs("Settlement.entries.amount", isoly.Currency.is), isly.number()),
