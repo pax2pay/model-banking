@@ -2,6 +2,7 @@ import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
+import { Transaction } from "../Transaction"
 import { Treasury as TreasuryModel } from "../Treasury"
 import { Result } from "../Treasury/Balance"
 
@@ -16,5 +17,8 @@ export class Treasury extends rest.Collection<gracely.Error> {
 	async fetch(hour?: isoly.DateTime): Promise<TreasuryModel | gracely.Error> {
 		const path = hour ? `?time=${hour}` : ""
 		return this.client.get<TreasuryModel>(`/fiat/treasury${path}`)
+	}
+	async listTransactions(accountId: string): Promise<Transaction[] | gracely.Error> {
+		return this.client.get<Transaction[]>(`/treasury/account/${accountId}/transaction`)
 	}
 }
