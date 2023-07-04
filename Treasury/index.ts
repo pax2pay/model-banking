@@ -1,10 +1,12 @@
 import { Account as TreasuryAccount } from "./Account"
 import { Balance as TreasuryBalance } from "./Balance"
 import { Fiat as TreasuryFiat } from "./Fiat"
+import { Transaction as TreasuryTransaction } from "./Transaction"
 export { Treasury } from "./Treasury"
 
 export namespace Treasury {
 	export type Account = TreasuryAccount
+	export type Transaction = TreasuryTransaction
 	export type Balance = TreasuryBalance
 	export type Fiat = TreasuryFiat
 	export const Balance = TreasuryBalance
