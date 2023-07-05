@@ -14,7 +14,7 @@ export interface Account {
 	created: isoly.DateTime
 	name: string
 	realm: Realm
-	supplier: Supplier
+	supplier: Supplier | "external"
 	reference: string
 	currencies: isoly.Currency[]
 	type: "safeguarded" | "other" | "external"
