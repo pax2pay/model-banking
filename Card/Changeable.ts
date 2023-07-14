@@ -14,4 +14,7 @@ export namespace Changeable {
 		rules: isly.string().array().optional(),
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 	})
+	export const is = type.is
+	export const flaw = type.flaw
+	export const get = type.get
 }
