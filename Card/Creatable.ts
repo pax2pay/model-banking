@@ -1,6 +1,5 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Realm } from "../Realm"
 import { Expiry } from "./Expiry"
 import { Meta } from "./Meta"
 import { Preset } from "./Preset"
@@ -8,7 +7,6 @@ import { Preset } from "./Preset"
 export interface Creatable {
 	account: string
 	number?: string
-	realm: Realm
 	preset: Preset
 	details: {
 		iin: string
@@ -24,7 +22,6 @@ export namespace Creatable {
 	export const type = isly.object<Creatable>({
 		account: isly.string(),
 		number: isly.string().optional(),
-		realm: isly.fromIs("Realm", Realm.is),
 		preset: Preset.type,
 		details: isly.object({
 			iin: isly.string(),

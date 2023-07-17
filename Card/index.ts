@@ -1,7 +1,6 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Realm } from "../Realm"
 import { Changeable as CardChangeable } from "./Changeable"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Expiry as CardExpiry } from "./Expiry"
@@ -15,7 +14,6 @@ export interface Card {
 	created: isoly.DateTime
 	organization: string
 	account: string
-	realm: Realm
 	preset: CardPreset
 	reference?: string
 	details: {
@@ -42,7 +40,6 @@ export namespace Card {
 			created: created,
 			organization: organization,
 			account: card.account,
-			realm: card.realm,
 			preset: card.preset,
 			details: {
 				iin: card.details.iin,
@@ -65,7 +62,6 @@ export namespace Card {
 		created: isly.string(),
 		organization: isly.string(),
 		account: isly.string(),
-		realm: isly.fromIs("Realm", Realm.is),
 		preset: CardPreset.type,
 		reference: isly.string().optional(),
 		details: isly.object({
