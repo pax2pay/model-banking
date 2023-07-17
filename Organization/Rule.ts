@@ -1,11 +1,14 @@
 import { selectively } from "selectively"
 
+const action = ["review", "reject", "flag"] as const
+const type = ["authorization", "outbound", "inbound"] as const
 export interface Rule {
-	label: string
-	action: "approve" | "review" | "approveReview" | "reject"
-	type: "transaction" | "authorization"
-	condition: string
+	name: string
 	description: string
+	action: typeof action[number]
+	type: typeof type[number]
+	condition: string
+	flags: string[]
 }
 
 interface RuleResult {
@@ -27,19 +30,14 @@ export namespace Rule {
 		return (
 			value &&
 			typeof value == "object" &&
-			typeof value.label == "string" &&
-			typeof value.action == "string" &&
-			(value.action == "approve" ||
-				value.action == "reject" ||
-				value.action == "review" ||
-				value.action == "approveReview") &&
-			typeof value.type == "string" &&
-			(value.type == "transaction" || value.type == "authorization") &&
+			typeof value.name == "string" &&
+			action.includes(value.action) &&
+			type.includes(value.type) &&
 			typeof value.condition == "string" &&
 			typeof value.description == "string"
 		)
 	}
 	export function stringify(rule: Rule): string {
-		return `{ label: ${rule.label}, action: ${rule.action}, type: ${rule.type}, condition: ${rule.condition}, description: ${rule.description}. }`
+		return `{ label: ${rule.name}, action: ${rule.action}, type: ${rule.type}, condition: ${rule.condition}, description: ${rule.description}. }`
 	}
 }
