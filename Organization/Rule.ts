@@ -1,10 +1,12 @@
 import { selectively } from "selectively"
 
+const action = ["review", "reject", "flag"] as const
+const type = ["authorization", "outbound", "inbound"] as const
 export interface Rule {
 	name: string
 	description: string
-	action: "review" | "reject" | "flag"
-	type: "authorization" | "outbound" | "inbound"
+	action: typeof action[number]
+	type: typeof type[number]
 	condition: string
 	flags: string[]
 }
@@ -29,10 +31,8 @@ export namespace Rule {
 			value &&
 			typeof value == "object" &&
 			typeof value.name == "string" &&
-			typeof value.action == "string" &&
-			(value.action == "reject" || value.action == "review" || value.action == "flag") &&
-			typeof value.type == "string" &&
-			(value.type == "inbound" || value.type == "outbound" || value.type == "authorization") &&
+			action.includes(value.action) &&
+			type.includes(value.type) &&
 			typeof value.condition == "string" &&
 			typeof value.description == "string"
 		)
