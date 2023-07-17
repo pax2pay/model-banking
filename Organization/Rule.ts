@@ -1,12 +1,12 @@
 import { selectively } from "selectively"
 
 export interface Rule {
-	label: string
-	action: "review" | "reject" | "flag"
-	type: "transaction" | "authorization"
-	condition: string
-	flag: string[]
+	name: string
 	description: string
+	action: "review" | "reject" | "flag"
+	type: "authorization" | "outbound" | "inbound"
+	condition: string
+	flags: string[]
 }
 
 interface RuleResult {
@@ -28,19 +28,16 @@ export namespace Rule {
 		return (
 			value &&
 			typeof value == "object" &&
-			typeof value.label == "string" &&
+			typeof value.name == "string" &&
 			typeof value.action == "string" &&
-			(value.action == "approve" ||
-				value.action == "reject" ||
-				value.action == "review" ||
-				value.action == "approveReview") &&
+			(value.action == "reject" || value.action == "review" || value.action == "flag") &&
 			typeof value.type == "string" &&
-			(value.type == "transaction" || value.type == "authorization") &&
+			(value.type == "inbound" || value.type == "outbound" || value.type == "authorization") &&
 			typeof value.condition == "string" &&
 			typeof value.description == "string"
 		)
 	}
 	export function stringify(rule: Rule): string {
-		return `{ label: ${rule.label}, action: ${rule.action}, type: ${rule.type}, condition: ${rule.condition}, description: ${rule.description}. }`
+		return `{ label: ${rule.name}, action: ${rule.action}, type: ${rule.type}, condition: ${rule.condition}, description: ${rule.description}. }`
 	}
 }
