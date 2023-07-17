@@ -2,9 +2,10 @@ import { selectively } from "selectively"
 
 export interface Rule {
 	label: string
-	action: "approve" | "review" | "approveReview" | "reject"
+	action: "review" | "reject" | "flag"
 	type: "transaction" | "authorization"
 	condition: string
+	flag: string[]
 	description: string
 }
 
