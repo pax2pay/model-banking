@@ -1,4 +1,5 @@
 export { Account } from "./Account"
+export { Acquirer } from "./Acquirer"
 export { Balances } from "./Balances"
 export { Card } from "./Card"
 export { Event } from "./Event"
