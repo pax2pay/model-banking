@@ -38,7 +38,7 @@ export namespace Card {
 			id: cryptly.Identifier.generate(8),
 			number: card.number,
 			created: created,
-			organization: organization,
+			organization,
 			account: card.account,
 			preset: card.preset,
 			details: {
