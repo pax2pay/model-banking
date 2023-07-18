@@ -8,6 +8,7 @@ export namespace Settlement {
 	export interface Base {
 		id: string
 		created: [string, isoly.DateTime]
+		regarding: isoly.Date
 		configuration: string
 		status: string
 	}
@@ -30,6 +31,7 @@ export namespace Settlement {
 		export const type = isly.object<Succeeded>({
 			id: isly.string(),
 			created: isly.tuple(isly.string(), isly.fromIs("Settlement.created", isoly.DateTime.is)),
+			regarding: isly.fromIs("Settlement.regarding", isoly.Date.is),
 			configuration: isly.string(),
 			settled: isly
 				.object<{ user: string; created: isoly.DateTime; transactions: Record<string, [isoly.Currency, number]> }>({
@@ -52,6 +54,7 @@ export namespace Settlement {
 		export const type = isly.object<Failed>({
 			id: isly.string(),
 			created: isly.tuple(isly.string(), isly.fromIs("Settlement.created", isoly.DateTime.is)),
+			regarding: isly.fromIs("Settlement.regarding", isoly.Date.is),
 			configuration: isly.string(),
 			status: isly.string("failed"),
 			reason: isly.string(),
@@ -62,6 +65,7 @@ export namespace Settlement {
 		export const type = isly.object<Ongoing>({
 			id: isly.string(),
 			created: isly.tuple(isly.string(), isly.fromIs("Settlement.created", isoly.DateTime.is)),
+			regarding: isly.fromIs("Settlement.regarding", isoly.Date.is),
 			configuration: isly.string(),
 			status: isly.string("ongoing"),
 		})
