@@ -6,6 +6,7 @@ const optional: string[] = ["reference", "meta", "number"]
 const Card: pax2pay.Card = {
 	id: "example",
 	created: now,
+	realm: "test",
 	organization: "example",
 	account: "example",
 	preset: "example1",
