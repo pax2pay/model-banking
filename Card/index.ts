@@ -1,6 +1,7 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Realm } from "../Realm"
 import { Changeable as CardChangeable } from "./Changeable"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Expiry as CardExpiry } from "./Expiry"
@@ -13,6 +14,7 @@ export interface Card {
 	number?: string
 	created: isoly.DateTime
 	organization: string
+	realm: Realm
 	account: string
 	preset: CardPreset
 	reference?: string
@@ -32,13 +34,20 @@ export interface Card {
 }
 
 export namespace Card {
-	export function fromCreatable(card: Creatable, organization: string, last4: string, token: string): Card {
+	export function fromCreatable(
+		card: Creatable,
+		organization: string,
+		realm: Realm,
+		last4: string,
+		token: string
+	): Card {
 		const created = isoly.DateTime.now()
 		return {
 			id: cryptly.Identifier.generate(8),
 			number: card.number,
 			created: created,
 			organization,
+			realm,
 			account: card.account,
 			preset: card.preset,
 			details: {
@@ -61,6 +70,7 @@ export namespace Card {
 		number: isly.string().optional(),
 		created: isly.string(),
 		organization: isly.string(),
+		realm: Realm.type,
 		account: isly.string(),
 		preset: CardPreset.type,
 		reference: isly.string().optional(),
