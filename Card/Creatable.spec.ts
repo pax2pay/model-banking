@@ -3,7 +3,7 @@ import { pax2pay } from "../index"
 const optional: string[] = ["meta", "rules", "number"]
 const Creatable: pax2pay.Card.Creatable = {
 	account: "example",
-	preset: "example1",
+	preset: "p2p-mc-200",
 	details: {
 		iin: "example",
 		expiry: [24, 12],
