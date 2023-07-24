@@ -2,13 +2,13 @@ import { selectively } from "selectively"
 import { isly } from "isly"
 import { definitions } from "./definitions"
 
-const action = ["review", "reject", "flag"] as const
-type Action = typeof action[number]
+const actions = ["review", "reject", "flag"] as const
+type Action = typeof actions[number]
 const kind = ["authorization", "outbound", "inbound"] as const
 export interface Rule {
 	name: string
 	description: string
-	action: typeof action[number]
+	action: Action
 	type: typeof kind[number]
 	condition: string
 	flags: string[]
@@ -18,7 +18,7 @@ export namespace Rule {
 	export const type = isly.object<Rule>({
 		name: isly.string(),
 		description: isly.string(),
-		action: isly.string(action),
+		action: isly.string(actions),
 		type: isly.string(kind),
 		condition: isly.string(),
 		flags: isly.string().array(),
