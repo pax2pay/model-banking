@@ -1,5 +1,6 @@
 import * as cryptly from "cryptly"
 import { Changeable as OrganizationChangeable } from "./Changeable"
+import { Contact as OrganizationContact } from "./Contact"
 import { Creatable as OrganizationCreatable } from "./Creatable"
 import { Rule as OrganizationRule } from "./Rule"
 
@@ -22,6 +23,8 @@ export namespace Organization {
 	export const Creatable = OrganizationCreatable
 	export type Changeable = OrganizationChangeable
 	export const Changeable = OrganizationChangeable
+	export type Contact = OrganizationContact
+	export const Contact = OrganizationContact
 	export type Rule = OrganizationRule
 	export const Rule = OrganizationRule
 	export namespace Rule {
