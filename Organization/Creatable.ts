@@ -17,17 +17,6 @@ export namespace Creatable {
 		rules: isly.fromIs<Rule>("Rule", Rule.is).array(),
 		contact: Contact.type.optional(),
 	})
-	export function is(value: any | Creatable): value is Creatable {
-		return (
-			value &&
-			typeof value == "object" &&
-			typeof value.name == "string" &&
-			typeof value.address == "string" &&
-			Realm.is(value.realm) &&
-			value.rules &&
-			typeof value.rules == "object" &&
-			Array.isArray(value.rules) &&
-			value.rules.every(Rule.is)
-		)
-	}
+	export const is = type.is
+	export const flaw = type.flaw
 }
