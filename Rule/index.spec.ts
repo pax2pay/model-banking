@@ -1,4 +1,4 @@
-import { pax2pay } from "../"
+import { pax2pay } from "../index"
 
 const rule1: pax2pay.Organization.Rule = {
 	name: "amount limit",
