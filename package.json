@@ -1,6 +1,6 @@
 {
 	"name": "@pax2pay/model-banking",
-	"version": "0.1.85",
+	"version": "0.1.86",
 	"description": "Library containing data model types and functions for the Pax2Pay Banking API.",
 	"author": "Pax2Pay Ltd",
 	"license": "MIT",
@@ -29,7 +29,7 @@
 			"^.+\\.(j|t)sx?$": "ts-jest"
 		},
 		"transformIgnorePatterns": [
-			"<rootDir>/node_modules/(?!(cryptly|authly|isly|isoly|gracely|cloudly-http|cloudly-rest|cloudly-router|cloudly-formdata|@userwidgets)/.*)"
+			"<rootDir>/node_modules/(?!(cryptly|authly|isly|isoly|gracely|cloudly-http|cloudly-rest|cloudly-router|cloudly-formdata|@userwidgets|selectively)/.*)"
 		],
 		"testEnvironment": "node",
 		"testRegex": "((\\.|/)(test|spec))(\\.|\\/.+)(jsx?|tsx?)$",
