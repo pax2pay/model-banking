@@ -29,10 +29,16 @@ export namespace Rule {
 	export function stringify(rule: Rule): string {
 		return `{ label: ${rule.name}, action: ${rule.action}, type: ${rule.type}, condition: ${rule.condition}, description: ${rule.description}. }`
 	}
-	export function evaluate<S extends object>(rules: Rule[], state: S): Record<Action, Rule[]> {
+	export function evaluate<S extends object>(
+		rules: Rule[],
+		state: S,
+		macros?: Record<string, selectively.Definition>
+	): Record<Action, Rule[]> {
 		const result: Record<Action, Rule[]> = { review: [], reject: [], flag: [] }
 		rules.forEach(
-			r => selectively.resolve(definitions, selectively.parse(r.condition)).is(state) && result[r.action].push(r)
+			r =>
+				selectively.resolve({ ...macros, ...definitions }, selectively.parse(r.condition)).is(state) &&
+				result[r.action].push(r)
 		)
 		return result
 	}
