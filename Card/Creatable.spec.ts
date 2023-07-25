@@ -10,7 +10,16 @@ const Creatable: pax2pay.Card.Creatable = {
 		holder: "example examplesson",
 	},
 	limit: ["GBP", 2000],
-	rules: ["example"],
+	rules: [
+		{
+			name: "example",
+			type: "authorization",
+			condition: "",
+			action: "flag",
+			flags: ["example"],
+			description: "flag transactions with example if they exist",
+		},
+	],
 	meta: { a: "example1", b: [{ c: 2 }] },
 }
 describe("Card.Creatable", () => {
