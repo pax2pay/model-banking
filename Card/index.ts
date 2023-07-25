@@ -2,6 +2,7 @@ import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Realm } from "../Realm"
+import { Rule } from "../Rule"
 import { Changeable as CardChangeable } from "./Changeable"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Expiry as CardExpiry } from "./Expiry"
@@ -29,7 +30,7 @@ export interface Card {
 	spent: [isoly.Currency, number]
 	status: "active" | "cancelled"
 	history: CardOperation[]
-	rules: string[]
+	rules: Rule[]
 	meta?: CardMeta
 }
 
@@ -85,7 +86,7 @@ export namespace Card {
 		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		status: isly.union(isly.string("active"), isly.string("cancelled")),
 		history: isly.array(CardOperation.type),
-		rules: isly.string().array(),
+		rules: Rule.type.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 	})
 	export const is = type.is
