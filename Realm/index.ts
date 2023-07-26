@@ -4,13 +4,8 @@ import { Supplier as modelSupplier } from "../Supplier"
 export type Realm = typeof Realm.realms[number]
 
 export namespace Realm {
-	export const realms = ["test", "testUK", "uk", "eu"] as const
-	export const type: isly.Type<Realm> = isly.union(
-		isly.string("test"),
-		isly.string("testUK"),
-		isly.string("uk"),
-		isly.string("eu")
-	)
+	export const realms = ["test", "testUK", "uk", "eu", "upcheck"] as const
+	export const type: isly.Type<Realm> = isly.string(realms)
 	export const is = type.is
 	export function toString(): string {
 		return realms.toString().replaceAll(",", ", ") + "."
@@ -20,12 +15,14 @@ export namespace Realm {
 		testUK: ["clearbank"],
 		uk: ["clearbank"],
 		eu: [],
+		upcheck: ["paxgiro"],
 	}
 	export interface Suppliers extends Record<Realm, modelSupplier[]> {
 		test: ["paxgiro"]
 		testUK: ["clearbank"]
 		uk: ["clearbank"]
 		eu: []
+		upcheck: ["paxgiro"]
 	}
 	export type Supplier<P extends keyof Suppliers> = Pick<Suppliers, P>[P][number]
 	export namespace Supplier {
