@@ -10,7 +10,7 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		super(client)
 	}
 	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
-		return this.client.post<Transaction>(`/api/account/${account}/transaction`, transaction)
+		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
 	}
 	async list(options?: {
 		account?: string
@@ -29,8 +29,7 @@ export class Transactions extends rest.Collection<gracely.Error> {
 					.map(([k, v]) => `${k}=${v}`)
 					.reduce((prev, curr, i) => `${prev}${i == 0 ? "?" : "&"}${curr}`, "")
 			: ""
-		const path =
-			options && options.account ? `/api/account/${options.account}/transaction${query}` : `/api/transaction${query}`
+		const path = options && options.account ? `/account/${options.account}/transaction${query}` : `/transaction${query}`
 		return this.client.get<Transaction[] & { cursor?: string | undefined }>(
 			path,
 			options &&

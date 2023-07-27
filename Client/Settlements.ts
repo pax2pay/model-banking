@@ -10,18 +10,18 @@ export class Settlements extends rest.Collection<gracely.Error> {
 	}
 
 	async create(configuration: string): Promise<Settlement | gracely.Error> {
-		return this.client.post<Settlement>(`/card/settlement`, { configuration: configuration })
+		return this.client.post<Settlement>(`/settlement`, { configuration: configuration })
 	}
 	async fetch(id: string, created: isoly.DateTime): Promise<Settlement | gracely.Error> {
-		return this.client.get<Settlement>(`/card/settlement/${id}?created=${created}`)
+		return this.client.get<Settlement>(`/settlement/${id}?created=${created}`)
 	}
 	async list(): Promise<Settlement.Summary[] | gracely.Error> {
-		return this.client.get<Settlement.Summary[] & { cursor?: string | undefined }>(`/card/settlement`)
+		return this.client.get<Settlement.Summary[] & { cursor?: string | undefined }>(`/settlement`)
 	}
 	async remove(settlement: string): Promise<Settlement | gracely.Error> {
-		return this.client.delete<Settlement>(`/card/settlement/${settlement}`)
+		return this.client.delete<Settlement>(`/settlement/${settlement}`)
 	}
 	async update(settlement: string): Promise<Settlement | gracely.Error> {
-		return this.client.patch<Settlement>(`/card/settlement/${settlement}`, {})
+		return this.client.patch<Settlement>(`/settlement/${settlement}`, {})
 	}
 }

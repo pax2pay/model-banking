@@ -13,9 +13,9 @@ export class Organizations extends rest.Collection<gracely.Error> {
 		limit?: string
 		cursor?: string
 	}): Promise<(Organization[] & { cursor?: string | undefined }) | gracely.Error> {
-		return this.client.get<Organization[] & { cursor?: string | undefined }>(`/api/organization`, options)
+		return this.client.get<Organization[] & { cursor?: string | undefined }>(`/organization`, options)
 	}
 	async create(organization: Organization.Creatable): Promise<Organization | gracely.Error> {
-		return this.client.post<Organization>(`/api/organization`, organization)
+		return this.client.post<Organization>(`/organization`, organization)
 	}
 }
