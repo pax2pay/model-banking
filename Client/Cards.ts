@@ -10,10 +10,10 @@ export class Cards extends rest.Collection<gracely.Error> {
 
 	async fetch(card: string): Promise<Card | gracely.Error> {
 		// I mean it's supposed to return Card.Storable
-		return this.client.get<Card>(`/card/card/${card}`)
+		return this.client.get<Card>(`/card/${card}`)
 	}
 	async create(card: Card.Creatable): Promise<Card | gracely.Error> {
-		return this.client.post<Card>("/card/card", card)
+		return this.client.post<Card>("/card", card)
 	}
 	async list(options?: {
 		start?: string
@@ -32,7 +32,7 @@ export class Cards extends rest.Collection<gracely.Error> {
 				? `?end=${options?.end}`
 				: ""
 		return this.client.get<Card[] & { cursor?: string | undefined }>(
-			`/card/card${search}`,
+			`/card${search}`,
 			options && (({ start, end, ...headers }) => headers)(options)
 		)
 	}

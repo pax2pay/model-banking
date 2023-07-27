@@ -9,6 +9,6 @@ export class Rails extends rest.Collection<gracely.Error> {
 		super(client)
 	}
 	async create(account: string, supplier: Supplier): Promise<Rail | gracely.Error> {
-		return this.client.post<Rail>(`/api/account/${account}/rail`, supplier)
+		return this.client.post<Rail>(`/account/${account}/rail`, supplier)
 	}
 }

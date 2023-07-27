@@ -10,12 +10,12 @@ export class Accounts extends rest.Collection<gracely.Error> {
 		super(client)
 	}
 	async create(account: Account.Creatable): Promise<Account | gracely.Error> {
-		return this.client.post<Account>("/api/account", account)
+		return this.client.post<Account>("/account", account)
 	}
 	async list(options?: {
 		limit?: string
 		cursor?: string
 	}): Promise<(Account[] & { cursor?: string | undefined }) | gracely.Error> {
-		return this.client.get<Account[] & { cursor?: string | undefined }>("/api/account", options)
+		return this.client.get<Account[] & { cursor?: string | undefined }>("/account", options)
 	}
 }
