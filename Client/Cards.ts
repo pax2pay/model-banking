@@ -12,6 +12,9 @@ export class Cards extends rest.Collection<gracely.Error> {
 		// I mean it's supposed to return Card.Storable
 		return this.client.get<Card>(`/card/card/${card}`)
 	}
+	async create(card: Card.Creatable): Promise<Card | gracely.Error> {
+		return this.client.post<Card>("/card/card", card)
+	}
 	async list(options?: {
 		start?: string
 		end?: string
