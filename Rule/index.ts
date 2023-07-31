@@ -1,6 +1,7 @@
 import { selectively } from "selectively"
 import { isly } from "isly"
 import { definitions } from "./definitions"
+import { State as RuleState } from "./State"
 
 export interface Rule {
 	name: string
@@ -16,6 +17,7 @@ export namespace Rule {
 	export type Action = typeof actions[number]
 	export const kinds = ["authorization", "outbound", "inbound"] as const
 	export type Kind = typeof kinds[number]
+	export type State = RuleState
 	export const type = isly.object<Rule>({
 		name: isly.string(),
 		description: isly.string(),
