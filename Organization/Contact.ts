@@ -1,10 +1,9 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Address } from "../Address"
 import { Addresses } from "../Addresses"
 
 export interface Contact {
-	address: Addresses | Address
+	address: Addresses
 	email: `${string}@${string}.${string}`
 	name: {
 		first: string
@@ -18,7 +17,7 @@ export interface Contact {
 
 export namespace Contact {
 	export const type = isly.object<Contact>({
-		address: isly.union(Address.type, Addresses.type),
+		address: Addresses.type,
 		email: isly.string(),
 		name: isly.object<Contact["name"]>({
 			first: isly.string(),
