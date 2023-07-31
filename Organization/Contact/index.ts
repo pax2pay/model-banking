@@ -1,11 +1,10 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Address as ContactAddress } from "./Address"
+import { Addresses as ContactAddresses } from "./Addresses"
 
 export interface Contact {
-	address: string
-	city: string
-	zip: string
-	country: isoly.CountryCode.Alpha2
+	address: Contact.Addresses
 	email: `${string}@${string}.${string}`
 	name: {
 		first: string
@@ -18,11 +17,12 @@ export interface Contact {
 }
 
 export namespace Contact {
+	export const Addresses = ContactAddresses
+	export type Addresses = ContactAddresses
+	export const Address = ContactAddress
+	export type Address = ContactAddress
 	export const type = isly.object<Contact>({
-		address: isly.string(),
-		city: isly.string(),
-		zip: isly.string(),
-		country: isly.fromIs("CountryCode.Alpha2", isoly.CountryCode.Alpha2.is),
+		address: Addresses.type,
 		email: isly.string(),
 		name: isly.object<Contact["name"]>({
 			first: isly.string(),
