@@ -6,7 +6,7 @@ const rule1: pax2pay.Organization.Rule = {
 	flags: [],
 	description: "",
 	action: "reject",
-	condition: "exceedsAmount(500)",
+	condition: "transaction.amount>200",
 }
 const rule2: pax2pay.Organization.Rule = {
 	name: "reject internal transactions",

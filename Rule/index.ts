@@ -33,17 +33,14 @@ export namespace Rule {
 	}
 	export function evaluate(
 		rules: Rule[],
-		state: RuleState,
+		state: State,
 		macros?: Record<string, selectively.Definition>
 	): Record<Action, Rule[]> {
 		const result: Record<Action, Rule[]> = { review: [], reject: [], flag: [] }
-		rules.forEach(r =>
-			Object.values(state).forEach(
-				s =>
-					selectively.resolve({ ...macros, ...definitions }, selectively.parse(r.condition)).is(s) &&
-					!result[r.action].includes(r) &&
-					result[r.action].push(r)
-			)
+		rules.forEach(
+			r =>
+				selectively.resolve({ ...macros, ...definitions }, selectively.parse(r.condition)).is(state) &&
+				result[r.action].push(r)
 		)
 		return result
 	}
