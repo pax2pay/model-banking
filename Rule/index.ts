@@ -31,9 +31,9 @@ export namespace Rule {
 	export function stringify(rule: Rule): string {
 		return `{ label: ${rule.name}, action: ${rule.action}, type: ${rule.type}, condition: ${rule.condition}, description: ${rule.description}. }`
 	}
-	export function evaluate<S extends object>(
+	export function evaluate(
 		rules: Rule[],
-		state: S,
+		state: State,
 		macros?: Record<string, selectively.Definition>
 	): Record<Action, Rule[]> {
 		const result: Record<Action, Rule[]> = { review: [], reject: [], flag: [] }
