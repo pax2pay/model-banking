@@ -24,18 +24,45 @@ const rule3: pax2pay.Organization.Rule = {
 	action: "reject",
 	condition: "alwaysTrue()",
 }
+const rule4: pax2pay.Rule = {
+	name: "amount limit",
+	type: "authorization",
+	flags: [],
+	description: "",
+	action: "reject",
+	condition: "alwaysTrue()",
+}
 describe("definitions", () => {
 	it("exceedsAmount", () => {
-		expect(pax2pay.Rule.evaluate([rule1], transaction1)).toEqual({ review: [], reject: [rule1], flag: [] })
+		expect(pax2pay.Rule.evaluate([rule1], { transaction: transaction1, account: account })).toEqual({
+			flag: [],
+			reject: [rule1],
+			review: [],
+		})
 	})
 	it("isInternal", () => {
-		expect(pax2pay.Rule.evaluate([rule2], transaction1)).toEqual({ review: [], reject: [], flag: [rule2] })
+		expect(pax2pay.Rule.evaluate([rule2], { transaction: transaction1, account: account })).toEqual({
+			review: [],
+			reject: [],
+			flag: [rule2],
+		})
 	})
 	it("always reject", () => {
-		expect(pax2pay.Rule.evaluate([rule3], transaction3)).toEqual({ review: [], reject: [rule3], flag: [] })
+		expect(pax2pay.Rule.evaluate([rule3], { transaction: transaction1, account: account })).toEqual({
+			review: [],
+			reject: [rule3],
+			flag: [],
+		})
+	})
+	it("optional authorization", () => {
+		expect(pax2pay.Rule.evaluate([rule4], { transaction: transaction1, account: account })).toEqual({
+			review: [],
+			reject: [rule4],
+			flag: [],
+		})
 	})
 	it("many rules", () => {
-		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], transaction1)).toEqual({
+		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], { transaction: transaction1, account: account })).toEqual({
 			review: [],
 			reject: [rule1, rule3],
 			flag: [rule2],
@@ -115,4 +142,17 @@ export const transaction3: pax2pay.Transaction = {
 	status: "approved",
 	flags: [],
 	notes: [],
+}
+export const account: pax2pay.Account = {
+	name: "A name",
+	id: "aaaaaa",
+	created: "2023-07-20T17:00.000Z",
+	rails: [],
+	balances: {
+		GBP: {
+			actual: 0,
+			incomingReserved: 0,
+			outgoingReserved: 0,
+		},
+	},
 }
