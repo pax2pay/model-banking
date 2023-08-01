@@ -25,6 +25,10 @@ export namespace Organization {
 	export const Changeable = OrganizationChangeable
 	export type Contact = OrganizationContact
 	export const Contact = OrganizationContact
+	export namespace Contact {
+		export type Address = OrganizationContact.Address
+		export type Addresses = OrganizationContact.Addresses
+	}
 	export type Rule = OrganizationRule
 	export const Rule = OrganizationRule
 	export namespace Rule {
