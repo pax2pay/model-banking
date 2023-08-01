@@ -14,4 +14,6 @@ export namespace Addresses {
 		delivery: Address.type.optional(),
 		visit: Address.type.optional(),
 	})
+	export const is = type.is
+	export const flaw = type.flaw
 }

@@ -20,6 +20,7 @@ export namespace Contact {
 	export const Addresses = ContactAddresses
 	export type Addresses = ContactAddresses
 	export const Address = ContactAddress
+
 	export type Address = ContactAddress
 	export const type = isly.object<Contact>({
 		address: Addresses.type,
