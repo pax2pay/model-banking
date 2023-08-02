@@ -20,9 +20,13 @@ export namespace Rule {
 	export type State = RuleState
 	export namespace State {
 		export type Account = RuleState.Account
+		export const Account = RuleState.Account
 		export type Authorization = RuleState.Authorization
+		export const Authorization = RuleState.Authorization
 		export type Card = RuleState.Card
+		export const Card = RuleState.Card
 		export type Transaction = RuleState.Transaction
+		export const Transaction = RuleState.Transaction
 	}
 
 	export const type = isly.object<Rule>({
