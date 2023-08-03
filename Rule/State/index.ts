@@ -8,10 +8,10 @@ import { Card as StateCard } from "./Card"
 import { Transaction as StateTransaction } from "./Transaction"
 
 export interface State {
-	account: State.Account
-	authorization?: State.Authorization
-	card?: State.Card
-	transaction: State.Transaction
+	account: StateAccount
+	authorization?: StateAuthorization
+	card?: StateCard
+	transaction: StateTransaction
 }
 
 export namespace State {
@@ -29,29 +29,11 @@ export namespace State {
 		}
 	}
 	export type Account = StateAccount
-	export namespace Account {
-		export const from = StateAccount.from
-		export const type = StateAccount.type
-		export const is = StateAccount.is
-		export const flaw = StateAccount.flaw
-	}
+	export const Account = StateAccount
 	export type Authorization = StateAuthorization
-	export namespace Authorization {
-		export const from = StateAuthorization.from
-		export const type = StateAuthorization.type
-		export const is = StateAuthorization.is
-		export const flaw = StateAuthorization.flaw
-	}
+	export const Authorization = StateAuthorization
 	export type Card = StateCard
-	export namespace Card {
-		export const from = StateCard.from
-		export const type = StateCard.type
-		export const is = StateCard.is
-		export const flaw = StateCard.flaw
-	}
+	export const Card = StateCard
 	export type Transaction = StateTransaction
-	export namespace Transaction {
-		export const from = StateTransaction.from
-		export const is = StateTransaction.is
-	}
+	export const Transaction = StateTransaction
 }
