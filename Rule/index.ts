@@ -18,6 +18,14 @@ export namespace Rule {
 	export const kinds = ["authorization", "outbound", "inbound"] as const
 	export type Kind = typeof kinds[number]
 	export type State = RuleState
+	export const State = RuleState
+	export namespace State {
+		export type Account = RuleState.Account
+		export type Authorization = RuleState.Authorization
+		export type Card = RuleState.Card
+		export type Transaction = RuleState.Transaction
+	}
+
 	export const type = isly.object<Rule>({
 		name: isly.string(),
 		description: isly.string(),
