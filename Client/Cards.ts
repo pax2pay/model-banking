@@ -36,4 +36,7 @@ export class Cards extends rest.Collection<gracely.Error> {
 			options && (({ start, end, ...headers }) => headers)(options)
 		)
 	}
+	async update(id: string, card: Card.Changeable): Promise<Card | gracely.Error> {
+		return this.client.patch<Card>(`/card/${id}`, card)
+	}
 }
