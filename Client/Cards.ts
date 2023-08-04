@@ -23,16 +23,8 @@ export class Cards extends rest.Collection<gracely.Error> {
 		prefix?: string
 	}): Promise<(Card[] & { cursor?: string | undefined }) | gracely.Error> {
 		// I mean it's supposed to return Card.Static
-		const search =
-			options?.start && options?.end
-				? `?start=${options?.start}&end=${options?.end}`
-				: options?.start
-				? `?start=${options?.start}`
-				: options?.end
-				? `?end=${options?.end}`
-				: ""
 		return this.client.get<Card[] & { cursor?: string | undefined }>(
-			`/card${search}`,
+			`/card`,
 			options && (({ start, end, ...headers }) => headers)(options)
 		)
 	}
