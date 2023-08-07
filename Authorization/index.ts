@@ -16,7 +16,7 @@ export interface Authorization {
 	acquirer: Acquirer
 	description: string
 	transaction?: string
-	status?: "approved" | { code: string; reason: string }
+	status?: "approved" | { code: string; reason: string | string[] }
 }
 export namespace Authorization {
 	export function fromCreatable(authorization: Authorization.Creatable): Authorization {
@@ -42,7 +42,10 @@ export namespace Authorization {
 		status: isly
 			.union(
 				isly.string("approved"),
-				isly.object<{ code: string; reason: string }>({ code: isly.string(), reason: isly.string() })
+				isly.object<{ code: string; reason: string }>({
+					code: isly.string(),
+					reason: isly.union(isly.string(), isly.string().array()),
+				})
 			)
 			.optional(),
 	})
