@@ -5,6 +5,7 @@ import { Rail } from "../../Rail"
 import { Realm } from "../../Realm"
 import { Supplier } from "../../Supplier"
 import { Balance } from "../Balance"
+import { Category as AccountCategory } from "./Category"
 import { Creatable as AccountCreatable } from "./Creatable"
 import { Fetchable as AccountFetchable } from "./Fetchable"
 import { Storable as AccountStorable } from "./Storable"
@@ -17,7 +18,7 @@ export interface Account {
 	supplier: Supplier | "external"
 	reference: string
 	currencies: isoly.Currency[]
-	type: "safeguarded" | "other" | "external"
+	type: AccountCategory
 	rail: Rail[]
 	balance: Balance
 }
@@ -31,7 +32,7 @@ export namespace Account {
 		supplier: isly.fromIs("supplier", Supplier.is),
 		reference: isly.string(),
 		currencies: isly.fromIs("Treasury.Account.currencies", isoly.Currency.is).array(),
-		type: isly.string(["safeguarded", "other", "external"]),
+		type: isly.string(AccountCategory.type),
 		rail: isly.fromIs("Treasury.Account.rail", Rail.is).array(),
 		balance: isly.fromIs("Treasury.Account.rail", Balance.is),
 	})
@@ -47,4 +48,6 @@ export namespace Account {
 	export const Storable = AccountStorable
 	export type Fetchable = AccountFetchable
 	export const Fetchable = AccountFetchable
+	export type Category = AccountCategory
+	export const Category = AccountCategory
 }

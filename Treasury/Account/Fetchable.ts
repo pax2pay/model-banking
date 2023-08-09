@@ -3,13 +3,14 @@ import { isly } from "isly"
 import { Rail } from "../../Rail"
 import { Supplier } from "../../Supplier"
 import { Balance } from "../Balance"
+import { Category } from "./Category"
 
 export interface Fetchable {
 	name: string
 	supplier: Supplier
 	reference: string
 	currencies: isoly.Currency[]
-	type: "safeguarded" | "other" | "external"
+	type: Category
 	rail: Rail[]
 	balance: Balance
 }
@@ -20,7 +21,7 @@ export namespace Fetchable {
 		supplier: isly.fromIs("supplier", Supplier.is),
 		reference: isly.string(),
 		currencies: isly.fromIs("Account.Fetchable.currencies", isoly.Currency.is).array(),
-		type: isly.string(["safeguarded", "other", "external"]),
+		type: isly.string(Category.type),
 		rail: isly.fromIs("Account.Fetchable.rail", Rail.is).array(),
 		balance: isly.fromIs("Account.Fetchable.rail", Balance.is),
 	})
