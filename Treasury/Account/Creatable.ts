@@ -2,13 +2,14 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Realm } from "../../Realm"
 import { Supplier } from "../../Supplier"
+import { Category } from "./Category"
 
 export interface Creatable {
 	name: string
 	realm: Realm
 	supplier: Supplier
 	currencies: isoly.Currency[]
-	type: "safeguarded" | "other" | "external"
+	type: Category
 }
 
 export namespace Creatable {
@@ -17,7 +18,7 @@ export namespace Creatable {
 		realm: isly.fromIs("realm", Realm.is),
 		supplier: isly.fromIs("supplier", Supplier.is),
 		currencies: isly.fromIs("Account.Creatable.currencies", isoly.Currency.is).array(),
-		type: isly.string(["safeguarded", "other", "external"]),
+		type: isly.string(Category.type),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
