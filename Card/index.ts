@@ -1,4 +1,3 @@
-import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Realm } from "../Realm"
@@ -35,37 +34,6 @@ export interface Card {
 }
 
 export namespace Card {
-	export function fromCreatable(
-		card: Creatable,
-		organization: string,
-		realm: Realm,
-		last4: string,
-		token: string
-	): Card {
-		const created = isoly.DateTime.now()
-		return {
-			id: cryptly.Identifier.generate(8),
-			number: card.number,
-			created: created,
-			organization,
-			realm,
-			account: card.account,
-			preset: card.preset,
-			details: {
-				iin: card.details.iin,
-				last4: last4,
-				expiry: card.details.expiry,
-				holder: card.details.holder,
-				token: token,
-			},
-			limit: card.limit,
-			spent: [card.limit[0], 0],
-			status: "active",
-			history: [{ type: "card", status: "create", created: created }],
-			rules: card.rules ?? [],
-			meta: card.meta,
-		}
-	}
 	export const type = isly.object<Card>({
 		id: isly.string(),
 		number: isly.string().optional(),
