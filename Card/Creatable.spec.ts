@@ -5,7 +5,6 @@ const Creatable: pax2pay.Card.Creatable = {
 	account: "example",
 	preset: "p2p-mc-200",
 	details: {
-		iin: "example",
 		expiry: [24, 12],
 		holder: "example examplesson",
 	},
