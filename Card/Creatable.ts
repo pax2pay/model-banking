@@ -10,7 +10,6 @@ export interface Creatable {
 	number?: string
 	preset: Preset
 	details: {
-		iin: string
 		expiry: Expiry
 		holder: string
 	}
@@ -25,7 +24,6 @@ export namespace Creatable {
 		number: isly.string().optional(),
 		preset: Preset.type,
 		details: isly.object({
-			iin: isly.string(),
 			expiry: Expiry.type,
 			holder: isly.string(),
 		}),
