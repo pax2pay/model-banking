@@ -8,6 +8,12 @@ import { Failed as AuthorizationFailed } from "./Failed"
 
 export type Authorization = Authorization.Failed | Authorization.Approved
 export namespace Authorization {
+	export type Approved = AuthorizationApproved
+	export const Approved = AuthorizationApproved
+	export type Failed = AuthorizationFailed
+	export const Failed = AuthorizationFailed
+	export type Creatable = AuthorizationCreatable
+	export const Creatable = AuthorizationCreatable
 	export function fromCreatable(
 		authorization: Authorization.Creatable,
 		transaction: Transaction | gracely.Error
@@ -39,10 +45,4 @@ export namespace Authorization {
 			},
 		}
 	}
-	export type Approved = AuthorizationApproved
-	export const Approved = AuthorizationApproved
-	export type Failed = AuthorizationFailed
-	export const Failed = AuthorizationFailed
-	export type Creatable = AuthorizationCreatable
-	export const Creatable = AuthorizationCreatable
 }
