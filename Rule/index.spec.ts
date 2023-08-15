@@ -49,6 +49,8 @@ const authorization1: pax2pay.Authorization = {
 		number: "198569381678",
 		country: "GB",
 	},
+	status: "approved",
+	transaction: "string",
 	description: "string",
 }
 describe("definitions", () => {

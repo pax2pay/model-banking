@@ -1,54 +1,31 @@
-import { cryptly } from "cryptly"
-import { isoly } from "isoly"
+import { gracely } from "gracely"
 import { isly } from "isly"
-import { Acquirer } from "../Acquirer"
 import { Card } from "../Card"
-import { Merchant } from "../Merchant"
 import { Transaction } from "../Transaction"
+import { Approved as AuthorizationApproved } from "./Approved"
 import { Creatable as AuthorizationCreatable } from "./Creatable"
+import { Failed as AuthorizationFailed } from "./Failed"
 
-export interface Authorization {
-	id: cryptly.Identifier
-	card: string
-	created: isoly.DateTime
-	amount: [isoly.Currency, number]
-	merchant: Merchant
-	acquirer: Acquirer
-	description: string
-	transaction?: string
-	status?: "approved" | { code: string; reason: string | string[] }
-}
+export type Authorization = Authorization.Failed | Authorization.Approved
 export namespace Authorization {
-	export function fromCreatable(authorization: Authorization.Creatable): Authorization {
-		return {
-			id: cryptly.Identifier.generate(8),
-			card: authorization.card,
-			created: isoly.DateTime.now(),
-			amount: authorization.amount,
-			merchant: authorization.merchant,
-			acquirer: authorization.acquirer,
-			description: authorization.description,
-		}
+	export type Approved = AuthorizationApproved
+	export const Approved = AuthorizationApproved
+	export type Failed = AuthorizationFailed
+	export const Failed = AuthorizationFailed
+	export type Creatable = AuthorizationCreatable
+	export const Creatable = AuthorizationCreatable
+	export function fromCreatable(
+		authorization: Authorization.Creatable,
+		transaction: Transaction | gracely.Error
+	): Authorization {
+		return gracely.Error.is(transaction)
+			? Authorization.Failed.fromCreatable(authorization, transaction)
+			: Authorization.Approved.fromCreatable(authorization, transaction)
 	}
-	export const type = isly.object<Authorization>({
-		id: isly.fromIs("Authorization.id", cryptly.Identifier.is),
-		card: isly.string(),
-		created: isly.fromIs("Authorization.created", isoly.DateTime.is),
-		amount: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
-		merchant: Merchant.type,
-		acquirer: Acquirer.type,
-		description: isly.string(),
-		transaction: isly.string().optional(),
-		status: isly
-			.union(
-				isly.string("approved"),
-				isly.object<{ code: string; reason: string }>({
-					code: isly.string(),
-					reason: isly.union(isly.string(), isly.string().array()),
-				})
-			)
-			.optional(),
-	})
+	export const type = isly.union<Authorization, Authorization.Failed, Authorization.Approved>(
+		Authorization.Failed.type,
+		Authorization.Approved.type
+	)
 	export const is = type.is
 	export const flaw = type.flaw
 
@@ -68,6 +45,4 @@ export namespace Authorization {
 			},
 		}
 	}
-	export type Creatable = AuthorizationCreatable
-	export const Creatable = AuthorizationCreatable
 }
