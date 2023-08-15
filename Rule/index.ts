@@ -17,6 +17,7 @@ export namespace Rule {
 		export type Authorization = RuleState.Authorization
 		export type Card = RuleState.Card
 		export type Transaction = RuleState.Transaction
+		export type Partial = RuleState.Partial
 	}
 
 	export const type = ModelRule.type
