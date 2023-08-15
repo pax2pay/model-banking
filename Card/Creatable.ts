@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Rule } from "../Rule"
+import { Rule, type as ruleType } from "../Rule/Rule"
 import { Expiry } from "./Expiry"
 import { Meta } from "./Meta"
 import { Preset } from "./Preset"
@@ -28,7 +28,7 @@ export namespace Creatable {
 			holder: isly.string(),
 		}),
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
-		rules: Rule.type.array().optional(),
+		rules: ruleType.array().optional(),
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 	})
 	export const is = type.is

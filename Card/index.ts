@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Realm } from "../Realm"
-import { Rule } from "../Rule"
+import { Rule, type as ruleType } from "../Rule/Rule"
 import { Changeable as CardChangeable } from "./Changeable"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Expiry as CardExpiry } from "./Expiry"
@@ -54,7 +54,7 @@ export namespace Card {
 		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		status: isly.union(isly.string("active"), isly.string("cancelled")),
 		history: isly.array(CardOperation.type),
-		rules: Rule.type.array(),
+		rules: ruleType.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 	})
 	export const is = type.is

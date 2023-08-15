@@ -32,28 +32,6 @@ const rule4: pax2pay.Rule = {
 	action: "reject",
 	condition: "alwaysTrue()",
 }
-const authorization1: pax2pay.Authorization = {
-	id: "aaaaaaaa",
-	card: "cccccccc",
-	created: "2023-02-23T16:14:52.309Z",
-	amount: ["GBP", 200],
-	merchant: {
-		name: "a name this is",
-		id: "bbbbbbbb",
-		category: "3000",
-		country: "KP",
-		address: "Steetname 2",
-	},
-	acquirer: {
-		id: "dddddddd",
-		number: "198569381678",
-		country: "GB",
-	},
-	status: "approved",
-	reference: "ahgt3817",
-	transaction: "string",
-	description: "string",
-}
 describe("definitions", () => {
 	it("exceedsAmount", () => {
 		expect(pax2pay.Rule.evaluate([rule1], { transaction: transaction1, account: account })).toEqual({
