@@ -50,6 +50,7 @@ const authorization1: pax2pay.Authorization = {
 		country: "GB",
 	},
 	status: "approved",
+	reference: "ahgt3817",
 	transaction: "string",
 	description: "string",
 }
