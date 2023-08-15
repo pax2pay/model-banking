@@ -1,22 +1,15 @@
 import { selectively } from "selectively"
-import { isly } from "isly"
 import { definitions } from "./definitions"
+import * as ModelRule from "./Rule"
 import { State as RuleState } from "./State"
 
-export interface Rule {
-	name: string
-	description: string
-	action: Rule.Action
-	type: Rule.Kind
-	condition: string
-	flags: string[]
-}
+export type Rule = ModelRule.Rule
 
 export namespace Rule {
-	export const actions = ["review", "reject", "flag"] as const
-	export type Action = typeof actions[number]
-	export const kinds = ["authorization", "outbound", "inbound"] as const
-	export type Kind = typeof kinds[number]
+	export const actions = ModelRule.actions
+	export type Action = ModelRule.Action
+	export const kinds = ModelRule.kinds
+	export type Kind = ModelRule.Kind
 	export type State = RuleState
 	export const State = RuleState
 	export namespace State {
@@ -26,19 +19,10 @@ export namespace Rule {
 		export type Transaction = RuleState.Transaction
 	}
 
-	export const type = isly.object<Rule>({
-		name: isly.string(),
-		description: isly.string(),
-		action: isly.string(actions),
-		type: isly.string(kinds),
-		condition: isly.string(),
-		flags: isly.string().array(),
-	})
-	export const is = type.is
-	export const flaw = type.flaw
-	export function stringify(rule: Rule): string {
-		return `{ label: ${rule.name}, action: ${rule.action}, type: ${rule.type}, condition: ${rule.condition}, description: ${rule.description}. }`
-	}
+	export const type = ModelRule.type
+	export const is = ModelRule.type.is
+	export const flaw = ModelRule.type.flaw
+	export const stringify = ModelRule.stringify
 	export function evaluate(
 		rules: Rule[],
 		state: State,
