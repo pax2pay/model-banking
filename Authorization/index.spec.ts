@@ -30,6 +30,7 @@ const authorization1: pax2pay.Authorization = {
 		number: "1351858913568",
 		country: "GB",
 	},
+	reference: "ahgt3817",
 	description: "An upcheck test authorization, to succeed",
 }
 const authorization2: pax2pay.Authorization = {
@@ -53,5 +54,6 @@ const authorization2: pax2pay.Authorization = {
 		number: "1351858913568",
 		country: "GB",
 	},
+	reference: "ahgt3817",
 	description: "An upcheck test authorization, to succeed",
 }
