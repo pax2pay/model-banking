@@ -10,6 +10,7 @@ export interface Succeeded {
 	type: "capture" | "cancel" | "refund"
 	account: string
 	card: { id: string; token: string; iin: string; last4: string }
+	authorization: string
 	transaction: { id: string; posted: isoly.DateTime; description: string }
 	amount: [isoly.Currency, number]
 	fee: [isoly.Currency, number]
@@ -21,6 +22,7 @@ export interface Failed {
 	type?: "capture" | "cancel" | "refund"
 	account?: string
 	card?: { id: string; token: string; iin: string; last4: string }
+	authorization?: string
 	transaction?: { id: string; posted: isoly.DateTime; description: string }
 	amount?: [isoly.Currency, number]
 	fee?: [isoly.Currency, number]
@@ -39,6 +41,7 @@ export namespace Entry {
 				iin: isly.string(),
 				last4: isly.string(),
 			}),
+			authorization: isly.string(),
 			transaction: isly.object<{ id: string; posted: string; description: string }>({
 				id: isly.string(),
 				posted: isly.fromIs("transaction.posted", isoly.DateTime.is),
@@ -64,6 +67,7 @@ export namespace Entry {
 					last4: isly.string(),
 				})
 				.optional(),
+			authorization: isly.string().optional(),
 			transaction: isly
 				.object<{ id: string; posted: string; description: string }>({
 					id: isly.string(),
