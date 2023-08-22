@@ -22,8 +22,10 @@ const authorization1: pax2pay.Authorization = {
 		name: "Merchant",
 		id: "abcd1234",
 		category: "4511",
-		country: "KP",
 		address: "Streetname 1, 12345 Towncity",
+		city: "CityTown",
+		zip: "12345",
+		country: "KP",
 	},
 	acquirer: {
 		id: "2345erty",
@@ -46,8 +48,10 @@ const authorization2: pax2pay.Authorization = {
 		name: "Merchant",
 		id: "abcd1234",
 		category: "4511",
-		country: "KP",
 		address: "Streetname 1, 12345 Towncity",
+		city: "CityTown",
+		zip: "12345",
+		country: "KP",
 	},
 	acquirer: {
 		id: "2345erty",
