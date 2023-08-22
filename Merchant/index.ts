@@ -5,16 +5,22 @@ export interface Merchant {
 	name: string
 	id: string
 	category: string
-	country: isoly.CountryCode.Alpha2
 	address: string
+	city: string
+	zip: string
+	state?: string
+	country: isoly.CountryCode.Alpha2
 }
 export namespace Merchant {
 	export const type = isly.object<Merchant>({
 		name: isly.string(),
 		id: isly.string(),
 		category: isly.string(),
-		country: isly.string(),
 		address: isly.string(),
+		city: isly.string(),
+		zip: isly.string(),
+		state: isly.string().optional(),
+		country: isly.string(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
