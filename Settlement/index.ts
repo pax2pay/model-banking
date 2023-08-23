@@ -4,7 +4,7 @@ import { Entry as SettlementEntry } from "./Entry"
 
 export type Settlement = Settlement.Succeeded | Settlement.Failed | Settlement.Ongoing
 export namespace Settlement {
-	export type Summary = Omit<Settlement.Succeeded, "entries"> | Settlement.Failed | Settlement.Ongoing
+	export type Summary = Omit<Settlement.Succeeded, "entries"> | Settlement.Failed | Omit<Settlement.Ongoing, "entries">
 	export interface Base {
 		id: string
 		created: [string, isoly.DateTime]
@@ -13,11 +13,11 @@ export namespace Settlement {
 		status: string
 	}
 	export interface Succeeded extends Base {
-		settled?: { user: string; created: isoly.DateTime; transactions: Record<string, [isoly.Currency, number]> }
+		status: "succeeded"
 		amount: Partial<Record<isoly.Currency, number>>
 		fee: Partial<Record<isoly.Currency, number>>
 		entries: SettlementEntry[]
-		status: "succeeded"
+		settled: { user: string; created: isoly.DateTime; transactions: Record<string, [isoly.Currency, number]> }
 	}
 	export interface Failed extends Base {
 		status: "failed"
@@ -25,6 +25,9 @@ export namespace Settlement {
 	}
 	export interface Ongoing extends Base {
 		status: "ongoing"
+		amount: Partial<Record<isoly.Currency, number>>
+		fee: Partial<Record<isoly.Currency, number>>
+		entries: SettlementEntry[]
 	}
 
 	export namespace Succeeded {
@@ -33,16 +36,18 @@ export namespace Settlement {
 			created: isly.tuple(isly.string(), isly.fromIs("Settlement.created", isoly.DateTime.is)),
 			regarding: isly.fromIs("Settlement.regarding", isoly.Date.is),
 			configuration: isly.string(),
-			settled: isly
-				.object<{ user: string; created: isoly.DateTime; transactions: Record<string, [isoly.Currency, number]> }>({
-					user: isly.string(),
-					created: isly.fromIs("Settlement.settled.created", isoly.DateTime.is),
-					transactions: isly.record(
-						isly.string(),
-						isly.tuple(isly.fromIs("Settlement.settled.transactions.currency", isoly.Currency.is), isly.number())
-					),
-				})
-				.optional(),
+			settled: isly.object<{
+				user: string
+				created: isoly.DateTime
+				transactions: Record<string, [isoly.Currency, number]>
+			}>({
+				user: isly.string(),
+				created: isly.fromIs("Settlement.settled.created", isoly.DateTime.is),
+				transactions: isly.record(
+					isly.string(),
+					isly.tuple(isly.fromIs("Settlement.settled.transactions.currency", isoly.Currency.is), isly.number())
+				),
+			}),
 			amount: isly.record(isly.fromIs("Settlement.entries.amount", isoly.Currency.is), isly.number()),
 			fee: isly.record(isly.fromIs("Settlement.entries.fee", isoly.Currency.is), isly.number()),
 			entries: SettlementEntry.type.array(),
@@ -67,6 +72,9 @@ export namespace Settlement {
 			created: isly.tuple(isly.string(), isly.fromIs("Settlement.created", isoly.DateTime.is)),
 			regarding: isly.fromIs("Settlement.regarding", isoly.Date.is),
 			configuration: isly.string(),
+			amount: isly.record(isly.fromIs("Settlement.entries.amount", isoly.Currency.is), isly.number()),
+			fee: isly.record(isly.fromIs("Settlement.entries.fee", isoly.Currency.is), isly.number()),
+			entries: SettlementEntry.type.array(),
 			status: isly.string("ongoing"),
 		})
 		export const is = type.is
