@@ -1,31 +1,25 @@
+import { isly } from "isly"
 import { Card as RailCard } from "./Card"
 import { Iban as RailIban } from "./Iban"
 import { Internal as RailInternal } from "./internal"
 import { PaxGiro as RailPaxGiro } from "./PaxGiro"
 import { Scan as RailScan } from "./Scan"
-import { Type as RailType } from "./Type"
 
 export type Rail = (RailPaxGiro | RailInternal | RailIban | RailScan | RailCard) & {
 	reference?: { supplier: string; value: string }
 }
 
 export namespace Rail {
+	export const rails = ["paxgiro", "internal", "iban", "scan", "card"]
+	export type Type = typeof rails[number]
+	export const type = isly.string(rails)
 	export function parse(value: string): Rail | undefined {
 		let result: Rail | undefined
 		const splitted = value.split("-")
 		switch (splitted[0]) {
-			//case "iban":
-			//	result = splitted.length == 2 ? { type: "iban", reference: splitted[1] } : undefined
-			//	break
 			case "pxg":
 				result = splitted.length == 2 ? { type: "paxgiro", identifier: splitted[1] } : undefined
 				break
-			//case "swe":
-			//	result =
-			//		splitted.length == 3
-			//			? { type: "swedish", clearing: Number.parseInt(splitted[1]), account: Number.parseInt(splitted[2]) }
-			//			: undefined
-			//	break
 		}
 		return result
 	}
@@ -47,9 +41,6 @@ export namespace Rail {
 			case "card":
 				result = `${rail.type}-${rail.id}`
 				break
-			//case "swedish":
-			//	result = `swe-${rail.clearing}-${rail.account}`
-			//	break
 		}
 		return result
 	}
@@ -71,9 +62,6 @@ export namespace Rail {
 			case "card":
 				result = `${rail.type}-${rail.id}`
 				break
-			//case "swedish":
-			//	result = `swe-${rail.clearing}-${rail.account}`
-			//	break
 		}
 		return result
 	}
@@ -84,8 +72,6 @@ export namespace Rail {
 			(PaxGiro.is(value) || Iban.is(value) || Internal.is(value) || Scan.is(value) || Card.is(value))
 		)
 	}
-
-	export type Type = RailType
 	export type PaxGiro = RailPaxGiro
 	export const PaxGiro = RailPaxGiro
 	export type Iban = RailIban
