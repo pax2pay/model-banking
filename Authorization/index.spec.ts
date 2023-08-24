@@ -1,3 +1,4 @@
+import { gracely } from "gracely"
 import { pax2pay } from "../index"
 
 describe("authorization", () => {
@@ -40,6 +41,7 @@ const authorization2: pax2pay.Authorization = {
 		code: "05",
 		reason: "Do not honor.",
 	},
+	error: gracely.server.backendFailure(),
 	id: "ahgt3817",
 	card: "yRY9MYOl",
 	created: "2023-08-07T09:25:11.296Z",
