@@ -44,8 +44,7 @@ export namespace Rail {
 			case "scan":
 				result = `scan-${rail.sort}-${rail.account}`
 				break
-			case "visa":
-			case "mastercard":
+			case "card":
 				result = `${rail.type}-${rail.id}`
 				break
 			//case "swedish":
@@ -69,8 +68,7 @@ export namespace Rail {
 			case "scan":
 				result = `${rail.sort} ${rail.account}`
 				break
-			case "visa":
-			case "mastercard":
+			case "card":
 				result = `${rail.type}-${rail.id}`
 				break
 			//case "swedish":

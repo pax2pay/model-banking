@@ -10,6 +10,7 @@ const Card: pax2pay.Card = {
 	organization: "example",
 	account: "example",
 	preset: "p2p-mc-200",
+	scheme: "mastercard",
 	reference: "example",
 	details: {
 		iin: "example",

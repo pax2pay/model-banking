@@ -35,13 +35,15 @@ export namespace Authorization {
 			currency: authorization.amount[0],
 			description: authorization.description,
 			counterpart: {
-				type: "mastercard",
+				type: "card",
+				scheme: "mastercard",
 				iin: card.details.iin,
 				expiry: card.details.expiry,
 				last4: card.details.last4,
 				holder: card.details.holder,
 				id: card.id,
 				merchant: authorization.merchant,
+				acquirer: authorization.acquirer,
 			},
 		}
 	}
