@@ -8,6 +8,7 @@ import { Expiry as CardExpiry } from "./Expiry"
 import { Meta as CardMeta } from "./Meta"
 import { Operation as CardOperation } from "./Operation"
 import { Preset as CardPreset } from "./Preset"
+import { Scheme as CardScheme } from "./Scheme"
 
 export interface Card {
 	id: string
@@ -17,6 +18,7 @@ export interface Card {
 	realm: Realm
 	account: string
 	preset: CardPreset
+	scheme: CardScheme
 	reference?: string
 	details: {
 		iin: string
@@ -42,6 +44,7 @@ export namespace Card {
 		realm: Realm.type,
 		account: isly.string(),
 		preset: CardPreset.type,
+		scheme: CardScheme.type,
 		reference: isly.string().optional(),
 		details: isly.object({
 			iin: isly.string(),
@@ -70,4 +73,6 @@ export namespace Card {
 	export const Changeable = CardChangeable
 	export type Operation = CardOperation
 	export const Operation = CardOperation
+	export type Scheme = CardScheme
+	export const Scheme = CardScheme
 }
