@@ -4,9 +4,9 @@ import { isly } from "isly"
 export interface GB {
 	countryCode: "GB"
 	city: string
-	zipCode: string
 	street: string
 	building: string
+	zipCode: string
 }
 
 export namespace GB {
