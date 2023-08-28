@@ -1,11 +1,12 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Acquirer } from "../Acquirer"
+import { Amount } from "../Amount"
 import { Merchant } from "../Merchant"
 
 export interface Creatable {
 	card: string
-	amount: [isoly.Currency, number]
+	amount: Amount
 	merchant: Merchant
 	acquirer: Acquirer
 	reference: string

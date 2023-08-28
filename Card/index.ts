@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Amount } from "../Amount"
 import { Realm } from "../Realm"
 import { Rule, type as ruleType } from "../Rule/Rule"
 import { Changeable as CardChangeable } from "./Changeable"
@@ -27,8 +28,8 @@ export interface Card {
 		holder: string
 		token: string
 	}
-	limit: [isoly.Currency, number]
-	spent: [isoly.Currency, number]
+	limit: Amount
+	spent: Amount
 	status: "active" | "cancelled"
 	history: CardOperation[]
 	rules: Rule[]

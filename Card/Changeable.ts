@@ -1,9 +1,10 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Amount } from "../Amount"
 import { Meta } from "./Meta"
 
 export type Changeable = {
-	limit?: [isoly.Currency, number]
+	limit?: Amount
 	meta?: Meta
 }
 

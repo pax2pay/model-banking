@@ -7,7 +7,9 @@
 		"outDir": "dist",
 		"baseUrl": ".",
 		"allowSyntheticDefaultImports": true,
-		"types": []
+		"types": [
+			"./global.d.ts"
+		]
 	},
 	"files": [
 		"index.ts",

@@ -16,7 +16,12 @@ const authorization1: pax2pay.Authorization = {
 		reason: ["Do not honor.", "Another string", "A third string"],
 	},
 	id: "ahgt3817",
-	card: "yRY9MYOl",
+	card: {
+		id: "string",
+		token: "string",
+		iin: "12341234",
+		last4: "1234",
+	},
 	created: "2023-08-07T09:25:11.296Z",
 	amount: ["GBP", 100],
 	merchant: {
@@ -33,6 +38,7 @@ const authorization1: pax2pay.Authorization = {
 		number: "1351858913568",
 		country: "GB",
 	},
+	account: "1234",
 	reference: "ahgt3817",
 	description: "An upcheck test authorization, to succeed",
 }
@@ -40,10 +46,15 @@ const authorization2: pax2pay.Authorization = {
 	status: {
 		code: "05",
 		reason: "Do not honor.",
+		error: gracely.server.backendFailure(),
 	},
-	error: gracely.server.backendFailure(),
 	id: "ahgt3817",
-	card: "yRY9MYOl",
+	card: {
+		id: "string",
+		token: "string",
+		iin: "12341234",
+		last4: "1234",
+	},
 	created: "2023-08-07T09:25:11.296Z",
 	amount: ["GBP", 100],
 	merchant: {
@@ -60,6 +71,7 @@ const authorization2: pax2pay.Authorization = {
 		number: "1351858913568",
 		country: "GB",
 	},
+	account: "1234",
 	reference: "ahgt3817",
 	description: "An upcheck test authorization, to succeed",
 }
