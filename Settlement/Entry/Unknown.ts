@@ -1,25 +1,25 @@
 import { isly } from "isly"
 import { Authorization } from "../../Authorization"
 
-export interface Unknown {
+export interface Unknown extends Unknown.Creatable {
 	status: "succeeded" | "failed"
-	type: "unknown"
-	authorization?: Authorization
-	data: Record<string, any>
 }
 
 export namespace Unknown {
-	export const type = isly.object<Unknown>({
-		status: isly.string(["succeeded", "failed"]),
-		type: isly.string("unknown"),
-		authorization: Authorization.type.optional(),
-		data: isly.record(isly.string(), isly.any()),
-	})
+	export const type = Creatable.type.extend<Unknown>({ status: isly.string(["succeeded", "failed"]) })
 	export const is = type.is
 	export const flaw = type.flaw
-	export type Creatable = Unknown
+	export interface Creatable {
+		type: "unknown"
+		authorization?: Authorization
+		data: Record<string, any>
+	}
 	export namespace Creatable {
-		export const type = Unknown.type
+		export const type = isly.object<Creatable>({
+			type: isly.string("unknown"),
+			authorization: Authorization.type.optional(),
+			data: isly.record(isly.string(), isly.any()),
+		})
 		export const is = Unknown.is
 		export const flaw = Unknown.flaw
 	}
