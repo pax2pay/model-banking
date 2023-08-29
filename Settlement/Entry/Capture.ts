@@ -10,14 +10,14 @@ export interface Capture extends Capture.Creatable {
 
 export namespace Capture {
 	export interface Creatable {
-		type: "Capture"
+		type: "capture"
 		reference: string
 		fee?: Fee
 		amount?: Amount
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
-			type: isly.string("Capture"),
+			type: isly.string("capture"),
 			reference: isly.string(),
 			fee: Fee.type.optional(),
 			amount: Amount.type.optional(),

@@ -36,6 +36,10 @@ export namespace Settlement {
 		export const Capture = SettlementEntry.Capture
 		export type Unknown = SettlementEntry.Unknown
 		export const Unknown = SettlementEntry.Unknown
+		export const from = SettlementEntry.from
+		export const type = SettlementEntry.type
+		export const is = SettlementEntry.is
+		export const flaw = SettlementEntry.flaw
 	}
 	export const type = isly.object({
 		id: isly.string(),

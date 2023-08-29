@@ -13,5 +13,6 @@ export namespace Creatable {
 		EntryRefund.Creatable.type,
 		EntryUnknown.Creatable.type
 	)
-	export const is = undefined
+	export const is = type.is
+	export const flaw = type.flaw
 }
