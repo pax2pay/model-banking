@@ -1,6 +1,6 @@
 import { Supplier } from "../Supplier"
 
-export interface Reference {
+export type Reference = {
 	supplier?: Supplier
 	reference?: string
 	returnId?: string
