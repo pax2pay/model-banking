@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Creatable as SettlementCreatable } from "./Creatable"
 import { Entry as SettlementEntry } from "./Entry"
 import { Fee as SettlementFee } from "./Fee"
 import { Settled } from "./Settled"
@@ -22,6 +23,8 @@ export interface Settlement {
 export namespace Settlement {
 	export const Fee = SettlementFee
 	export type Fee = SettlementFee
+	export type Creatable = SettlementCreatable
+	export const Creatable = SettlementCreatable
 	export type Entry = SettlementEntry
 	export namespace Entry {
 		export type Summary = SettlementEntry.Summary
