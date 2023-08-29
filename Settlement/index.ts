@@ -5,7 +5,7 @@ import { Entry as SettlementEntry } from "./Entry"
 import { Fee as SettlementFee } from "./Fee"
 import { Settled } from "./Settled"
 import { Status } from "./Status"
-import { Total } from "./Total"
+import { Total as SettlementTotal } from "./Total"
 
 export interface Settlement {
 	id: string
@@ -14,13 +14,15 @@ export interface Settlement {
 	reference: string
 	processor: string
 	status: Status
-	expected: Total
-	calculated?: Total
+	expected: Settlement.Total
+	calculated?: Settlement.Total
 	settled?: Settled
 	entries?: Settlement.Entry.Summary
 }
 
 export namespace Settlement {
+	export const Total = SettlementTotal
+	export type Total = SettlementTotal
 	export const Fee = SettlementFee
 	export type Fee = SettlementFee
 	export type Creatable = SettlementCreatable
@@ -51,8 +53,8 @@ export namespace Settlement {
 		reference: isly.string(),
 		processor: isly.string(),
 		status: Status.type,
-		expected: Total.type,
-		calculated: Total.type.optional(),
+		expected: Settlement.Total.type,
+		calculated: Settlement.Total.type.optional(),
 		settled: Settled.type.optional(),
 		entries: Settlement.Entry.Summary.type.optional(),
 	})
