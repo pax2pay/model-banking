@@ -46,6 +46,18 @@ export namespace Settlement {
 		export const is = SettlementEntry.is
 		export const flaw = SettlementEntry.flaw
 	}
+	export function toFailed(id: string, creatable: Settlement.Creatable, by: string, reason: string): Settlement {
+		return {
+			id,
+			created: isoly.DateTime.now(),
+			status: ["failed", reason],
+			by,
+			processor: creatable.processor,
+			reference: creatable.reference,
+			expected: { amount: {}, fee: { other: {} } },
+		}
+	}
+
 	export const type = isly.object({
 		id: isly.string(),
 		by: isly.string().optional(),
