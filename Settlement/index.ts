@@ -1,3 +1,4 @@
+import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Creatable as SettlementCreatable } from "./Creatable"
@@ -46,6 +47,9 @@ export namespace Settlement {
 		export const is = SettlementEntry.is
 		export const flaw = SettlementEntry.flaw
 	}
+	export function from(id: cryptly.Identifier, creatable: Settlement.Creatable, by: string): Settlement {
+		return { id, status: "ongoing", by, expected: Total.initiate(), ...creatable, created: isoly.DateTime.now() }
+	}
 	export function toFailed(id: string, creatable: Settlement.Creatable, by: string, reason: string): Settlement {
 		return {
 			id,
@@ -54,7 +58,7 @@ export namespace Settlement {
 			by,
 			processor: creatable.processor,
 			reference: creatable.reference,
-			expected: { amount: {}, fee: { other: {} } },
+			expected: Total.initiate(),
 		}
 	}
 
