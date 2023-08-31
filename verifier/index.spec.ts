@@ -1,5 +1,5 @@
 import { isoly } from "isoly"
-import { authly } from "authly"
+import * as authly from "authly"
 import { Transaction } from "../Transaction"
 import { verifier } from "."
 

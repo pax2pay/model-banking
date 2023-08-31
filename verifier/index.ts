@@ -1,4 +1,4 @@
-import { authly } from "authly"
+import * as authly from "authly"
 import { Transaction } from "../Transaction"
 
 export namespace verifier {
