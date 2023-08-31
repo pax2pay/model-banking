@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { authly } from "authly"
 import { Transaction } from "../Transaction"
-import { Verifier } from "."
+import { verifier } from "."
 
 const now = new Date(Math.floor(new Date().getTime() / 1000) * 1000)
 
@@ -14,7 +14,7 @@ describe("verifier", () => {
 		const issuer = authly.Issuer.create<Transaction>("pax2pay", authly.Algorithm.RS256(publicKey, privateKey))
 		if (issuer) {
 			const token = await issuer.sign(transaction, Math.floor(now.getTime() / 1000))
-			expect(await Verifier.Verify(token, publicKey)).toEqual(transaction)
+			expect(await verifier.verify(token)).toEqual(transaction)
 		}
 	})
 })
