@@ -1,113 +1,77 @@
+import { isoly } from "isoly"
 import { authly } from "authly"
-import "jest"
-import { pax2pay } from "../index"
+import { Transaction } from "../Transaction"
 import { Verifier } from "."
 
 const now = new Date(Math.floor(new Date().getTime() / 1000) * 1000)
 
 describe("verifier", () => {
-	const transaction: pax2pay.Transaction = {
-		organization: "agpiPo0v",
-		accountId: "WzauRHBO",
-		account: {
-			type: "internal",
-			identifier: "WzauRHBO",
-		},
-		id: "i9knT4yR",
-		posted: "2023-08-29T13:28:37.269Z",
-		balance: 314,
-		amount: -1,
-		currency: "USD",
-		description: "An upcheck test authorization, to fail",
-		counterpart: {
-			type: "card",
-			scheme: "mastercard",
-			iin: "111111",
-			expiry: [26, 12],
-			last4: "5515",
-			holder: "Upcheck",
-			id: "zzzzztgH3XvVz0-T",
-			merchant: {
-				name: "Merchant",
-				id: "abcd1234",
-				category: "4511",
-				country: "KP",
-				city: "upcheck town",
-				zip: "12345",
-				address: "Streetname 1, 12345 Towncity",
-			},
-			acquirer: {
-				id: "2345erty",
-				number: "1351858913568",
-				country: "GB",
-			},
-		},
-		operations: [
-			{
-				account: "WzauRHBO",
-				currency: "USD",
-				change: {
-					outgoingReserved: {
-						type: "add",
-						amount: 1,
-						status: "pending",
-					},
-				},
-				id: "i9knT4yR",
-				counter: 0,
-				created: "2023-08-29T13:28:37.269Z",
-			},
-		],
-		status: "rejected",
-		flags: [],
-		notes: [
-			{
-				author: "automatic",
-				created: "2023-08-29T13:28:37.315Z",
-				text: "{ label: Country ban, action: reject, type: authorization, condition: authorization.merchant.country:KP, description: No transactions allowed to North Korea. }",
-			},
-		],
-	}
 	const privateKey =
-		"MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC7VJTUt9Us8cKj" +
-		"MzEfYyjiWA4R4/M2bS1GB4t7NXp98C3SC6dVMvDuictGeurT8jNbvJZHtCSuYEvu" +
-		"NMoSfm76oqFvAp8Gy0iz5sxjZmSnXyCdPEovGhLa0VzMaQ8s+CLOyS56YyCFGeJZ" +
-		"qgtzJ6GR3eqoYSW9b9UMvkBpZODSctWSNGj3P7jRFDO5VoTwCQAWbFnOjDfH5Ulg" +
-		"p2PKSQnSJP3AJLQNFNe7br1XbrhV//eO+t51mIpGSDCUv3E0DDFcWDTH9cXDTTlR" +
-		"ZVEiR2BwpZOOkE/Z0/BVnhZYL71oZV34bKfWjQIt6V/isSMahdsAASACp4ZTGtwi" +
-		"VuNd9tybAgMBAAECggEBAKTmjaS6tkK8BlPXClTQ2vpz/N6uxDeS35mXpqasqskV" +
-		"laAidgg/sWqpjXDbXr93otIMLlWsM+X0CqMDgSXKejLS2jx4GDjI1ZTXg++0AMJ8" +
-		"sJ74pWzVDOfmCEQ/7wXs3+cbnXhKriO8Z036q92Qc1+N87SI38nkGa0ABH9CN83H" +
-		"mQqt4fB7UdHzuIRe/me2PGhIq5ZBzj6h3BpoPGzEP+x3l9YmK8t/1cN0pqI+dQwY" +
-		"dgfGjackLu/2qH80MCF7IyQaseZUOJyKrCLtSD/Iixv/hzDEUPfOCjFDgTpzf3cw" +
-		"ta8+oE4wHCo1iI1/4TlPkwmXx4qSXtmw4aQPz7IDQvECgYEA8KNThCO2gsC2I9PQ" +
-		"DM/8Cw0O983WCDY+oi+7JPiNAJwv5DYBqEZB1QYdj06YD16XlC/HAZMsMku1na2T" +
-		"N0driwenQQWzoev3g2S7gRDoS/FCJSI3jJ+kjgtaA7Qmzlgk1TxODN+G1H91HW7t" +
-		"0l7VnL27IWyYo2qRRK3jzxqUiPUCgYEAx0oQs2reBQGMVZnApD1jeq7n4MvNLcPv" +
-		"t8b/eU9iUv6Y4Mj0Suo/AU8lYZXm8ubbqAlwz2VSVunD2tOplHyMUrtCtObAfVDU" +
-		"AhCndKaA9gApgfb3xw1IKbuQ1u4IF1FJl3VtumfQn//LiH1B3rXhcdyo3/vIttEk" +
-		"48RakUKClU8CgYEAzV7W3COOlDDcQd935DdtKBFRAPRPAlspQUnzMi5eSHMD/ISL" +
-		"DY5IiQHbIH83D4bvXq0X7qQoSBSNP7Dvv3HYuqMhf0DaegrlBuJllFVVq9qPVRnK" +
-		"xt1Il2HgxOBvbhOT+9in1BzA+YJ99UzC85O0Qz06A+CmtHEy4aZ2kj5hHjECgYEA" +
-		"mNS4+A8Fkss8Js1RieK2LniBxMgmYml3pfVLKGnzmng7H2+cwPLhPIzIuwytXywh" +
-		"2bzbsYEfYx3EoEVgMEpPhoarQnYPukrJO4gwE2o5Te6T5mJSZGlQJQj9q4ZB2Dfz" +
-		"et6INsK0oG8XVGXSpQvQh3RUYekCZQkBBFcpqWpbIEsCgYAnM3DQf3FJoSnXaMhr" +
-		"VBIovic5l0xFkEHskAjFTevO86Fsz1C2aSeRKSqGFoOQ0tmJzBEs1R6KqnHInicD" +
-		"TQrKhArgLXX4v3CddjfTRJkFWDbE/CkvKZNOrcf1nhaGCPspRJj2KUkj1Fhl9Cnc" +
-		"dn/RsYEONbwQSjIfMPkvxF+8HQ=="
+		"MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDNYqpd/DwdTqUy2gt1zVYSQRk/8OaHHwmZ8wxDFxQiIVSQ5sv3MASj+mTj/UUJoDL+XXjJfvo5T3sRqeerwU5uN3y1TlQ6pvif1Glc7eZ3UkMhmS6qGNDC4IlrH/SfI1j5YfkwtYIGCjmTDpH4AcF0JdAZIagwZ+bSpADJIMTU+ZlZz/qxHhZpwr6igw79i0/se5BB4byqwnjjBtBdpiUq6nEmvcQOj5Sfg3388eZeVNPPW7v9o7YpvM/5XqR6+8/N/6ZL4q9IsxgyAi4OJBe+Wiv1R4LUzlU2PtOvHocqeiJ6QpS3e0vXhwgdUqGk5OU3aXbKPgiaYAbepniAw7oPAgMBAAECggEBAMJ9KC+P560pCC67ZBbNty/aDXsLOIHD1me+TGJLvHkFbvs4UvVkt0BAoMF02Kdg2GkfQn4si+8xYK09Y3C1wPuF98YIwqI380AG+S9S6OcdMwzh7dqNXULtNbQHsrHv2xVsvXhuqQ3nKNYk+f0MTJEcLY9e29Ha0i2tuEC9kybI8mvzTHXjEboypN3wYP2m+G2+GrjIeLxLPpGBvTLO9/vzQlahlBwEU3JKFC9/qXT8HymCLAS6k7E6USSEGw2kCYx/TrG0VWXuxpXx86dSwAmgaqp44ykLA89stMjeuFVaKbP+CCuWrlx95sUK7pvQv/xEtT+ThVlRi05Fp2JBzeECgYEA83ejxhzxF+npMvNymMw+NyeYrPwMjGw9hdXHF0um10u9I6KDIn/PMTnVWDa0oQ1rKElrzzD0lWLJw/oDfSP4SH5MhAuX/syWZqJW/hucjPq4Puf+et4Fve2q15L5jVPmwYGqI/Bmy+OaePdnGFr8RfI9Sil2dklkcIEQuv0cFlMCgYEA1/UwtU7kvdR+fDAS7LRx0UmWLTbvux93UzHxqn+XNauma8lZOkKRh6/PJ3emUscMI2PgGFTdn65BwmUj8icVpioXo71/vbmfvFluMjPgbllvhEwFTsZUgkCSx4ivPgh2Pk/VOflT6xu4q1F5NUZpzX/cW1a9fHM93a4V0v9zXdUCgYBCZ6hYub4caqU7S2E/Qb3aZ0diLyDxD/i7zzINLYolALhmxsWDnF6Tq5WACPO9VZ6bj2MDUPP05svnUwKumCf5BdGy1kKvsXd4KOEXT8qkPSIRrk8fjfz8750ATUsZe//dWZNhWAmBpOOWCMyqvO4/2bFTz/lKi/wEH3/DsJN/lwKBgFYhSi3lq0EysMei/Mk/Jm3MJYMe9/nvkM2zi6jufkY/kX5HrbiYuCYfrkUVaVZ2YJb0zHmnz0RSYZPAdterUu0UuJzrhTkMAXNDT7niCs64CMwA7dT/MNFKI8BE+W+KPG6ZtHcMw7VvNvXM5sSisqvtJNug+q3Z4IC7X6TpkP+JAoGAPLqj9DG52nNdY+BwqJLWG5nIZxfWXcYlsr5dwwVYptc4Dont5R63r3Mk8q94+1VC+Vewzfba+y1+kYyK0twdkXNLNDuvHydOXX7LR1L66iEd//rlvWCvuqFkOgnEJk5iPBiF8Z7dFA5+HoHgeBBiF3Na1R3aWiCxnIPbcchRZgQ="
 	const publicKey =
-		"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu1SU1LfVLPHCozMxH2Mo" +
-		"4lgOEePzNm0tRgeLezV6ffAt0gunVTLw7onLRnrq0/IzW7yWR7QkrmBL7jTKEn5u" +
-		"+qKhbwKfBstIs+bMY2Zkp18gnTxKLxoS2tFczGkPLPgizskuemMghRniWaoLcyeh" +
-		"kd3qqGElvW/VDL5AaWTg0nLVkjRo9z+40RQzuVaE8AkAFmxZzow3x+VJYKdjykkJ" +
-		"0iT9wCS0DRTXu269V264Vf/3jvredZiKRkgwlL9xNAwxXFg0x/XFw005UWVRIkdg" +
-		"cKWTjpBP2dPwVZ4WWC+9aGVd+Gyn1o0CLelf4rEjGoXbAAEgAqeGUxrcIlbjXfbc" +
-		"mwIDAQAB"
-	it("test", async () => {
-		const issuer = authly.Issuer.create<pax2pay.Transaction>("pax2pay", authly.Algorithm.RS256(publicKey, privateKey))
+		"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzWKqXfw8HU6lMtoLdc1WEkEZP/Dmhx8JmfMMQxcUIiFUkObL9zAEo/pk4/1FCaAy/l14yX76OU97Eannq8FObjd8tU5UOqb4n9RpXO3md1JDIZkuqhjQwuCJax/0nyNY+WH5MLWCBgo5kw6R+AHBdCXQGSGoMGfm0qQAySDE1PmZWc/6sR4WacK+ooMO/YtP7HuQQeG8qsJ44wbQXaYlKupxJr3EDo+Un4N9/PHmXlTTz1u7/aO2KbzP+V6kevvPzf+mS+KvSLMYMgIuDiQXvlor9UeC1M5VNj7Trx6HKnoiekKUt3tL14cIHVKhpOTlN2l2yj4ImmAG3qZ4gMO6DwIDAQAB"
+	it("Verifier test", async () => {
+		const issuer = authly.Issuer.create<Transaction>("pax2pay", authly.Algorithm.RS256(publicKey, privateKey))
 		if (issuer) {
 			const token = await issuer.sign(transaction, Math.floor(now.getTime() / 1000))
 			expect(await Verifier.Verify(token, publicKey)).toEqual(transaction)
 		}
 	})
 })
+
+const transaction: Transaction = {
+	organization: "organization",
+	accountId: "qwerty12",
+	account: {
+		type: "internal",
+		identifier: "12345678",
+	},
+	id: "11112222",
+	posted: `${isoly.DateTime.now()}`,
+	balance: 100,
+	amount: -1,
+	currency: "USD",
+	description: "string",
+	counterpart: {
+		type: "card",
+		scheme: "mastercard",
+		iin: "111111",
+		expiry: [26, 12],
+		last4: "1111",
+		holder: "name",
+		id: "zzzzztgH3XvVz0-T",
+		merchant: {
+			name: "Merchant",
+			id: "abcd1234",
+			category: "4511",
+			country: "GB",
+			city: "Towncity",
+			zip: "12345",
+			address: "Streetname 1, 12345 Towncity",
+		},
+		acquirer: {
+			id: "2345erty",
+			number: "1351858913568",
+			country: "GB",
+		},
+	},
+	operations: [
+		{
+			account: "WzauRHBO",
+			currency: "USD",
+			change: {
+				outgoingReserved: {
+					type: "add",
+					amount: 1,
+					status: "pending",
+				},
+			},
+			id: "i9knT4yR",
+			counter: 0,
+			created: "2023-08-29T13:28:37.269Z",
+		},
+	],
+	status: "rejected",
+	flags: [],
+	notes: [],
+}
