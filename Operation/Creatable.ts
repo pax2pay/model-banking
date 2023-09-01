@@ -12,8 +12,9 @@ export namespace Change {
 		return (
 			typeof value == "object" &&
 			(value.actual == undefined || isChangeType(value.actual)) &&
-			(value.reserved == undefined || isChangeType(value.reserved)) &&
-			(value.actual || value.reserved)
+			(value.incomingReserved == undefined || isChangeType(value.incomingReserved)) &&
+			(value.outgoingReserved == undefined || isChangeType(value.outgoingReserved)) &&
+			(!!value.incomingReserved || !!value.outgoingReserved || !!value.actual)
 		)
 	}
 	export function isChangeType(value: ChangeType | any): value is ChangeType {

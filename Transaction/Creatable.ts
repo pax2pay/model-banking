@@ -1,4 +1,5 @@
 import { isoly } from "isoly"
+import { isly } from "isly"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 
@@ -11,15 +12,14 @@ export interface Creatable {
 }
 
 export namespace Creatable {
-	export function is(value: any | Creatable): value is Creatable {
-		return (
-			typeof value == "object" &&
-			Rail.is(value.counterpart) &&
-			isoly.Currency.is(value.currency) &&
-			typeof value.amount == "number" &&
-			typeof value.description == "string" &&
-			(value.operations == undefined ||
-				(Array.isArray(value.operations) && value.operations.every(Operation.Creatable.is)))
-		)
-	}
+	export const type = isly.object<Creatable>({
+		counterpart: isly.fromIs("Rail", Rail.is),
+		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
+		amount: isly.number(),
+		description: isly.string(),
+		operations: isly.array(isly.fromIs("Operation.Creatable", Operation.Creatable.is)),
+	})
+	export const is = type.is
+	export const flaw = type.flaw
+	export const get = type.get
 }

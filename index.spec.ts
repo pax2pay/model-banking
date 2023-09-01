@@ -51,26 +51,29 @@ describe("library", () => {
 				currency: "GBP",
 				description: "test",
 				id: "V1uV3dB8",
+				flags: [],
 				notes: [],
 				operations: [
 					{
 						id: "g7NWpbFl",
 						created: "2023-03-17T12:26:10.575Z",
-						transactionId: "V1uV3dB8",
 						currency: "GBP",
 						change: {
 							outgoingReserved: { amount: 1, result: 1, status: "success", type: "add" },
 						},
+						counter: 1,
+						account: "12230000",
 					},
 					{
 						id: "hiwWqILu",
 						created: "2023-03-17T12:27:08.608Z",
-						transactionId: "V1uV3dB8",
 						currency: "GBP",
 						change: {
 							actual: { amount: 1, result: 6993, status: "success", type: "subtract" },
 							outgoingReserved: { amount: 1, result: 0, status: "success", type: "subtract" },
 						},
+						counter: 2,
+						account: "12230000",
 					},
 				],
 				organization: "RBhssR36",

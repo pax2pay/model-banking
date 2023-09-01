@@ -1,4 +1,5 @@
 import { isoly } from "isoly"
+import { isly } from "isly"
 
 export interface Note extends Note.Creatable {
 	author: string
@@ -14,8 +15,17 @@ export namespace Note {
 		action?: "approve" | "reject"
 	}
 	export namespace Creatable {
-		export function is(value: Creatable | any): value is Creatable {
-			return true
-		}
+		export const type = isly.object<Creatable>({
+			text: isly.string().optional(),
+			action: isly.string(["approve", "reject"]).optional(),
+		})
+		export const is = type.is
 	}
+	export const type = isly.object<Note>({
+		author: isly.string(),
+		created: isly.string(),
+		text: isly.string().optional(),
+		action: isly.string(["approve", "reject"]).optional(),
+	})
+	export const is = type.is
 }

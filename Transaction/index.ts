@@ -1,5 +1,6 @@
 import * as cryptly from "cryptly"
 import { isoly } from "isoly"
+import { isly } from "isly"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 import { Creatable as TransactionCreatable } from "./Creatable"
@@ -23,19 +24,23 @@ export interface Transaction extends TransactionCreatable {
 }
 
 export namespace Transaction {
-	export function is(value: any | Transaction): value is Transaction {
-		return (
-			typeof value == "object" &&
-			typeof value.organization == "string" &&
-			typeof value.accountId == "string" &&
-			cryptly.Identifier.is(value.id, 8) &&
-			Rail.is(value.account) &&
-			Rail.is(value.counterpart) &&
-			isoly.DateTime.is(value.posted) &&
-			typeof value.balance == "number" &&
-			Array.isArray(value.operations)
-		)
-	}
+	export const type = TransactionCreatable.type.extend<Transaction>({
+		organization: isly.string(),
+		accountId: isly.string(),
+		account: isly.fromIs("Rail", Rail.is),
+		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
+		reference: isly.fromIs("TransactionReference", TransactionReference.is).readonly().optional(),
+		posted: isly.string(),
+		transacted: isly.string().optional(),
+		balance: isly.number(),
+		operations: isly.array(isly.fromIs("Operation", Operation.is)),
+		status: isly.string(["created", "approved", "rejected", "processing", "finalized"]),
+		flags: isly.array(isly.string() || "review"),
+		notes: isly.array(isly.fromIs("TransactionNote", TransactionNote.is)),
+	})
+	export const is = type.is
+	export const flaw = type.flaw
+	export const get = type.get
 	export function fromCreatable(
 		organization: string,
 		accountId: string,
