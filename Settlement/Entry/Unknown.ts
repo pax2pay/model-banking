@@ -23,4 +23,7 @@ export namespace Unknown {
 		export const is = Unknown.is
 		export const flaw = Unknown.flaw
 	}
+	export function from(creatable: Creatable): Unknown {
+		return { ...creatable, status: "failed" }
+	}
 }

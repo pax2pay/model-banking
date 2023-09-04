@@ -24,6 +24,9 @@ export namespace Entry {
 	export const Summary = EntrySummary
 	export type Unknown = EntryUnknown
 	export const Unknown = EntryUnknown
+	export namespace Unknown {
+		export type Creatable = EntryUnknown.Creatable
+	}
 	export function from(
 		creatable: Entry.Creatable,
 		transaction: Transaction | gracely.Error | any,
