@@ -27,20 +27,14 @@ export namespace Entry {
 	export namespace Unknown {
 		export type Creatable = EntryUnknown.Creatable
 	}
-	export function from(
-		creatable: Entry.Creatable,
-		transaction: Transaction | gracely.Error | any,
-		authorization?: Authorization
-	): Entry {
-		return Transaction.is(transaction)
+	export function from(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): Entry {
+		return Transaction.is(transaction) && creatable.authorization
 			? {
 					status: "succeeded",
-					authorization,
 					...creatable,
 			  }
 			: {
 					status: "failed",
-					authorization,
 					...creatable,
 			  }
 	}
