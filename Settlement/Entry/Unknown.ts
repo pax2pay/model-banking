@@ -6,9 +6,6 @@ export interface Unknown extends Unknown.Creatable {
 }
 
 export namespace Unknown {
-	export const type = Creatable.type.extend<Unknown>({ status: isly.string(["succeeded", "failed"]) })
-	export const is = type.is
-	export const flaw = type.flaw
 	export interface Creatable {
 		type: "unknown"
 		authorization?: Authorization
@@ -26,4 +23,7 @@ export namespace Unknown {
 	export function from(creatable: Creatable): Unknown {
 		return { ...creatable, status: "failed" }
 	}
+	export const type = Creatable.type.extend<Unknown>({ status: isly.string(["succeeded", "failed"]) })
+	export const is = type.is
+	export const flaw = type.flaw
 }
