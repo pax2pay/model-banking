@@ -30,7 +30,7 @@ export namespace Entry {
 	export function from(
 		creatable: Entry.Creatable,
 		transaction: Transaction | gracely.Error | any,
-		authorization: Authorization
+		authorization?: Authorization
 	): Entry {
 		return Transaction.is(transaction)
 			? {
