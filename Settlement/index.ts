@@ -16,7 +16,7 @@ export interface Settlement {
 	processor: string
 	status: Status
 	expected: Settlement.Total
-	calculated?: Settlement.Total
+	outcome?: Settlement.Total
 	settled?: Settled
 	entries?: Settlement.Entry.Summary
 }
@@ -70,7 +70,7 @@ export namespace Settlement {
 		processor: isly.string(),
 		status: Status.type,
 		expected: Settlement.Total.type,
-		calculated: Settlement.Total.type.optional(),
+		outcome: Settlement.Total.type.optional(),
 		settled: Settled.type.optional(),
 		entries: Settlement.Entry.Summary.type.optional(),
 	})
