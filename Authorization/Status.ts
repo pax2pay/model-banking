@@ -11,13 +11,13 @@ export namespace Status {
 		error?: gracely.Error
 	}
 	export namespace Failed {
-		export function from(error: gracely.Error): Failed {
+		export function from(error?: gracely.Error): Failed {
 			let result: Status
-			if (error.error?.includes("Card with id"))
+			if (error?.error?.includes("Card with id"))
 				result = { code: "14", reason: "Invalid card number" }
-			else if (error.error?.includes("must correspond to card limit")) {
+			else if (error?.error?.includes("must correspond to card limit")) {
 				result = { code: "13", reason: "Invalid amount" }
-			} else if (error.error?.includes("Failed to reach account")) {
+			} else if (error?.error?.includes("Failed to reach account")) {
 				result = { code: "78", reason: "Invalid/nonexistent account specified (general)" }
 			} else if (gracely.client.InvalidContent.is(error) && error.content.description.includes("rules")) {
 				const reasons: string[] = error.content.details?.notes.reduce(

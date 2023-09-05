@@ -68,30 +68,39 @@ export namespace Authorization {
 		card: Card | gracely.Error,
 		transaction?: Transaction | gracely.Error
 	): Authorization {
-		return {
-			id: Identifier.generate(),
-			...{ status: "approved" },
-			...(gracely.Error.is(card)
-				? { card: { id: creatable.card }, status: { ...Status.Failed.from(card), error: card } }
-				: {
-						card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
-						account: card.account,
-				  }),
+		const partial: Pick<Authorization, "created" | "amount" | "merchant" | "acquirer" | "reference" | "description"> = {
 			created: isoly.DateTime.now(),
 			amount: creatable.amount,
 			merchant: creatable.merchant,
 			acquirer: creatable.acquirer,
 			reference: creatable.reference,
 			description: creatable.description,
-			...(!transaction
-				? {}
-				: gracely.Error.is(transaction)
-				? { ...Status.Failed.from(transaction), error: transaction }
-				: {
-						id: transaction.id,
-						transaction: { id: transaction?.id, posted: transaction?.posted, description: transaction.description },
-				  }),
 		}
+		let result: Authorization
+		if (gracely.Error.is(card))
+			result = {
+				id: Identifier.generate(),
+				status: Status.Failed.from(card),
+				...partial,
+				card: { id: creatable.card },
+			}
+		else if (gracely.Error.is(transaction) || !transaction)
+			result = {
+				id: Identifier.generate(),
+				status: Status.Failed.from(transaction),
+				...partial,
+				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
+			}
+		else
+			result = {
+				id: transaction.id,
+				status: "approved",
+				...partial,
+				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
+				account: card.account,
+				transaction: { id: transaction?.id, posted: transaction?.posted, description: transaction.description },
+			}
+		return result
 	}
 
 	export function toTransaction(authorization: Authorization, card: Card): Transaction.Creatable {
