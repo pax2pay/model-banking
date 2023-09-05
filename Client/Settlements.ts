@@ -15,8 +15,8 @@ export class Settlements extends rest.Collection<gracely.Error> {
 	async fetch(id: string, created: isoly.DateTime): Promise<Settlement | gracely.Error> {
 		return this.client.get<Settlement>(`/settlement/${id}?created=${created}`)
 	}
-	async list(): Promise<Settlement.Summary[] | gracely.Error> {
-		return this.client.get<Settlement.Summary[] & { cursor?: string | undefined }>(`/settlement`)
+	async list(): Promise<Settlement[] | gracely.Error> {
+		return this.client.get<Settlement[] & { cursor?: string | undefined }>(`/settlement`)
 	}
 	async remove(settlement: string): Promise<Settlement | gracely.Error> {
 		return this.client.delete<Settlement>(`/settlement/${settlement}`)

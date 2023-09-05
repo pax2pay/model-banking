@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { Supplier as modelSupplier } from "../Supplier"
+import { Supplier as modelSupplier } from "./Supplier"
 
 export type Realm = typeof Realm.realms[number]
 
@@ -7,6 +7,7 @@ export namespace Realm {
 	export const realms = ["test", "testUK", "uk", "eu", "upcheck"] as const
 	export const type: isly.Type<Realm> = isly.string(realms)
 	export const is = type.is
+	export const flaw = type.flaw
 	export function toString(): string {
 		return realms.toString().replaceAll(",", ", ") + "."
 	}

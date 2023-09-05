@@ -1,17 +1,13 @@
-import { isoly } from "isoly"
+import { Amounts } from "../../Amounts"
 
-export type Balance = Partial<Record<isoly.Currency, number>>
+export type Balance = Amounts
 
 export type Result = { account: string; balance: number }
 
 export namespace Balance {
-	export function is(value: Balance | any): value is Balance {
-		return (
-			value &&
-			typeof value == "object" &&
-			Object.entries(value).every(([k, v]) => isoly.Currency.is(k) && typeof v == "number")
-		)
-	}
+	export const type = Amounts.type
+	export const is = Amounts.is
+	export const flaw = Amounts.flaw
 }
 export namespace Result {
 	export function is(value: Result | any): value is Result {

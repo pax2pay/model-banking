@@ -3,7 +3,7 @@ import { isly } from "isly"
 
 export interface Settlement {
 	type: "settlement"
-	status: "capture" | "cancel" | "refund"
+	status: "capture" | "cancel" | "refund" | "unknown"
 	transaction?: string
 	created: isoly.DateTime
 }
@@ -11,7 +11,7 @@ export interface Settlement {
 export namespace Settlement {
 	export const type = isly.object<Settlement>({
 		type: isly.string("settlement"),
-		status: isly.union(isly.string("capture"), isly.string("cancel"), isly.string("refund")),
+		status: isly.union(isly.string("capture"), isly.string("cancel"), isly.string("refund"), isly.string("unknown")),
 		transaction: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})

@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Amount } from "../Amount"
 import { Rule, type as ruleType } from "../Rule/Rule"
 import { Expiry } from "./Expiry"
 import { Meta } from "./Meta"
@@ -13,7 +14,7 @@ export interface Creatable {
 		expiry: Expiry
 		holder: string
 	}
-	limit: [isoly.Currency, number]
+	limit: Amount
 	rules?: Rule[]
 	meta?: Meta
 }

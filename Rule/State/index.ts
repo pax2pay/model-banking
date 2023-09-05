@@ -19,7 +19,7 @@ export namespace State {
 	export function from(
 		account: ModelAccount,
 		transaction: ModelTransaction,
-		authorization?: ModelAuthorization,
+		authorization?: ModelAuthorization.Creatable,
 		card?: ModelCard
 	): State {
 		return {
