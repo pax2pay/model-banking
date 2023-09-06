@@ -2,7 +2,7 @@ import * as cryptly from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Operation } from "../Operation"
-import { Rail } from "../Rail"
+import { Rail as RailAddress } from "../Rail"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
@@ -11,7 +11,7 @@ import { Reference as TransactionReference } from "./Reference"
 export interface Transaction extends TransactionCreatable {
 	organization: string
 	accountId: string
-	account: Rail
+	account: RailAddress
 	readonly id: cryptly.Identifier
 	readonly reference?: TransactionReference
 	readonly posted: isoly.DateTime
@@ -21,17 +21,17 @@ export interface Transaction extends TransactionCreatable {
 	status: "created" | "approved" | "rejected" | "processing" | "finalized"
 	flags: ("review" | string)[]
 	notes: TransactionNote[]
-	scheme?: Transaction.Scheme
+	rail?: Transaction.Rail
 }
 
 export namespace Transaction {
-	export const schemes = ["fasterpayment", "chaps", "transfer", "internal"]
-	export type Scheme = typeof schemes[number]
-	export const scheme = isly.string(schemes)
+	export const rails = ["fasterpayment", "chaps", "transfer", "internal"]
+	export type Rail = typeof rails[number]
+	export const rail = isly.string(rails)
 	export const type = TransactionCreatable.type.extend<Transaction>({
 		organization: isly.string(),
 		accountId: isly.string(),
-		account: isly.fromIs("Rail", Rail.is),
+		account: isly.fromIs("Rail", RailAddress.is),
 		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
 		reference: isly.fromIs("TransactionReference", TransactionReference.is).readonly().optional(),
 		posted: isly.string(),
@@ -41,7 +41,7 @@ export namespace Transaction {
 		status: isly.string(["created", "approved", "rejected", "processing", "finalized"]),
 		flags: isly.array(isly.string() || "review"),
 		notes: isly.array(isly.fromIs("TransactionNote", TransactionNote.is)),
-		scheme: scheme.optional(),
+		rail: rail.optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
@@ -49,10 +49,10 @@ export namespace Transaction {
 	export function fromCreatable(
 		organization: string,
 		accountId: string,
-		account: Rail,
+		account: RailAddress,
 		transaction: Creatable & { operations: Operation.Creatable[] },
 		result: number,
-		scheme?: Scheme
+		rail?: Rail
 	): Transaction {
 		const id = cryptly.Identifier.generate(8)
 		const timestamp = isoly.DateTime.now()
@@ -72,7 +72,7 @@ export namespace Transaction {
 			status: "created",
 			flags: [],
 			notes: [],
-			scheme: scheme,
+			rail: rail,
 		}
 	}
 
