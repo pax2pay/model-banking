@@ -8,7 +8,6 @@ describe("library", () => {
 			pax2pay.Rail.Scan.is(pax2pay.Rail.Scan.fromIban({ type: "iban", iban: "GB19CLRB04081800000011", holder: "ACME" }))
 		).toEqual(true)
 	})
-
 	const body = {
 		account: {
 			type: "iban",
