@@ -1,7 +1,8 @@
 import { gracely } from "gracely"
 import { isly } from "isly"
-import { Authorization } from "../../Authorization"
+import { Amount } from "../../Amount"
 import { Transaction } from "../../Transaction"
+import { Total } from "../Total"
 import { Cancel as EntryCancel } from "./Cancel"
 import { Capture as EntryCapture } from "./Capture"
 import { Creatable as EntryCreatable } from "./Creatable"
@@ -26,6 +27,11 @@ export namespace Entry {
 	export const Unknown = EntryUnknown
 	export namespace Unknown {
 		export type Creatable = EntryUnknown.Creatable
+	}
+	export function compile(entry: Entry): Total {
+		return entry.type == "unknown"
+			? Total.initiate()
+			: Total.initiate({ amount: Amount.toAmounts(entry.amount), fee: entry.fee })
 	}
 	export function from(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): Entry {
 		return Transaction.is(transaction) && creatable.authorization
