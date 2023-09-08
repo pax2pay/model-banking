@@ -1,9 +1,11 @@
 import * as cryptly from "cryptly"
 import { isoly } from "isoly"
+import { Rail } from "../Rail"
 import { Creatable as OperationCreatable } from "./Creatable"
 
 export interface Operation extends OperationCreatable {
 	id: cryptly.Identifier
+	rail: Rail
 	counter: number
 	created: isoly.DateTime
 }
@@ -17,11 +19,12 @@ export namespace Operation {
 			OperationCreatable.is({ ...value })
 		)
 	}
-	export function fromCreatable(transaction: cryptly.Identifier, operation: Creatable): Operation {
+	export function fromCreatable(transaction: cryptly.Identifier, rail: Rail, creatable: Creatable): Operation {
 		const timestamp = isoly.DateTime.now()
 		return {
-			...operation,
+			...creatable,
 			id: transaction,
+			rail,
 			counter: 0,
 			created: timestamp,
 		}

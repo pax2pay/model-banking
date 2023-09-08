@@ -10,8 +10,8 @@ import { Reference as TransactionReference } from "./Reference"
 
 export interface Transaction extends TransactionCreatable {
 	organization: string
-	accountId: string
-	account: Rail
+	account: string
+	rail: Rail
 	readonly id: cryptly.Identifier
 	readonly reference?: TransactionReference
 	readonly posted: isoly.DateTime
