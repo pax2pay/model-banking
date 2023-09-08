@@ -31,7 +31,7 @@ export namespace Status {
 				}
 			} else
 				result = { code: "05", reason: "Do not honor" } //default
-			return result
+			return { ...result, error }
 		}
 	}
 	export const type = isly.union(
