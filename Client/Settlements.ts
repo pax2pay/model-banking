@@ -24,4 +24,10 @@ export class Settlements extends rest.Collection<gracely.Error> {
 	async update(settlement: string): Promise<Settlement | gracely.Error> {
 		return this.client.patch<Settlement>(`/settlement/${settlement}`, {})
 	}
+	async listEntries(settlement: string): Promise<Settlement.Entry[] | gracely.Error> {
+		return this.client.get<Settlement.Entry[]>(`/settlement/${settlement}/entry`)
+	}
+	async listFailedEntries(settlement: string): Promise<Settlement.Entry[] | gracely.Error> {
+		return this.client.get<Settlement.Entry[]>(`/settlement/${settlement}/entry/failed`)
+	}
 }
