@@ -4,7 +4,12 @@ import { Balances } from "../Balances"
 
 export type Status = "pending" | "success" | "failed" //| "cancelled"
 
-type ChangeType = { type: "add" | "subtract"; amount: number; status: Status; result?: number }
+interface ChangeType {
+	type: "add" | "subtract"
+	amount: number
+	status: Status
+	result?: number
+}
 export type Change = Partial<Record<Balances.Entry, ChangeType>>
 
 export namespace Change {

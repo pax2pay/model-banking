@@ -1,7 +1,7 @@
 import { Address as RailAddress } from "./Address"
 
 export interface Rail {
-	name: "faster payments" | "mastercard"
+	name: string
 	address: Rail.Address
 }
 
