@@ -17,7 +17,7 @@ export namespace Creatable {
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		amount: isly.number(),
 		description: isly.string(),
-		operations: isly.array(isly.fromIs("Operation.Creatable", Operation.Creatable.is)),
+		operations: isly.array(isly.fromIs("Operation.Creatable", Operation.Creatable.is)).optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
