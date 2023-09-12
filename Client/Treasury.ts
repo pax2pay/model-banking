@@ -11,11 +11,11 @@ export class Treasury extends rest.Collection<gracely.Error> {
 	}
 
 	async change(currency: isoly.Currency, changes: Result[]): Promise<gracely.Result> {
-		return this.client.patch(`/fiat/treasury/${currency}/fiat`, changes)
+		return this.client.patch(`/treasury/${currency}/fiat`, changes)
 	}
 	async fetch(hour?: isoly.DateTime): Promise<TreasuryModel | gracely.Error> {
-		const path = hour ? `?time=${hour}` : ""
-		return this.client.get<TreasuryModel>(`/fiat/treasury${path}`)
+		const query = hour ? `?time=${hour}` : ""
+		return this.client.get<TreasuryModel>(`/treasury${query}`)
 	}
 	async listTransactions(accountId: string): Promise<TreasuryModel.Transaction[] | gracely.Error> {
 		return this.client.get<TreasuryModel.Transaction[]>(`/treasury/account/${accountId}/transaction`)
