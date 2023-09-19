@@ -1,10 +1,19 @@
+import { isoly } from "isoly"
 import { Account as TreasuryAccount } from "./Account"
 import { Balance as TreasuryBalance } from "./Balance"
 import { Fiat as TreasuryFiat } from "./Fiat"
 import { Transaction as TreasuryTransaction } from "./Transaction"
-export { Treasury } from "./Treasury"
 
+export { Treasury } from "./Treasury"
 export namespace Treasury {
+	export function key(hour?: isoly.DateTime): isoly.DateTime {
+		const now = isoly.DateTime.now()
+		const latest = isoly.DateTime.getMinute(now) > 15 ? now : isoly.DateTime.previousHour(now)
+		return isoly.DateTime.truncate(
+			isoly.DateTime.invert(hour && isoly.DateTime.epoch(latest) > isoly.DateTime.epoch(hour) ? hour : latest),
+			"hours"
+		)
+	}
 	export type Account = TreasuryAccount
 	export type Transaction = TreasuryTransaction
 	export type Balance = TreasuryBalance
