@@ -17,15 +17,7 @@ export namespace Operation {
 		counter: isly.number(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
-	export function is(value: any | Operation): value is Operation {
-		return (
-			typeof value == "object" &&
-			cryptly.Identifier.is(value.id, 8) &&
-			typeof value.counter == "number" &&
-			isoly.DateTime.is(value.created) &&
-			OperationCreatable.is({ ...value })
-		)
-	}
+	export const is = type.is
 	export function fromCreatable(transaction: Transaction, creatable: Creatable): Operation {
 		const timestamp = isoly.DateTime.now()
 		return {
