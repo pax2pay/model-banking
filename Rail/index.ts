@@ -5,7 +5,7 @@ import { Internal as RailInternal } from "./internal"
 import { PaxGiro as RailPaxGiro } from "./PaxGiro"
 import { Scan as RailScan } from "./Scan"
 
-export type Rail = (RailPaxGiro | RailInternal | RailIban | RailScan | RailCard) & {
+export type Rail = (RailPaxGiro | RailInternal | RailIban | RailScan | RailCard | RailCard.Counterpart) & {
 	reference?: { supplier: string; value: string }
 }
 
@@ -33,13 +33,13 @@ export namespace Rail {
 				result = `pxg-${rail.identifier}`
 				break
 			case "internal":
-				result = `internal-${rail.identifier}`
+				result = `internal-${rail.id}`
 				break
 			case "scan":
 				result = `scan-${rail.sort}-${rail.account}`
 				break
 			case "card":
-				result = `${rail.type}-${rail.id}`
+				result = "id" in rail ? `${rail.type}-${rail.id}` : `${rail.type}-merchant-${rail.merchant.id}`
 				break
 		}
 		return result
@@ -54,13 +54,13 @@ export namespace Rail {
 				result = `${rail.identifier}`
 				break
 			case "internal":
-				result = `${rail.identifier}`
+				result = `${rail.id}`
 				break
 			case "scan":
 				result = `${rail.sort} ${rail.account}`
 				break
 			case "card":
-				result = `${rail.type}-${rail.id}`
+				result = "id" in rail ? `${rail.type}-${rail.id}` : `${rail.type}-merchant-${rail.merchant.id}`
 				break
 		}
 		return result

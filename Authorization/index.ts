@@ -116,8 +116,6 @@ export namespace Authorization {
 				last4: card.details.last4,
 				holder: card.details.holder,
 				id: card.id,
-				merchant: authorization.merchant,
-				acquirer: authorization.acquirer,
 			},
 		}
 	}
