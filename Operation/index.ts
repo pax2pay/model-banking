@@ -1,5 +1,6 @@
 import * as cryptly from "cryptly"
 import { isoly } from "isoly"
+import { isly } from "isly"
 import { Rail } from "../Rail"
 import type { Transaction } from "../Transaction"
 import { Creatable as OperationCreatable } from "./Creatable"
@@ -11,6 +12,11 @@ export interface Operation extends OperationCreatable {
 	// signature: string TODO: add chained signatures.
 }
 export namespace Operation {
+	export const type = OperationCreatable.type.extend<Operation>({
+		transaction: isly.object({ id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is), rail: Rail.type }),
+		counter: isly.number(),
+		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+	})
 	export function is(value: any | Operation): value is Operation {
 		return (
 			typeof value == "object" &&
