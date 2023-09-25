@@ -25,7 +25,8 @@ export namespace Creatable {
 	export const type = isly.object<Creatable>({
 		account: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
-		change: Change.type,
+		changes: Changes.type,
+		type: isly.string(types),
 	})
 	export const is = type.is
 }

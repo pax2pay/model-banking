@@ -1,11 +1,11 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Card } from "../Card"
-import { Supplier } from "../Supplier"
+import { Card } from "./Card"
+import { Supplier } from "./Supplier"
 
-export type Counters = Partial<Record<isoly.Currency, Partial<Record<Counters.Counter, number>>>>
+export type Counterbalances = Partial<Record<isoly.Currency, Partial<Record<Counterbalances.Counter, number>>>>
 
-export namespace Counters {
+export namespace Counterbalances {
 	export const entries = [
 		...Card.Stack.stacks.flatMap(s => ["fee." + s, "settle." + s] as const),
 		...Supplier.names.flatMap(s => ["incoming." + s, "outgoing." + s] as const),

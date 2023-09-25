@@ -8,7 +8,4 @@ describe("balances", () => {
 		}
 		expect(pax2pay.Balances.is(balances)).toEqual(true)
 	})
-	it("balances.counter.is", () => {
-		console.log("counters: ", pax2pay.Balances.Counters.entries)
-	})
 })
