@@ -1,79 +1,31 @@
 import * as cryptly from "cryptly"
 import { isoly } from "isoly"
-import { Balances } from "../Balances"
-
-export type Status = "pending" | "success" | "failed" //| "cancelled"
-
-type ChangeType = { type: "add" | "subtract"; amount: number; status: Status; result?: number }
-export type Change = Partial<Record<Balances.Entry, ChangeType>>
-
-export namespace Change {
-	export function is(value: any | Change): value is Change {
-		return (
-			typeof value == "object" &&
-			(value.actual == undefined || isChangeType(value.actual)) &&
-			(value.incomingReserved == undefined || isChangeType(value.incomingReserved)) &&
-			(value.outgoingReserved == undefined || isChangeType(value.outgoingReserved)) &&
-			(!!value.incomingReserved || !!value.outgoingReserved || !!value.actual)
-		)
-	}
-	export function isChangeType(value: ChangeType | any): value is ChangeType {
-		return (
-			typeof value == "object" &&
-			typeof value.amount == "number" &&
-			value.amount > 0 &&
-			(value.type == "add" || value.type == "subtract") &&
-			typeof value.status == "string" &&
-			(value.status == "pending" || value.status == "success" || value.status == "failed")
-		)
-	}
-	export type Reservation = { reserved: { type: "add"; amount: number } }
-	export type Deposit = { actual: { type: "add"; amount: number } }
-	export type Finalization = {
-		reserved: { type: "subtract"; amount: number }
-		actual: { type: "subtract"; amount: number }
-	}
-	export function isReservation(value: Reservation | any): value is Reservation {
-		return (
-			Change.is({ ...value }) &&
-			value.actual == undefined &&
-			typeof value.reserved == "object" &&
-			value.reserved.type == "add"
-		)
-	}
-	export function isDeposit(value: Deposit | any): value is Deposit {
-		return (
-			Change.is({ ...value }) &&
-			value.reserved == undefined &&
-			typeof value.actual == "object" &&
-			value.actual.type == "add"
-		)
-	}
-	export function isFinalization(value: Finalization | any): value is Finalization {
-		return (
-			Change.is({ ...value }) &&
-			typeof value.actual == "object" &&
-			value.actual.type == "subtract" &&
-			typeof value.reserved == "object" &&
-			value.reserved.type == "subtract"
-		)
-	}
-}
+import { isly } from "isly"
+import { Changes } from "./Changes"
 
 export interface Creatable {
 	account: cryptly.Identifier
 	currency: isoly.Currency
-	change: Change
+	changes: Changes
+	type: Creatable.Type
 }
 
 export namespace Creatable {
-	export function is(value: any | Creatable): value is Creatable {
-		return (
-			typeof value == "object" &&
-			cryptly.Identifier.is(value.account) &&
-			isoly.Currency.is(value.currency) &&
-			typeof value.change == "object" &&
-			Change.is(value.change)
-		)
-	}
+	export const types = [
+		"authorization",
+		"settlement",
+		"incoming",
+		"finalizeIncoming",
+		"outgoing",
+		"finalizeOutgoing",
+		"deposit",
+		"remove",
+	] as const
+	export type Type = typeof types[number]
+	export const type = isly.object<Creatable>({
+		account: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is),
+		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
+		change: Change.type,
+	})
+	export const is = type.is
 }
