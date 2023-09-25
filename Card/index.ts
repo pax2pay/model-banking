@@ -10,6 +10,7 @@ import { Meta as CardMeta } from "./Meta"
 import { Operation as CardOperation } from "./Operation"
 import { Preset as CardPreset } from "./Preset"
 import { Scheme as CardScheme } from "./Scheme"
+import { Stack as CardStack } from "./Stack"
 
 export interface Card {
 	id: string
@@ -76,4 +77,6 @@ export namespace Card {
 	export const Operation = CardOperation
 	export type Scheme = CardScheme
 	export const Scheme = CardScheme
+	export type Stack = CardStack
+	export const Stack = CardStack
 }
