@@ -1,6 +1,7 @@
 import * as cryptly from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Identifier } from "../Identifier"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 import { Creatable as TransactionCreatable } from "./Creatable"
@@ -48,20 +49,15 @@ export namespace Transaction {
 		transaction: Creatable & { operations: Operation.Creatable[] },
 		result: number
 	): Transaction {
-		const id = cryptly.Identifier.generate(8)
-		const timestamp = isoly.DateTime.now()
-		if ("id" in transaction)
-			delete transaction.id
-		if ("posted" in transaction)
-			delete transaction.posted
+		const id = Identifier.generate()
 		return {
-			organization: organization,
-			accountId: accountId,
-			account: account,
-			id: id,
-			posted: timestamp,
+			organization,
+			accountId,
+			account,
 			balance: result,
 			...transaction,
+			id,
+			posted: isoly.DateTime.now(),
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
 			status: "created",
 			flags: [],
@@ -75,17 +71,13 @@ export namespace Transaction {
 		transaction: Incoming & { operations: Operation.Creatable[] },
 		result: number
 	): Transaction {
-		const id = cryptly.Identifier.generate(8)
-		if ("id" in transaction)
-			delete transaction.id
-		if ("transacted" in transaction)
-			delete transaction.transacted
+		const id = Identifier.generate()
 		return {
-			organization: organization,
-			accountId: accountId,
-			id: id,
+			organization,
+			accountId,
 			balance: result,
 			...transaction,
+			id,
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
 			status: "created",
 			flags: [],
