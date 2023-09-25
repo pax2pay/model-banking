@@ -9,7 +9,7 @@ export interface Operation extends OperationCreatable {
 	transaction: { id: cryptly.Identifier; rail: Rail }
 	counter: number
 	created: isoly.DateTime
-	// signature: string TODO: add chained signatures.
+	// signature: string //TODO: add chained signatures.
 }
 export namespace Operation {
 	export const type = OperationCreatable.type.extend<Operation>({
