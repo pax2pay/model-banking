@@ -5,9 +5,7 @@ import { Internal as RailInternal } from "./internal"
 import { PaxGiro as RailPaxGiro } from "./PaxGiro"
 import { Scan as RailScan } from "./Scan"
 
-export type Rail = (RailPaxGiro | RailInternal | RailIban | RailScan | RailCard) & {
-	reference?: { supplier: string; value: string }
-}
+export type Rail = RailPaxGiro | RailInternal | RailIban | RailScan | RailCard
 
 export namespace Rail {
 	export const rails = ["paxgiro", "internal", "iban", "scan", "card"]
