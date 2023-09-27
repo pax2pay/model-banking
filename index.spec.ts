@@ -53,7 +53,7 @@ describe("library", () => {
 			notes: [],
 			operations: [
 				{
-					transaction: "g7NWpbFl",
+					transaction: "V1uV3dB8",
 					created: "2023-03-17T12:26:10.575Z",
 					currency: "GBP",
 					changes: {
@@ -64,7 +64,7 @@ describe("library", () => {
 					account: "12230000",
 				},
 				{
-					transaction: "hiwWqILu",
+					transaction: "V1uV3dB8",
 					created: "2023-03-17T12:27:08.608Z",
 					currency: "GBP",
 					changes: {
