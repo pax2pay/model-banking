@@ -6,4 +6,5 @@ export namespace Status {
 	export const values = ["pending", "success", "failed"] as const
 	export const type = isly.string(values)
 	export const is = type.is
+	export const flaw = type.flaw
 }

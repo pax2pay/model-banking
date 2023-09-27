@@ -15,6 +15,7 @@ export namespace Operation {
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
 	export const is = type.is
+	export const flaw = type.flaw
 	export function fromCreatable(transaction: string, creatable: Creatable): Operation {
 		const timestamp = isoly.DateTime.now()
 		return {
@@ -24,10 +25,6 @@ export namespace Operation {
 			created: timestamp,
 		}
 	}
-	// export function validate(operation: Operation): boolean {
-	// 	return operation.change.actual.
-	// }
-
 	export type Creatable = OperationCreatable
 	export const Creatable = OperationCreatable
 }

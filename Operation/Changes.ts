@@ -8,4 +8,5 @@ export type Changes = Partial<Record<Balances.Entry | Counterbalances.Counter, C
 export namespace Changes {
 	export const type = isly.record<Changes>(isly.string([...Balances.entries, ...Counterbalances.entries]), Change.type)
 	export const is = type.is
+	export const flaw = type.flaw
 }

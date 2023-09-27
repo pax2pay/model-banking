@@ -29,4 +29,5 @@ export namespace Creatable {
 		type: isly.string(types),
 	})
 	export const is = type.is
+	export const flaw = type.flaw
 }
