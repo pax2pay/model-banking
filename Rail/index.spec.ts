@@ -1,7 +1,7 @@
 import { pax2pay } from "../index"
 
-describe("library", () => {
-	it("scan from iban", () => {
+describe("Rail", () => {
+	it("compare", () => {
 		expect(pax2pay.Rail.compare([{ ...iban1 }, { ...iban1 }])).toBeTruthy()
 		expect(pax2pay.Rail.compare([{ ...iban2 }, { ...iban2 }])).toBeTruthy()
 		expect(pax2pay.Rail.compare([{ ...scan1 }, { ...scan1 }])).toBeTruthy()
