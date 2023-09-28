@@ -1,32 +1,30 @@
-import * as cryptly from "cryptly"
 import { isoly } from "isoly"
+import { isly } from "isly"
 import { Creatable as OperationCreatable } from "./Creatable"
 
 export interface Operation extends OperationCreatable {
-	id: cryptly.Identifier
+	transaction: string
 	counter: number
 	created: isoly.DateTime
+	// signature: string //TODO: add chained signatures.
 }
 export namespace Operation {
-	export function is(value: any | Operation): value is Operation {
-		return (
-			typeof value == "object" &&
-			cryptly.Identifier.is(value.id, 8) &&
-			typeof value.counter == "number" &&
-			isoly.DateTime.is(value.created) &&
-			OperationCreatable.is({ ...value })
-		)
-	}
-	export function fromCreatable(transaction: cryptly.Identifier, operation: Creatable): Operation {
+	export const type = OperationCreatable.type.extend<Operation>({
+		transaction: isly.string(),
+		counter: isly.number(),
+		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+	})
+	export const is = type.is
+	export const flaw = type.flaw
+	export function fromCreatable(transaction: string, creatable: Creatable): Operation {
 		const timestamp = isoly.DateTime.now()
 		return {
-			...operation,
-			id: transaction,
+			...creatable,
+			transaction,
 			counter: 0,
 			created: timestamp,
 		}
 	}
-
 	export type Creatable = OperationCreatable
 	export const Creatable = OperationCreatable
 }

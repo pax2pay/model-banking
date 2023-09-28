@@ -40,46 +40,47 @@ describe("library", () => {
 		expect(isoly.DateTime.is("2023-05-17T07:24:16.72Z")).toBeFalsy()
 	})
 	it("transaction is", () => {
-		expect(
-			pax2pay.Transaction.is({
-				account: { type: "internal", identifier: "6gpfb4Bf" },
-				accountId: "6gpfb4Bf",
-				amount: -1,
-				balance: 6993,
-				counterpart: { identifier: "ENycgXna", type: "internal" },
-				currency: "GBP",
-				description: "test",
-				id: "V1uV3dB8",
-				flags: [],
-				notes: [],
-				operations: [
-					{
-						id: "g7NWpbFl",
-						created: "2023-03-17T12:26:10.575Z",
-						currency: "GBP",
-						change: {
-							outgoingReserved: { amount: 1, result: 1, status: "success", type: "add" },
-						},
-						counter: 1,
-						account: "12230000",
+		const transaction: pax2pay.Transaction = {
+			account: { type: "internal", identifier: "6gpfb4Bf" },
+			accountId: "6gpfb4Bf",
+			amount: -1,
+			balance: 6993,
+			counterpart: { identifier: "ENycgXna", type: "internal" },
+			currency: "GBP",
+			description: "test",
+			id: "V1uV3dB8",
+			flags: [],
+			notes: [],
+			operations: [
+				{
+					transaction: "V1uV3dB8",
+					created: "2023-03-17T12:26:10.575Z",
+					currency: "GBP",
+					changes: {
+						outgoingReserved: { amount: 1, result: 1, status: "success", type: "add" },
 					},
-					{
-						id: "hiwWqILu",
-						created: "2023-03-17T12:27:08.608Z",
-						currency: "GBP",
-						change: {
-							actual: { amount: 1, result: 6993, status: "success", type: "subtract" },
-							outgoingReserved: { amount: 1, result: 0, status: "success", type: "subtract" },
-						},
-						counter: 2,
-						account: "12230000",
+					type: "outgoing",
+					counter: 1,
+					account: "12230000",
+				},
+				{
+					transaction: "V1uV3dB8",
+					created: "2023-03-17T12:27:08.608Z",
+					currency: "GBP",
+					changes: {
+						actual: { amount: 1, result: 6993, status: "success", type: "subtract" },
+						outgoingReserved: { amount: 1, result: 0, status: "success", type: "subtract" },
 					},
-				],
-				organization: "RBhssR36",
-				posted: "2023-03-17T12:26:10.575Z",
-				status: "finalized",
-				transacted: "2023-03-17T12:27:08.624Z",
-			})
-		).toBeTruthy()
+					type: "finalizeOutgoing",
+					counter: 2,
+					account: "12230000",
+				},
+			],
+			organization: "RBhssR36",
+			posted: "2023-03-17T12:26:10.575Z",
+			status: "finalized",
+			transacted: "2023-03-17T12:27:08.624Z",
+		}
+		expect(pax2pay.Transaction.is(transaction)).toBeTruthy()
 	})
 })

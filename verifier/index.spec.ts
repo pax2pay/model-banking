@@ -59,14 +59,15 @@ const transaction: Transaction = {
 		{
 			account: "WzauRHBO",
 			currency: "USD",
-			change: {
+			changes: {
 				outgoingReserved: {
 					type: "add",
 					amount: 1,
 					status: "pending",
 				},
 			},
-			id: "i9knT4yR",
+			transaction: "i9knT4yR",
+			type: "authorization",
 			counter: 0,
 			created: "2023-08-29T13:28:37.269Z",
 		},
