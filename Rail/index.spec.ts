@@ -14,14 +14,17 @@ describe("Rail", () => {
 		expect(pax2pay.Rail.compare([{ ...card1 }, { ...card2 }])).toBeFalsy()
 		expect(pax2pay.Rail.compare([{ ...card1 }, { ...iban2 }])).toBeFalsy()
 		expect(pax2pay.Rail.compare([{ ...card1 }, { ...scan2 }])).toBeFalsy()
+		expect(pax2pay.Rail.compare([{ ...paxgiro }, { ...scan2 }])).toBeFalsy()
+		expect(pax2pay.Rail.compare([{ ...paxgiro }, { ...internal }])).toBeFalsy()
 	})
 })
+const internal: pax2pay.Rail.Internal = { type: "internal", identifier: "aaaaa" }
+const paxgiro: pax2pay.Rail.PaxGiro = { type: "paxgiro", identifier: "aaaaa" }
 const iban1: pax2pay.Rail.Iban = {
 	holder: "Janne",
 	type: "iban",
 	iban: "ivan",
 }
-
 const iban2: pax2pay.Rail.Iban = {
 	holder: "Boose",
 	type: "iban",
@@ -33,7 +36,6 @@ const scan1: pax2pay.Rail.Scan = {
 	sort: "scan1",
 	account: "account1",
 }
-
 const scan2: pax2pay.Rail.Scan = {
 	holder: "Boose",
 	type: "scan",
@@ -62,7 +64,6 @@ const card1: pax2pay.Rail.Card = {
 		number: "string",
 	},
 }
-
 const card2: pax2pay.Rail.Card = {
 	...card1,
 	expiry: [23, 11],
