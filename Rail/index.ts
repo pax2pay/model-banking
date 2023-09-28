@@ -11,6 +11,9 @@ export namespace Rail {
 	export const rails = ["paxgiro", "internal", "iban", "scan", "card"]
 	export type Type = typeof rails[number]
 	export const type = isly.string(rails)
+	export function compare(rails: [Rail, Rail]): boolean {
+		return Object.entries(rails[0]).every(([key, value]: [keyof Rail, Rail[keyof Rail]]) => value == rails[1][key])
+	}
 	export function parse(value: string): Rail | undefined {
 		let result: Rail | undefined
 		const splitted = value.split("-")
