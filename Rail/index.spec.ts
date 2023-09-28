@@ -13,7 +13,6 @@ describe("Rail", () => {
 		expect(pax2pay.Rail.compare([{ ...iban1 }, { ...iban2 }])).toBeFalsy()
 		expect(pax2pay.Rail.compare([{ ...card1 }, { ...card2 }])).toBeFalsy()
 		expect(pax2pay.Rail.compare([{ ...card1 }, { ...iban2 }])).toBeFalsy()
-		expect(pax2pay.Rail.compare([{ ...card1 }, { ...iban2 }])).toBeFalsy()
 		expect(pax2pay.Rail.compare([{ ...card1 }, { ...scan2 }])).toBeFalsy()
 	})
 })
