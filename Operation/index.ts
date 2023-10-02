@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Changes as OperationChanges } from "./Changes"
 import { Creatable as OperationCreatable } from "./Creatable"
 
 export interface Operation extends OperationCreatable {
@@ -27,4 +28,9 @@ export namespace Operation {
 	}
 	export type Creatable = OperationCreatable
 	export const Creatable = OperationCreatable
+	export type Changes = OperationChanges
+	export const Changes = OperationChanges
+	export namespace Changes {
+		export type Entry = OperationChanges.Entry
+	}
 }
