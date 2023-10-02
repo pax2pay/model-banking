@@ -31,6 +31,6 @@ export namespace Operation {
 	export type Changes = OperationChanges
 	export const Changes = OperationChanges
 	export namespace Changes {
-		export type Values = OperationChanges.Entry
+		export type Entry = OperationChanges.Entry
 	}
 }
