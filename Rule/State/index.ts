@@ -1,4 +1,5 @@
 import { Account as ModelAccount } from "../../Account"
+import { Amounts } from "../../Amounts"
 import { Authorization as ModelAuthorization } from "../../Authorization"
 import { Card as ModelCard } from "../../Card"
 import { Transaction as ModelTransaction } from "../../Transaction"
@@ -18,12 +19,14 @@ export interface State {
 export namespace State {
 	export function from(
 		account: ModelAccount,
+		transactionRate: number,
+		spendingRate: Amounts,
 		transaction: ModelTransaction,
 		authorization?: ModelAuthorization.Creatable,
 		card?: ModelCard
 	): State {
 		return {
-			account: Account.from(account),
+			account: Account.from(account, transactionRate, spendingRate),
 			authorization: authorization && Authorization.from(authorization),
 			card: card && Card.from(card),
 			transaction: Transaction.from(transaction),
