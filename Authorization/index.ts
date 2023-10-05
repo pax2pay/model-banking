@@ -110,12 +110,8 @@ export namespace Authorization {
 			description: authorization.description,
 			counterpart: {
 				type: "card",
-				scheme: "mastercard",
-				iin: card.details.iin,
-				expiry: card.details.expiry,
-				last4: card.details.last4,
-				holder: card.details.holder,
-				id: card.id,
+				acquirer: authorization.acquirer,
+				merchant: authorization.merchant,
 			},
 		}
 	}

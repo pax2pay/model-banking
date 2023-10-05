@@ -4,9 +4,13 @@ import { Card as ModelCard } from "../Card"
 import { Merchant } from "../Merchant"
 
 export interface Card {
-	name: "mastercard" | "visa"
 	type: "card"
-	card: { scheme: ModelCard.Scheme; id: string; iin: string; last4: string; expiry: ModelCard.Expiry; holder: string }
+	scheme: ModelCard.Scheme
+	id: string
+	iin: string
+	last4: string
+	expiry: ModelCard.Expiry
+	holder: string
 }
 interface CardCounterpart {
 	type: "card"

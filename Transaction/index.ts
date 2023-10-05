@@ -2,7 +2,7 @@ import * as cryptly from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Operation } from "../Operation"
-import { Rail as RailAddress } from "../Rail"
+import { Rail } from "../Rail"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
@@ -10,8 +10,8 @@ import { Reference as TransactionReference } from "./Reference"
 
 export interface Transaction extends TransactionCreatable {
 	organization: string
-	rail: { this: RailAddress; counterpart: RailAddress; name: "fps" | "chaps" | "switft" }
-	account: RailAddress & { id: number }
+	accountId: string
+	account: Rail
 	readonly id: cryptly.Identifier
 	readonly reference?: TransactionReference
 	readonly posted: isoly.DateTime
