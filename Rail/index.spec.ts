@@ -50,19 +50,6 @@ const card1: pax2pay.Rail.Card = {
 	last4: "1234",
 	expiry: [23, 12],
 	holder: "Janne",
-	merchant: {
-		name: "Ink inc",
-		id: "string",
-		category: "string",
-		address: "string",
-		city: "string",
-		zip: "string",
-		country: "SE",
-	},
-	acquirer: {
-		id: "string",
-		number: "string",
-	},
 }
 const card2: pax2pay.Rail.Card = {
 	...card1,

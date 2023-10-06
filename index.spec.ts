@@ -83,4 +83,71 @@ describe("library", () => {
 		}
 		expect(pax2pay.Transaction.is(transaction)).toBeTruthy()
 	})
+	it("card transaction is", () => {
+		const transaction: pax2pay.Transaction = {
+			account: {
+				type: "card",
+				scheme: "mastercard",
+				id: "abcdefgh12345678",
+				iin: "123456",
+				last4: "1234",
+				expiry: [23, 12],
+				holder: "Janne",
+			},
+			accountId: "6gpfb4Bf",
+			amount: -1,
+			balance: 6993,
+			counterpart: {
+				type: "card",
+				merchant: {
+					name: "Ink inc",
+					id: "string",
+					category: "string",
+					address: "string",
+					city: "string",
+					zip: "string",
+					country: "SE",
+				},
+				acquirer: {
+					id: "string",
+					number: "string",
+				},
+			},
+			currency: "GBP",
+			description: "test",
+			id: "V1uV3dB8",
+			flags: [],
+			notes: [],
+			operations: [
+				{
+					transaction: "V1uV3dB8",
+					created: "2023-03-17T12:26:10.575Z",
+					currency: "GBP",
+					changes: {
+						outgoingReserved: { amount: 1, result: 1, status: "success", type: "add" },
+					},
+					type: "outgoing",
+					counter: 1,
+					account: "12230000",
+				},
+				{
+					transaction: "V1uV3dB8",
+					created: "2023-03-17T12:27:08.608Z",
+					currency: "GBP",
+					changes: {
+						actual: { amount: 1, result: 6993, status: "success", type: "subtract" },
+						outgoingReserved: { amount: 1, result: 0, status: "success", type: "subtract" },
+					},
+					type: "finalizeOutgoing",
+					counter: 2,
+					account: "12230000",
+				},
+			],
+			organization: "RBhssR36",
+			posted: "2023-03-17T12:26:10.575Z",
+			status: "finalized",
+			transacted: "2023-03-17T12:27:08.624Z",
+		}
+		expect(pax2pay.Transaction.is(transaction)).toBeTruthy()
+	})
 })
