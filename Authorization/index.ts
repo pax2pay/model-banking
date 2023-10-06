@@ -103,7 +103,7 @@ export namespace Authorization {
 		return result
 	}
 
-	export function toTransaction(authorization: Authorization, card: Card): Transaction.Creatable {
+	export function toTransaction(authorization: Authorization): Transaction.Creatable {
 		return {
 			amount: authorization.amount[1],
 			currency: authorization.amount[0],
