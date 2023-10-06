@@ -69,7 +69,12 @@ export namespace Rail {
 		return (
 			value &&
 			typeof value == "object" &&
-			(PaxGiro.is(value) || Iban.is(value) || Internal.is(value) || Scan.is(value) || Card.is(value))
+			(PaxGiro.is(value) ||
+				Iban.is(value) ||
+				Internal.is(value) ||
+				Scan.is(value) ||
+				Card.is(value) ||
+				Card.Counterpart.type.is(value))
 		)
 	}
 	export type PaxGiro = RailPaxGiro
