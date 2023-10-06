@@ -33,7 +33,7 @@ export namespace Rail {
 				result = `pxg-${rail.identifier}`
 				break
 			case "internal":
-				result = `internal-${rail.id}`
+				result = `internal-${rail.identifier}`
 				break
 			case "scan":
 				result = `scan-${rail.sort}-${rail.account}`
@@ -54,7 +54,7 @@ export namespace Rail {
 				result = `${rail.identifier}`
 				break
 			case "internal":
-				result = `${rail.id}`
+				result = `${rail.identifier}`
 				break
 			case "scan":
 				result = `${rail.sort} ${rail.account}`

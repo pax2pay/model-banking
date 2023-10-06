@@ -1,5 +1,4 @@
 export interface Iban {
-	name: "fasterPayment" | "swift" | "yanne"
 	type: "iban"
 	iban: string
 	holder: string
