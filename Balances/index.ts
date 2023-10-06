@@ -1,23 +1,16 @@
 import { isoly } from "isoly"
-import { BalanceEntries, BalanceEntry } from "./type"
+import { isly } from "isly"
+import { Balance as BalancesBalance } from "./Balance"
 
-export type Balances = Partial<Record<isoly.Currency, Partial<Record<BalanceEntry, number>>>>
+export type Balances = Partial<Record<isoly.Currency, Balances.Balance>>
 
 export namespace Balances {
-	export const entries: BalanceEntry[] = [...BalanceEntries]
-	export function is(value: Balances | any): value is Balances {
-		return (
-			typeof value == "object" &&
-			Object.entries(value).every(
-				([k, v]) =>
-					isoly.Currency.is(k) &&
-					typeof v == "object" &&
-					Object.entries(v as Record<string, unknown>).every(
-						([kInner, vInner]) => BalanceEntry.is(kInner) && typeof vInner == "number"
-					)
-			)
-		)
+	export const Balance = BalancesBalance
+	export type Balance = BalancesBalance
+	export namespace Balance {
+		export type Entry = BalancesBalance.Entry
 	}
-	export type Entry = BalanceEntry
-	export const Entry = BalanceEntry
+	export const type = isly.record<Balances>(isly.fromIs("isoly.Currency", isoly.Currency.is), Balances.Balance.type)
+	export const is = type.is
+	export const flaw = type.flaw
 }

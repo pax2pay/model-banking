@@ -5,14 +5,14 @@ import { Internal as RailInternal } from "./internal"
 import { PaxGiro as RailPaxGiro } from "./PaxGiro"
 import { Scan as RailScan } from "./Scan"
 
-export type Rail = (RailPaxGiro | RailInternal | RailIban | RailScan | RailCard | RailCard.Counterpart) & {
-	reference?: { supplier: string; value: string }
-}
-
+export type Rail = RailPaxGiro | RailInternal | RailIban | RailScan | RailCard | RailCard.Counterpart
 export namespace Rail {
 	export const rails = ["paxgiro", "internal", "iban", "scan", "card"]
 	export type Type = typeof rails[number]
 	export const type = isly.string(rails)
+	export function compare(rails: [Rail, Rail]): boolean {
+		return Object.entries(rails[0]).every(([key, value]: [keyof Rail, Rail[keyof Rail]]) => value == rails[1][key])
+	}
 	export function parse(value: string): Rail | undefined {
 		let result: Rail | undefined
 		const splitted = value.split("-")

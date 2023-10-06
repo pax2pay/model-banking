@@ -41,35 +41,11 @@ describe("library", () => {
 	})
 	it("transaction is", () => {
 		const transaction: pax2pay.Transaction = {
-			account: "6gpfb4Bf",
-			method: {
-				type: "card",
-				id: "zzzzztg7nZQko17R",
-				scheme: "mastercard",
-				expiry: [23, 12],
-				holder: "Card Holden",
-				iin: "111111",
-				last4: "1234",
-			},
-			counterpart: {
-				type: "card",
-				merchant: {
-					name: "Merchant",
-					id: "abcd1234",
-					category: "4511",
-					country: "KP",
-					city: "upcheck town",
-					zip: "12345",
-					address: "Streetname 1, 12345 Towncity",
-				},
-				acquirer: {
-					id: "2345erty",
-					number: "1351858913568",
-					country: "GB",
-				},
-			},
+			account: { type: "internal", identifier: "6gpfb4Bf" },
+			accountId: "6gpfb4Bf",
 			amount: -1,
 			balance: 6993,
+			counterpart: { identifier: "ENycgXna", type: "internal" },
 			currency: "GBP",
 			description: "test",
 			id: "V1uV3dB8",
@@ -77,23 +53,25 @@ describe("library", () => {
 			notes: [],
 			operations: [
 				{
-					id: "g7NWpbFl",
+					transaction: "V1uV3dB8",
 					created: "2023-03-17T12:26:10.575Z",
 					currency: "GBP",
-					change: {
+					changes: {
 						outgoingReserved: { amount: 1, result: 1, status: "success", type: "add" },
 					},
+					type: "outgoing",
 					counter: 1,
 					account: "12230000",
 				},
 				{
-					id: "hiwWqILu",
+					transaction: "V1uV3dB8",
 					created: "2023-03-17T12:27:08.608Z",
 					currency: "GBP",
-					change: {
+					changes: {
 						actual: { amount: 1, result: 6993, status: "success", type: "subtract" },
 						outgoingReserved: { amount: 1, result: 0, status: "success", type: "subtract" },
 					},
+					type: "finalizeOutgoing",
 					counter: 2,
 					account: "12230000",
 				},
