@@ -19,14 +19,14 @@ export interface State {
 export namespace State {
 	export function from(
 		account: ModelAccount,
-		transactionRate: number,
-		spendingRate: Amounts,
+		transactions: { today: number },
+		spent: { today: Amounts },
 		transaction: ModelTransaction,
 		authorization?: ModelAuthorization.Creatable,
 		card?: ModelCard
 	): State {
 		return {
-			account: Account.from(account, transactionRate, spendingRate),
+			account: Account.from(account, transactions, spent),
 			authorization: authorization && Authorization.from(authorization),
 			card: card && Card.from(card),
 			transaction: Transaction.from(transaction),
