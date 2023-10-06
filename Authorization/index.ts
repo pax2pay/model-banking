@@ -103,21 +103,15 @@ export namespace Authorization {
 		return result
 	}
 
-	export function toTransaction(authorization: Authorization, card: Card): Transaction.Creatable {
+	export function toTransaction(authorization: Authorization): Transaction.Creatable {
 		return {
 			amount: authorization.amount[1],
 			currency: authorization.amount[0],
 			description: authorization.description,
 			counterpart: {
 				type: "card",
-				scheme: "mastercard",
-				iin: card.details.iin,
-				expiry: card.details.expiry,
-				last4: card.details.last4,
-				holder: card.details.holder,
-				id: card.id,
-				merchant: authorization.merchant,
 				acquirer: authorization.acquirer,
+				merchant: authorization.merchant,
 			},
 		}
 	}

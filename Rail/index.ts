@@ -5,8 +5,7 @@ import { Internal as RailInternal } from "./internal"
 import { PaxGiro as RailPaxGiro } from "./PaxGiro"
 import { Scan as RailScan } from "./Scan"
 
-export type Rail = RailPaxGiro | RailInternal | RailIban | RailScan | RailCard
-
+export type Rail = RailPaxGiro | RailInternal | RailIban | RailScan | RailCard | RailCard.Counterpart
 export namespace Rail {
 	export const rails = ["paxgiro", "internal", "iban", "scan", "card"]
 	export type Type = typeof rails[number]
@@ -40,7 +39,7 @@ export namespace Rail {
 				result = `scan-${rail.sort}-${rail.account}`
 				break
 			case "card":
-				result = `${rail.type}-${rail.id}`
+				result = "id" in rail ? `${rail.type}-${rail.id}` : `${rail.type}-merchant-${rail.merchant.id}`
 				break
 		}
 		return result
@@ -61,7 +60,7 @@ export namespace Rail {
 				result = `${rail.sort} ${rail.account}`
 				break
 			case "card":
-				result = `${rail.type}-${rail.id}`
+				result = "id" in rail ? `${rail.type}-${rail.id}` : `${rail.type}-merchant-${rail.merchant.id}`
 				break
 		}
 		return result
@@ -70,7 +69,12 @@ export namespace Rail {
 		return (
 			value &&
 			typeof value == "object" &&
-			(PaxGiro.is(value) || Iban.is(value) || Internal.is(value) || Scan.is(value) || Card.is(value))
+			(PaxGiro.is(value) ||
+				Iban.is(value) ||
+				Internal.is(value) ||
+				Scan.is(value) ||
+				Card.is(value) ||
+				Card.Counterpart.type.is(value))
 		)
 	}
 	export type PaxGiro = RailPaxGiro

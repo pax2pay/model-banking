@@ -11,8 +11,18 @@ export interface Card {
 	last4: string
 	expiry: ModelCard.Expiry
 	holder: string
+}
+interface CardCounterpart {
+	type: "card"
 	merchant: Merchant
 	acquirer: Acquirer
+}
+namespace CardCounterpart {
+	export const type = isly.object<CardCounterpart>({
+		type: isly.string("card"),
+		acquirer: Acquirer.type,
+		merchant: Merchant.type,
+	})
 }
 export namespace Card {
 	export const currencies = ["EUR", "GBP", "SEK", "USD"] as const
@@ -24,9 +34,9 @@ export namespace Card {
 		last4: isly.string(),
 		expiry: ModelCard.Expiry.type,
 		holder: isly.string(),
-		merchant: Merchant.type,
-		acquirer: Acquirer.type,
 	})
 	export const is = type.is
 	export const flaw = type.flaw
+	export const Counterpart = CardCounterpart
+	export type Counterpart = CardCounterpart
 }
