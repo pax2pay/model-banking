@@ -20,6 +20,7 @@ export interface Transaction extends TransactionCreatable {
 	operations: Operation[]
 	status: "created" | "approved" | "rejected" | "processing" | "finalized"
 	flags: ("review" | string)[]
+	oldFlags: string[]
 	notes: TransactionNote[]
 }
 
@@ -36,6 +37,7 @@ export namespace Transaction {
 		operations: isly.array(isly.fromIs("Operation", Operation.is)),
 		status: isly.string(["created", "approved", "rejected", "processing", "finalized"]),
 		flags: isly.array(isly.string() || "review"),
+		oldFlags: isly.string().array(),
 		notes: isly.array(isly.fromIs("TransactionNote", TransactionNote.is)),
 	})
 	export const is = type.is
@@ -65,6 +67,7 @@ export namespace Transaction {
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
 			status: "created",
 			flags: [],
+			oldFlags: [],
 			notes: [],
 		}
 	}
@@ -89,6 +92,7 @@ export namespace Transaction {
 			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
 			status: "created",
 			flags: [],
+			oldFlags: [],
 			notes: [],
 		}
 	}

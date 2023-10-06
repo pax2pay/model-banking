@@ -11,21 +11,21 @@ export namespace Note {
 		return { ...note, created: isoly.DateTime.now(), author: author }
 	}
 	export interface Creatable {
+		flags: string[]
 		text?: string
 		action?: "approve" | "reject"
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
+			flags: isly.string().array(),
 			text: isly.string().optional(),
 			action: isly.string(["approve", "reject"]).optional(),
 		})
 		export const is = type.is
 	}
-	export const type = isly.object<Note>({
+	export const type = Creatable.type.extend<Note>({
 		author: isly.string(),
 		created: isly.string(),
-		text: isly.string().optional(),
-		action: isly.string(["approve", "reject"]).optional(),
 	})
 	export const is = type.is
 }
