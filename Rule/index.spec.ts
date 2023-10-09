@@ -33,36 +33,46 @@ const rule4: pax2pay.Rule = {
 	condition: "alwaysTrue()",
 }
 describe("definitions", () => {
+	const state = pax2pay.Rule.State.from(
+		account,
+		{
+			today: { count: 3, amount: 3 },
+			incoming: { today: { count: 1, amount: 1 } },
+			outgoing: { today: { count: 1, amount: 1 } },
+			card: { today: { count: 1, amount: 1 } },
+		},
+		transaction1
+	)
 	it("exceedsAmount", () => {
-		expect(pax2pay.Rule.evaluate([rule1], { transaction: transaction1, account: account })).toEqual({
+		expect(pax2pay.Rule.evaluate([rule1], state)).toEqual({
 			flag: [],
 			reject: [rule1],
 			review: [],
 		})
 	})
 	it("isInternal", () => {
-		expect(pax2pay.Rule.evaluate([rule2], { transaction: transaction1, account: account })).toEqual({
+		expect(pax2pay.Rule.evaluate([rule2], state)).toEqual({
 			review: [],
 			reject: [],
 			flag: [rule2],
 		})
 	})
 	it("always reject", () => {
-		expect(pax2pay.Rule.evaluate([rule3], { transaction: transaction1, account: account })).toEqual({
+		expect(pax2pay.Rule.evaluate([rule3], state)).toEqual({
 			review: [],
 			reject: [rule3],
 			flag: [],
 		})
 	})
 	it("optional authorization", () => {
-		expect(pax2pay.Rule.evaluate([rule4], { transaction: transaction1, account: account })).toEqual({
+		expect(pax2pay.Rule.evaluate([rule4], state)).toEqual({
 			review: [],
 			reject: [rule4],
 			flag: [],
 		})
 	})
 	it("many rules", () => {
-		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], { transaction: transaction1, account: account })).toEqual({
+		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], state)).toEqual({
 			review: [],
 			reject: [rule1, rule3],
 			flag: [rule2],
@@ -91,6 +101,7 @@ export const transaction1: pax2pay.Transaction = {
 	transacted: "2023-02-23T16:14:52.309Z",
 	status: "approved",
 	flags: [],
+	oldFlags: [],
 	notes: [],
 }
 export const transaction2: pax2pay.Transaction = {
@@ -116,6 +127,7 @@ export const transaction2: pax2pay.Transaction = {
 	transacted: "2023-02-23T16:14:52.309Z",
 	status: "approved",
 	flags: [],
+	oldFlags: [],
 	notes: [],
 }
 export const transaction3: pax2pay.Transaction = {
@@ -141,6 +153,7 @@ export const transaction3: pax2pay.Transaction = {
 	transacted: "2023-02-23T16:14:52.309Z",
 	status: "approved",
 	flags: [],
+	oldFlags: [],
 	notes: [],
 }
 export const account: pax2pay.Account = {
