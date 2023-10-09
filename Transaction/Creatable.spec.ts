@@ -3,7 +3,7 @@ import { pax2pay } from "../index"
 
 describe("transaction", () => {
 	it("note", async () => {
-		expect(pax2pay.Transaction.Note.Creatable.is({ text: "text", action: "approve" })).toBeTruthy()
+		expect(pax2pay.Transaction.Note.Creatable.is({ text: "text", action: "approve", flags: [] })).toBeTruthy()
 		expect(pax2pay.Transaction.Note.Creatable.is({})).toBeTruthy()
 	})
 	it("creatable", async () => {

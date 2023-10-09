@@ -74,5 +74,6 @@ const transaction: Transaction = {
 	],
 	status: "rejected",
 	flags: [],
+	oldFlags: [],
 	notes: [],
 }
