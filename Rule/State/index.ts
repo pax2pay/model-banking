@@ -25,9 +25,9 @@ export namespace State {
 	): State {
 		return {
 			account: Account.from(account, transactions),
+			transaction: Transaction.from(transaction),
 			authorization: authorization && Authorization.from(authorization),
 			card: card && Card.from(card),
-			transaction: Transaction.from(transaction),
 		}
 	}
 	export type Partial = StatePartial
