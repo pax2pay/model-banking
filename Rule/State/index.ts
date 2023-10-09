@@ -18,7 +18,7 @@ export interface State {
 export namespace State {
 	export function from(
 		account: ModelAccount,
-		transactions: { today: { volume: number; spent: number }; card: { today: { volume: number; spent: number } } },
+		transactions: StateAccount.Volume,
 		transaction: ModelTransaction.Creatable,
 		authorization?: ModelAuthorization.Creatable,
 		card?: ModelCard

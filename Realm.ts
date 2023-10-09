@@ -13,8 +13,8 @@ export namespace Realm {
 		return realms.toString().replaceAll(",", ", ") + "."
 	}
 	export const currency: Record<Realm, isoly.Currency> = {
-		test: "USD",
-		upcheck: "USD",
+		test: "EUR",
+		upcheck: "EUR",
 		testUK: "GBP",
 		uk: "GBP",
 		eu: "EUR",

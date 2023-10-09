@@ -8,12 +8,14 @@ export interface Account extends ModelAccount {
 		card: { today: { count: number; amount: number } }
 	}
 }
-
 export namespace Account {
-	export function from(
-		account: ModelAccount,
-		transactions: { today: { count: number; amount: number }; card: { today: { count: number; amount: number } } }
-	): Account {
+	export interface Volume {
+		today: { count: number; amount: number }
+		incoming: { today: { count: number; amount: number } }
+		outgoing: { today: { count: number; amount: number } }
+		card: { today: { count: number; amount: number } }
+	}
+	export function from(account: ModelAccount, transactions: Volume): Account {
 		return { ...account, transactions }
 	}
 }
