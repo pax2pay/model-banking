@@ -1,3 +1,4 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Supplier as modelSupplier } from "./Supplier"
 
@@ -10,6 +11,13 @@ export namespace Realm {
 	export const flaw = type.flaw
 	export function toString(): string {
 		return realms.toString().replaceAll(",", ", ") + "."
+	}
+	export const currency: Record<Realm, isoly.Currency> = {
+		test: "EUR",
+		upcheck: "EUR",
+		testUK: "GBP",
+		uk: "GBP",
+		eu: "EUR",
 	}
 	export const suppliers: Record<Realm, modelSupplier[]> = {
 		test: ["paxgiro"],

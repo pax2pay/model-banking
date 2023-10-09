@@ -1,9 +1,16 @@
 import type { Account as ModelAccount } from "../../Account"
 
-export type Account = ModelAccount
-
+export interface Account extends ModelAccount {
+	transactions: Account.Transactions
+}
 export namespace Account {
-	export function from(account: ModelAccount): Account {
-		return account
+	export interface Transactions {
+		today: { count: number; amount: number }
+		incoming: { today: { count: number; amount: number } }
+		outgoing: { today: { count: number; amount: number } }
+		card: { today: { count: number; amount: number } }
+	}
+	export function from(account: ModelAccount, transactions: Transactions): Account {
+		return { ...account, transactions }
 	}
 }

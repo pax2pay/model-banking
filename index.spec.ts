@@ -50,6 +50,7 @@ describe("library", () => {
 			description: "test",
 			id: "V1uV3dB8",
 			flags: [],
+			oldFlags: [],
 			notes: [],
 			operations: [
 				{
@@ -117,6 +118,7 @@ describe("library", () => {
 			description: "test",
 			id: "V1uV3dB8",
 			flags: [],
+			oldFlags: [],
 			notes: [],
 			operations: [
 				{

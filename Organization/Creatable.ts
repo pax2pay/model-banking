@@ -1,7 +1,7 @@
 import { isly } from "isly"
 import { Realm } from "../Realm"
+import { Rule } from "../Rule"
 import { Contact } from "./Contact"
-import { Rule } from "./Rule"
 
 export interface Creatable {
 	name: string
@@ -14,7 +14,7 @@ export namespace Creatable {
 	export const type = isly.object<Creatable>({
 		name: isly.string(),
 		realm: Realm.type,
-		rules: isly.fromIs<Rule>("Rule", Rule.is).array(),
+		rules: Rule.type.array(),
 		contact: Contact.type.optional(),
 	})
 	export const is = type.is

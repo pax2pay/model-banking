@@ -10,23 +10,24 @@ import { Transaction as StateTransaction } from "./Transaction"
 
 export interface State {
 	account: StateAccount
+	transaction: StateTransaction
 	authorization?: StateAuthorization
 	card?: StateCard
-	transaction: StateTransaction
 }
 
 export namespace State {
 	export function from(
 		account: ModelAccount,
-		transaction: ModelTransaction,
+		transactions: StateAccount.Transactions,
+		transaction: ModelTransaction.Creatable,
 		authorization?: ModelAuthorization.Creatable,
 		card?: ModelCard
 	): State {
 		return {
-			account: Account.from(account),
+			account: Account.from(account, transactions),
+			transaction: Transaction.from(transaction),
 			authorization: authorization && Authorization.from(authorization),
 			card: card && Card.from(card),
-			transaction: Transaction.from(transaction),
 		}
 	}
 	export type Partial = StatePartial

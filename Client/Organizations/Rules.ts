@@ -1,14 +1,14 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
-import { Organization } from "../../Organization"
+import { Rule } from "../../Rule"
 
 export class Rules extends rest.Collection<gracely.Error> {
 	constructor(client: http.Client) {
 		super(client)
 	}
-	async replace(organization: string, rules: Organization.Rule[]): Promise<Organization.Rule[] | gracely.Error> {
-		return this.client.put<Organization.Rule[]>(`/organization/rule`, rules, {
+	async replace(organization: string, rules: Rule[]): Promise<Rule[] | gracely.Error> {
+		return this.client.put<Rule[]>(`/organization/rule`, rules, {
 			organization: organization,
 		})
 	}

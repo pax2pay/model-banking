@@ -13,19 +13,19 @@ export namespace Note {
 	export interface Creatable {
 		text?: string
 		action?: "approve" | "reject"
+		flags?: string[]
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
 			text: isly.string().optional(),
 			action: isly.string(["approve", "reject"]).optional(),
+			flags: isly.string().array().optional(),
 		})
 		export const is = type.is
 	}
-	export const type = isly.object<Note>({
+	export const type = Creatable.type.extend<Note>({
 		author: isly.string(),
 		created: isly.string(),
-		text: isly.string().optional(),
-		action: isly.string(["approve", "reject"]).optional(),
 	})
 	export const is = type.is
 }
