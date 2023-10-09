@@ -26,6 +26,7 @@
 	"typescript.format.enable": false,
 	"cSpell.words": [
 		"authly",
+		"clearbank",
 		"cloudly",
 		"cryptly",
 		"flagly",
@@ -42,6 +43,7 @@
 		"smoothly",
 		"tidily",
 		"transactly",
+		"upcheck",
 		"uply"
 	]
 }
