@@ -6,6 +6,7 @@ import { Accounts } from "./Accounts"
 import { Cards } from "./Cards"
 import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
+import { Rules } from "./Rules"
 import { Settlements } from "./Settlements"
 import { Transactions } from "./Transactions"
 import { Treasury } from "./Treasury"
@@ -14,15 +15,16 @@ import { Version } from "./Version"
 export class Client extends rest.Client<gracely.Error> {
 	realm?: string
 	organization?: string
-	readonly userwidgets = new userwidgets.ClientCollection(this.client, { pathPrefix: "/widgets" })
 	readonly accounts = new Accounts(this.client)
+	readonly cards = new Cards(this.client)
 	readonly operations = new Operations(this.client)
 	readonly organizations = new Organizations(this.client)
+	readonly rules = new Rules(this.client)
+	readonly settlements = new Settlements(this.client)
 	readonly transactions = new Transactions(this.client)
 	readonly treasury = new Treasury(this.client)
+	readonly userwidgets = new userwidgets.ClientCollection(this.client, { pathPrefix: "/widgets" })
 	readonly version = new Version(this.client)
-	readonly cards = new Cards(this.client)
-	readonly settlements = new Settlements(this.client)
 
 	static create<T = Record<string, any>>(server: string, key: string, load?: (client: http.Client) => T): Client & T {
 		let httpClient: http.Client<gracely.Error>
