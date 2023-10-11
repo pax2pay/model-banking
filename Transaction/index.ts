@@ -39,20 +39,20 @@ export namespace Transaction {
 	export namespace Note {
 		export type Creatable = TransactionNote.Creatable
 	}
-	export const type = Transaction.Creatable.type.extend<Transaction>({
+	export const type = Creatable.type.extend<Transaction>({
 		organization: isly.string(),
 		accountId: isly.string(),
 		account: isly.fromIs("Rail", Rail.is),
 		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
-		reference: isly.fromIs("TransactionReference", Transaction.Reference.is).readonly().optional(),
+		reference: isly.fromIs("TransactionReference", Reference.is).readonly().optional(),
 		posted: isly.string(),
 		transacted: isly.string().optional(),
 		balance: isly.number(),
 		operations: isly.array(isly.fromIs("Operation", Operation.is)),
-		status: Transaction.Status.type,
+		status: Status.type,
 		flags: isly.array(isly.string() || "review"),
 		oldFlags: isly.string().array(),
-		notes: isly.array(isly.fromIs("TransactionNote", Transaction.Note.is)),
+		notes: isly.array(isly.fromIs("TransactionNote", Note.is)),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
