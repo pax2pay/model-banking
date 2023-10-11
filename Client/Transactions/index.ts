@@ -20,7 +20,10 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		index?: Transactions.Index
 		dateRange?: isoly.DateRange
 	}): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
-		const query = Object.entries({ ...(options?.index ?? {}), ...(options?.dateRange ?? {}) })
+		const query = Object.entries({
+			...(options?.index ? { [options.index[0]]: options.index[1] } : {}),
+			...(options?.dateRange ?? {}),
+		})
 			.map(([k, v]) => `${k}=${v}`)
 			.join("&")
 		const path = options?.account ? `/account/${options.account}/transaction` : `/transaction`
@@ -32,9 +35,8 @@ export class Transactions extends rest.Collection<gracely.Error> {
 }
 
 export namespace Transactions {
-	export type Index =
-		| { status: "review" | "created" | "approved" | "rejected" | "processing" | "finalized" }
-		| { currency: isoly.Currency }
-		| { direction: "inbound" | "outbound" }
-		| { rail: "internal" }
+	type Status = "review" | "created" | "approved" | "rejected" | "processing" | "finalized"
+	type Direction = "inbound" | "outbound"
+	type Rail = "internal"
+	export type Index = ["status", Status] | ["currency", isoly.Currency] | ["direction", Direction] | ["rail", Rail]
 }
