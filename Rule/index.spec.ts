@@ -85,8 +85,6 @@ describe("definitions", () => {
 		},
 		transaction1
 	)
-	console.log("state: ", state)
-
 	it("exceedsAmount", () => {
 		expect(pax2pay.Rule.evaluate([rule1], state)).toEqual({
 			flag: [],
