@@ -1,4 +1,5 @@
 import { gracely } from "gracely"
+import { isoly } from "isoly"
 import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Transaction } from "../../Transaction"
@@ -16,27 +17,24 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		account?: string
 		limit?: number
 		cursor?: string
-		status?: "review" | "created" | "approved" | "rejected" | "processing" | "finalized"
-		currency?: string
-		direction?: "inbound" | "outbound"
-		rail?: "internal"
-		start?: string
-		end?: string
+		index?: Transactions.Index
+		dateRange?: isoly.DateRange
 	}): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
-		const searchOptions = options && (({ account, limit, cursor, ...search }) => search)(options)
-		const query = searchOptions
-			? Object.entries(searchOptions)
-					.map(([k, v]) => `${k}=${v}`)
-					.reduce((prev, curr, i) => `${prev}${i == 0 ? "?" : "&"}${curr}`, "")
-			: ""
-		const path = options && options.account ? `/account/${options.account}/transaction${query}` : `/transaction${query}`
+		const query = Object.entries({ ...(options?.index ?? {}), ...(options?.dateRange ?? {}) })
+			.map(([k, v]) => `${k}=${v}`)
+			.join("&")
+		const path = options?.account ? `/account/${options.account}/transaction` : `/transaction`
 		return this.client.get<Transaction[] & { cursor?: string | undefined }>(
-			path,
-			options &&
-				(({ limit, cursor }) =>
-					limit || cursor
-						? { ...(limit ? { limit: limit.toString() } : {}), ...(cursor ? { cursor: cursor } : {}) }
-						: undefined)(options)
+			path + (query && "?" + query),
+			options?.limit ? { limit: options?.limit.toString() } : {}
 		)
 	}
+}
+
+export namespace Transactions {
+	export type Index =
+		| { status: "review" | "created" | "approved" | "rejected" | "processing" | "finalized" }
+		| { currency: isoly.Currency }
+		| { direction: "inbound" | "outbound" }
+		| { rail: "internal" }
 }
