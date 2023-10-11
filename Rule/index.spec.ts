@@ -74,6 +74,39 @@ const rule4: pax2pay.Rule = {
 	action: "reject",
 	condition: "alwaysTrue()",
 }
+export const dailyRule = {
+	name: "Flag daily spending",
+	type: "outbound",
+	flags: ["daily spending flag"],
+	description: "Flag transactions that occur after more than 200 GBP have been spent today",
+	action: "flag",
+	condition: "account.transactions.today.amount>200",
+}
+export const dailyTransactionRule = {
+	name: "Flag daily outgoing transactions volume",
+	type: "outbound",
+	flags: ["daily transactions flag"],
+	description: "Flag transactions that occur after more than 2 outgoing transactions have occurred in a day",
+	action: "flag",
+	condition: "account.transactions.outgoing.today.count>2",
+}
+// TODO: add support for these in card state
+export const cardSpendingLimit = {
+	name: "single use card",
+	type: "authorization",
+	flags: [],
+	description: "Reject multiple uses of the same card",
+	action: "reject",
+	condition: "card.used.amount>0",
+}
+export const cardUsageLimit = {
+	name: "single use card",
+	type: "authorization",
+	flags: [],
+	description: "Reject multiple uses of the same card",
+	action: "reject",
+	condition: "card.used.count>0",
+}
 describe("definitions", () => {
 	const state = pax2pay.Rule.State.from(
 		account,
