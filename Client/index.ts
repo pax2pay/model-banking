@@ -41,6 +41,7 @@ export class Client extends rest.Client<gracely.Error> {
 	}
 }
 export namespace Client {
+	export const Transactions = ClientTransactions
 	export namespace Transactions {
 		export type Index = ClientTransactions.Index
 	}
