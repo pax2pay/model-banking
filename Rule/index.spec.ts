@@ -154,3 +154,87 @@ describe("definitions", () => {
 		})
 	})
 })
+
+export const realmWideUKRules: pax2pay.Rule[] = [
+	{
+		name: "Sanctioned Countries and Territories",
+		description: "Reject transactions to merchants in sanctioned countries.",
+		action: "reject",
+		type: "authorization",
+		condition: "authorization.merchant.country:within(data.countries.sanctioned)",
+		flags: ["sanctioned", "country"],
+	},
+	{
+		name: "Single Use",
+		description: "Reject authorization if card already has performed an authorization.",
+		action: "flag",
+		type: "authorization",
+		condition: "card.used.count>0",
+		flags: ["strict single use"],
+	},
+	{
+		name: "Single Use",
+		description:
+			"Reject authorization if card has previously been used to authorize more than 2 GBP in total. Allows for probing auths.",
+		action: "flag",
+		type: "authorization",
+		condition: "card.used.amount>2 | card.used.count>1",
+		flags: ["single use"],
+	},
+	{
+		name: "Only Low Risk Countries",
+		description: "Reject transactions to merchants not in a low risk country.",
+		action: "reject",
+		type: "authorization",
+		condition: "!authorization.merchant.country:within(data.countries.risk.low)",
+		flags: ["not low", "country"],
+	},
+	{
+		name: "Too High Amount",
+		description: "Reject authorizations with an amount above 2500 GBP.",
+		action: "flag",
+		type: "authorization",
+		condition: "!transaction.amount>2500",
+		flags: ["too high amount"],
+	},
+	{
+		name: "High Risk Country",
+		description: "Flag authorizations to merchants from high risk countries.",
+		action: "flag",
+		type: "authorization",
+		condition: "authorization.merchant.country:within(data.countries.risk.high)",
+		flags: ["high risk", "country"],
+	},
+	{
+		name: "Medium High Risk Country",
+		description: "Flag authorizations to merchants from medium high risk countries.",
+		action: "flag",
+		type: "authorization",
+		condition: "authorization.merchant.country:within(data.countries.risk.mediumHigh)",
+		flags: ["medium high", "country"],
+	},
+	{
+		name: "Low Amount",
+		description: "Flag authorizations with an amount below 5 GBP.",
+		action: "flag",
+		type: "authorization",
+		condition: "!transaction.amount<5",
+		flags: ["low amount"],
+	},
+	{
+		name: "High Amount",
+		description: "Flag authorizations with an amount above 800 GBP.",
+		action: "flag",
+		type: "authorization",
+		condition: "!transaction.amount>800",
+		flags: ["high amount"],
+	},
+	{
+		name: "New Merchant",
+		description: "Flag authorizations involving a new merchant.",
+		action: "flag",
+		type: "authorization",
+		condition: "!authorization.merchant.name.within(data.merchant.known)",
+		flags: ["new merchant"],
+	},
+]
