@@ -74,6 +74,39 @@ const rule4: pax2pay.Rule = {
 	action: "reject",
 	condition: "alwaysTrue()",
 }
+export const dailyRule = {
+	name: "Flag daily spending",
+	type: "outbound",
+	flags: ["daily spending flag"],
+	description: "Flag transactions that occur after more than 200 GBP have been spent today",
+	action: "flag",
+	condition: "account.transactions.today.amount>200",
+}
+export const dailyTransactionRule = {
+	name: "Flag daily outgoing transactions volume",
+	type: "outbound",
+	flags: ["daily transactions flag"],
+	description: "Flag transactions that occur after more than 2 outgoing transactions have occurred in a day",
+	action: "flag",
+	condition: "account.transactions.outgoing.today.count>2",
+}
+// TODO: add support for these in card state
+export const cardSpendingLimit = {
+	name: "single use card",
+	type: "authorization",
+	flags: [],
+	description: "Reject multiple uses of the same card",
+	action: "reject",
+	condition: "card.used.amount>0",
+}
+export const cardUsageLimit = {
+	name: "single use card",
+	type: "authorization",
+	flags: [],
+	description: "Reject multiple uses of the same card",
+	action: "reject",
+	condition: "card.used.count>0",
+}
 describe("definitions", () => {
 	const state = pax2pay.Rule.State.from(
 		account,
@@ -121,3 +154,87 @@ describe("definitions", () => {
 		})
 	})
 })
+
+export const realmWideUKRules: pax2pay.Rule[] = [
+	{
+		name: "Sanctioned Countries and Territories",
+		description: "Reject transactions to merchants in sanctioned countries.",
+		action: "reject",
+		type: "authorization",
+		condition: "authorization.merchant.country:within(data.countries.sanctioned)",
+		flags: ["sanctioned", "country"],
+	},
+	{
+		name: "Single Use",
+		description: "Reject authorization if card already has performed an authorization.",
+		action: "flag",
+		type: "authorization",
+		condition: "card.used.count>0",
+		flags: ["strict single use"],
+	},
+	{
+		name: "Single Use",
+		description:
+			"Reject authorization if card has previously been used to authorize more than 2 GBP in total. Allows for probing auths.",
+		action: "flag",
+		type: "authorization",
+		condition: "card.used.amount>2 | card.used.count>1",
+		flags: ["single use"],
+	},
+	{
+		name: "Only Low Risk Countries",
+		description: "Reject transactions to merchants not in a low risk country.",
+		action: "reject",
+		type: "authorization",
+		condition: "!authorization.merchant.country:within(data.countries.risk.low)",
+		flags: ["not low", "country"],
+	},
+	{
+		name: "Too High Amount",
+		description: "Reject authorizations with an amount above 2500 GBP.",
+		action: "flag",
+		type: "authorization",
+		condition: "!transaction.amount>2500",
+		flags: ["too high amount"],
+	},
+	{
+		name: "High Risk Country",
+		description: "Flag authorizations to merchants from high risk countries.",
+		action: "flag",
+		type: "authorization",
+		condition: "authorization.merchant.country:within(data.countries.risk.high)",
+		flags: ["high risk", "country"],
+	},
+	{
+		name: "Medium High Risk Country",
+		description: "Flag authorizations to merchants from medium high risk countries.",
+		action: "flag",
+		type: "authorization",
+		condition: "authorization.merchant.country:within(data.countries.risk.mediumHigh)",
+		flags: ["medium high", "country"],
+	},
+	{
+		name: "Low Amount",
+		description: "Flag authorizations with an amount below 5 GBP.",
+		action: "flag",
+		type: "authorization",
+		condition: "!transaction.amount<5",
+		flags: ["low amount"],
+	},
+	{
+		name: "High Amount",
+		description: "Flag authorizations with an amount above 800 GBP.",
+		action: "flag",
+		type: "authorization",
+		condition: "!transaction.amount>800",
+		flags: ["high amount"],
+	},
+	{
+		name: "New Merchant",
+		description: "Flag authorizations involving a new merchant.",
+		action: "flag",
+		type: "authorization",
+		condition: "!authorization.merchant.name.within(data.merchant.known)",
+		flags: ["new merchant"],
+	},
+]
