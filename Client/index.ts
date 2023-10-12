@@ -4,6 +4,7 @@ import { http } from "cloudly-http"
 import { rest } from "cloudly-rest"
 import { Accounts } from "./Accounts"
 import { Cards } from "./Cards"
+import { Flags } from "./Flags"
 import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
 import { Rules } from "./Rules"
@@ -23,6 +24,7 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly settlements = new Settlements(this.client)
 	readonly transactions = new Transactions(this.client)
 	readonly treasury = new Treasury(this.client)
+	readonly flags = new Flags(this.client)
 	readonly userwidgets = new userwidgets.ClientCollection(this.client, { pathPrefix: "/widgets" })
 	readonly version = new Version(this.client)
 
