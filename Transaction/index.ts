@@ -112,4 +112,11 @@ export namespace Transaction {
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
 		return cryptly.Identifier.is(value, 8)
 	}
+	export function flag(transaction: Transaction, note: Note): void {
+		const addFlags: string[] = []
+		const removeFlags: string[] = []
+		note.flags?.forEach(f => (f.startsWith("-") ? removeFlags.push(f.substring(1)) : addFlags.push(f)))
+		transaction.flags = transaction.flags.filter(f => !(removeFlags.includes(f) && transaction.oldFlags.push(f)))
+		transaction.flags.push(...addFlags)
+	}
 }
