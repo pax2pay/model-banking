@@ -32,12 +32,15 @@ export namespace State {
 	}
 	export type Partial = StatePartial
 	export const Partial = StatePartial
-	export type Account = StateAccount
-	export const Account = StateAccount
 	export type Authorization = StateAuthorization
 	export const Authorization = StateAuthorization
 	export type Card = StateCard
 	export const Card = StateCard
+	export type Account = StateAccount
+	export const Account = StateAccount
+	export namespace Account {
+		export type Transactions = StateAccount.Transactions
+	}
 	export type Transaction = StateTransaction
 	export const Transaction = StateTransaction
 }
