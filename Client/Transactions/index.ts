@@ -3,6 +3,7 @@ import { isoly } from "isoly"
 import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Transaction } from "../../Transaction"
+import { Indices as TransactionIndex } from "./Indices"
 import { Notes } from "./Notes"
 
 export class Transactions extends rest.Collection<gracely.Error> {
@@ -20,7 +21,10 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		index?: Transactions.Index
 		dateRange?: isoly.DateRange
 	}): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
-		const query = Object.entries({ ...(options?.index ?? {}), ...(options?.dateRange ?? {}) })
+		const query = Object.entries({
+			...(options?.index ? { index: options.index.join(",") } : {}),
+			...(options?.dateRange ?? {}),
+		})
 			.map(([k, v]) => `${k}=${v}`)
 			.join("&")
 		const path = options?.account ? `/account/${options.account}/transaction` : `/transaction`
@@ -32,9 +36,6 @@ export class Transactions extends rest.Collection<gracely.Error> {
 }
 
 export namespace Transactions {
-	export type Index =
-		| { status: "review" | "created" | "approved" | "rejected" | "processing" | "finalized" }
-		| { currency: isoly.Currency }
-		| { direction: "inbound" | "outbound" }
-		| { rail: "internal" }
+	export type Index = TransactionIndex
+	export const Index = TransactionIndex
 }
