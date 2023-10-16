@@ -14,6 +14,9 @@ export namespace Rule {
 	export const State = RuleState
 	export namespace State {
 		export type Account = RuleState.Account
+		export namespace Account {
+			export type Transactions = RuleState.Account.Transactions
+		}
 		export type Authorization = RuleState.Authorization
 		export type Card = RuleState.Card
 		export type Transaction = RuleState.Transaction
