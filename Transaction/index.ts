@@ -24,7 +24,6 @@ export interface Transaction extends Transaction.Creatable {
 	oldFlags: string[]
 	notes: Transaction.Note[]
 }
-
 export namespace Transaction {
 	export type Creatable = TransactionCreatable
 	export const Creatable = TransactionCreatable
@@ -44,15 +43,15 @@ export namespace Transaction {
 		accountId: isly.string(),
 		account: isly.fromIs("Rail", Rail.is),
 		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
-		reference: isly.fromIs("TransactionReference", Reference.is).readonly().optional(),
+		reference: Reference.type.readonly().optional(),
 		posted: isly.string(),
 		transacted: isly.string().optional(),
 		balance: isly.number(),
-		operations: isly.array(isly.fromIs("Operation", Operation.is)),
+		operations: Operation.type.array(),
 		status: Status.type,
 		flags: isly.array(isly.string() || "review"),
 		oldFlags: isly.string().array(),
-		notes: isly.array(isly.fromIs("TransactionNote", Note.is)),
+		notes: Note.type.array(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
@@ -61,7 +60,8 @@ export namespace Transaction {
 		organization: string,
 		accountId: string,
 		account: Rail,
-		transaction: Creatable & { operations: Operation.Creatable[] },
+		transaction: Creatable,
+		operations: Operation.Creatable[],
 		result: number
 	): Transaction {
 		const id = cryptly.Identifier.generate(8)
@@ -78,7 +78,7 @@ export namespace Transaction {
 			posted: timestamp,
 			balance: result,
 			...transaction,
-			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
+			operations: operations.map(o => Operation.fromCreatable(id, o)),
 			status: "created",
 			flags: [],
 			oldFlags: [],
@@ -88,7 +88,8 @@ export namespace Transaction {
 	export function fromIncoming(
 		organization: string,
 		accountId: string,
-		transaction: Incoming & { operations: Operation.Creatable[] },
+		transaction: Incoming,
+		operations: Operation.Creatable[],
 		result: number
 	): Transaction {
 		const id = cryptly.Identifier.generate(8)
@@ -102,7 +103,7 @@ export namespace Transaction {
 			id: id,
 			balance: result,
 			...transaction,
-			operations: transaction.operations.map(o => Operation.fromCreatable(id, o)),
+			operations: operations.map(o => Operation.fromCreatable(id, o)),
 			status: "created",
 			flags: [],
 			oldFlags: [],
