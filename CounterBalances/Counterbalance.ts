@@ -10,7 +10,8 @@ export namespace Counterbalance {
 		export const values = [
 			...Card.Stack.stacks.flatMap(s => [`fee.${s}`, `settle.${s}`] as const),
 			...Supplier.names.flatMap(s => [`incoming.${s}`, `outgoing.${s}`] as const),
-			"internal",
+			`incoming.internal`,
+			`outgoing.internal`,
 			"fee.other",
 		] as const
 		export const type = isly.string(Entry.values)
