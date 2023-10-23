@@ -9,7 +9,7 @@ import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
 import { Rules } from "./Rules"
 import { Settlements } from "./Settlements"
-import { Transactions as ClientTransactions } from "./Transactions"
+import { Transactions } from "./Transactions"
 import { Treasury } from "./Treasury"
 import { Version } from "./Version"
 
@@ -22,7 +22,7 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly organizations = new Organizations(this.client)
 	readonly rules = new Rules(this.client)
 	readonly settlements = new Settlements(this.client)
-	readonly transactions = new ClientTransactions(this.client)
+	readonly transactions = new Transactions(this.client)
 	readonly treasury = new Treasury(this.client)
 	readonly flags = new Flags(this.client)
 	readonly userwidgets = new userwidgets.ClientCollection(this.client, { pathPrefix: "/widgets" })
@@ -41,9 +41,5 @@ export class Client extends rest.Client<gracely.Error> {
 	}
 }
 export namespace Client {
-	export const Transactions = ClientTransactions
-	export namespace Transactions {
-		export type Index = ClientTransactions.Index
-	}
 	export type Unauthorized = (client: rest.Client<never>) => Promise<boolean>
 }
