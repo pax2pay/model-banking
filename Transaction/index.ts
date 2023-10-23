@@ -114,10 +114,14 @@ export namespace Transaction {
 		return cryptly.Identifier.is(value, 8)
 	}
 	export function flag(transaction: Transaction, note: Note): void {
-		const addFlags: string[] = []
-		const removeFlags: string[] = []
-		note.flags?.forEach(f => (f.startsWith("-") ? removeFlags.push(f.substring(1)) : addFlags.push(f)))
-		transaction.flags = transaction.flags.filter(f => !(removeFlags.includes(f) && transaction.oldFlags.push(f)))
-		transaction.flags.push(...addFlags)
+		const flagSet = new Set<string>(transaction.flags)
+		const oldFlagSet = new Set<string>(transaction.oldFlags)
+		note.flags?.forEach(f =>
+			f.startsWith("-")
+				? (oldFlagSet.add(f.substring(1)), flagSet.delete(f.substring(1)))
+				: (flagSet.add(f), oldFlagSet.delete(f))
+		)
+		transaction.flags = Array.from(flagSet)
+		transaction.oldFlags = Array.from(oldFlagSet)
 	}
 }
