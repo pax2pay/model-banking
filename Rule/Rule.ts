@@ -24,6 +24,7 @@ export const type = isly.object<Rule>({
 })
 export const is = type.is
 export const flaw = type.flaw
+//TODO: remove when rule evaluation rebuilt
 export function stringify(rule: Rule): string {
 	return `{ label: ${rule.name}, action: ${rule.action}, type: ${rule.type}, condition: ${rule.condition}, description: ${rule.description}. }`
 }
