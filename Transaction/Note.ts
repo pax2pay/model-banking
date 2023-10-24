@@ -15,7 +15,7 @@ export namespace Note {
 		text?: string
 		action?: "approve" | "reject"
 		flags?: string[]
-		rule?: Rule
+		rule?: Omit<Rule, ""> // Solves a typing issue in the test
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
