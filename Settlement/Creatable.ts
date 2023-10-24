@@ -1,16 +1,17 @@
 import { isly } from "isly"
+import { Card } from "../Card"
 import { Total } from "./Total"
 
 export interface Creatable {
 	expected?: Total
-	processor: string
+	processor: Card.Stack
 	reference: string
 }
 
 export namespace Creatable {
 	export const type = isly.object<Creatable>({
 		expected: Total.type.optional(),
-		processor: isly.string(),
+		processor: Card.Stack.type,
 		reference: isly.string(),
 	})
 	export const is = type.is
