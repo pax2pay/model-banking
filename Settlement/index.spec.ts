@@ -92,7 +92,7 @@ const settlement: pax2pay.Settlement = {
 	id: "abcd1234",
 	created: "2000-01-01T00:00:00.001",
 	reference: "string",
-	processor: "string",
+	processor: "test-paxgiro",
 	status: "ongoing",
 	expected: {
 		amount: { GBP: 450 },
