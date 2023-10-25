@@ -1,6 +1,7 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Card } from "../Card"
 import { Creatable as SettlementCreatable } from "./Creatable"
 import { Entry as SettlementEntry } from "./Entry"
 import { Fee as SettlementFee } from "./Fee"
@@ -13,7 +14,7 @@ export interface Settlement {
 	by?: string
 	created: isoly.DateTime
 	reference: string
-	processor: string
+	processor: Card.Stack
 	status: Status
 	expected: Settlement.Total
 	outcome?: Settlement.Total
@@ -66,7 +67,7 @@ export namespace Settlement {
 		by: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		reference: isly.string(),
-		processor: isly.string(),
+		processor: Card.Stack.type,
 		status: Status.type,
 		expected: Settlement.Total.type,
 		outcome: Settlement.Total.type.optional(),
