@@ -70,7 +70,7 @@ export namespace Transaction {
 			...transaction,
 			organization,
 			accountId,
-			account: account,
+			account,
 			id,
 			posted: isoly.DateTime.now(),
 			balance,

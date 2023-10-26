@@ -16,12 +16,12 @@ type Entity = "account" | "transaction" | "operation" | "rail" | "organization" 
 export namespace Event {
 	export namespace Account {
 		export function created(account: modelAccount, organization: string): Event {
-			return { organization: organization, entity: "account", action: "created", data: account }
+			return { organization, entity: "account", action: "created", data: account }
 		}
 	}
 	export namespace Operation {
 		export function performed(operation: modelOperation, organization: string, account: string): Event {
-			return { organization: organization, account: account, entity: "operation", action: "performed", data: operation }
+			return { organization, account, entity: "operation", action: "performed", data: operation }
 		}
 	}
 	export namespace Organization {
@@ -31,14 +31,14 @@ export namespace Event {
 	}
 	export namespace Rail {
 		export function added(rail: modelRail, organization: string, account: string): Event {
-			return { organization: organization, account: account, entity: "rail", action: "added", data: rail }
+			return { organization, account, entity: "rail", action: "added", data: rail }
 		}
 	}
 	export namespace Transaction {
 		export function initiated(transaction: modelTransaction, organization: string, account: string): Event {
 			return {
-				organization: organization,
-				account: account,
+				organization,
+				account,
 				entity: "transaction",
 				action: "initiated",
 				data: transaction,
@@ -46,8 +46,8 @@ export namespace Event {
 		}
 		export function finalized(transaction: modelTransaction, organization: string, account: string): Event {
 			return {
-				organization: organization,
-				account: account,
+				organization,
+				account,
 				entity: "transaction",
 				action: "finalized",
 				data: transaction,
@@ -55,8 +55,8 @@ export namespace Event {
 		}
 		export function incoming(transaction: modelTransaction, organization: string, account: string): Event {
 			return {
-				organization: organization,
-				account: account,
+				organization,
+				account,
 				entity: "transaction",
 				action: "incoming",
 				data: transaction,
@@ -64,8 +64,8 @@ export namespace Event {
 		}
 		export function validated(transaction: modelTransaction, organization: string, account: string): Event {
 			return {
-				organization: organization,
-				account: account,
+				organization,
+				account,
 				entity: "transaction",
 				action: "validated",
 				data: transaction,
@@ -73,8 +73,8 @@ export namespace Event {
 		}
 		export function expired(transaction: modelTransaction, organization: string, account: string): Event {
 			return {
-				organization: organization,
-				account: account,
+				organization,
+				account,
 				entity: "transaction",
 				action: "expired",
 				data: transaction,
@@ -85,8 +85,8 @@ export namespace Event {
 		export namespace PaxGiro {
 			export function response(response: any, organization: string, account: string): Event {
 				return {
-					organization: organization,
-					account: account,
+					organization,
+					account,
 					entity: "supplier",
 					action: "transaction response",
 					data: response,
