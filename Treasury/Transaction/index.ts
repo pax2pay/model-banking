@@ -21,7 +21,7 @@ export namespace Transaction {
 	}
 	export function fromCreatable(transaction: TransactionCreatable, debtor: Rail): Transaction {
 		return {
-			debtor: debtor,
+			debtor,
 			id: cryptly.Identifier.generate(8),
 			created: isoly.DateTime.now(),
 			...transaction,
