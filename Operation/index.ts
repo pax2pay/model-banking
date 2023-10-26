@@ -18,12 +18,11 @@ export namespace Operation {
 	export const is = type.is
 	export const flaw = type.flaw
 	export function fromCreatable(transaction: string, creatable: Creatable): Operation {
-		const timestamp = isoly.DateTime.now()
 		return {
 			...creatable,
 			transaction,
 			counter: 0,
-			created: timestamp,
+			created: isoly.DateTime.now(),
 		}
 	}
 	export type Creatable = OperationCreatable

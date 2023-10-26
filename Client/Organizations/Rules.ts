@@ -9,7 +9,7 @@ export class Rules extends rest.Collection<gracely.Error> {
 	}
 	async replace(organization: string, rules: Rule[]): Promise<Rule[] | gracely.Error> {
 		return this.client.put<Rule[]>(`/organization/rule`, rules, {
-			organization: organization,
+			organization,
 		})
 	}
 }
