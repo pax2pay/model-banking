@@ -15,4 +15,13 @@ export namespace Counterbalances {
 	)
 	export const is = type.is
 	export const flaw = type.flaw
+	export function add(addendee: Counterbalances, addend: Counterbalances): Counterbalances {
+		return (Object.entries(addend) as [isoly.Currency, Counterbalance][]).reduce(
+			(r: Counterbalances, [currency, counterbalance]) => ({
+				...r,
+				[currency]: Counterbalance.add(counterbalance, addendee[currency] ?? {}, currency),
+			}),
+			addendee
+		)
+	}
 }

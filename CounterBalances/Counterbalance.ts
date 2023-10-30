@@ -1,3 +1,4 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../Card"
 import { Supplier } from "../Supplier"
@@ -21,4 +22,13 @@ export namespace Counterbalance {
 	export const type = isly.record<Counterbalance>(Entry.type, isly.number())
 	export const is = type.is
 	export const flaw = type.flaw
+	export function add(addendee: Counterbalance, addend: Counterbalance, currency: isoly.Currency): Counterbalance {
+		return (Object.entries(addend) as [Entry, number][]).reduce(
+			(r: Counterbalance, [entry, amount]) => ({
+				...r,
+				[entry]: isoly.Currency.add(currency, addendee[entry] ?? 0, amount),
+			}),
+			addendee
+		)
+	}
 }
