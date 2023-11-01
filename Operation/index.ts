@@ -30,13 +30,13 @@ export namespace Operation {
 		const signature = Number.parseInt(precursor)
 		return Number.isNaN(signature) ? undefined : (signature + 1).toString()
 	}
-	export function fromCreatable(transaction: string, creatable: Creatable, oldSignature: string): Operation {
+	export function fromCreatable(transaction: string, creatable: Creatable, oldSignature?: string): Operation {
 		return {
 			...creatable,
 			transaction,
 			counter: 0,
 			created: isoly.DateTime.now(),
-			signature: sign(oldSignature),
+			signature: oldSignature && sign(oldSignature),
 		}
 	}
 }
