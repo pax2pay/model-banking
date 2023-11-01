@@ -25,18 +25,14 @@ export namespace Operation {
 	})
 	export const is = type.is
 	export const flaw = type.flaw
-	//TODO: actual signing function
-	function sign(precursor: string): string | undefined {
-		const signature = Number.parseInt(precursor)
-		return Number.isNaN(signature) ? undefined : (signature + 1).toString()
-	}
-	export function fromCreatable(transaction: string, creatable: Creatable, oldSignature?: string): Operation {
+
+	export function fromCreatable(transaction: string, creatable: Creatable, signature?: string): Operation {
 		return {
 			...creatable,
 			transaction,
 			counter: 0,
 			created: isoly.DateTime.now(),
-			signature: oldSignature && sign(oldSignature),
+			signature,
 		}
 	}
 }
