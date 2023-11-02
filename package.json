@@ -70,7 +70,7 @@
 		"typescript": "^5.1.3"
 	},
 	"dependencies": {
-		"@userwidgets/model": "^0.8.7",
+		"@userwidgets/model": "0.8.12",
 		"authly": "^3.0.6",
 		"cloudly-http": "^0.1.6",
 		"cloudly-rest": "^0.1.3",
