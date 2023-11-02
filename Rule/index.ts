@@ -26,7 +26,6 @@ export namespace Rule {
 	export const type = ModelRule.type
 	export const is = ModelRule.type.is
 	export const flaw = ModelRule.type.flaw
-	export const stringify = ModelRule.stringify
 	export function evaluate(
 		rules: Rule[],
 		state: State,
