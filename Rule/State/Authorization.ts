@@ -1,6 +1,10 @@
+// import { isoly } from "isoly"
 import { Authorization as ModelAuthorization } from "../../Authorization"
 
-export type Authorization = ModelAuthorization.Creatable
+export interface Authorization extends Omit<ModelAuthorization.Creatable, "amount"> {
+	amount: number
+	time: string
+}
 
 export namespace Authorization {
 	export function from(authorization: ModelAuthorization.Creatable): Authorization {
