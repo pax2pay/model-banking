@@ -1,6 +1,6 @@
 {
 	"name": "@pax2pay/model-banking",
-	"version": "0.1.162",
+	"version": "0.1.164",
 	"description": "Library containing data model types and functions for the Pax2Pay Banking API.",
 	"author": "Pax2Pay Ltd",
 	"license": "MIT",
@@ -70,7 +70,7 @@
 		"typescript": "^5.1.3"
 	},
 	"dependencies": {
-		"@userwidgets/model": "^0.8.7",
+		"@userwidgets/model": "0.8.12",
 		"authly": "^3.0.6",
 		"cloudly-http": "^0.1.6",
 		"cloudly-rest": "^0.1.3",
