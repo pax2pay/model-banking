@@ -1,27 +1,85 @@
-import { flagly } from "flagly"
-import { Realm } from "../Realm"
+// import { flagly } from "flagly"
+import { Realm as NameRealm } from "../Realm"
 
 export namespace Permissions {
-	export type Realms = Partial<
-		Record<
-			"*" | Realm,
-			flagly.Flags & {
-				organizations: Permissions.Organizations
-				transactions: flagly.Flags
-				cards: flagly.Flags
-				rules: flagly.Flags
-				settlements: flagly.Flags
-				treasury: flagly.Flags
-				operations: flagly.Flags
-			}
-		>
-	>
-	export type Organizations = Record<
-		"*" | string,
-		flagly.Flags & {
-			accounts: Permissions.Accounts
-			rules: flagly.Flags
-		}
-	>
-	export type Accounts = Record<"*" | string, flagly.Flags & { transactions: flagly.Flags; cards: flagly.Flags }>
+	export type Realms = Partial<Record<"*" | NameRealm, Realm>>
+	export const realmRole: Record<string, Realm> = {
+		admin: true,
+		"fincrime-readonly": {
+			organizations: {
+				view: true,
+				accounts: { view: true },
+				rules: { view: true },
+			},
+			transactions: { view: true },
+			cards: { view: true },
+			rules: { view: true },
+		},
+		fincrime: {
+			organizations: {
+				view: true,
+				accounts: { balance: true, view: true },
+				rules: true,
+			},
+			transactions: { view: true, resolve: true, comment: true },
+			cards: { view: true, cancel: true },
+			rules: true,
+		},
+		finance: {
+			treasury: { rebalance: true, view: true },
+			settlements: { view: true },
+		},
+		support: {
+			organizations: {
+				create: true,
+				view: true,
+				accounts: true,
+				rules: {
+					view: true,
+				},
+			},
+			transactions: { view: true },
+			cards: { view: true, cancel: true },
+			rules: { view: true },
+		},
+	}
+	export type Realm =
+		| {
+				organizations?: {
+					create?: true
+					view?: true
+					accounts?: { balance?: true; view?: true; create?: true; change?: true; cancel?: true } | true
+					rules?:
+						| {
+								edit?: true
+								view?: true
+						  }
+						| true
+				}
+				transactions?: { create?: true; view?: true; resolve?: true; comment?: true } | true
+				cards?: { create?: true; view?: true; change?: true; cancel?: true } | true
+				rules?: { edit?: true; view?: true } | true
+				settlements?: { create?: true; view?: true; ammend?: true } | true
+				treasury?: { rebalance?: true; view?: true } | true
+				operations?: { view?: true } | true
+		  }
+		| true
+	export type Organizations = Record<string, Organization>
+	export const organizationRole = {
+		admin: true,
+		finance: {
+			accounts: { balance: true, view: true, transactions: { view: true, create: true } },
+			cards: true,
+		},
+		payments: { cards: true, transactions: { create: true }, accounts: { view: true } },
+	}
+
+	export type Organization =
+		| {
+				accounts?:
+					| { balance?: true; view?: true; create?: true; change?: true; transactions?: { view?: true; create?: true } }
+					| true
+				cards?: { create?: true; view?: true; change?: true } | true
+		  }
+		| true
 }
