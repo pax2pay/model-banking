@@ -5,6 +5,7 @@ import { Transaction as ModelTransaction } from "../../Transaction"
 import { Account as StateAccount } from "./Account"
 import { Authorization as StateAuthorization } from "./Authorization"
 import { Card as StateCard } from "./Card"
+import { Data as StateData } from "./Data"
 import { Partial as StatePartial } from "./Partial"
 import { Transaction as StateTransaction } from "./Transaction"
 
@@ -13,6 +14,7 @@ export interface State {
 	transaction: StateTransaction
 	authorization?: StateAuthorization
 	card?: StateCard
+	data: StateData
 }
 
 export namespace State {

@@ -12,9 +12,9 @@ export interface Data {
 			payment: string[]
 			crypto: string[]
 			gambling: string[]
-			default: string[]
+			travel: string[]
 			specialist: string[]
-			defaultMedia: string[]
+			media: string[]
 			sabre: string[]
 		}
 	}
