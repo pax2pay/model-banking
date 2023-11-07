@@ -4,9 +4,12 @@ export interface Transaction extends Omit<ModelTransaction.Creatable, "currency"
 	amount: number
 	original: { currency: string; amount: number }
 }
-
 export namespace Transaction {
 	export function from(transaction: ModelTransaction.Creatable): Transaction {
-		return transaction
+		return {
+			...transaction,
+			amount: transaction.amount,
+			original: { currency: transaction.currency, amount: transaction.amount },
+		}
 	}
 }

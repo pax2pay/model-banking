@@ -1,3 +1,5 @@
+import { isoly } from "isoly"
+import { isly } from "isly"
 import { Card as ModelCard } from "../../Card"
 
 export interface Card extends Omit<ModelCard, "limit"> {
@@ -5,14 +7,22 @@ export interface Card extends Omit<ModelCard, "limit"> {
 	reject: { count: number }
 	age: { days: number; minutes: number }
 	limit: number
-	original: { currency: string; limit: number }
+	original: { currency: isoly.Currency; limit: number }
 }
 
 export namespace Card {
 	export function from(card: ModelCard): Card {
-		return card
+		return {
+			...card,
+			used: { count: 0, amount: 0 },
+			reject: { count: 0 },
+			age: { days: 0, minutes: 0 },
+			limit: 0,
+			original: { currency: card.limit[0], limit: card.limit[1] },
+		}
 	}
-	export const type = ModelCard.type
+	// isly.object().omit(): coming soon!!
+	export const type = isly.object<Card>({ ...(ModelCard.type as any), limit: isly.number() })
 	export const is = type.is
 	export const flaw = type.flaw
 }

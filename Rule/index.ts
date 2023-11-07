@@ -16,10 +16,12 @@ export namespace Rule {
 		export type Account = RuleState.Account
 		export namespace Account {
 			export type Transactions = RuleState.Account.Transactions
+			export type Days = RuleState.Account.Days
 		}
 		export type Authorization = RuleState.Authorization
 		export type Card = RuleState.Card
 		export type Transaction = RuleState.Transaction
+		export type Data = RuleState.Data
 		export type Partial = RuleState.Partial
 	}
 

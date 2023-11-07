@@ -1,8 +1,8 @@
 import { isoly } from "isoly"
-import { Card as ModelCard } from "../../Card"
 
 export interface Data {
 	countries: {
+		eea: isoly.CountryCode.Alpha2[]
 		sanctioned: isoly.CountryCode.Alpha2[]
 		risk: { high: isoly.CountryCode.Alpha2[]; mediumHigh: isoly.CountryCode.Alpha2[] }
 	}
@@ -18,13 +18,4 @@ export interface Data {
 			sabre: string[]
 		}
 	}
-}
-
-export namespace Data {
-	export function from(data: ModelData): Data {
-		return Data
-	}
-	export const type = ModelCard.type
-	export const is = type.is
-	export const flaw = type.flaw
 }
