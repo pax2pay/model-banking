@@ -9,11 +9,11 @@ export namespace Counterbalance {
 	export type Entry = typeof Entry.values[number]
 	export namespace Entry {
 		export const values = [
-			...Card.Stack.stacks.flatMap(s => [`fee.${s}`, `settle.${s}`] as const),
-			...Supplier.names.flatMap(s => [`incoming.${s}`, `outgoing.${s}`] as const),
-			`incoming.internal`,
-			`outgoing.internal`,
-			"fee.other",
+			...Card.Stack.stacks.flatMap(s => [`fee_${s}`, `settle_${s}`] as const),
+			...Supplier.names.flatMap(s => [`incoming_${s}`, `outgoing_${s}`] as const),
+			`incoming_internal`,
+			`outgoing_internal`,
+			"fee_other",
 		] as const
 		export const type = isly.string(Entry.values)
 		export const is = type.is
