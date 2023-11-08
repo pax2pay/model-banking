@@ -1,19 +1,28 @@
 import { flagly } from "flagly"
+import { authly } from "authly"
 import { userwidgets } from "@userwidgets/model"
 import { Key } from "./Key"
 import { Realm } from "./Realm"
 
+export const a: authly.Property.Transformer = {
+	apply(payload: authly.Payload) {
+		return undefined
+	},
+	reverse(payload: authly.Payload) {
+		payload && "role" in payload && typeof payload.role == "string" && (payload.role = JSON.parse(payload.role))
+		return payload
+	},
+}
+
 export class Authenticator {
 	private readonly verifier: userwidgets.User.Key.Verifier<Key> = userwidgets.User.Key.Verifier.create<Key>(this.key)
 
-	constructor(private readonly key: string) {}
+	constructor(private readonly key: string) {
+		this.verifier.add(a)
+	}
 	async authenticate(token: string, permissions: Key.Permissions): Promise<boolean> {
 		let result: boolean
-		// const key = { role: { test: "admin" } } as const
-		// await this.verifier.verify(token)
-		const key: { permissions: Key.Permissions; role?: Key.Permissions.Role } = {
-			permissions: { asdf: { cards: true } },
-		}
+		const key = await this.verifier.verify(token)
 		if (!key)
 			result = false
 		else if (key?.role) {
