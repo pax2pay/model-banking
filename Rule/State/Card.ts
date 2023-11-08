@@ -12,13 +12,17 @@ export interface Card extends Omit<ModelCard, "limit"> {
 }
 
 export namespace Card {
+	function ageFromTime(time: isoly.DateTime): Card["age"] {
+		const minutes = ~~(Date.now() - (isoly.DateTime.epoch(time, "milliseconds") / 1000) * 60)
+		return { days: ~~(minutes / (60 * 24)), minutes }
+	}
 	export function from(card: ModelCard): Card {
 		return {
 			...card,
 			used: { count: 0, amount: 0 },
 			reject: { count: 0 },
-			age: { days: 0, minutes: 0 },
-			limit: 0,
+			age: ageFromTime(card.created),
+			limit: card.limit[1], // TODO add currency conversion
 			original: { currency: card.limit[0], limit: card.limit[1] },
 		}
 	}
