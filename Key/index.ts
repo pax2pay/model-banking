@@ -1,9 +1,10 @@
 import { userwidgets } from "@userwidgets/model"
+import { Realm } from "../Realm"
 import { Permissions as KeyPermissions } from "./Permissions"
 
 export interface Key extends userwidgets.User.Key {
 	permissions: Key.Permissions
-	role?: Key.Permissions.Role
+	role?: Partial<Record<"*" | Realm, Key.Permissions.Role>>
 }
 export namespace Key {
 	export type Permissions = KeyPermissions

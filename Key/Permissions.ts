@@ -1,4 +1,3 @@
-// import { flagly } from "flagly"
 import { Realm as RealmName } from "../Realm"
 
 export type Permissions = Permissions.Realms | Permissions.Organizations
@@ -6,7 +5,7 @@ export namespace Permissions {
 	export type Realms = Partial<Record<"*" | RealmName, Realm>>
 	export const roles = ["admin", "fincrime-readonly", "fincrime", "finance", "support"] as const
 	export type Role = typeof roles[number]
-	export const realmRole: Record<Role, Realm> = {
+	export const role: Record<Role, Realm> = {
 		admin: true,
 		"fincrime-readonly": {
 			organizations: {
