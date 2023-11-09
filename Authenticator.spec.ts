@@ -10,7 +10,7 @@ describe("authenticator", () => {
 	const issuer = userwidgets.User.Key.Issuer.create("jest", "all ages", publicKey, privateKey)
 	const authenticator = new pax2pay.Authenticator(publicKey)
 	it("one realm role", async () => {
-		const realm: pax2pay.Realm | undefined = undefined //"test"
+		const realm: pax2pay.Realm | undefined = undefined
 		const token = await issuer.sign({
 			name: { first: "", last: "" },
 			email: "",
@@ -34,11 +34,11 @@ describe("authenticator", () => {
 		const authenticated = await authenticator.authenticate(token ?? "", {
 			[realm ?? "*"]: { treasury: { rebalance: true } },
 		})
-		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+		const authenticatedNoRealm = await authenticator.authenticate(token ?? "", {
 			["*"]: { treasury: { rebalance: true } },
 		})
 		expect(authenticated).toBeTruthy()
-		expect(notAuthenticated).toBeFalsy()
+		expect(authenticatedNoRealm).toBeTruthy()
 	})
 	it("all realms role example", async () => {
 		const realm: pax2pay.Realm | undefined = "test"
@@ -51,11 +51,11 @@ describe("authenticator", () => {
 		const authenticated = await authenticator.authenticate(token ?? "", {
 			[realm ?? "*"]: { treasury: { rebalance: true } },
 		})
-		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+		const authenticatedNoRealm = await authenticator.authenticate(token ?? "", {
 			["*"]: { treasury: { rebalance: true } },
 		})
 		expect(authenticated).toBeTruthy()
-		expect(notAuthenticated).toBeFalsy()
+		expect(authenticatedNoRealm).toBeTruthy()
 	})
 	it("permissions example one organization", async () => {
 		const organization: string | undefined = undefined
@@ -81,11 +81,11 @@ describe("authenticator", () => {
 		const authenticated = await authenticator.authenticate(token ?? "", {
 			[organization ?? "*"]: { cards: { view: true } },
 		})
-		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+		const authenticatedNoRealm = await authenticator.authenticate(token ?? "", {
 			["*"]: { cards: { view: true } },
 		})
 		expect(authenticated).toBeTruthy()
-		expect(notAuthenticated).toBeFalsy()
+		expect(authenticatedNoRealm).toBeTruthy()
 	})
 	it("permissions example all organizations", async () => {
 		const organization: string | undefined = "asdf"
@@ -98,11 +98,11 @@ describe("authenticator", () => {
 		const authenticated = await authenticator.authenticate(token ?? "", {
 			[organization ?? "*"]: { cards: { view: true } },
 		})
-		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+		const authenticatedNoRealm = await authenticator.authenticate(token ?? "", {
 			["*"]: { cards: { view: true } },
 		})
 		expect(authenticated).toBeTruthy()
-		expect(notAuthenticated).toBeFalsy()
+		expect(authenticatedNoRealm).toBeTruthy()
 	})
 	it("permissions example one realm", async () => {
 		const realm: pax2pay.Realm | undefined = undefined
@@ -128,11 +128,11 @@ describe("authenticator", () => {
 		const authenticated = await authenticator.authenticate(token ?? "", {
 			[realm ?? "*"]: { cards: { view: true } },
 		})
-		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+		const authenticatedNoRealm = await authenticator.authenticate(token ?? "", {
 			["*"]: { cards: { view: true } },
 		})
 		expect(authenticated).toBeTruthy()
-		expect(notAuthenticated).toBeFalsy()
+		expect(authenticatedNoRealm).toBeTruthy()
 	})
 	it("permissions example all realms", async () => {
 		const realm: pax2pay.Realm | undefined = "test"
@@ -145,10 +145,10 @@ describe("authenticator", () => {
 		const authenticated = await authenticator.authenticate(token ?? "", {
 			[realm ?? "*"]: { cards: { view: true } },
 		})
-		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+		const authenticatedNoRealm = await authenticator.authenticate(token ?? "", {
 			["*"]: { cards: { view: true } },
 		})
 		expect(authenticated).toBeTruthy()
-		expect(notAuthenticated).toBeFalsy()
+		expect(authenticatedNoRealm).toBeTruthy()
 	})
 })
