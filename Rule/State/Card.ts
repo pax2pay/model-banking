@@ -24,8 +24,8 @@ export namespace Card {
 	}
 	export function from(card: ModelCard, statistics: Statistics = initialStatistics): Card {
 		return {
-			...card,
 			...statistics,
+			...card,
 			age: ageFromTime(card.created),
 			limit: card.limit[1], // TODO add currency conversion
 			original: { currency: card.limit[0], limit: card.limit[1] },
