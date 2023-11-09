@@ -11,7 +11,7 @@ export namespace Account {
 		amount: number
 	}
 	export interface Days {
-		merchant: {
+		merchant?: {
 			name: number
 			country: number
 			category: number
