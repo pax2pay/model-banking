@@ -14,7 +14,7 @@ export namespace Card {
 		used: { count: number; amount: number }
 		reject: { count: number }
 	}
-	const initialStatistics = {
+	export const initialStatistics = {
 		used: { count: 0, amount: 0 },
 		reject: { count: 0 },
 	}

@@ -1,6 +1,4 @@
 import { Account as ModelAccount } from "../../Account"
-import { Authorization as ModelAuthorization } from "../../Authorization"
-import { Card as ModelCard } from "../../Card"
 import { Transaction as ModelTransaction } from "../../Transaction"
 import { Account as StateAccount } from "./Account"
 import { Authorization as StateAuthorization } from "./Authorization"
@@ -24,15 +22,15 @@ export namespace State {
 		transactions: StateAccount.Transactions,
 		days: StateAccount.Days,
 		transaction: ModelTransaction.Creatable,
-		authorization?: ModelAuthorization.Creatable,
-		card?: ModelCard
+		authorization?: StateAuthorization,
+		card?: StateCard
 	): State {
 		return {
 			data,
 			account: Account.from(account, transactions, days),
 			transaction: Transaction.from(transaction),
-			authorization: authorization && Authorization.from(authorization),
-			card: card && Card.from(card),
+			authorization,
+			card,
 		}
 	}
 	export type Partial = StatePartial
@@ -41,6 +39,9 @@ export namespace State {
 	export const Authorization = StateAuthorization
 	export type Card = StateCard
 	export const Card = StateCard
+	export namespace Card {
+		export type Statistics = StateCard.Statistics
+	}
 	export type Account = StateAccount
 	export const Account = StateAccount
 	export namespace Account {
