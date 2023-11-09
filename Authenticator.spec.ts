@@ -23,7 +23,7 @@ describe("authenticator", () => {
 		console.log("authenticated: ", authenticated)
 		expect(authenticated).toBeTruthy()
 	})
-	it.skip("several realms role example", async () => {
+	it("several realms role example", async () => {
 		const realm: pax2pay.Realm | undefined = "test"
 		const token = await issuer.sign({
 			name: { first: "", last: "" },
@@ -34,7 +34,6 @@ describe("authenticator", () => {
 		const authenticated = await authenticator.authenticate(token ?? "", {
 			[realm ?? "*"]: { treasury: { rebalance: true } },
 		})
-		console.log("authenticated: ", authenticated)
 		const notAuthenticated = await authenticator.authenticate(token ?? "", {
 			["*"]: { treasury: { rebalance: true } },
 		})
@@ -52,7 +51,6 @@ describe("authenticator", () => {
 		const authenticated = await authenticator.authenticate(token ?? "", {
 			[realm ?? "*"]: { treasury: { rebalance: true } },
 		})
-		console.log("authenticated: ", authenticated)
 		const notAuthenticated = await authenticator.authenticate(token ?? "", {
 			["*"]: { treasury: { rebalance: true } },
 		})
@@ -72,7 +70,7 @@ describe("authenticator", () => {
 		})
 		expect(authenticated).toBeTruthy()
 	})
-	it.skip("permissions example several organizations", async () => {
+	it("permissions example several organizations", async () => {
 		const organization: string | undefined = "asdf"
 		const permissions: pax2pay.Key.Permissions = { asdf: { cards: true }, qwer: { cards: true } }
 		const token = await issuer.sign({
@@ -119,7 +117,7 @@ describe("authenticator", () => {
 		})
 		expect(authenticated).toBeTruthy()
 	})
-	it.skip("permissions example several realms", async () => {
+	it("permissions example several realms", async () => {
 		const realm: pax2pay.Realm | undefined = "test"
 		const permissions: pax2pay.Key.Permissions = { test: { cards: true }, testUK: { cards: true } }
 		const token = await issuer.sign({
