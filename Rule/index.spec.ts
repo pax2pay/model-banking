@@ -109,6 +109,25 @@ export const cardUsageLimit = {
 }
 describe("definitions", () => {
 	const state = pax2pay.Rule.State.from(
+		{
+			countries: {
+				eea: ["AD"],
+				sanctioned: ["AD"],
+				risk: { high: ["AD"], mediumHigh: ["AD"] },
+			},
+			merchant: {
+				known: [],
+				categories: {
+					payment: [],
+					crypto: [],
+					gambling: [],
+					travel: [],
+					specialist: [],
+					media: [],
+					sabre: [],
+				},
+			},
+		},
 		account,
 		{
 			today: { count: 3, amount: 3 },
@@ -116,6 +135,7 @@ describe("definitions", () => {
 			outgoing: { today: { count: 1, amount: 1 } },
 			card: { today: { count: 1, amount: 1 } },
 		},
+		{ currency: 1, merchant: { category: 1, country: 1, name: 1 } },
 		transaction1
 	)
 	it("exceedsAmount", () => {

@@ -102,8 +102,8 @@ export namespace Transaction {
 			notes: [],
 		}
 	}
-	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
-		return cryptly.Identifier.is(value, 8)
+	export function isIdentifier(value: string | any): value is string {
+		return typeof value == "string"
 	}
 	export function flag(transaction: Transaction, note: Note): void {
 		const flagSet = new Set<string>(transaction.flags)
