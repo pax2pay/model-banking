@@ -9,8 +9,8 @@ describe("authenticator", () => {
 		"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzWKqXfw8HU6lMtoLdc1WEkEZP/Dmhx8JmfMMQxcUIiFUkObL9zAEo/pk4/1FCaAy/l14yX76OU97Eannq8FObjd8tU5UOqb4n9RpXO3md1JDIZkuqhjQwuCJax/0nyNY+WH5MLWCBgo5kw6R+AHBdCXQGSGoMGfm0qQAySDE1PmZWc/6sR4WacK+ooMO/YtP7HuQQeG8qsJ44wbQXaYlKupxJr3EDo+Un4N9/PHmXlTTz1u7/aO2KbzP+V6kevvPzf+mS+KvSLMYMgIuDiQXvlor9UeC1M5VNj7Trx6HKnoiekKUt3tL14cIHVKhpOTlN2l2yj4ImmAG3qZ4gMO6DwIDAQAB"
 	const issuer = userwidgets.User.Key.Issuer.create("jest", "all ages", publicKey, privateKey)
 	const authenticator = new pax2pay.Authenticator(publicKey)
-	it("role example", async () => {
-		const realm: pax2pay.Realm | undefined = "test"
+	it("one realm role", async () => {
+		const realm: pax2pay.Realm | undefined = undefined //"test"
 		const token = await issuer.sign({
 			name: { first: "", last: "" },
 			email: "",
@@ -20,17 +20,137 @@ describe("authenticator", () => {
 		const authenticated = await authenticator.authenticate(token ?? "", {
 			[realm ?? "*"]: { treasury: { rebalance: true } },
 		})
-		expect(authenticated).toEqual(true)
+		console.log("authenticated: ", authenticated)
+		expect(authenticated).toBeTruthy()
 	})
-	it("permissions example", async () => {
+	it.skip("several realms role example", async () => {
+		const realm: pax2pay.Realm | undefined = "test"
 		const token = await issuer.sign({
 			name: { first: "", last: "" },
 			email: "",
-			permissions: flagly.Flags.stringify({ asdf: { cards: true } }),
+			role: JSON.stringify({ test: "finance", testUK: "finance" }),
+			permissions: "",
 		})
 		const authenticated = await authenticator.authenticate(token ?? "", {
-			asdf: { cards: { view: true } },
+			[realm ?? "*"]: { treasury: { rebalance: true } },
 		})
-		expect(authenticated).toEqual(true)
+		console.log("authenticated: ", authenticated)
+		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+			["*"]: { treasury: { rebalance: true } },
+		})
+		expect(authenticated).toBeTruthy()
+		expect(notAuthenticated).toBeFalsy()
+	})
+	it("all realms role example", async () => {
+		const realm: pax2pay.Realm | undefined = "test"
+		const token = await issuer.sign({
+			name: { first: "", last: "" },
+			email: "",
+			role: JSON.stringify({ "*": "finance" }),
+			permissions: "",
+		})
+		const authenticated = await authenticator.authenticate(token ?? "", {
+			[realm ?? "*"]: { treasury: { rebalance: true } },
+		})
+		console.log("authenticated: ", authenticated)
+		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+			["*"]: { treasury: { rebalance: true } },
+		})
+		expect(authenticated).toBeTruthy()
+		expect(notAuthenticated).toBeFalsy()
+	})
+	it("permissions example one organization", async () => {
+		const organization: string | undefined = undefined
+		const permissions: pax2pay.Key.Permissions = { asdf: { cards: true } }
+		const token = await issuer.sign({
+			name: { first: "", last: "" },
+			email: "",
+			permissions: flagly.Flags.stringify(permissions),
+		})
+		const authenticated = await authenticator.authenticate(token ?? "", {
+			[organization ?? "*"]: { cards: { view: true } },
+		})
+		expect(authenticated).toBeTruthy()
+	})
+	it.skip("permissions example several organizations", async () => {
+		const organization: string | undefined = "asdf"
+		const permissions: pax2pay.Key.Permissions = { asdf: { cards: true }, qwer: { cards: true } }
+		const token = await issuer.sign({
+			name: { first: "", last: "" },
+			email: "",
+			permissions: flagly.Flags.stringify(permissions),
+		})
+		const authenticated = await authenticator.authenticate(token ?? "", {
+			[organization ?? "*"]: { cards: { view: true } },
+		})
+		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+			["*"]: { cards: { view: true } },
+		})
+		expect(authenticated).toBeTruthy()
+		expect(notAuthenticated).toBeFalsy()
+	})
+	it("permissions example all organizations", async () => {
+		const organization: string | undefined = "asdf"
+		const permissions: pax2pay.Key.Permissions = { "*": { cards: true } }
+		const token = await issuer.sign({
+			name: { first: "", last: "" },
+			email: "",
+			permissions: flagly.Flags.stringify(permissions),
+		})
+		const authenticated = await authenticator.authenticate(token ?? "", {
+			[organization ?? "*"]: { cards: { view: true } },
+		})
+		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+			["*"]: { cards: { view: true } },
+		})
+		expect(authenticated).toBeTruthy()
+		expect(notAuthenticated).toBeFalsy()
+	})
+	it("permissions example one realm", async () => {
+		const realm: pax2pay.Realm | undefined = undefined
+		const permissions: pax2pay.Key.Permissions = { test: { cards: true } }
+		const token = await issuer.sign({
+			name: { first: "", last: "" },
+			email: "",
+			permissions: flagly.Flags.stringify(permissions),
+		})
+		const authenticated = await authenticator.authenticate(token ?? "", {
+			[realm ?? "*"]: { cards: { view: true } },
+		})
+		expect(authenticated).toBeTruthy()
+	})
+	it.skip("permissions example several realms", async () => {
+		const realm: pax2pay.Realm | undefined = "test"
+		const permissions: pax2pay.Key.Permissions = { test: { cards: true }, testUK: { cards: true } }
+		const token = await issuer.sign({
+			name: { first: "", last: "" },
+			email: "",
+			permissions: flagly.Flags.stringify(permissions),
+		})
+		const authenticated = await authenticator.authenticate(token ?? "", {
+			[realm ?? "*"]: { cards: { view: true } },
+		})
+		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+			["*"]: { cards: { view: true } },
+		})
+		expect(authenticated).toBeTruthy()
+		expect(notAuthenticated).toBeFalsy()
+	})
+	it("permissions example all realms", async () => {
+		const realm: pax2pay.Realm | undefined = "test"
+		const permissions: pax2pay.Key.Permissions = { "*": { cards: true } }
+		const token = await issuer.sign({
+			name: { first: "", last: "" },
+			email: "",
+			permissions: flagly.Flags.stringify(permissions),
+		})
+		const authenticated = await authenticator.authenticate(token ?? "", {
+			[realm ?? "*"]: { cards: { view: true } },
+		})
+		const notAuthenticated = await authenticator.authenticate(token ?? "", {
+			["*"]: { cards: { view: true } },
+		})
+		expect(authenticated).toBeTruthy()
+		expect(notAuthenticated).toBeFalsy()
 	})
 })

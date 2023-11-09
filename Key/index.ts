@@ -11,6 +11,8 @@ export namespace Key {
 	export namespace Permissions {
 		export type Realms = KeyPermissions.Realms
 		export type Organizations = KeyPermissions.Organizations
+		export type Realm = KeyPermissions.Realm
+		export type Organization = KeyPermissions.Organization
 		export type Role = KeyPermissions.Role
 	}
 	export const Permissions = KeyPermissions
