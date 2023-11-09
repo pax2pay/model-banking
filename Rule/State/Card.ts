@@ -14,7 +14,7 @@ export namespace Card {
 		used: { count: number; amount: number }
 		reject: { count: number }
 	}
-	const initialStatistics = {
+	export const initialStatistics = {
 		used: { count: 0, amount: 0 },
 		reject: { count: 0 },
 	}
@@ -24,8 +24,8 @@ export namespace Card {
 	}
 	export function from(card: ModelCard, statistics: Statistics = initialStatistics): Card {
 		return {
-			...statistics,
 			...card,
+			...statistics,
 			age: ageFromTime(card.created),
 			limit: card.limit[1], // TODO add currency conversion
 			original: { currency: card.limit[0], limit: card.limit[1] },
