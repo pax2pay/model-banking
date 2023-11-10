@@ -12,11 +12,11 @@ export namespace Account {
 	}
 	export interface Days {
 		merchant?: {
-			name: number
-			country: number
-			category: number
+			name?: number
+			country?: number
+			category?: number
 		}
-		currency: number
+		currency?: number
 	}
 	export interface Transactions {
 		today: Today
