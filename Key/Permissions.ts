@@ -1,6 +1,6 @@
 import { Realm as RealmName } from "../Realm"
 
-export type Permissions = Permissions.Realms | Permissions.Organizations
+export type Permissions = (Permissions.Realms | Permissions.Organizations) & { role?: Permissions.Roles }
 export namespace Permissions {
 	export type Realms = Partial<Record<"*" | RealmName, Realm>>
 	export const roles = ["admin", "fincrime-readonly", "fincrime", "finance", "support"] as const

@@ -17,7 +17,8 @@ describe("authenticator", () => {
 			permissions: flagly.Flags.stringify({ role }),
 		})
 		const authenticated = await authenticator.authenticate(token, {
-			["*"]: { treasury: { rebalance: true } },
+			role: { test: { finance: true } },
+			test: { treasury: { rebalance: true } },
 		})
 		expect(authenticated).toBeTruthy()
 	})
@@ -51,16 +52,19 @@ describe("authenticator", () => {
 		expect(authenticated).toBeTruthy()
 		expect(authenticatedNoRealm).toBeTruthy()
 	})
-	it.skip("permissions example one organization", async () => {
-		const organization: string | undefined = undefined
-		const permissions: pax2pay.Key.Permissions = { asdf: { cards: true } }
+	it("permissions example one organization", async () => {
+		const permissions: pax2pay.Key.Permissions = { "*": { cards: true } }
 		const token = await issuer.sign({
 			...keyBase,
 			permissions: flagly.Flags.stringify(permissions),
 		})
-		const authenticated = await authenticator.authenticate(token, {
-			[organization ?? "*"]: { cards: { view: true } },
-		})
+		const authenticated = await authenticator.authenticate(
+			token,
+			{
+				["*"]: { cards: { view: true } },
+			},
+			{ ["test"]: { accounts: true } }
+		)
 		expect(authenticated).toBeTruthy()
 	})
 	it.skip("permissions example several organizations", async () => {

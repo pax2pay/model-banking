@@ -2,7 +2,7 @@ import { userwidgets } from "@userwidgets/model"
 import { Permissions as KeyPermissions } from "./Permissions"
 
 export interface Key extends userwidgets.User.Key {
-	permissions: Key.Permissions & { role?: Key.Permissions.Roles }
+	permissions: Key.Permissions
 }
 export namespace Key {
 	export type Permissions = KeyPermissions
