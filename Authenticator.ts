@@ -20,7 +20,7 @@ export class Authenticator {
 	constructor(private readonly key: string) {
 		this.verifier.add(roleTransformer)
 	}
-	async authenticate(token: string, permissions: Key.Permissions): Promise<Key | false | undefined> {
+	async authenticate(token: string | undefined, permissions: Key.Permissions): Promise<Key | false | undefined> {
 		let result: Key | false | undefined
 		const key = await this.verifier.verify(token)
 		if (!key)
