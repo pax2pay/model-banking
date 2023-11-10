@@ -5,6 +5,7 @@ export namespace Permissions {
 	export type Realms = Partial<Record<"*" | RealmName, Realm>>
 	export const roles = ["admin", "fincrime-readonly", "fincrime", "finance", "support"] as const
 	export type Role = typeof roles[number]
+	export type Roles = Partial<Record<"*" | RealmName, { [K in Role]?: true }>>
 	export const role: Record<Role, Realm> = {
 		admin: true,
 		"fincrime-readonly": {
