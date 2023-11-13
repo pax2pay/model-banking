@@ -3,6 +3,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Realm } from "../../Realm"
 import { Supplier } from "../../Supplier"
+import { Conditions } from "./Conditions"
 
 export interface Storable {
 	id: cryptly.Identifier
@@ -10,6 +11,7 @@ export interface Storable {
 	realm: Realm
 	supplier: Supplier
 	reference: string
+	conditions?: Conditions
 }
 
 export namespace Storable {
@@ -19,6 +21,7 @@ export namespace Storable {
 		realm: isly.fromIs("realm", Realm.is),
 		supplier: isly.fromIs("supplier", Supplier.is),
 		reference: isly.string(),
+		conditions: Conditions.type.optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
