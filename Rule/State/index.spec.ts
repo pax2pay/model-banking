@@ -24,6 +24,7 @@ describe("State", () => {
 			},
 			original: { currency: "USD", amount: 100 },
 			time: isoly.DateTime.getTime(isoly.DateTime.now()),
+			hour: isoly.DateTime.getHour(isoly.DateTime.now()),
 			reference: "ahgt3817",
 			description: "An upcheck test authorization, to succeed",
 		}

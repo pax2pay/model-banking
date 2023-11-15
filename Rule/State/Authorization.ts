@@ -6,6 +6,7 @@ import { Merchant } from "../../Merchant"
 
 export interface Authorization extends Omit<ModelAuthorization.Creatable, "amount"> {
 	time: string
+	hour: number
 	currency: isoly.Currency
 	amount: number
 	original: { currency: isoly.Currency; amount: number }
@@ -15,6 +16,7 @@ export namespace Authorization {
 		return {
 			...authorization,
 			time: isoly.DateTime.getTime(isoly.DateTime.now()),
+			hour: isoly.DateTime.getHour(isoly.DateTime.now()),
 			currency: authorization.amount[0],
 			amount: Math.abs(authorization.amount[1]),
 			original: { currency: authorization.amount[0], amount: Math.abs(authorization.amount[1]) },
@@ -34,6 +36,7 @@ export namespace Authorization {
 			amount: isly.number(),
 		}),
 		time: isly.string(),
+		hour: isly.number(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
