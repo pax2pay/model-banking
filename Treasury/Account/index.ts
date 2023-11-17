@@ -34,7 +34,7 @@ export namespace Account {
 		supplier: isly.fromIs("supplier", Supplier.is),
 		reference: isly.string(),
 		currencies: isly.fromIs("Treasury.Account.currencies", isoly.Currency.is).array(),
-		type: isly.string(AccountCategory.type),
+		type: AccountCategory.type,
 		conditions: AccountConditions.type,
 		rail: isly.fromIs("Treasury.Account.rail", Rail.is).array(),
 		balance: isly.fromIs("Treasury.Account.balance", Balance.is),

@@ -20,7 +20,7 @@ export namespace Creatable {
 		realm: isly.fromIs("realm", Realm.is),
 		supplier: isly.fromIs("supplier", Supplier.is),
 		currencies: isly.fromIs("Account.Creatable.currencies", isoly.Currency.is).array(),
-		type: isly.string(Category.type),
+		type: Category.type,
 		conditions: Conditions.type.optional(),
 	})
 	export const is = type.is
