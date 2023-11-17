@@ -5,14 +5,14 @@ import { Permissions } from "./Permissions"
 
 type OrganizationCode = string
 export type Roles =
-	| Partial<Record<`${Realm | "*"}|*`, (Roles.Realm.Role | Roles.Organization.Role)[]>>
-	| Partial<Record<`${Realm | "*"}|${OrganizationCode}`, Roles.Organization.Role[]>>
+	| Partial<Record<`${Realm | "*"}-*`, (Roles.Realm.Role | Roles.Organization.Role)[]>>
+	| Partial<Record<`${Realm | "*"}-${OrganizationCode}`, Roles.Organization.Role[]>>
 export namespace Roles {
 	export type Role = Realm.Role | Organization.Role
 	export function resolve(roles: Roles): Permissions {
 		let result = {}
 		for (const [key, role] of Object.entries(roles)) {
-			const [, organizationCode] = key.split("|")
+			const [, organizationCode] = key.split("-")
 			result =
 				role?.reduce(
 					(r, role) =>
@@ -79,7 +79,7 @@ export namespace Roles {
 		export type Role = typeof roles[number]
 		export const roles = ["admin", "finance", "payments"] as const
 		export const definitions: Record<Role, Permissions.Organization | true> = {
-			admin: { "*": true },
+			admin: true,
 			finance: {
 				accounts: { balance: true, view: true, transactions: { view: true, create: true } },
 				cards: true,

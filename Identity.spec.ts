@@ -7,23 +7,24 @@ describe("authenticate", () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
-		expect(await authenticate({ [`test|*`]: ["finance"] }, "test", orgCode, constraint)).toBeTruthy()
-		expect(await authenticate({ [`test|${orgCode}`]: ["finance"] }, "test", orgCode, constraint)).toBeFalsy()
+
+		expect(await authenticate({ [`test-*`]: ["finance"] }, "test", orgCode, constraint)).toBeTruthy()
+		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode, constraint)).toBeFalsy()
 	})
 	it("admin", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
-		expect(await authenticate({ [`*|*`]: ["admin"] }, "test", orgCode, constraint)).toBeTruthy()
-		expect(await authenticate({ [`*|*`]: ["admin"] }, "testUK", orgCode, constraint)).toBeTruthy()
+		expect(await authenticate({ [`*-*`]: ["admin"] }, "test", orgCode, constraint)).toBeTruthy()
+		expect(await authenticate({ [`*-*`]: ["admin"] }, "testUK", orgCode, constraint)).toBeTruthy()
 	})
-	it.skip("finance roll on several realms", async () => {
+	it("finance roll on several realms", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
 		const roles: pax2pay.Key.Roles = {
-			[`test|*`]: ["finance"],
-			[`testUK|*`]: ["finance"],
+			[`test-*`]: ["finance"],
+			[`testUK-*`]: ["finance"],
 		}
 		expect(await authenticate(roles, "test", orgCode, constraint)).toBeTruthy()
 		expect(await authenticate(roles, "testUK", orgCode, constraint)).toBeTruthy()

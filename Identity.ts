@@ -6,9 +6,9 @@ export class Identity {
 	constructor(readonly key: Key) {}
 	check(constraint: Key.Permissions, realm?: Realm, organization?: string) {
 		return [
-			{ [`${this.key.realm ?? realm}|${this.key.organization ?? organization}`]: constraint },
-			{ [`${this.key.realm ?? realm}|*`]: constraint },
-			{ [`*|*`]: constraint },
+			{ [`${this.key.realm ?? realm}-${this.key.organization ?? organization}`]: constraint },
+			{ [`${this.key.realm ?? realm}-*`]: constraint },
+			{ [`*-*`]: constraint },
 		].some(e => userwidgets.User.Permissions.check(this.key.permissions, e))
 	}
 
