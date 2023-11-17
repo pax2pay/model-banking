@@ -22,8 +22,8 @@ describe("authenticate", () => {
 			treasury: { rebalance: true },
 		}
 		const roles: pax2pay.Key.Roles = {
-			...{ [`test|*`]: ["finance"] },
-			...{ [`testUK|*`]: ["finance"] },
+			[`test|*`]: ["finance"],
+			[`testUK|*`]: ["finance"],
 		}
 		expect(await authenticate(roles, "test", orgCode, constraint)).toBeTruthy()
 		expect(await authenticate(roles, "testUK", orgCode, constraint)).toBeTruthy()
