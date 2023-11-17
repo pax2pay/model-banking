@@ -12,8 +12,6 @@
 		]
 	},
 	"files": [
-		"index.ts",
-		"Key/Permissions.ts",
-		"./Key/Permissions/Realms.ts",
+		"index.ts"
 	]
 }
