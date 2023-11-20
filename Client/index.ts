@@ -25,10 +25,10 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly transactions = new Transactions(this.client)
 	readonly treasury = new Treasury(this.client)
 	readonly flags = new Flags(this.client)
-	readonly userwidgets = new userwidgets.ClientCollection(this.client, { pathPrefix: "/widgets" })
+	readonly userwidgets = (server: string) => new userwidgets.ClientCollection(new http.Client(server), {})
 	readonly version = new Version(this.client)
 
-	static create<T = Record<string, any>>(server: string, key: string, load?: (client: http.Client) => T): Client & T {
+	static create<T = Record<string, any>>(server: string, key?: string, load?: (client: http.Client) => T): Client & T {
 		let httpClient: http.Client<gracely.Error>
 		const result: Client = new Client(
 			(httpClient = new http.Client<gracely.Error>(server, key, {
