@@ -3,11 +3,11 @@ import { Key } from "./Key"
 import { Realm } from "./Realm"
 
 export class Identity {
-	constructor(readonly key: Key) {}
+	constructor(readonly key: Key, readonly realm?: Realm, readonly organization?: string) {}
 	check(constraint: Key.Permissions, realm?: Realm, organization?: string) {
 		return [
-			{ [`${this.key.realm ?? realm}-${this.key.organization ?? organization}`]: constraint },
-			{ [`${this.key.realm ?? realm}-*`]: constraint },
+			{ [`${realm ?? this.realm}-${organization ?? this.organization}`]: constraint },
+			{ [`${realm ?? this.realm}-*`]: constraint },
 			{ [`*-*`]: constraint },
 		].some(e => userwidgets.User.Permissions.check(this.key.permissions, e))
 	}
@@ -18,8 +18,10 @@ export class Identity {
 		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier
 	): Promise<Identity | undefined> {
 		const key: Key | undefined = await verifier.verify(header.authorization)
-		const result = key && new Identity(key)
-		return result?.check(constraint, header.realm, header.organization) ? result : undefined
+		const result =
+			key &&
+			new Identity(key, (key.realm ?? header.realm) as Realm, (key.organization ?? header.organization) as string)
+		return result?.check(constraint) ? result : undefined
 	}
 }
 const publicKey =
