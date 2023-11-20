@@ -1,5 +1,4 @@
 import { isly } from "isly"
-import { Authorization } from "../../Authorization"
 
 export interface Unknown extends Unknown.Creatable {
 	status: "succeeded" | "failed"
@@ -8,14 +7,12 @@ export interface Unknown extends Unknown.Creatable {
 export namespace Unknown {
 	export interface Creatable {
 		type: "unknown"
-		authorization?: Authorization
-		data: Record<string, any>
+		raw?: Record<string, any>
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
 			type: isly.string("unknown"),
-			authorization: Authorization.type.optional(),
-			data: isly.record(isly.string(), isly.any()),
+			raw: isly.record(isly.string(), isly.any()),
 		})
 		export const is = Unknown.is
 		export const flaw = Unknown.flaw

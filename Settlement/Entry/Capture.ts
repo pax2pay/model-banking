@@ -1,27 +1,15 @@
 import { isly } from "isly"
-import { Amount } from "../../Amount"
-import { Authorization } from "../../Authorization"
-import { Fee } from "../Fee"
+import { Base } from "./Base"
 
-export interface Capture extends Capture.Creatable {
-	status: "succeeded" | "failed"
-}
+export interface Capture extends Capture.Creatable, Base {}
 
 export namespace Capture {
-	export interface Creatable {
+	export interface Creatable extends Base.Creatable {
 		type: "capture"
-		authorization?: Authorization
-		reference: string
-		fee?: Fee
-		amount?: Amount
 	}
 	export namespace Creatable {
-		export const type = isly.object<Creatable>({
+		export const type = Base.Creatable.type.extend<Creatable>({
 			type: isly.string("capture"),
-			authorization: Authorization.type.optional(),
-			reference: isly.string(),
-			fee: Fee.type.optional(),
-			amount: Amount.type.optional(),
 		})
 		export const is = type.is
 		export const flaw = type.flaw

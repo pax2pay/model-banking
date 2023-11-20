@@ -1,6 +1,7 @@
 import { gracely } from "gracely"
 import { isly } from "isly"
 import { Amount } from "../../Amount"
+import { Authorization } from "../../Authorization"
 import { Transaction } from "../../Transaction"
 import { Total } from "../Total"
 import { Cancel as EntryCancel } from "./Cancel"
@@ -33,14 +34,20 @@ export namespace Entry {
 			? Total.initiate()
 			: Total.initiate({ amount: Amount.toAmounts(entry.amount), fee: entry.fee })
 	}
-	export function from(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): Entry {
-		return Transaction.is(transaction) && creatable.authorization
+	export function from(
+		creatable: Entry.Creatable,
+		authorization?: Authorization,
+		transaction?: Transaction | gracely.Error
+	): Entry {
+		return Transaction.is(transaction) && authorization
 			? {
 					status: "succeeded",
+					authorization,
 					...creatable,
 			  }
 			: {
 					status: "failed",
+					authorization,
 					...creatable,
 			  }
 	}
