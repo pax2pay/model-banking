@@ -8,5 +8,6 @@ type yearDay = Exclude<
 export type Batch = `${yearDay}0${"1" | "2" | "3" | "4" | "5" | "6"}`
 
 export namespace Batch {
-	export const type = isly.string(/^(?:[0-2]\d\d|3[0-6]\d)0[1-6]$/)
+	export const type = isly.string<Batch>(/^(?:[0-2]\d\d|3[0-6]\d)0[1-6]$/)
+	export const is = type.is
 }
