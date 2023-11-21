@@ -1,6 +1,5 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Card } from "../Card"
 import { Supplier } from "../Supplier"
 import { SettlementEntry as counterSettlementEntry } from "./SettlementEntry"
 
@@ -12,7 +11,6 @@ export namespace Counterbalance {
 	export type SettlementEntry = counterSettlementEntry
 	export namespace Entry {
 		export const values = [
-			...Card.Stack.stacks.flatMap(s => [`fee_${s}`, `settle_${s}`] as const),
 			...Supplier.names.flatMap(s => [`incoming_${s}`, `outgoing_${s}`] as const),
 			`incoming_internal`,
 			`outgoing_internal`,

@@ -2,6 +2,7 @@ import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../Card"
+import { Batch as SettlementBatch } from "./Batch"
 import { Creatable as SettlementCreatable } from "./Creatable"
 import { Entry as SettlementEntry } from "./Entry"
 import { Fee as SettlementFee } from "./Fee"
@@ -31,6 +32,8 @@ export namespace Settlement {
 	export const Creatable = SettlementCreatable
 	export type Entry = SettlementEntry
 	export const Entry = SettlementEntry
+	export type Batch = SettlementBatch
+	export const Batch = SettlementBatch
 	export namespace Entry {
 		export type Summary = SettlementEntry.Summary
 		export type Creatable = SettlementEntry.Creatable
