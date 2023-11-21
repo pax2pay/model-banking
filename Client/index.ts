@@ -25,7 +25,8 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly transactions = new Transactions(this.client)
 	readonly treasury = new Treasury(this.client)
 	readonly flags = new Flags(this.client)
-	readonly userwidgets = (server: string) => new userwidgets.ClientCollection(new http.Client(server), {})
+	readonly userwidgets = (server: string, application: string) =>
+		new userwidgets.ClientCollection(new http.Client(server), { application })
 	readonly version = new Version(this.client)
 
 	static create<T = Record<string, any>>(server: string, key?: string, load?: (client: http.Client) => T): Client & T {
