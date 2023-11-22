@@ -15,6 +15,7 @@ export interface Settlement {
 	by?: string
 	created: isoly.DateTime
 	reference: string
+	batch: SettlementBatch
 	processor: Card.Stack
 	status: Status
 	expected: Settlement.Total
@@ -62,15 +63,17 @@ export namespace Settlement {
 			by,
 			processor: creatable.processor,
 			reference: creatable.reference,
+			batch: creatable.batch,
 			expected: Total.initiate(),
 		}
 	}
-	export const type = isly.object({
+	export const type = isly.object<Settlement>({
 		id: isly.string(),
 		by: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		reference: isly.string(),
 		processor: Card.Stack.type,
+		batch: Batch.type,
 		status: Status.type,
 		expected: Settlement.Total.type,
 		outcome: Settlement.Total.type.optional(),

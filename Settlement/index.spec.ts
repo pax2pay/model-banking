@@ -75,6 +75,7 @@ const entries: pax2pay.Settlement.Entry[] = [
 		type: "capture",
 		authorization: authorization1,
 		reference: "string",
+		batch: "27301",
 		fee: { other: { [authorization1.amount[0]]: authorization1.amount[1] * 0.01 } },
 		amount: authorization1.amount,
 	},
@@ -83,6 +84,7 @@ const entries: pax2pay.Settlement.Entry[] = [
 		type: "capture",
 		authorization: authorization2,
 		reference: "string",
+		batch: "27301",
 		fee: { other: { [authorization2.amount[0]]: authorization2.amount[1] * 0.01 } },
 		amount: authorization2.amount,
 	},
@@ -92,6 +94,7 @@ const settlement: pax2pay.Settlement = {
 	id: "abcd1234",
 	created: "2000-01-01T00:00:00.001",
 	reference: "string",
+	batch: "27301",
 	processor: "test-paxgiro",
 	status: "ongoing",
 	expected: {
