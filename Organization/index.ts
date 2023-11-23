@@ -1,23 +1,30 @@
 import * as cryptly from "cryptly"
+import { isly } from "isly"
+import { Realm } from "../Realm"
+import { Rule } from "../Rule"
 import { Changeable as OrganizationChangeable } from "./Changeable"
 import { Contact as OrganizationContact } from "./Contact"
-import { Creatable as OrganizationCreatable } from "./Creatable"
 
-export interface Organization extends OrganizationCreatable {
-	readonly id: cryptly.Identifier
+export interface Organization {
+	name: string
+	code: string
+	realm: Realm
+	rules: Rule[]
+	contact?: Organization.Contact
 }
 export namespace Organization {
-	export function is(value: Organization | any): value is Organization {
-		return value && OrganizationCreatable.is({ ...value }) && typeof value.id == "string"
+	export const type = isly.object<Organization>({
+		name: isly.string(),
+		code: isly.string(),
+		realm: Realm.type,
+		rules: Rule.type.array(),
+		contact: OrganizationContact.type.optional(),
+	})
+	export const is = type.is
+	export const flaw = type.flaw
+	export function isCode(value: cryptly.Identifier | any): value is cryptly.Identifier {
+		return cryptly.Identifier.is(value)
 	}
-	export function fromCreatable(organization: Creatable): Organization {
-		return { ...organization, id: cryptly.Identifier.generate(8) }
-	}
-	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
-		return cryptly.Identifier.is(value, 8)
-	}
-	export type Creatable = OrganizationCreatable
-	export const Creatable = OrganizationCreatable
 	export type Changeable = OrganizationChangeable
 	export const Changeable = OrganizationChangeable
 	export type Contact = OrganizationContact
