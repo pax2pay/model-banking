@@ -43,7 +43,7 @@ async function authenticate(
 	constraint: pax2pay.Key.Permissions
 ): Promise<pax2pay.Identity | undefined> {
 	const header = {
-		authorization: await tokenize(roles),
+		authorization: "Bearer " + (await tokenize(roles)),
 		realm,
 		organization,
 	}

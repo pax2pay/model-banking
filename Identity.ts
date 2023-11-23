@@ -17,7 +17,10 @@ export class Identity {
 		constraint: Key.Permissions,
 		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier
 	): Promise<Identity | undefined> {
-		const key: Key | undefined = await verifier.verify(header.authorization)
+		const authorization = header.authorization?.startsWith("Bearer ")
+			? header.authorization.replace("Bearer ", "")
+			: undefined
+		const key = await verifier.verify(authorization)
 		const result =
 			key &&
 			new Identity(key, (key.realm ?? header.realm) as Realm, (key.organization ?? header.organization) as string)
