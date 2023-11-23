@@ -7,6 +7,8 @@ export namespace Permissions {
 			| {
 					create?: true
 					view?: true
+					update?: true
+					remove?: true
 					accounts?: { balance?: true; view?: true; create?: true; change?: true; cancel?: true } | true
 					rules?:
 						| {
