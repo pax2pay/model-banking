@@ -2,6 +2,9 @@ import { userwidgets } from "@userwidgets/model"
 
 export type Permissions = Permissions.Organization | Permissions.Realm
 export namespace Permissions {
+	export function stringify(permissions: Permissions): string {
+		return userwidgets.User.Permissions.stringify(permissions)
+	}
 	export interface Realm extends userwidgets.User.Permissions {
 		organizations?:
 			| {
