@@ -9,6 +9,19 @@ export type Roles =
 	| Partial<Record<`${Realm | "*"}-${OrganizationCode}`, Roles.Organization.Role[]>>
 export namespace Roles {
 	export type Role = Realm.Role | Organization.Role
+	export function get(realmOrganization: string) {
+		const [realm] = realmOrganization.split("-")
+		return [
+			...Object.entries(Realm.definitions).map(([role, value]) => ({
+				label: "realm-" + role,
+				permissions: () => Permissions.stringify({ [realm + "-*"]: value }),
+			})),
+			...Object.entries(Organization.definitions).map(([role, value]) => ({
+				label: "organization-" + role,
+				permissions: (id: string) => Permissions.stringify({ [id]: value }),
+			})),
+		]
+	}
 	export function resolve(roles: Roles): Permissions {
 		let result = {}
 		for (const [key, role] of Object.entries(roles)) {
