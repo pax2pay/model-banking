@@ -37,10 +37,12 @@ export namespace Entry {
 		return Transaction.is(transaction) && creatable.authorization
 			? {
 					status: "succeeded",
+					account: transaction.accountId,
 					...creatable,
 			  }
 			: {
 					status: "failed",
+					account: creatable.authorization?.account ?? "",
 					...creatable,
 			  }
 	}

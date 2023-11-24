@@ -6,6 +6,7 @@ import { Fee } from "../Fee"
 
 export interface Refund extends Refund.Creatable {
 	status: "succeeded" | "failed"
+	account: string
 }
 
 export namespace Refund {
@@ -31,6 +32,7 @@ export namespace Refund {
 	}
 	export const type = Creatable.type.extend<Refund>({
 		status: isly.string(["succeeded", "failed"]),
+		account: isly.string(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw

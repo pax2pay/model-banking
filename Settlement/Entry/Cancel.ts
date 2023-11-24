@@ -6,6 +6,7 @@ import { Fee } from "../Fee"
 
 export interface Cancel extends Cancel.Creatable {
 	status: "succeeded" | "failed"
+	account: string
 }
 
 export namespace Cancel {
@@ -31,6 +32,7 @@ export namespace Cancel {
 	}
 	export const type = Creatable.type.extend<Cancel>({
 		status: isly.string(["succeeded", "failed"]),
+		account: isly.string(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
