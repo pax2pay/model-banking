@@ -8,14 +8,15 @@ import { Notes } from "./Notes"
 export class Transactions extends rest.Collection<gracely.Error> {
 	readonly Notes = new Notes(this.client)
 	constructor(client: http.Client) {
-		const httpClient = new http.Client<gracely.Error>(client.url, client.key, {
-			appendHeader: client.appendHeader,
-			postprocess: async response =>
-				Array.isArray(await response.body)
-					? http.Response.create({ cursor: response.header.cursor, list: await response.body })
-					: response,
-		})
-		super(httpClient)
+		client.postprocess = async response => {
+			let result = response
+			const body = await response.body
+			if (Array.isArray(body)) {
+				result = http.Response.create(Object.defineProperty(body, "cursor", { value: response.header.cursor }))
+			}
+			return result
+		}
+		super(client)
 	}
 	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
 		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
