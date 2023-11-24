@@ -36,16 +36,9 @@ export class Transactions extends rest.Collection<gracely.Error> {
 			.map(([k, v]) => `${k}=${v}`)
 			.join("&")
 		const path = options?.account ? `/account/${options.account}/transaction` : `/transaction`
-		const listed = await this.client.get<{ list: Transaction[]; cursor?: string | undefined }>(
+		return await this.client.get<Transaction[] & { cursor?: string | undefined }>(
 			path + (query && "?" + query),
 			options?.limit ? { limit: options?.limit.toString() } : {}
 		)
-		let result: (Transaction[] & { cursor?: string | undefined }) | gracely.Error
-		if (!gracely.Error.is(listed)) {
-			result = listed.list
-			result.cursor = listed.cursor
-		} else
-			result = listed
-		return result
 	}
 }
