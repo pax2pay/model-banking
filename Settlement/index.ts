@@ -2,6 +2,7 @@ import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../Card"
+import { Identifier } from "../Identifier"
 import { Batch as SettlementBatch } from "./Batch"
 import { Creatable as SettlementCreatable } from "./Creatable"
 import { Entry as SettlementEntry } from "./Entry"
@@ -14,14 +15,14 @@ export interface Settlement {
 	id: string
 	by?: string
 	created: isoly.DateTime
-	reference: string
+	reference?: string
 	batch: SettlementBatch
 	processor: Card.Stack
 	status: Status
 	expected: Settlement.Total
-	outcome?: Settlement.Total
+	outcome: Settlement.Total
 	settled?: Settled
-	entries?: Settlement.Entry.Summary
+	entries: Settlement.Entry.Summary
 }
 
 export namespace Settlement {
@@ -42,6 +43,19 @@ export namespace Settlement {
 		export type Cancel = SettlementEntry.Cancel
 		export type Capture = SettlementEntry.Capture
 		export type Unknown = SettlementEntry.Unknown
+	}
+	export function initiate(id: string, by: string, batch: Batch, processor: Card.Stack): Settlement {
+		return {
+			id: id ?? Identifier.generate(),
+			by,
+			created: isoly.DateTime.now(),
+			batch,
+			processor,
+			status: "ongoing",
+			expected: Total.initiate(),
+			outcome: Total.initiate(),
+			entries: { count: 0 },
+		}
 	}
 	export function from(id: cryptly.Identifier, creatable: Settlement.Creatable, by: string): Settlement {
 		return { id, status: "ongoing", by, expected: Total.initiate(), ...creatable, created: isoly.DateTime.now() }

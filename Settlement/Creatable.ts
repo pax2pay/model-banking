@@ -6,7 +6,7 @@ import { Total } from "./Total"
 export interface Creatable {
 	expected?: Total
 	processor: Card.Stack
-	reference: string
+	reference?: string //File name
 	batch: Batch
 }
 
