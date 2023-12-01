@@ -1,4 +1,3 @@
-import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../Card"
@@ -24,7 +23,6 @@ export interface Settlement {
 	settled?: Settled
 	entries: Settlement.Entry.Summary
 }
-
 export namespace Settlement {
 	export const Total = SettlementTotal
 	export type Total = SettlementTotal
@@ -79,6 +77,8 @@ export namespace Settlement {
 			reference: creatable.reference,
 			batch: creatable.batch,
 			expected: Total.initiate(),
+			outcome: Total.initiate(),
+			entries: { count: 0 },
 		}
 	}
 	export const type = isly.object<Settlement>({
@@ -90,9 +90,9 @@ export namespace Settlement {
 		batch: Batch.type,
 		status: Status.type,
 		expected: Settlement.Total.type,
-		outcome: Settlement.Total.type.optional(),
+		outcome: Settlement.Total.type,
 		settled: Settled.type.optional(),
-		entries: Settlement.Entry.Summary.type.optional(),
+		entries: Settlement.Entry.Summary.type,
 	})
 	export const is = type.is
 	export const flaw = type.flaw
