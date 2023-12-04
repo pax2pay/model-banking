@@ -43,15 +43,23 @@ export namespace Entry {
 			: Total.initiate({ amount: Amount.toAmounts(entry.amount), fee: entry.fee })
 	}
 	export function from(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): Entry {
-		return Transaction.is(transaction) && creatable.authorization
+		return Transaction.is(transaction) && transaction.status == "finalized" && creatable.authorization
 			? {
 					status: "succeeded",
 					...creatable,
 			  }
 			: {
 					status: "failed",
+					reason: reason(creatable, transaction),
 					...creatable,
 			  }
+	}
+	function reason(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): string {
+		const result = []
+		!creatable.authorization && result.push("Missing authorization.")
+		!transaction && result.push("Missing transaction.")
+		gracely.Error.is(transaction) && result.push(`${transaction.status}: ${transaction.type}`)
+		return result.join("\n")
 	}
 	export const type = isly.union<Entry, Entry.Cancel, Entry.Capture, Entry.Refund, Entry.Unknown>(
 		Entry.Cancel.type,

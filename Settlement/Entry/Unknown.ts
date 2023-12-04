@@ -4,6 +4,7 @@ import { Batch } from "../Batch"
 
 export interface Unknown extends Unknown.Creatable {
 	status: "succeeded" | "failed"
+	reason?: string
 }
 
 export namespace Unknown {
@@ -26,7 +27,10 @@ export namespace Unknown {
 	export function from(creatable: Creatable): Unknown {
 		return { ...creatable, status: "failed" }
 	}
-	export const type = Creatable.type.extend<Unknown>({ status: isly.string(["succeeded", "failed"]) })
+	export const type = Creatable.type.extend<Unknown>({
+		status: isly.string(["succeeded", "failed"]),
+		reason: isly.string().optional(),
+	})
 	export const is = type.is
 	export const flaw = type.flaw
 }
