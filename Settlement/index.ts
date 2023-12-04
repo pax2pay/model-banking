@@ -18,7 +18,7 @@ export interface Settlement {
 	batch: SettlementBatch
 	processor: Card.Stack
 	status: Status
-	expected: Settlement.Total
+	expected?: Settlement.Total
 	outcome: Settlement.Total
 	settled?: Settled
 	entries: Settlement.Entry.Summary
@@ -61,7 +61,6 @@ export namespace Settlement {
 			status: "ongoing",
 			by,
 			outcome: Total.initiate(),
-			expected: Total.initiate(),
 			...creatable,
 			created: isoly.DateTime.now(),
 			entries: { count: 0 },
