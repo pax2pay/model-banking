@@ -14,7 +14,7 @@ export namespace Creatable {
 	export const type = isly.object<Creatable>({
 		expected: Total.type.optional(),
 		processor: Card.Stack.type,
-		reference: isly.string(),
+		reference: isly.string().optional(),
 		batch: Batch.type,
 	})
 	export const is = type.is
