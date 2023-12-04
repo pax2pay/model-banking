@@ -55,8 +55,17 @@ export namespace Settlement {
 			entries: { count: 0 },
 		}
 	}
-	export function from(id: cryptly.Identifier, creatable: Settlement.Creatable, by: string): Settlement {
-		return { id, status: "ongoing", by, expected: Total.initiate(), ...creatable, created: isoly.DateTime.now() }
+	export function from(id: string, creatable: Settlement.Creatable, by: string): Settlement {
+		return {
+			id,
+			status: "ongoing",
+			by,
+			outcome: Total.initiate(),
+			expected: Total.initiate(),
+			...creatable,
+			created: isoly.DateTime.now(),
+			entries: { count: 0 },
+		}
 	}
 	export function compile(settlement: Settlement, entries: Settlement.Entry[]): Settlement {
 		return entries.reduce(

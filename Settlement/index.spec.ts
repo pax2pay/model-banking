@@ -104,8 +104,8 @@ const settlement: pax2pay.Settlement = {
 	processor: "test-paxgiro",
 	status: "ongoing",
 	expected: {
-		amount: { GBP: 900 },
-		fee: { other: { GBP: 900 * 0.01 } },
+		amount: { GBP: 1350 },
+		fee: { other: { GBP: 13.5 } },
 	},
 	outcome: {
 		amount: { GBP: 900 },
