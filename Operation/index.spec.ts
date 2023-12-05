@@ -6,18 +6,18 @@ describe("Operation", () => {
 	})
 })
 const operation = {
-	account: "Hr_aKwpS",
+	account: "3Lb41MlP",
 	currency: "GBP",
 	type: "collect",
 	changes: {
-		"fee-paxgiro-33303": {
+		"fee_test-paxgiro_202333303": {
 			type: "subtract",
 			amount: 10,
 			status: "success",
 			result: 0,
 		},
 	},
-	transaction: "zzzyRwPm8qQmYRk4",
+	transaction: "zzzyRwIvXovdzVNA",
 	counter: 0,
-	created: "2023-12-05T09:27:32.249Z",
+	created: "2023-12-05T17:26:36.977Z",
 }
