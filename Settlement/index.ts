@@ -38,9 +38,21 @@ export namespace Settlement {
 		export type Summary = SettlementEntry.Summary
 		export type Creatable = SettlementEntry.Creatable
 		export type Refund = SettlementEntry.Refund
+		export namespace Refund {
+			export type Creatable = SettlementEntry.Refund.Creatable
+		}
 		export type Cancel = SettlementEntry.Cancel
+		export namespace Cancel {
+			export type Creatable = SettlementEntry.Cancel.Creatable
+		}
 		export type Capture = SettlementEntry.Capture
+		export namespace Capture {
+			export type Creatable = SettlementEntry.Capture.Creatable
+		}
 		export type Unknown = SettlementEntry.Unknown
+		export namespace Unknown {
+			export type Creatable = SettlementEntry.Unknown.Creatable
+		}
 	}
 	export function initiate(id: string, by: string, batch: Batch, processor: Card.Stack): Settlement {
 		return {
