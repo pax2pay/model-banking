@@ -5,6 +5,12 @@ describe("Settlement", () => {
 	it("compile", () => {
 		expect(pax2pay.Settlement.compile(settlement, entries).outcome).toEqual(settlement.expected)
 	})
+	it("batch regexp", () => {
+		expect(pax2pay.Settlement.Batch.is("202300101")).toBeTruthy()
+		expect(pax2pay.Settlement.Batch.is("202300107")).toBeFalsy()
+		expect(pax2pay.Settlement.Batch.is("202344401")).toBeFalsy()
+		expect(pax2pay.Settlement.Batch.is("aaaaaaa")).toBeFalsy()
+	})
 })
 
 const authorization1: pax2pay.Authorization = {
@@ -75,6 +81,7 @@ const entries: pax2pay.Settlement.Entry[] = [
 		type: "capture",
 		authorization: authorization1,
 		reference: "string",
+		batch: "202327301",
 		fee: { other: { [authorization1.amount[0]]: authorization1.amount[1] * 0.01 } },
 		amount: authorization1.amount,
 	},
@@ -83,6 +90,7 @@ const entries: pax2pay.Settlement.Entry[] = [
 		type: "capture",
 		authorization: authorization2,
 		reference: "string",
+		batch: "202327301",
 		fee: { other: { [authorization2.amount[0]]: authorization2.amount[1] * 0.01 } },
 		amount: authorization2.amount,
 	},
@@ -92,11 +100,16 @@ const settlement: pax2pay.Settlement = {
 	id: "abcd1234",
 	created: "2000-01-01T00:00:00.001",
 	reference: "string",
+	batch: "202327301",
 	processor: "test-paxgiro",
 	status: "ongoing",
 	expected: {
-		amount: { GBP: 450 },
-		fee: { other: { GBP: 450 * 0.01 } },
+		amount: { GBP: 1350 },
+		fee: { other: { GBP: 13.5 } },
+	},
+	outcome: {
+		amount: { GBP: 900 },
+		fee: { other: { GBP: 900 * 0.01 } },
 	},
 	entries: { count: entries.length },
 }

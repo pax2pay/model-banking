@@ -6,6 +6,7 @@ import { Realm } from "../../Realm"
 import { Supplier } from "../../Supplier"
 import { Balance } from "../Balance"
 import { Category as AccountCategory } from "./Category"
+import { Conditions as AccountConditions } from "./Conditions"
 import { Creatable as AccountCreatable } from "./Creatable"
 import { Fetchable as AccountFetchable } from "./Fetchable"
 import { Storable as AccountStorable } from "./Storable"
@@ -19,6 +20,7 @@ export interface Account {
 	reference: string
 	currencies: isoly.Currency[]
 	type: AccountCategory
+	conditions?: { minimum?: Balance }
 	rail: Rail[]
 	balance: Balance
 }
@@ -32,9 +34,10 @@ export namespace Account {
 		supplier: isly.fromIs("supplier", Supplier.is),
 		reference: isly.string(),
 		currencies: isly.fromIs("Treasury.Account.currencies", isoly.Currency.is).array(),
-		type: isly.string(AccountCategory.type),
+		type: AccountCategory.type,
+		conditions: AccountConditions.type,
 		rail: isly.fromIs("Treasury.Account.rail", Rail.is).array(),
-		balance: isly.fromIs("Treasury.Account.rail", Balance.is),
+		balance: isly.fromIs("Treasury.Account.balance", Balance.is),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
@@ -50,4 +53,6 @@ export namespace Account {
 	export const Fetchable = AccountFetchable
 	export type Category = AccountCategory
 	export const Category = AccountCategory
+	export type Conditions = AccountConditions
+	export const Conditions = AccountConditions
 }

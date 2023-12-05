@@ -15,34 +15,51 @@ export type Entry = Entry.Cancel | Entry.Capture | Entry.Refund | Entry.Unknown
 export namespace Entry {
 	export type Cancel = EntryCancel
 	export const Cancel = EntryCancel
+	export namespace Cancel {
+		export type Creatable = EntryCancel.Creatable
+	}
 	export type Capture = EntryCapture
 	export const Capture = EntryCapture
-	export type Creatable = EntryCreatable
-	export const Creatable = EntryCreatable
+	export namespace Capture {
+		export type Creatable = EntryCapture.Creatable
+	}
 	export type Refund = EntryRefund
 	export const Refund = EntryRefund
-	export type Summary = EntrySummary
-	export const Summary = EntrySummary
+	export namespace Refund {
+		export type Creatable = EntryRefund.Creatable
+	}
 	export type Unknown = EntryUnknown
 	export const Unknown = EntryUnknown
 	export namespace Unknown {
 		export type Creatable = EntryUnknown.Creatable
 	}
+	export type Summary = EntrySummary
+	export const Summary = EntrySummary
+	export type Creatable = EntryCreatable
+	export const Creatable = EntryCreatable
 	export function compile(entry: Entry): Total {
 		return entry.type == "unknown"
 			? Total.initiate()
 			: Total.initiate({ amount: Amount.toAmounts(entry.amount), fee: entry.fee })
 	}
 	export function from(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): Entry {
-		return Transaction.is(transaction) && creatable.authorization
+		return Transaction.is(transaction) && transaction.status == "finalized" && creatable.authorization
 			? {
 					status: "succeeded",
 					...creatable,
 			  }
 			: {
 					status: "failed",
+					reason: reason(creatable, transaction),
 					...creatable,
 			  }
+	}
+	function reason(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): string {
+		const result = []
+		!creatable.authorization && result.push("Missing authorization.")
+		!transaction && result.push("Missing transaction.")
+		gracely.Error.is(transaction) && result.push(`${transaction.status}: ${transaction.type}`)
+		return result.join("\n")
 	}
 	export const type = isly.union<Entry, Entry.Cancel, Entry.Capture, Entry.Refund, Entry.Unknown>(
 		Entry.Cancel.type,

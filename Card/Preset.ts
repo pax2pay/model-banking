@@ -10,7 +10,7 @@ export namespace Preset {
 	export const is = type.is
 	export const flaw = type.flaw
 	export const presets: Record<Preset, Stack> = {
-		"p2p-mc-200": "uk-tpl-marqeta",
+		"p2p-mc-200": "uk-mc-tpl-marqeta",
 		"test-mc-200": "testUK-marqeta",
 		"test-pg-200": "test-paxgiro",
 		"test-ta-mc-200": "test-tpl-paxgiro",

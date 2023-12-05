@@ -8,14 +8,15 @@ import { Notes } from "./Notes"
 export class Transactions extends rest.Collection<gracely.Error> {
 	readonly Notes = new Notes(this.client)
 	constructor(client: http.Client) {
-		const httpClient = new http.Client<gracely.Error>(client.url, client.key, {
-			appendHeader: client.appendHeader,
-			postprocess: async response =>
-				Array.isArray(await response.body)
-					? http.Response.create({ cursor: response.header.cursor, list: await response.body })
-					: response,
-		})
-		super(httpClient)
+		client.postprocess = async response => {
+			let result = response
+			const body = await response.body
+			if (Array.isArray(body)) {
+				result = http.Response.create(Object.defineProperty(body, "cursor", { value: response.header.cursor }))
+			}
+			return result
+		}
+		super(client)
 	}
 	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
 		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
@@ -35,16 +36,9 @@ export class Transactions extends rest.Collection<gracely.Error> {
 			.map(([k, v]) => `${k}=${v}`)
 			.join("&")
 		const path = options?.account ? `/account/${options.account}/transaction` : `/transaction`
-		const listed = await this.client.get<{ list: Transaction[]; cursor?: string | undefined }>(
+		return await this.client.get<Transaction[] & { cursor?: string | undefined }>(
 			path + (query && "?" + query),
 			options?.limit ? { limit: options?.limit.toString() } : {}
 		)
-		let result: (Transaction[] & { cursor?: string | undefined }) | gracely.Error
-		if (!gracely.Error.is(listed)) {
-			result = listed.list
-			result.cursor = listed.cursor
-		} else
-			result = listed
-		return result
 	}
 }

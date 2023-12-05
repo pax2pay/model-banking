@@ -16,17 +16,21 @@ export namespace Rule {
 		export type Account = RuleState.Account
 		export namespace Account {
 			export type Transactions = RuleState.Account.Transactions
+			export type Days = RuleState.Account.Days
 		}
 		export type Authorization = RuleState.Authorization
 		export type Card = RuleState.Card
+		export namespace Card {
+			export type Statstics = RuleState.Card.Statistics
+		}
 		export type Transaction = RuleState.Transaction
+		export type Data = RuleState.Data
 		export type Partial = RuleState.Partial
 	}
 
 	export const type = ModelRule.type
 	export const is = ModelRule.type.is
 	export const flaw = ModelRule.type.flaw
-	export const stringify = ModelRule.stringify
 	export function evaluate(
 		rules: Rule[],
 		state: State,
