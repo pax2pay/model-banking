@@ -6,6 +6,7 @@ import { Fee } from "../Fee"
 
 export interface Capture extends Capture.Creatable {
 	status: "succeeded" | "failed"
+	reason?: string
 }
 
 export namespace Capture {
@@ -31,6 +32,7 @@ export namespace Capture {
 	}
 	export const type = Creatable.type.extend<Capture>({
 		status: isly.string(["succeeded", "failed"]),
+		reason: isly.string().optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
