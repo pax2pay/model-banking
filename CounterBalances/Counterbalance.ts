@@ -1,28 +1,31 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Card } from "../Card"
+import { Batch } from "../Settlement/Batch"
 import { Supplier } from "../Supplier"
-import { SettlementEntry as counterSettlementEntry } from "./SettlementEntry"
 
-export type Counterbalance = Partial<Record<Counterbalance.Entry, number>> &
-	Partial<Record<Counterbalance.SettlementEntry, number>>
+export type Counterbalance = Partial<Record<Counterbalance.Entry, number>>
 
 export namespace Counterbalance {
-	export type Entry = typeof Entry.values[number]
-	export type SettlementEntry = counterSettlementEntry
+	export type Entry = Entry.Internal | Entry.Settlement
 	export namespace Entry {
+		export type Internal = typeof Entry.values[number]
+		export type Settlement = `${"fee" | "settle"}_${Card.Stack}_${Batch}`
 		export const values = [
 			...Supplier.names.flatMap(s => [`incoming_${s}`, `outgoing_${s}`] as const),
 			`incoming_internal`,
 			`outgoing_internal`,
 			"fee_other",
 		] as const
-		export const type = isly.string(Entry.values)
+		const valueType = isly.string(values)
+		export const type = isly.union<Entry, Internal, Settlement>(
+			valueType,
+			isly.string<Settlement>(new RegExp(/^(?:settle|fee)_(\w+-)+\w+_/.source + Batch.regexp.source))
+		)
 		export const is = type.is
 		export const flaw = type.flaw
 	}
-	export const type = isly
-		.record<Counterbalance>(isly.union(Entry.type, counterSettlementEntry.type), isly.number())
-		.optional()
+	export const type = isly.record<Counterbalance>(Entry.type, isly.number()).optional()
 	export const is = type.is
 	export const flaw = type.flaw
 	export function add(addendee: Counterbalance, addend: Counterbalance, currency: isoly.Currency): Counterbalance {
