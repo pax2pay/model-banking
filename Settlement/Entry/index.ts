@@ -15,19 +15,28 @@ export type Entry = Entry.Cancel | Entry.Capture | Entry.Refund | Entry.Unknown
 export namespace Entry {
 	export type Cancel = EntryCancel
 	export const Cancel = EntryCancel
+	export namespace Cancel {
+		export type Creatable = EntryCancel.Creatable
+	}
 	export type Capture = EntryCapture
 	export const Capture = EntryCapture
-	export type Creatable = EntryCreatable
-	export const Creatable = EntryCreatable
+	export namespace Capture {
+		export type Creatable = EntryCapture.Creatable
+	}
 	export type Refund = EntryRefund
 	export const Refund = EntryRefund
-	export type Summary = EntrySummary
-	export const Summary = EntrySummary
+	export namespace Refund {
+		export type Creatable = EntryRefund.Creatable
+	}
 	export type Unknown = EntryUnknown
 	export const Unknown = EntryUnknown
 	export namespace Unknown {
 		export type Creatable = EntryUnknown.Creatable
 	}
+	export type Summary = EntrySummary
+	export const Summary = EntrySummary
+	export type Creatable = EntryCreatable
+	export const Creatable = EntryCreatable
 	export function compile(entry: Entry): Total {
 		return entry.type == "unknown"
 			? Total.initiate()
