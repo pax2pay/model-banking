@@ -8,6 +8,10 @@ export namespace Counterbalances {
 	export const Counterbalance = CounterbalancesCounterBalance
 	export namespace Counterbalance {
 		export type Entry = CounterbalancesCounterBalance.Entry
+		export namespace Entry {
+			export type Internal = CounterbalancesCounterBalance.Entry.Internal
+			export type Settlement = CounterbalancesCounterBalance.Entry.Settlement
+		}
 	}
 	export const type = isly.record<Counterbalances>(
 		isly.fromIs("isoly.Currency", isoly.Currency.is),
