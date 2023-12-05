@@ -21,6 +21,7 @@ export namespace Creatable {
 		"deposit",
 		"remove",
 		"legacy",
+		"collect",
 	] as const
 	export type Type = typeof types[number]
 	export const type = isly.object<Creatable>({

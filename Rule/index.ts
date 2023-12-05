@@ -21,7 +21,7 @@ export namespace Rule {
 		export type Authorization = RuleState.Authorization
 		export type Card = RuleState.Card
 		export namespace Card {
-			export type Statstics = RuleState.Card.Statistics
+			export type Statistics = RuleState.Card.Statistics
 		}
 		export type Transaction = RuleState.Transaction
 		export type Data = RuleState.Data
