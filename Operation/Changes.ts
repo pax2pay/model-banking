@@ -12,7 +12,10 @@ export namespace Changes {
 		export const values = [...Balances.Balance.Entry.values, ...Counterbalances.Counterbalance.Entry.values]
 		export const type = isly.string(values)
 	}
-	export const type = isly.record<Changes>(Entry.type, Change.type)
+	export const type = isly.record<Changes>(
+		isly.union(Entry.type, Counterbalances.Counterbalance.Entry.type),
+		Change.type
+	)
 	export const is = type.is
 	export const flaw = type.flaw
 }

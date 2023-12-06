@@ -4,6 +4,7 @@ import { isly } from "isly"
 import { Identifier } from "../Identifier"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
+import { Collect as TransactionCollect } from "./Collect"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
@@ -28,17 +29,22 @@ export interface Transaction extends Transaction.Creatable {
 export namespace Transaction {
 	export type Creatable = TransactionCreatable
 	export const Creatable = TransactionCreatable
+	export type Collect = TransactionCollect
+	export const Collect = TransactionCollect
+	export namespace Collect {
+		export type Creatable = TransactionCollect.Creatable
+	}
 	export type Incoming = TransactionIncoming
 	export const Incoming = TransactionIncoming
 	export type Reference = TransactionReference
 	export const Reference = TransactionReference
 	export type Note = TransactionNote
 	export const Note = TransactionNote
-	export type Status = TransactionStatus
-	export const Status = TransactionStatus
 	export namespace Note {
 		export type Creatable = TransactionNote.Creatable
 	}
+	export type Status = TransactionStatus
+	export const Status = TransactionStatus
 	export const type = Creatable.type.extend<Transaction>({
 		organization: isly.string(),
 		accountId: isly.string(),
