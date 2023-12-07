@@ -81,13 +81,19 @@ export namespace Settlement {
 		}
 	}
 	export function compile(settlement: Settlement, entries: Settlement.Entry[]): Settlement {
-		return entries.reduce(
-			(r, entry) =>
-				entry?.status == "succeeded"
-					? { ...r, outcome: Total.add(r.outcome ?? Total.initiate(), Entry.compile(entry)) }
-					: r,
-			settlement
-		)
+		const result = { ...settlement }
+		for (const entry of entries) {
+			switch (entry.status) {
+				case "succeeded":
+					result.outcome = Total.add(result.outcome, Entry.compile(entry))
+					result.entries.count++
+					break
+				case "failed":
+					result.entries.failed ? result.entries.failed.count++ : (result.entries.failed = { count: 1 })
+					break
+			}
+		}
+		return result
 	}
 	export function toFailed(id: string, creatable: Settlement.Creatable, by: string, reason: string): Settlement {
 		return {
