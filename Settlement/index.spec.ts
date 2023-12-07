@@ -11,6 +11,15 @@ describe("Settlement", () => {
 		expect(pax2pay.Settlement.Batch.is("202344401")).toBeFalsy()
 		expect(pax2pay.Settlement.Batch.is("aaaaaaa")).toBeFalsy()
 	})
+	it("counterbalances to total", () => {
+		const cb: pax2pay.Counterbalances = {
+			AED: { ["fee_test-paxgiro_202311102"]: 123, ["settle_test-paxgiro_202311102"]: 123, incoming_clearbank: 1111 },
+			USD: { ["fee_test-paxgiro_202311102"]: 555, ["settle_test-paxgiro_202311102"]: 555, incoming_clearbank: 1111 },
+		}
+		const result: pax2pay.Settlement.Total = { amount: { AED: 123, USD: 555 }, fee: { other: { AED: 123, USD: 555 } } }
+		expect(pax2pay.Settlement.Total.fromCounterbalances(cb)).toEqual(result)
+		expect(pax2pay.Settlement.Total.fromCounterbalances2(cb)).toEqual(result)
+	})
 })
 
 const authorization1: pax2pay.Authorization = {
