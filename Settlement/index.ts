@@ -20,6 +20,7 @@ export interface Settlement {
 	status: Status
 	expected?: Settlement.Total
 	outcome: Settlement.Total
+	collected?: Settlement.Total
 	settled?: Settled
 	entries: Settlement.Entry.Summary
 }
@@ -111,6 +112,7 @@ export namespace Settlement {
 		status: Status.type,
 		expected: Settlement.Total.type.optional(),
 		outcome: Settlement.Total.type,
+		collected: Settlement.Total.type.optional(),
 		settled: Settled.type.optional(),
 		entries: Settlement.Entry.Summary.type,
 	})
