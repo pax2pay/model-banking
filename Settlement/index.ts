@@ -6,7 +6,7 @@ import { Batch as SettlementBatch } from "./Batch"
 import { Creatable as SettlementCreatable } from "./Creatable"
 import { Entry as SettlementEntry } from "./Entry"
 import { Fee as SettlementFee } from "./Fee"
-import { Settled } from "./Settled"
+import { Settled as SettlementSettled } from "./Settled"
 import { Status } from "./Status"
 import { Total as SettlementTotal } from "./Total"
 
@@ -21,10 +21,12 @@ export interface Settlement {
 	expected?: Settlement.Total
 	outcome: Settlement.Total
 	collected?: Settlement.Total
-	settled?: Settled
+	settled?: Settlement.Settled
 	entries: Settlement.Entry.Summary
 }
 export namespace Settlement {
+	export type Settled = SettlementSettled
+	export const Settled = SettlementSettled
 	export const Total = SettlementTotal
 	export type Total = SettlementTotal
 	export const Fee = SettlementFee
