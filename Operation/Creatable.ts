@@ -12,16 +12,18 @@ export interface Creatable {
 
 export namespace Creatable {
 	export const types = [
-		"authorization",
-		"settlement",
 		"incoming",
 		"finalizeIncoming",
 		"outgoing",
 		"finalizeOutgoing",
-		"deposit",
+		"authorization",
+		"capture",
+		"refund",
+		"cancel",
 		"remove",
 		"legacy",
 		"collect",
+		"deposit",
 	] as const
 	export type Type = typeof types[number]
 	export const type = isly.object<Creatable>({
