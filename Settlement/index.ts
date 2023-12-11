@@ -19,6 +19,7 @@ export interface Settlement {
 	processor: Card.Stack
 	status: Status
 	expected?: Settlement.Total
+	collected?: Settlement.Total
 	outcome: Settlement.Total
 	settled?: Settlement.Settled
 	entries: Settlement.Entry.Summary
@@ -118,6 +119,7 @@ export namespace Settlement {
 		batch: Batch.type,
 		status: Status.type,
 		expected: Settlement.Total.type.optional(),
+		collected: Settlement.Total.type.optional(),
 		outcome: Settlement.Total.type,
 		settled: Settled.type.optional(),
 		entries: Settlement.Entry.Summary.type,
