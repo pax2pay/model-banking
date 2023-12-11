@@ -43,16 +43,27 @@ export namespace Entry {
 			: Total.initiate({ amount: Amount.toAmounts(entry.amount), fee: entry.fee })
 	}
 	export function from(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): Entry {
-		return Transaction.is(transaction) && transaction.status == "finalized" && creatable.authorization
-			? {
-					status: "succeeded",
-					...creatable,
-			  }
-			: {
-					status: "failed",
-					reason: reason(creatable, transaction),
-					...creatable,
-			  }
+		let result: Entry
+		if (!Transaction.is(transaction) || transaction.status != "finalized")
+			result = {
+				status: "failed",
+				reason: reason(creatable, transaction),
+				...creatable,
+			}
+		else {
+			switch (creatable.type) {
+				case "capture":
+					result = Capture.from(creatable)
+					break
+				case "refund":
+					result = Refund.from(creatable, transaction)
+					break
+				default:
+					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet." }
+					break
+			}
+		}
+		return result
 	}
 	function reason(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): string {
 		const result = []

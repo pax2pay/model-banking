@@ -10,6 +10,12 @@ export interface Capture extends Capture.Creatable {
 }
 
 export namespace Capture {
+	export function from(creatable: Creatable): Capture {
+		return {
+			status: "succeeded",
+			...creatable,
+		}
+	}
 	export interface Creatable {
 		type: "capture"
 		authorization: Authorization
