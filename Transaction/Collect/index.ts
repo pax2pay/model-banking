@@ -1,5 +1,6 @@
 import { gracely } from "gracely"
 import { Counterbalances } from "../../CounterBalances"
+import { Settlement } from "../../Settlement"
 import type { Transaction } from "../index"
 import { Creatable as CollectCreatable } from "./Creatable"
 import { Failed } from "./Failed"
@@ -7,6 +8,7 @@ import { Failed } from "./Failed"
 export type Collect = {
 	counterbalances: Counterbalances
 	failed?: Failed
+	discrepancy?: Settlement.Total
 }
 export namespace Collect {
 	export type Creatable = CollectCreatable
