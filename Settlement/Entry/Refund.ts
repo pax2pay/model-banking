@@ -9,7 +9,7 @@ import { Fee } from "../Fee"
 export interface Refund extends Refund.Creatable {
 	status: "succeeded" | "failed"
 	reason?: string
-	transaction?: string
+	transaction?: Transaction
 }
 
 export namespace Refund {
@@ -25,7 +25,7 @@ export namespace Refund {
 		amount: Amount
 	}
 	export function from(refund: Refund.Creatable, transaction: Transaction): Refund {
-		return { ...refund, status: "succeeded", transaction: transaction.id }
+		return { ...refund, status: "succeeded", transaction }
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -45,7 +45,7 @@ export namespace Refund {
 	export const type = Creatable.type.extend<Refund>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
-		transaction: isly.string().optional(),
+		transaction: Transaction.type,
 	})
 	export const is = type.is
 	export const flaw = type.flaw
