@@ -13,6 +13,13 @@ export namespace Amounts {
 			addendee
 		)
 	}
+	export function subtract(minuend: Amounts, subtrahend: Amounts): Amounts {
+		subtrahend = (Object.entries(subtrahend) as [isoly.Currency, number][]).reduce(
+			(r: Amounts, [currency, amount]) => ({ ...r, [currency]: -amount }),
+			{}
+		)
+		return add(minuend, subtrahend)
+	}
 	export const type = isly.record<Amounts>(isly.string(isoly.Currency.types), isly.number())
 	export const is = type.is
 	export const flaw = type.flaw
