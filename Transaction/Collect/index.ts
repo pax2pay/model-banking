@@ -8,7 +8,7 @@ import { Failed } from "./Failed"
 export type Collect = {
 	counterbalances: Counterbalances
 	failed?: Failed
-	discrepancy?: Settlement.Total
+	discrepancy?: { expected: Settlement.Total; transactionId?: string; error?: string }
 }
 export namespace Collect {
 	export type Creatable = CollectCreatable
