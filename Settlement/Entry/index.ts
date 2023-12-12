@@ -42,7 +42,7 @@ export namespace Entry {
 			? Total.initiate()
 			: Total.initiate({ amount: Amount.toAmounts(entry.amount), fee: entry.fee })
 	}
-	export function from(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): Entry {
+	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
 		let result: Entry
 		if (!Transaction.is(transaction) || transaction.status != "finalized")
 			result = {
@@ -65,11 +65,17 @@ export namespace Entry {
 		}
 		return result
 	}
-	function reason(creatable: Entry.Creatable, transaction?: Transaction | gracely.Error): string {
+	function reason(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): string {
 		const result = []
 		!creatable.authorization && result.push("Missing authorization.")
-		!transaction && result.push("Missing transaction.")
-		gracely.Error.is(transaction) && result.push(`${transaction.status}: ${transaction.type}`)
+		if (gracely.Error.is(transaction))
+			result.push(
+				`gracely error: ${transaction.status}, ${transaction.type}, ${transaction.header}, ${transaction.body}`
+			)
+		else if (typeof transaction != "string")
+			result.push(`Transaction ${transaction.id} on account ${transaction.accountId} unable to be finalized.`)
+		else
+			result.push(transaction || "No reason provided")
 		return result.join("\n")
 	}
 	export const type = isly.union<Entry, Entry.Cancel, Entry.Capture, Entry.Refund, Entry.Unknown>(
