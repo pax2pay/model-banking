@@ -14,11 +14,17 @@ export namespace Amounts {
 		)
 	}
 	export function subtract(minuend: Amounts, subtrahend: Amounts): Amounts {
-		subtrahend = (Object.entries(subtrahend) as [isoly.Currency, number][]).reduce(
-			(r: Amounts, [currency, amount]) => ({ ...r, [currency]: -amount }),
-			{}
+		return (Object.entries(subtrahend) as [isoly.Currency, number][]).reduce(
+			(r: Amounts, [currency, amount]) =>
+				(newAmount =>
+					newAmount == 0
+						? (delete r[currency], r)
+						: {
+								...r,
+								[currency]: newAmount,
+						  })(isoly.Currency.subtract(currency, minuend[currency] ?? 0, amount)),
+			{ ...minuend }
 		)
-		return add(minuend, subtrahend)
 	}
 	export const type = isly.record<Amounts>(isly.string(isoly.Currency.types), isly.number())
 	export const is = type.is
