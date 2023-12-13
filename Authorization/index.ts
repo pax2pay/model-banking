@@ -60,7 +60,7 @@ export namespace Authorization {
 		merchant: Merchant.type,
 		acquirer: Acquirer.type,
 		reference: isly.string(),
-		approvalCode: isly.number(),
+		approvalCode: isly.number().optional(),
 		description: isly.string(),
 	})
 	export const is = type.is
