@@ -16,7 +16,7 @@ export interface Authorization {
 	created: isoly.DateTime
 	status: Status
 	reference: string
-	approvalCode?: number
+	approvalCode?: string
 	amount: Amount
 	card: {
 		id: string
@@ -60,7 +60,7 @@ export namespace Authorization {
 		merchant: Merchant.type,
 		acquirer: Acquirer.type,
 		reference: isly.string(),
-		approvalCode: isly.number().optional(),
+		approvalCode: isly.string().optional(),
 		description: isly.string(),
 	})
 	export const is = type.is
