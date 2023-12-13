@@ -1,12 +1,13 @@
 import { isly } from "isly"
+import { Entry } from "../../Settlement/Entry"
 import { Authorization } from "./Authorization"
 import { Card } from "./Card"
 
 export type Operation = Card | Authorization
 
 export namespace Operation {
-	export function fromEntryStatus(status: "capture" | "cancel" | "refund"): Authorization.Status {
-		const statusConverter: Record<string, Authorization.Status> = {
+	export function fromEntryStatus(status: Exclude<Entry.Type, "unknown">): Authorization.Status {
+		const statusConverter: Record<Exclude<Entry.Type, "unknown">, Authorization.Status> = {
 			capture: "captured",
 			cancel: "cancelled",
 			refund: "refunded",
