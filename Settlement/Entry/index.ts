@@ -33,6 +33,7 @@ export namespace Entry {
 	export namespace Unknown {
 		export type Creatable = EntryUnknown.Creatable
 	}
+	export type Type = "unknown" | "refund" | "capture" | "cancel"
 	export type Summary = EntrySummary
 	export const Summary = EntrySummary
 	export type Creatable = EntryCreatable
