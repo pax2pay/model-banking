@@ -68,7 +68,7 @@ export namespace Authorization {
 	export function fromCreatable(
 		creatable: Creatable,
 		card: Card | gracely.Error,
-		transaction?: Transaction | gracely.Error
+		transaction: Transaction | gracely.Error
 	): Authorization {
 		const partial: Pick<Authorization, "created" | "amount" | "merchant" | "acquirer" | "reference" | "description"> = {
 			created: isoly.DateTime.now(),
@@ -86,10 +86,17 @@ export namespace Authorization {
 				...partial,
 				card: { id: creatable.card },
 			}
-		else if (gracely.Error.is(transaction) || !transaction)
+		else if (gracely.Error.is(transaction))
 			result = {
 				id: Identifier.generate(),
 				status: Status.Failed.from(transaction),
+				...partial,
+				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
+			}
+		else if (transaction.status != "processing")
+			result = {
+				id: Identifier.generate(),
+				status: Status.Failed.from(transaction.notes),
 				...partial,
 				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
 			}
@@ -100,11 +107,10 @@ export namespace Authorization {
 				...partial,
 				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
 				account: card.account,
-				transaction: { id: transaction?.id, posted: transaction?.posted, description: transaction.description },
+				transaction: { id: transaction.id, posted: transaction.posted, description: transaction.description },
 			}
 		return result
 	}
-
 	export function toTransaction(authorization: Authorization): Transaction.Creatable {
 		return {
 			amount: authorization.amount[1],
