@@ -9,7 +9,7 @@ export interface Authorization {
 }
 
 export namespace Authorization {
-	export const statuses = ["created", "confirmed", "cleared", "cancelled"] as const
+	export const statuses = ["created", "confirmed", "refund", "cleared", "cancelled"] as const
 	export type Status = typeof statuses[number]
 	export const type = isly.object<Authorization>({
 		type: isly.string("authorization"),
