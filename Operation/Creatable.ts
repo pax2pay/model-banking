@@ -1,6 +1,8 @@
 import * as cryptly from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Card } from "../Card"
+import { Settlement } from "../Settlement"
 import { Changes } from "./Changes"
 
 export interface Creatable {
@@ -34,4 +36,34 @@ export namespace Creatable {
 	})
 	export const is = type.is
 	export const flaw = type.flaw
+	export function fromRefund(account: string, entry: Settlement.Entry.Refund.Creatable, stack: Card.Stack): Creatable {
+		const [currency, amount] = entry.amount
+		return {
+			account: account,
+			currency,
+			type: "refund",
+			changes: {
+				actual: {
+					type: "add",
+					amount: isoly.Currency.add(currency, amount, entry.fee.other[currency] ?? 0),
+					status: "pending",
+				},
+				incomingReserved: {
+					type: "add",
+					amount: isoly.Currency.add(currency, amount, entry.fee.other[currency] ?? 0),
+					status: "pending",
+				},
+				[`fee_${stack}_${entry.batch}`]: {
+					type: "subtract" as const,
+					amount: entry.fee.other[currency] ?? 0,
+					status: "pending" as const,
+				},
+				[`settle_${stack}_${entry.batch}`]: {
+					type: "subtract" as const,
+					amount: amount,
+					status: "pending" as const,
+				},
+			},
+		}
+	}
 }

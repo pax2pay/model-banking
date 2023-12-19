@@ -87,4 +87,7 @@ export namespace Rail {
 	export const Internal = RailInternal
 	export type Card = RailCard
 	export const Card = RailCard
+	export namespace Card {
+		export type Counterpart = RailCard.Counterpart
+	}
 }

@@ -2,6 +2,7 @@ import { isly } from "isly"
 import { Acquirer } from "../Acquirer"
 import { Card as ModelCard } from "../Card"
 import { Merchant } from "../Merchant"
+import { Rule } from "../Rule"
 
 export interface Card {
 	type: "card"
@@ -37,6 +38,17 @@ export namespace Card {
 	})
 	export const is = type.is
 	export const flaw = type.flaw
+	export function from(card: ModelCard | Rule.State.Card): Card {
+		return {
+			type: "card",
+			scheme: card.scheme,
+			id: card.id,
+			iin: card.details.iin,
+			last4: card.details.last4,
+			expiry: card.details.expiry,
+			holder: card.details.holder,
+		}
+	}
 	export const Counterpart = CardCounterpart
 	export type Counterpart = CardCounterpart
 }
