@@ -1,6 +1,7 @@
 import { isly } from "isly"
 import { Acquirer } from "../../Acquirer"
 import { Amount } from "../../Amount"
+import { Authorization } from "../../Authorization"
 import { Merchant } from "../../Merchant"
 import { Transaction } from "../../Transaction"
 import { Batch } from "../Batch"
@@ -16,7 +17,7 @@ export namespace Refund {
 	export interface Creatable {
 		type: "refund"
 		card: string
-		authorization?: string
+		authorization: Pick<Authorization, "approvalCode">
 		merchant: Merchant
 		acquirer: Acquirer
 		reference: string
@@ -31,7 +32,7 @@ export namespace Refund {
 		export const type = isly.object<Creatable>({
 			type: isly.string("refund"),
 			card: isly.string(),
-			authorization: isly.string().optional(),
+			authorization: isly.object({ approvalCode: isly.string() }),
 			merchant: Merchant.type,
 			acquirer: Acquirer.type,
 			reference: isly.string(),
