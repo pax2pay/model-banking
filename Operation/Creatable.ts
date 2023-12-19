@@ -37,7 +37,11 @@ export namespace Creatable {
 	export const is = type.is
 	export const flaw = type.flaw
 	export function fromRefund(account: string, entry: Settlement.Entry.Refund.Creatable, stack: Card.Stack): Creatable {
-		const [currency, amount] = entry.amount
+		// The Entry.Refund.Creatable has negative amount and fee
+		// The operation amounts should always be positive
+		const [currency, entryAmount] = entry.amount
+		const operationAmount = Math.abs(entryAmount)
+		const operationFee = Math.abs(entry.fee.other[currency] ?? 0)
 		return {
 			account: account,
 			currency,
@@ -45,22 +49,22 @@ export namespace Creatable {
 			changes: {
 				actual: {
 					type: "add",
-					amount: isoly.Currency.add(currency, amount, entry.fee.other[currency] ?? 0),
+					amount: isoly.Currency.add(currency, operationAmount, operationFee),
 					status: "pending",
 				},
 				incomingReserved: {
 					type: "add",
-					amount: isoly.Currency.add(currency, amount, entry.fee.other[currency] ?? 0),
+					amount: isoly.Currency.add(currency, operationAmount, operationFee),
 					status: "pending",
 				},
 				[`fee_${stack}_${entry.batch}`]: {
 					type: "subtract" as const,
-					amount: entry.fee.other[currency] ?? 0,
+					amount: operationFee,
 					status: "pending" as const,
 				},
 				[`settle_${stack}_${entry.batch}`]: {
 					type: "subtract" as const,
-					amount: amount,
+					amount: operationAmount,
 					status: "pending" as const,
 				},
 			},

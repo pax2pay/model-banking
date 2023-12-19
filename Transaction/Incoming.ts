@@ -23,7 +23,7 @@ export namespace Incoming {
 		return {
 			account: card,
 			currency,
-			amount: isoly.Currency.add(currency, amount, entry.fee.other[currency] ?? 0),
+			amount: isoly.Currency.add(currency, -amount, -(entry.fee.other[currency] ?? 0)),
 			posted: isoly.DateTime.now(),
 			counterpart: { type: "card", merchant: entry.merchant, acquirer: entry.acquirer },
 			description: "Refund transaction.",
