@@ -25,7 +25,7 @@ const mistyped1 = {
 
 const mistyped2 = {
 	name: { first: "Test", last: "Testsson" },
-	email: "test@test.com",
+	email: "test@test",
 	phone: { code: "+46", number: "12m45667" },
 	address: {
 		primary: {
@@ -44,11 +44,11 @@ const contact = {
 	phone: { code: "+46", number: "1245667" },
 	address: {
 		primary: {
-			countryCode: "GB",
-			building: "asdf",
+			countryCode: "SE",
 			city: "qwer",
 			street: "zxcv",
 			zipCode: "11235",
+			county: "land",
 		},
 	},
 }

@@ -6,14 +6,12 @@ import { Addresses as ContactAddresses } from "./Addresses"
 export interface Contact {
 	address: Contact.Addresses
 	email: string
-	// email: `${string}@${string}.${string}`
 	name: {
 		first: string
 		last: string
 	}
 	phone: {
 		number: string
-		// number: `${number}`
 		code: isoly.CallingCode
 	}
 }
@@ -25,13 +23,13 @@ export namespace Contact {
 	export type Address = ContactAddress
 	export const type = isly.object<Contact>({
 		address: Addresses.type,
-		email: isly.string(new RegExp(/^\S+@\S+\.\S+$/)),
+		email: isly.string(/^\S+@\S+\.\S+$/),
 		name: isly.object<Contact["name"]>({
 			first: isly.string(),
 			last: isly.string(),
 		}),
 		phone: isly.object<Contact["phone"]>({
-			number: isly.string(new RegExp(/^\d+$/)),
+			number: isly.string(/^\d+$/),
 			code: isly.fromIs("CallingCode", isoly.CallingCode.is),
 		}),
 	})
