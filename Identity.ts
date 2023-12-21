@@ -17,6 +17,11 @@ export class Identity {
 			{ [`*-*`]: constraint },
 		].some(e => userwidgets.User.Permissions.check(this.key.permissions, e))
 	}
+	collectionCheck(collection: string): boolean {
+		return Object.values(this.key.permissions).some(
+			value => (typeof value == "object" && value[collection]) || value == true
+		)
+	}
 
 	static async authenticate(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
