@@ -3,6 +3,11 @@ import { Key } from "./Key"
 import { Realm } from "./Realm"
 
 export class Identity {
+	#realms: Realm[] | undefined
+	get realms(): Realm[] | undefined {
+		return (this.#realms ??= Identity.getRealms(this.key.permissions))
+	}
+
 	constructor(readonly key: Key, readonly realm?: Realm, readonly organization?: string) {}
 	check(constraint: Key.Permissions, realm?: Realm, organization?: string): boolean {
 		return [
@@ -12,12 +17,7 @@ export class Identity {
 			{ [`*-*`]: constraint },
 		].some(e => userwidgets.User.Permissions.check(this.key.permissions, e))
 	}
-	#realms: Realm[] | undefined
-	get realms(): Realm[] | undefined {
-		return (this.#realms ??= Object.keys(this.key.permissions).flatMap(code =>
-			code.split("-")[0] == "*" ? Realm.realms : code.split("-")[0]
-		) as Realm[])
-	}
+
 	static async authenticate(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
 		constraint: Key.Permissions,
@@ -26,11 +26,26 @@ export class Identity {
 		const authorization = header.authorization?.startsWith("Bearer ")
 			? header.authorization.replace("Bearer ", "")
 			: undefined
-		const key = await verifier.verify(authorization)
+		const key = await Identity.verify(authorization, verifier)
 		const result =
 			key &&
 			new Identity(key, (key.realm ?? header.realm) as Realm, (key.organization ?? header.organization) as string)
-		return result?.check(constraint) ? result : undefined
+		return !constraint || result?.check(constraint) ? result : undefined
+	}
+	static async verify(
+		authorization: string | undefined,
+		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier
+	): Promise<Key | undefined> {
+		return await verifier.verify(authorization)
+	}
+	static getRealms(permissions: Key.Permissions) {
+		return [
+			...new Set(
+				Object.keys(permissions).flatMap(code =>
+					code.split("-")[0] == "*" ? Realm.realms : code.split("-")[0]
+				) as Realm[]
+			),
+		]
 	}
 }
 const publicKey =

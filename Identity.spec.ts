@@ -7,21 +7,21 @@ describe("Identity", () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
-		expect(await authenticate({ [`test-*`]: ["finance"] }, "test", orgCode, constraint)).toBeTruthy()
-		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode, constraint)).toBeFalsy()
+		expect(await authenticate({ [`test-*`]: ["finance"] }, constraint, "test", orgCode)).toBeTruthy()
+		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, constraint, "test", orgCode)).toBeFalsy()
 	})
 	it("authenticate organization finance roll on test", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			cards: { view: true },
 		}
-		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode, constraint)).toBeTruthy()
+		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, constraint, "test", orgCode)).toBeTruthy()
 	})
 	it("authenticate admin", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
-		expect(await authenticate({ [`*-*`]: ["admin"] }, "test", orgCode, constraint)).toBeTruthy()
-		expect(await authenticate({ [`*-*`]: ["admin"] }, "testUK", orgCode, constraint)).toBeTruthy()
+		expect(await authenticate({ [`*-*`]: ["admin"] }, constraint, "test", orgCode)).toBeTruthy()
+		expect(await authenticate({ [`*-*`]: ["admin"] }, constraint, "testUK", orgCode)).toBeTruthy()
 	})
 	it("authenticate finance roll on several realms", async () => {
 		const constraint: pax2pay.Key.Permissions = {
@@ -31,34 +31,30 @@ describe("Identity", () => {
 			[`test-*`]: ["finance"],
 			[`testUK-*`]: ["finance"],
 		}
-		expect(await authenticate(roles, "test", orgCode, constraint)).toBeTruthy()
-		expect(await authenticate(roles, "testUK", orgCode, constraint)).toBeTruthy()
-		expect(await authenticate(roles, "eu", orgCode, constraint)).toBeFalsy()
+		expect(await authenticate(roles, constraint, "test", orgCode)).toBeTruthy()
+		expect(await authenticate(roles, constraint, "testUK", orgCode)).toBeTruthy()
+		expect(await authenticate(roles, constraint, "eu", orgCode)).toBeFalsy()
 	})
 	it("get realms one realm", async () => {
-		expect((await authenticate({ [`test-*`]: ["finance"] }, "test", orgCode, {}))?.realms).toEqual(["test"])
-		expect((await authenticate({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode, {}))?.realms).toEqual(["test"])
+		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`test-*`]: ["finance"] })
+		expect(pax2pay.Identity.getRealms(permissionsRealm)).toEqual(["test"])
+		const permissionsOrganization = pax2pay.Key.Roles.resolve({ [`test-${orgCode}`]: ["finance"] })
+		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(["test"])
 	})
 	it("get realms several realms", async () => {
-		expect(
-			(await authenticate({ [`test-*`]: ["finance"], [`testUK-*`]: ["finance"] }, "test", orgCode, {}))?.realms
-		).toEqual(["test", "testUK"])
-		expect(
-			(
-				await authenticate(
-					{ [`test-${orgCode}`]: ["finance"], [`testUK-${orgCode}`]: ["finance"] },
-					"test",
-					orgCode,
-					{}
-				)
-			)?.realms
-		).toEqual(["test", "testUK"])
+		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`test-*`]: ["finance"], [`testUK-*`]: ["finance"] })
+		expect(pax2pay.Identity.getRealms(permissionsRealm)).toEqual(["test", "testUK"])
+		const permissionsOrganization = pax2pay.Key.Roles.resolve({
+			[`test-${orgCode}`]: ["finance"],
+			[`testUK-${orgCode}`]: ["finance"],
+		})
+		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(["test", "testUK"])
 	})
 	it("get realms all realms", async () => {
-		expect((await authenticate({ [`*-*`]: ["finance"] }, "test", orgCode, {}))?.realms).toEqual(pax2pay.Realm.realms)
-		expect((await authenticate({ [`*-${orgCode}`]: ["finance"] }, "test", orgCode, {}))?.realms).toEqual(
-			pax2pay.Realm.realms
-		)
+		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`*-*`]: ["finance"] })
+		expect(pax2pay.Identity.getRealms(permissionsRealm)).toEqual(pax2pay.Realm.realms)
+		const permissionsOrganization = pax2pay.Key.Roles.resolve({ [`*-${orgCode}`]: ["finance"] })
+		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(pax2pay.Realm.realms)
 	})
 })
 const privateKey =
@@ -68,9 +64,9 @@ const publicKey =
 const orgCode = "paxair"
 async function authenticate(
 	roles: pax2pay.Key.Roles,
-	realm: pax2pay.Realm,
-	organization: string,
-	constraint: pax2pay.Key.Permissions
+	constraint: pax2pay.Key.Permissions,
+	realm?: pax2pay.Realm,
+	organization?: string
 ): Promise<pax2pay.Identity | undefined> {
 	const header = {
 		authorization: "Bearer " + (await tokenize(roles)),
