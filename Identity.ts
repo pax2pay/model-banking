@@ -12,7 +12,12 @@ export class Identity {
 			{ [`*-*`]: constraint },
 		].some(e => userwidgets.User.Permissions.check(this.key.permissions, e))
 	}
-
+	#realms: Realm[] | undefined
+	get realms(): Realm[] | undefined {
+		return (this.#realms ??= Object.keys(this.key.permissions).flatMap(code =>
+			code.split("-")[0] == "*" ? Realm.realms : code.split("-")[0]
+		) as Realm[])
+	}
 	static async authenticate(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
 		constraint: Key.Permissions,
