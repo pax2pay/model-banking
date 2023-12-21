@@ -39,9 +39,13 @@ export class Identity {
 		return await verifier.verify(authorization)
 	}
 	static getRealms(permissions: Key.Permissions) {
-		return Object.keys(permissions).flatMap(code =>
-			code.split("-")[0] == "*" ? Realm.realms : code.split("-")[0]
-		) as Realm[]
+		return [
+			...new Set(
+				Object.keys(permissions).flatMap(code =>
+					code.split("-")[0] == "*" ? Realm.realms : code.split("-")[0]
+				) as Realm[]
+			),
+		]
 	}
 }
 const publicKey =
