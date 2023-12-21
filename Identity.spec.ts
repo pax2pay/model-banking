@@ -3,6 +3,11 @@ import { userwidgets } from "@userwidgets/model"
 import { pax2pay } from "./index"
 
 describe("Identity", () => {
+	it("authenticate with empty constraint", async () => {
+		const constraint: pax2pay.Key.Permissions = {}
+		expect(await authenticate({ [`test-*`]: ["finance"] }, constraint)).toBeTruthy()
+		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, constraint)).toBeTruthy()
+	})
 	it("authenticate finance roll on test", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
