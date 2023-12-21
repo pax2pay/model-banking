@@ -2,23 +2,28 @@ import { flagly } from "flagly"
 import { userwidgets } from "@userwidgets/model"
 import { pax2pay } from "./index"
 
-describe("authenticate", () => {
-	it.skip("finance roll on test", async () => {
+describe("Identity", () => {
+	it("authenticate finance roll on test", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
-
 		expect(await authenticate({ [`test-*`]: ["finance"] }, "test", orgCode, constraint)).toBeTruthy()
 		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode, constraint)).toBeFalsy()
 	})
-	it("admin", async () => {
+	it("authenticate organization finance roll on test", async () => {
+		const constraint: pax2pay.Key.Permissions = {
+			cards: { view: true },
+		}
+		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode, constraint)).toBeTruthy()
+	})
+	it("authenticate admin", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
 		expect(await authenticate({ [`*-*`]: ["admin"] }, "test", orgCode, constraint)).toBeTruthy()
 		expect(await authenticate({ [`*-*`]: ["admin"] }, "testUK", orgCode, constraint)).toBeTruthy()
 	})
-	it("finance roll on several realms", async () => {
+	it("authenticate finance roll on several realms", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
@@ -29,6 +34,31 @@ describe("authenticate", () => {
 		expect(await authenticate(roles, "test", orgCode, constraint)).toBeTruthy()
 		expect(await authenticate(roles, "testUK", orgCode, constraint)).toBeTruthy()
 		expect(await authenticate(roles, "eu", orgCode, constraint)).toBeFalsy()
+	})
+	it("get realms one realm", async () => {
+		expect((await authenticate({ [`test-*`]: ["finance"] }, "test", orgCode, {}))?.realms).toEqual(["test"])
+		expect((await authenticate({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode, {}))?.realms).toEqual(["test"])
+	})
+	it("get realms several realms", async () => {
+		expect(
+			(await authenticate({ [`test-*`]: ["finance"], [`testUK-*`]: ["finance"] }, "test", orgCode, {}))?.realms
+		).toEqual(["test", "testUK"])
+		expect(
+			(
+				await authenticate(
+					{ [`test-${orgCode}`]: ["finance"], [`testUK-${orgCode}`]: ["finance"] },
+					"test",
+					orgCode,
+					{}
+				)
+			)?.realms
+		).toEqual(["test", "testUK"])
+	})
+	it("get realms all realms", async () => {
+		expect((await authenticate({ [`*-*`]: ["finance"] }, "test", orgCode, {}))?.realms).toEqual(pax2pay.Realm.realms)
+		expect((await authenticate({ [`*-${orgCode}`]: ["finance"] }, "test", orgCode, {}))?.realms).toEqual(
+			pax2pay.Realm.realms
+		)
 	})
 })
 const privateKey =
