@@ -1,4 +1,3 @@
-import * as cryptly from "cryptly"
 import { isly } from "isly"
 import { Realm } from "../Realm"
 import { Rule } from "../Rule"
@@ -22,9 +21,6 @@ export namespace Organization {
 	})
 	export const is = type.is
 	export const flaw = type.flaw
-	export function isCode(value: cryptly.Identifier | any): value is cryptly.Identifier {
-		return cryptly.Identifier.is(value)
-	}
 	export type Changeable = OrganizationChangeable
 	export const Changeable = OrganizationChangeable
 	export type Contact = OrganizationContact
