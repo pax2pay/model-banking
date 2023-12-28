@@ -14,7 +14,7 @@ export interface Organization {
 export namespace Organization {
 	export const type = isly.object<Organization>({
 		name: isly.string(),
-		code: isly.string(),
+		code: isly.string(new RegExp(/^([A-Za-z0-9\-_])+$/)),
 		realm: Realm.type,
 		rules: Rule.type.array(),
 		contact: OrganizationContact.type.optional(),
