@@ -22,7 +22,7 @@ describe("State", () => {
 				number: "1351858913568",
 				country: "GB",
 			},
-			original: { currency: "USD", amount: 100 },
+			exchange: { rate: 1.1, from: ["USD", 100] },
 			time: isoly.DateTime.getTime(isoly.DateTime.now()),
 			hour: isoly.DateTime.getHour(isoly.DateTime.now()),
 			reference: "ahgt3817",
