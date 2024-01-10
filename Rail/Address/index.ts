@@ -13,7 +13,7 @@ export type Address =
 	| AddressCard
 	| AddressCard.Counterpart
 export namespace Address {
-	export const types = ["paxgiro", "internal", "iban", "scan", "card"]
+	export const types = ["paxgiro", "internal", "iban", "scan", "card"] as const
 	export type Type = typeof types[number]
 	export const type = isly.string(types)
 	export function compare(addresses: [Address, Address]): boolean {
