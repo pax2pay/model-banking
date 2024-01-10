@@ -21,7 +21,7 @@ export interface Account {
 	currencies: isoly.Currency[]
 	type: AccountCategory
 	conditions?: { minimum?: Balance }
-	rail: Rail[]
+	rail: Rail.Address[]
 	balance: Balance
 }
 
@@ -36,7 +36,7 @@ export namespace Account {
 		currencies: isly.fromIs("Treasury.Account.currencies", isoly.Currency.is).array(),
 		type: AccountCategory.type,
 		conditions: AccountConditions.type,
-		rail: isly.fromIs("Treasury.Account.rail", Rail.is).array(),
+		rail: isly.fromIs("Treasury.Account.rail", Rail.Address.is).array(),
 		balance: isly.fromIs("Treasury.Account.balance", Balance.is),
 	})
 	export const is = type.is

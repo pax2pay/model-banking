@@ -7,7 +7,7 @@ describe("transaction", () => {
 		expect(pax2pay.Transaction.Note.Creatable.is({})).toBeTruthy()
 	})
 	it("creatable", async () => {
-		expect(pax2pay.Rail.is(transaction.counterpart)).toBeTruthy()
+		expect(pax2pay.Rail.Address.is(transaction.counterpart)).toBeTruthy()
 		expect(pax2pay.Transaction.Creatable.is(transaction)).toBeTruthy()
 	})
 })
