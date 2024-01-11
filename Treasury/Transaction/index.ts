@@ -4,7 +4,7 @@ import { Rail } from "../../Rail"
 import { Creatable as TransactionCreatable } from "./Creatable"
 
 export interface Transaction extends TransactionCreatable {
-	debtor: Rail
+	debtor: Rail.Address
 	readonly id: cryptly.Identifier
 	readonly created: isoly.DateTime
 }
@@ -13,13 +13,13 @@ export namespace Transaction {
 		return (
 			value &&
 			typeof value == "object" &&
-			Rail.is(value.debtor) &&
+			Rail.Address.is(value.debtor) &&
 			cryptly.Identifier.is(value.id) &&
 			isoly.DateTime.is(value.created) &&
 			Creatable.is({ ...value })
 		)
 	}
-	export function fromCreatable(transaction: TransactionCreatable, debtor: Rail): Transaction {
+	export function fromCreatable(transaction: TransactionCreatable, debtor: Rail.Address): Transaction {
 		return {
 			debtor,
 			id: cryptly.Identifier.generate(8),

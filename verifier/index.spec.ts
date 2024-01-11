@@ -73,6 +73,7 @@ const transaction: Transaction = {
 		},
 	],
 	status: "rejected",
+	rail: "mastercard",
 	flags: [],
 	oldFlags: [],
 	notes: [],

@@ -3,14 +3,14 @@ import { isly } from "isly"
 import { Rail } from "../Rail"
 
 export interface Creatable {
-	counterpart: Rail
+	counterpart: Rail.Address
 	currency: isoly.Currency
 	amount: number
 	description: string
 }
 export namespace Creatable {
 	export const type = isly.object<Creatable>({
-		counterpart: isly.fromIs("Rail", Rail.is),
+		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		amount: isly.number(),
 		description: isly.string(),

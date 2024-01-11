@@ -41,6 +41,7 @@ const transaction = {
 		},
 	],
 	status: "created",
+	rail: "paxgiro",
 	flags: [],
 	oldFlags: [],
 	notes: [],

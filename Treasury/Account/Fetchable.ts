@@ -11,7 +11,7 @@ export interface Fetchable {
 	reference: string
 	currencies: isoly.Currency[]
 	type: Category
-	rail: Rail[]
+	rail: Rail.Address[]
 	balance: Balance
 }
 
@@ -22,7 +22,7 @@ export namespace Fetchable {
 		reference: isly.string(),
 		currencies: isly.fromIs("Account.Fetchable.currencies", isoly.Currency.is).array(),
 		type: Category.type,
-		rail: isly.fromIs("Account.Fetchable.rail", Rail.is).array(),
+		rail: isly.fromIs("Account.Fetchable.rail", Rail.Address.is).array(),
 		balance: isly.fromIs("Account.Fetchable.rail", Balance.is),
 	})
 	export const is = type.is
