@@ -8,14 +8,14 @@ import { Reference as TransactionReference } from "./Reference"
 export interface Incoming extends TransactionCreatable {
 	account: Rail.Address
 	posted: string
-	rail: Rail
+	rail?: Rail
 	reference?: TransactionReference
 }
 export namespace Incoming {
 	export const type = TransactionCreatable.type.extend<Incoming>({
 		account: isly.fromIs("Rail.Address", Rail.Address.is),
 		posted: isly.string(),
-		rail: Rail.type,
+		rail: Rail.type.optional(),
 		reference: TransactionReference.type.optional(),
 	})
 	export const is = type.is

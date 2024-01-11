@@ -22,7 +22,7 @@ export interface Transaction extends Transaction.Creatable {
 	balance: number
 	operations: Operation[]
 	status: Transaction.Status
-	rail: Rail
+	rail?: Rail
 	flags: ("review" | string)[]
 	oldFlags: string[]
 	notes: Transaction.Note[]
@@ -57,7 +57,7 @@ export namespace Transaction {
 		balance: isly.number(),
 		operations: Operation.type.array(),
 		status: Status.type,
-		rail: Rail.type,
+		rail: Rail.type.optional(),
 		flags: isly.array(isly.string() || "review"),
 		oldFlags: isly.string().array(),
 		notes: Note.type.array(),
