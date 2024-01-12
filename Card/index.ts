@@ -27,7 +27,7 @@ export interface Card {
 		last4: string
 		expiry: CardExpiry
 		holder: string
-		token: string
+		token?: string
 	}
 	limit: Amount
 	spent: Amount
@@ -53,7 +53,7 @@ export namespace Card {
 			last4: isly.string(),
 			expiry: CardExpiry.type,
 			holder: isly.string(),
-			token: isly.string(),
+			token: isly.string().optional(),
 		}),
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
