@@ -19,7 +19,11 @@ export interface Transaction extends Transaction.Creatable {
 	readonly reference?: Transaction.Reference
 	readonly posted: isoly.DateTime
 	transacted?: isoly.DateTime
-	balance: number
+	balance: {
+		actual: number
+		reserved: number
+		available: number
+	}
 	operations: Operation[]
 	status: Transaction.Status
 	rail?: Rail
