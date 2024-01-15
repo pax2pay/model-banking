@@ -47,7 +47,11 @@ describe("library", () => {
 			account: { type: "internal", identifier: "6gpfb4Bf" },
 			accountId: "6gpfb4Bf",
 			amount: -1,
-			balance: 6993,
+			balance: {
+				actual: 420,
+				reserved: 420,
+				available: 420,
+			},
 			counterpart: { identifier: "ENycgXna", type: "internal" },
 			currency: "GBP",
 			description: "test",
@@ -101,7 +105,11 @@ describe("library", () => {
 			},
 			accountId: "6gpfb4Bf",
 			amount: -1,
-			balance: 6993,
+			balance: {
+				actual: 420,
+				reserved: 420,
+				available: 420,
+			},
 			counterpart: {
 				type: "card",
 				merchant: {

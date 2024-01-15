@@ -58,7 +58,11 @@ export namespace Transaction {
 		reference: Reference.type.readonly().optional(),
 		posted: isly.string(),
 		transacted: isly.string().optional(),
-		balance: isly.number(),
+		balance: isly.object<Transaction["balance"]>({
+			actual: isly.number(),
+			available: isly.number(),
+			reserved: isly.number(),
+		}),
 		operations: Operation.type.array(),
 		status: Status.type,
 		rail: Rail.type.optional(),
@@ -76,7 +80,11 @@ export namespace Transaction {
 		rail: Rail,
 		transaction: Creatable,
 		operations: Operation.Creatable[],
-		balance: number
+		balance: {
+			actual: number
+			reserved: number
+			available: number
+		}
 	): Transaction {
 		const id = Identifier.generate()
 		return {
@@ -100,7 +108,11 @@ export namespace Transaction {
 		accountId: string,
 		transaction: Incoming,
 		operations: Operation.Creatable[],
-		balance: number
+		balance: {
+			actual: number
+			reserved: number
+			available: number
+		}
 	): Transaction {
 		const id = Identifier.generate()
 		return {
