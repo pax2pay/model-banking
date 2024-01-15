@@ -1,11 +1,11 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amount } from "../Amount"
+import { Amounts } from "../Amounts"
 
 export interface Settled {
-	by?: string
-	created: isoly.DateTime
-	transactions: Record<string, { status: "failed" | "success"; amount: Amount }>
+	paid: Amounts
+	transactions: string[]
 }
 
 export namespace Settled {

@@ -19,6 +19,7 @@ export interface Transaction extends Transaction.Creatable {
 	readonly reference?: Transaction.Reference
 	readonly posted: isoly.DateTime
 	transacted?: isoly.DateTime
+	by?: string
 	balance: {
 		actual: number
 		reserved: number
@@ -58,6 +59,7 @@ export namespace Transaction {
 		reference: Reference.type.readonly().optional(),
 		posted: isly.string(),
 		transacted: isly.string().optional(),
+		by: isly.string().optional(),
 		balance: isly.object<Transaction["balance"]>({
 			actual: isly.number(),
 			available: isly.number(),
