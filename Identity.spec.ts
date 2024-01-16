@@ -61,7 +61,7 @@ describe("Identity", () => {
 		const permissionsOrganization = pax2pay.Key.Roles.resolve({ [`*-${orgCode}`]: ["finance"] })
 		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(pax2pay.Realm.realms)
 	})
-	it("aaaa", async () => {
+	it("single realm key inference", async () => {
 		const key =
 			"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJwYXgycGF5IiwiaWF0IjoxNzA1NDMwMTEzLCJhdWQiOiJkYXNoLnBheDJwYXkuYXBwIiwiZXhwIjoxNzA1NDczMzEzLCJzdWIiOiJ0ZXN0LnRlc3Rzc29uQHRlc3RhYi50ZXN0IiwibmFtIjp7ImZpcnN0IjoidGVzdCIsImxhc3QiOiJ0ZXN0c3NvbiJ9LCJwZXIiOiJ0ZXN0LSouY2FyZHMudmlldyJ9.qmnqUKjCDRiep8Vcz8eGM-iL0jGPTiZOwottprvSw7SOZX37nBQ_W27kzEfwTPRiYtaJ2YAFQ3q2QOQzaCV9gYZHDvSk9HZki80L7mIP3cqcxq4BkcAVq5m3N2xcOV-k0YfYJOBwOrWkpBpEOs6SiimlIOloEPZU5I2NyirJDtu1sHURdR071t8yWdNSOspANN-3JU6xqBDaV4jFpoXUb9nf9TgKUHEe7zsySUsujtXcJNU1d9sprS9nb4r_bDKEe4BRt42vymBaP3NuXGmPpEk4h_pMUto6TFL93PHCXnXlaDW3XbWDTRGTBu-dJr580e97I6V9TIfun_oDv33iltzVbQUTzR2uPkF7mhb2jUW7Uvwq6FqeglWErtzJpyrHYYaB_xssGH1prKcTotrK4zxjA3MUl4ra12kMmR6wSHZTCO1uOJXCgM3O19FjWe1L1znCb6sFdugDUWkJSy5T-pA7gacSqPQ2WTHTRS0HUU2Z5vosSG6ugRJLjdSEfjOP80AdTxjyZWkHhpSpgvnffF8lQjId2j38NEV1HaXMkyafG6yO9b8sYcFch7omzab8FjscGrrypv9hGb8l1cOwApHPDyDOkAaDy20lLk9O9cl_cxSBTrm7IRG11aolGk-yF4P1-xe-57QHZZSjwR1izARahuqmSDbioY0ntnBJqho"
 		const identity = await pax2pay.Identity.authenticate({ authorization: "Bearer " + key }, { cards: { view: true } })
