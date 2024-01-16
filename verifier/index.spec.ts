@@ -28,7 +28,11 @@ const transaction: Transaction = {
 	},
 	id: "11112222",
 	posted: `${isoly.DateTime.now()}`,
-	balance: 100,
+	balance: {
+		actual: 420,
+		reserved: 420,
+		available: 420,
+	},
 	amount: -1,
 	currency: "USD",
 	description: "string",
