@@ -86,7 +86,8 @@ export namespace Transaction {
 			actual: number
 			reserved: number
 			available: number
-		}
+		},
+		by: string
 	): Transaction {
 		const id = Identifier.generate()
 		return {
@@ -96,6 +97,7 @@ export namespace Transaction {
 			account,
 			id,
 			posted: isoly.DateTime.now(),
+			by,
 			balance,
 			operations: operations.map(o => Operation.fromCreatable(id, o)),
 			status: "created",
