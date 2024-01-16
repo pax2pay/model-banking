@@ -64,7 +64,7 @@ export namespace Settlement {
 			created: isoly.DateTime.now(),
 			batch,
 			processor,
-			status: "ongoing",
+			status: { collected: "pending", settled: "pending" },
 			expected: Total.initiate(),
 			outcome: Total.initiate(),
 			entries: { count: 0 },
@@ -73,7 +73,7 @@ export namespace Settlement {
 	export function from(id: string, creatable: Settlement.Creatable, by: string): Settlement {
 		return {
 			id,
-			status: "ongoing",
+			status: { collected: "pending", settled: "pending" },
 			by,
 			outcome: Total.initiate(),
 			...creatable,
@@ -100,7 +100,7 @@ export namespace Settlement {
 		return {
 			id,
 			created: isoly.DateTime.now(),
-			status: ["failed", reason],
+			status: { collected: "failed", settled: "failed" }, // ["failed", reason],
 			by,
 			processor: creatable.processor,
 			reference: creatable.reference,

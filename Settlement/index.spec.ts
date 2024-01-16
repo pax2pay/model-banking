@@ -102,7 +102,7 @@ const settlement: pax2pay.Settlement = {
 	reference: "string",
 	batch: "202327301",
 	processor: "test-paxgiro",
-	status: "ongoing",
+	status: { collected: "pending", settled: "pending" },
 	expected: {
 		amount: { GBP: 1350 },
 		fee: { other: { GBP: 13.5 } },
