@@ -73,20 +73,26 @@ const privateKey =
 const publicKey =
 	"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzWKqXfw8HU6lMtoLdc1WEkEZP/Dmhx8JmfMMQxcUIiFUkObL9zAEo/pk4/1FCaAy/l14yX76OU97Eannq8FObjd8tU5UOqb4n9RpXO3md1JDIZkuqhjQwuCJax/0nyNY+WH5MLWCBgo5kw6R+AHBdCXQGSGoMGfm0qQAySDE1PmZWc/6sR4WacK+ooMO/YtP7HuQQeG8qsJ44wbQXaYlKupxJr3EDo+Un4N9/PHmXlTTz1u7/aO2KbzP+V6kevvPzf+mS+KvSLMYMgIuDiQXvlor9UeC1M5VNj7Trx6HKnoiekKUt3tL14cIHVKhpOTlN2l2yj4ImmAG3qZ4gMO6DwIDAQAB"
 const orgCode = "paxair"
-async function authenticate(
+async function authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
 	roles: pax2pay.Key.Roles,
 	constraint: pax2pay.Key.Permissions,
 	realm?: pax2pay.Realm,
 	organization?: string,
-	options?: { realm?: boolean; organization?: boolean }
-): Promise<pax2pay.Identity | undefined> {
+	options?: T
+): Promise<
+	| (keyof T extends keyof pax2pay.Identity
+			? Required<Pick<pax2pay.Identity, keyof T>> & pax2pay.Identity
+			: pax2pay.Identity)
+	| undefined
+> {
 	const header = {
 		authorization: "Bearer " + (await tokenize(roles)),
 		realm,
 		organization,
 	}
 	const verifier = userwidgets.User.Key.Verifier.create<pax2pay.Key>(publicKey)
-	return await pax2pay.Identity.authenticate(header, constraint, options, verifier)
+	const result = await pax2pay.Identity.authenticate<T>(header, constraint, options, verifier)
+	return result
 }
 async function tokenize(role: pax2pay.Key.Roles): Promise<string | undefined> {
 	const issuer = userwidgets.User.Key.Issuer.create("jest", "all ages", publicKey, privateKey)
