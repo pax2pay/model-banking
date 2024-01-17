@@ -26,6 +26,7 @@ export class Identity {
 	static async authenticate(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
 		constraint: Key.Permissions,
+		requires?: { realm?: boolean; organization?: boolean },
 		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier
 	): Promise<Identity | undefined> {
 		const authorization = header.authorization?.startsWith("Bearer ")
@@ -33,14 +34,17 @@ export class Identity {
 			: undefined
 		const key = await Identity.verify(authorization, verifier)
 		const realms = key && Identity.getRealms(key.permissions)
-		const result =
+		const identity =
 			key &&
 			new Identity(
 				key,
 				(realms?.length == 1 ? realms[0] : header.realm) as Realm,
 				(key.organization ?? header.organization) as string
 			)
-		return !constraint || result?.check(constraint) ? result : undefined
+		const result = !constraint || identity?.check(constraint) ? identity : undefined
+		const requirement =
+			(requires?.organization ? result?.organization : true) && (requires?.realm ? Realm.is(result?.realm) : true)
+		return requirement ? result : undefined
 	}
 	static async verify(
 		authorization: string | undefined,
