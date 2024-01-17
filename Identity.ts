@@ -41,10 +41,13 @@ export class Identity {
 				(realms?.length == 1 ? realms[0] : header.realm) as Realm,
 				(key.organization ?? header.organization) as string
 			)
-		const result = !constraint || identity?.check(constraint) ? identity : undefined
-		const requirement =
-			(requires?.organization ? result?.organization : true) && (requires?.realm ? Realm.is(result?.realm) : true)
-		return !requires ? result : requirement ? (result as any) : undefined
+		const requirement = (
+			value: Identity | undefined
+		): value is
+			| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
+			| undefined =>
+			(requires?.organization ? !!identity?.organization : true) && (requires?.realm ? Realm.is(identity?.realm) : true)
+		return (!constraint || identity?.check(constraint)) && requirement(identity) ? identity : undefined
 	}
 	static async verify(
 		authorization: string | undefined,
