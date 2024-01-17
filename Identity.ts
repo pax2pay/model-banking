@@ -32,9 +32,14 @@ export class Identity {
 			? header.authorization.replace("Bearer ", "")
 			: undefined
 		const key = await Identity.verify(authorization, verifier)
+		const realms = key && Identity.getRealms(key.permissions)
 		const result =
 			key &&
-			new Identity(key, (key.realm ?? header.realm) as Realm, (key.organization ?? header.organization) as string)
+			new Identity(
+				key,
+				(realms?.length == 1 ? realms[0] : header.realm) as Realm,
+				(key.organization ?? header.organization) as string
+			)
 		return !constraint || result?.check(constraint) ? result : undefined
 	}
 	static async verify(
