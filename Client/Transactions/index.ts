@@ -41,4 +41,7 @@ export class Transactions extends rest.Collection<gracely.Error> {
 			options?.limit ? { limit: options?.limit.toString() } : {}
 		)
 	}
+	async fetch(account: string, transaction: string): Promise<Transaction | gracely.Error> {
+		return this.client.get<Transaction>(`/account/${account}/transaction/${transaction}`)
+	}
 }
