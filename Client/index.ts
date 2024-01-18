@@ -7,6 +7,7 @@ import { Cards } from "./Cards"
 import { Flags } from "./Flags"
 import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
+import { Reports } from "./Reports"
 import { Rules } from "./Rules"
 import { Settlements } from "./Settlements"
 import { Transactions } from "./Transactions"
@@ -20,6 +21,7 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly cards = new Cards(this.client)
 	readonly operations = new Operations(this.client)
 	readonly organizations = new Organizations(this.client)
+	readonly reports = new Reports(this.client)
 	readonly rules = new Rules(this.client)
 	readonly settlements = new Settlements(this.client)
 	readonly transactions = new Transactions(this.client)

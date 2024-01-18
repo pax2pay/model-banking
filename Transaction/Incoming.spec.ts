@@ -21,7 +21,11 @@ const transaction = {
 	},
 	id: "zzzyRwIvXovdzVNA",
 	posted: "2023-12-05T17:26:36.977Z",
-	balance: 0,
+	balance: {
+		actual: 420,
+		reserved: 420,
+		available: 420,
+	},
 	operations: [
 		{
 			account: "3Lb41MlP",

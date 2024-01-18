@@ -1,13 +1,17 @@
 import { isly } from "isly"
 
-export type Status = "succeeded" | ["failed", string] | "ongoing"
+export interface Status {
+	collected: Status.Values
+	settled: Status.Values
+}
 
 export namespace Status {
-	export const type = isly.union(
-		isly.string("succeeded"),
-		isly.string("ongoing"),
-		isly.tuple(isly.string("failed"), isly.string())
-	)
+	export const values = ["pending", "failed", "partial", "done"] as const
+	export type Values = typeof values[number]
+	export const type = isly.object<Status>({
+		collected: isly.string(values),
+		settled: isly.string(values),
+	})
 	export const is = type.is
 	export const flaw = type.flaw
 }

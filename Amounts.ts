@@ -13,6 +13,11 @@ export namespace Amounts {
 			addendee
 		)
 	}
+	export function compare(left: Amounts, right: Amounts) {
+		return ([...new Set([...Object.keys(left), ...Object.keys(right)])] as isoly.Currency[]).every(
+			currency => left[currency] == right[currency]
+		)
+	}
 	export const type = isly.record<Amounts>(isly.string(isoly.Currency.types), isly.number())
 	export const is = type.is
 	export const flaw = type.flaw

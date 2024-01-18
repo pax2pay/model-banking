@@ -7,6 +7,8 @@ export namespace Rail {
 	export const type = isly.string<Rail>(rails)
 	export type Address = RailAddress
 	export namespace Address {
+		export type Type = RailAddress.Type
+		export const types = RailAddress.types
 		export const is = RailAddress.is
 		export const compare = RailAddress.compare
 		export const stringify = RailAddress.stringify

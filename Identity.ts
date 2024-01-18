@@ -23,19 +23,31 @@ export class Identity {
 		)
 	}
 
-	static async authenticate(
+	static async authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
 		constraint: Key.Permissions,
+		requires?: T,
 		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier
-	): Promise<Identity | undefined> {
+	): Promise<(keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity) | undefined> {
 		const authorization = header.authorization?.startsWith("Bearer ")
 			? header.authorization.replace("Bearer ", "")
 			: undefined
 		const key = await Identity.verify(authorization, verifier)
-		const result =
+		const realms = key && Identity.getRealms(key.permissions)
+		const identity =
 			key &&
-			new Identity(key, (key.realm ?? header.realm) as Realm, (key.organization ?? header.organization) as string)
-		return !constraint || result?.check(constraint) ? result : undefined
+			new Identity(
+				key,
+				(realms?.length == 1 ? realms[0] : header.realm) as Realm,
+				(key.organization ?? header.organization) as string
+			)
+		const requirement = (
+			value: Identity | undefined
+		): value is
+			| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
+			| undefined =>
+			(requires?.organization ? !!identity?.organization : true) && (requires?.realm ? Realm.is(identity?.realm) : true)
+		return (!constraint || identity?.check(constraint)) && requirement(identity) ? identity : undefined
 	}
 	static async verify(
 		authorization: string | undefined,
