@@ -87,7 +87,7 @@ export namespace Transaction {
 			reserved: number
 			available: number
 		},
-		by: string
+		by?: string
 	): Transaction {
 		const id = Identifier.generate()
 		return {
