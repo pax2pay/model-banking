@@ -1,4 +1,3 @@
-import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amounts } from "../Amounts"
 import { Transaction } from "../Transaction"
@@ -8,7 +7,6 @@ export type Total = {
 	amount: Amounts
 	fee: Fee
 }
-
 export namespace Total {
 	export function initiate(partial?: Partial<Total>): Total {
 		return { amount: partial?.amount ?? {}, fee: partial?.fee ?? { other: {} } }
@@ -17,14 +15,7 @@ export namespace Total {
 		return { amount: Amounts.add(addendee.amount, addend.amount), fee: Fee.add(addendee.fee, addend.fee) }
 	}
 	export function compare(expected: Total, outcome: Total): boolean {
-		return (
-			([...new Set([...Object.keys(expected.amount), ...Object.keys(outcome.amount)])] as isoly.Currency[]).every(
-				currency => expected.amount[currency] == outcome.amount[currency]
-			) &&
-			([...new Set([...Object.keys(expected.fee.other), ...Object.keys(outcome.fee.other)])] as isoly.Currency[]).every(
-				currency => expected.fee.other[currency] == outcome.fee.other[currency]
-			)
-		)
+		return Amounts.compare(expected.amount, outcome.amount) && Amounts.compare(expected.fee.other, outcome.fee.other)
 	}
 	export function from(collect: Transaction.Collect, collected: Total = initiate()): Total {
 		let result: Total = collected

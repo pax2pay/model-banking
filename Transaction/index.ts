@@ -14,14 +14,19 @@ import { Status as TransactionStatus } from "./Status"
 export interface Transaction extends Transaction.Creatable {
 	organization: string
 	accountId: string
-	account: Rail
+	account: Rail.Address
 	readonly id: cryptly.Identifier
 	readonly reference?: Transaction.Reference
 	readonly posted: isoly.DateTime
 	transacted?: isoly.DateTime
-	balance: number
+	balance: {
+		actual: number
+		reserved: number
+		available: number
+	}
 	operations: Operation[]
 	status: Transaction.Status
+	rail?: Rail
 	flags: ("review" | string)[]
 	oldFlags: string[]
 	notes: Transaction.Note[]
@@ -48,14 +53,19 @@ export namespace Transaction {
 	export const type = Creatable.type.extend<Transaction>({
 		organization: isly.string(),
 		accountId: isly.string(),
-		account: isly.fromIs("Rail", Rail.is),
+		account: isly.fromIs("Rail", Rail.Address.is),
 		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
 		reference: Reference.type.readonly().optional(),
 		posted: isly.string(),
 		transacted: isly.string().optional(),
-		balance: isly.number(),
+		balance: isly.object<Transaction["balance"]>({
+			actual: isly.number(),
+			available: isly.number(),
+			reserved: isly.number(),
+		}),
 		operations: Operation.type.array(),
 		status: Status.type,
+		rail: Rail.type.optional(),
 		flags: isly.array(isly.string() || "review"),
 		oldFlags: isly.string().array(),
 		notes: Note.type.array(),
@@ -66,10 +76,15 @@ export namespace Transaction {
 	export function fromCreatable(
 		organization: string,
 		accountId: string,
-		account: Rail,
+		account: Rail.Address,
+		rail: Rail,
 		transaction: Creatable,
 		operations: Operation.Creatable[],
-		balance: number
+		balance: {
+			actual: number
+			reserved: number
+			available: number
+		}
 	): Transaction {
 		const id = Identifier.generate()
 		return {
@@ -82,6 +97,7 @@ export namespace Transaction {
 			balance,
 			operations: operations.map(o => Operation.fromCreatable(id, o)),
 			status: "created",
+			rail,
 			flags: [],
 			oldFlags: [],
 			notes: [],
@@ -92,7 +108,11 @@ export namespace Transaction {
 		accountId: string,
 		transaction: Incoming,
 		operations: Operation.Creatable[],
-		balance: number
+		balance: {
+			actual: number
+			reserved: number
+			available: number
+		}
 	): Transaction {
 		const id = Identifier.generate()
 		return {

@@ -1,93 +1,30 @@
 import { isly } from "isly"
-import { Card as RailCard } from "./Card"
-import { Iban as RailIban } from "./Iban"
-import { Internal as RailInternal } from "./internal"
-import { PaxGiro as RailPaxGiro } from "./PaxGiro"
-import { Scan as RailScan } from "./Scan"
+import { Address as RailAddress } from "./Address"
 
-export type Rail = RailPaxGiro | RailInternal | RailIban | RailScan | RailCard | RailCard.Counterpart
+export type Rail = typeof Rail.rails[number]
 export namespace Rail {
-	export const rails = ["paxgiro", "internal", "iban", "scan", "card"]
-	export type Type = typeof rails[number]
-	export const type = isly.string(rails)
-	export function compare(rails: [Rail, Rail]): boolean {
-		return Object.entries(rails[0]).every(([key, value]: [keyof Rail, Rail[keyof Rail]]) => value == rails[1][key])
-	}
-	export function parse(value: string): Rail | undefined {
-		let result: Rail | undefined
-		const splitted = value.split("-")
-		switch (splitted[0]) {
-			case "pxg":
-				result = splitted.length == 2 ? { type: "paxgiro", identifier: splitted[1] } : undefined
-				break
+	export const rails = ["internal", "paxgiro", "mastercard", "fasterpayments", "chaps", "bacs", "transfer"] as const
+	export const type = isly.string<Rail>(rails)
+	export type Address = RailAddress
+	export namespace Address {
+		export type Type = RailAddress.Type
+		export const types = RailAddress.types
+		export const is = RailAddress.is
+		export const compare = RailAddress.compare
+		export const stringify = RailAddress.stringify
+		export const beautify = RailAddress.beautify
+		export type PaxGiro = RailAddress.PaxGiro
+		export const PaxGiro = RailAddress.PaxGiro
+		export type Iban = RailAddress.Iban
+		export const Iban = RailAddress.Iban
+		export type Scan = RailAddress.Scan
+		export const Scan = RailAddress.Scan
+		export type Internal = RailAddress.Internal
+		export const Internal = RailAddress.Internal
+		export type Card = RailAddress.Card
+		export const Card = RailAddress.Card
+		export namespace Card {
+			export type Counterpart = RailAddress.Card.Counterpart
 		}
-		return result
-	}
-	export function stringify(rail: Rail): string {
-		let result: string
-		switch (rail.type) {
-			case "iban":
-				result = `iban-${rail.iban}`
-				break
-			case "paxgiro":
-				result = `pxg-${rail.identifier}`
-				break
-			case "internal":
-				result = `internal-${rail.identifier}`
-				break
-			case "scan":
-				result = `scan-${rail.sort}-${rail.account}`
-				break
-			case "card":
-				result = "id" in rail ? `${rail.type}-${rail.id}` : `${rail.type}-merchant-${rail.merchant.id}`
-				break
-		}
-		return result
-	}
-	export function beautify(rail: Rail): string {
-		let result: string
-		switch (rail.type) {
-			case "iban":
-				result = `${rail.iban}`
-				break
-			case "paxgiro":
-				result = `${rail.identifier}`
-				break
-			case "internal":
-				result = `${rail.identifier}`
-				break
-			case "scan":
-				result = `${rail.sort} ${rail.account}`
-				break
-			case "card":
-				result = "id" in rail ? `${rail.type}-${rail.id}` : `${rail.type}-merchant-${rail.merchant.id}`
-				break
-		}
-		return result
-	}
-	export function is(value: Rail | any): value is Rail {
-		return (
-			value &&
-			typeof value == "object" &&
-			(PaxGiro.is(value) ||
-				Iban.is(value) ||
-				Internal.is(value) ||
-				Scan.is(value) ||
-				Card.is(value) ||
-				Card.Counterpart.type.is(value))
-		)
-	}
-	export type PaxGiro = RailPaxGiro
-	export const PaxGiro = RailPaxGiro
-	export type Iban = RailIban
-	export const Iban = RailIban
-	export type Scan = RailScan
-	export const Scan = RailScan
-	export type Internal = RailInternal
-	export const Internal = RailInternal
-	export type Card = RailCard
-	export const Card = RailCard
-	export namespace Card {
-		export type Counterpart = RailCard.Counterpart
 	}
 }

@@ -9,7 +9,7 @@ export interface Account extends Account.Creatable {
 	readonly id: cryptly.Identifier
 	readonly created: isoly.DateTime
 	readonly balances: Balances
-	readonly rails: Rail[]
+	readonly rails: Rail.Address[]
 	//readonly rules: Rule[]
 }
 
@@ -19,7 +19,7 @@ export namespace Account {
 		id: isly.string(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		balances: isly.fromIs("Balances", Balances.is),
-		rails: isly.fromIs("Rail", Rail.is).array(),
+		rails: isly.fromIs("Rail.Address", Rail.Address.is).array(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
