@@ -18,4 +18,7 @@ export class Organizations extends rest.Collection<gracely.Error> {
 	async create(organization: Organization): Promise<Organization | gracely.Error> {
 		return this.client.post<Organization>(`/organization`, organization)
 	}
+	async update(id: string, changeable: Organization.Changeable): Promise<Organization | gracely.Error> {
+		return this.client.patch<Organization>(`/organization/${id}`, changeable)
+	}
 }
