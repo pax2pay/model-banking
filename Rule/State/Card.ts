@@ -47,7 +47,7 @@ export namespace Card {
 			last4: isly.string(),
 			expiry: ModelCard.Expiry.type,
 			holder: isly.string(),
-			token: isly.string(),
+			token: isly.string().optional(),
 		}),
 		limit: isly.number(),
 		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
