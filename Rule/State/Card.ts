@@ -1,7 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card as ModelCard } from "../../Card"
-import { Realm } from "../../Realm"
 
 export interface Card extends Omit<ModelCard, "limit">, Card.Statistics {
 	age: { days: number; minutes: number }
@@ -31,37 +30,15 @@ export namespace Card {
 			original: { currency: card.limit[0], limit: card.limit[1] },
 		}
 	}
-	// isly.object().omit(): coming soon!!
-	export const type = isly.object<Card>({
-		id: isly.string(),
-		number: isly.string().optional(),
-		created: isly.string(),
-		organization: isly.string(),
-		realm: Realm.type,
-		account: isly.string(),
-		preset: ModelCard.Preset.type,
-		scheme: ModelCard.Scheme.type,
-		reference: isly.string().optional(),
-		details: isly.object({
-			iin: isly.string(),
-			last4: isly.string(),
-			expiry: ModelCard.Expiry.type,
-			holder: isly.string(),
-			token: isly.string().optional(),
-		}),
-		limit: isly.number(),
-		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
-		status: isly.union(isly.string("active"), isly.string("cancelled")),
-		history: isly.array(ModelCard.Operation.type),
-		rules: isly.any().array(), // avoid circular dependency until we get isly.object().omit()
-		meta: isly.fromIs("ModelCard.Meta", ModelCard.Meta.is).optional(),
-		used: isly.object<Card["used"]>({ amount: isly.number(), count: isly.number() }),
-		reject: isly.object<Card["reject"]>({ count: isly.number() }),
+	export const type = ModelCard.type.omit(["limit"]).extend<Card>({
 		age: isly.object<Card["age"]>({ days: isly.number(), minutes: isly.number() }),
+		limit: isly.number(),
 		original: isly.object<Card["original"]>({
 			currency: isly.string(isoly.Currency.types),
 			limit: isly.number(),
 		}),
+		used: isly.object<Card["used"]>({ amount: isly.number(), count: isly.number() }),
+		reject: isly.object<Card["reject"]>({ count: isly.number() }),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
