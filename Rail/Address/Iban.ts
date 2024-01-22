@@ -1,18 +1,21 @@
+import { isly } from "isly"
+
 export interface Iban {
 	type: "iban"
 	iban: string
 	holder: string
+	institution?: string
+	transactor?: string
 }
 export namespace Iban {
 	export const currencies = ["EUR", "GBP", "SEK", "USD"] as const
 	// maybe do the Iban checksum check below?
-	export function is(value: Iban | any): value is Iban {
-		return (
-			value &&
-			typeof value == "object" &&
-			value.type == "iban" &&
-			typeof value.iban == "string" &&
-			typeof value.holder == "string"
-		)
-	}
+	export const type = isly.object<Iban>({
+		type: isly.string("iban"),
+		iban: isly.string(),
+		holder: isly.string(),
+		institution: isly.string().optional(),
+		transactor: isly.string().optional(),
+	})
+	export const is = type.is
 }
