@@ -1,0 +1,21 @@
+import { isoly } from "isoly"
+import { isly } from "isly"
+
+export namespace Exchange {
+	export type Rates = Partial<Record<isoly.Currency, Partial<Record<isoly.Currency, number>>>>
+	export const type = isly.record(
+		isly.fromIs("Currency", isoly.Currency.is),
+		isly.record(isly.fromIs("Currency", isoly.Currency.is), isly.number())
+	)
+	export const is = type.is
+	export const flaw = type.flaw
+	export function convert(
+		amount: number,
+		from: isoly.Currency,
+		to: isoly.Currency,
+		table: Exchange.Rates
+	): number | undefined {
+		const rate = table[from]?.[to]
+		return rate && isoly.Currency.multiply(to, amount, rate)
+	}
+}
