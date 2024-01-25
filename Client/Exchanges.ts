@@ -9,6 +9,6 @@ export class Exchanges extends rest.Collection<gracely.Error> {
 		super(client)
 	}
 	async fetch(currency: isoly.Currency): Promise<Exchange.Rates | gracely.Error> {
-		return this.client.get<Exchange.Rates>(`/exchangerates/${currency}`)
+		return this.client.get<Exchange.Rates>(`/exchange?currencies=${currency}`)
 	}
 }
