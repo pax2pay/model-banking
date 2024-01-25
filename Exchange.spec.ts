@@ -2,7 +2,7 @@ import { pax2pay } from "./index"
 
 describe("Exchange", () => {
 	it("static", () => {
-		expect(pax2pay.Exchange.convert(2.31, "SEK", "GBP", table)).toEqual(30.72)
+		expect(pax2pay.Exchange.convert(30.72, "SEK", "GBP", table)).toEqual(2.31)
 		expect(pax2pay.Exchange.convert(2.31, "GBP", "GBP", table)).toEqual(2.31)
 	})
 	it("undefined", () => {
