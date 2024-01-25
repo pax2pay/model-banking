@@ -16,6 +16,6 @@ export namespace Exchange {
 		table: Exchange.Rates
 	): number | undefined {
 		const rate = table[to]?.[from]
-		return rate && isoly.Currency.multiply(to, amount, rate)
+		return rate && isoly.Currency.divide(to, amount, rate)
 	}
 }
