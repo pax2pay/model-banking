@@ -80,6 +80,7 @@ export namespace Transaction {
 	export function fromCreatable(
 		organization: string,
 		accountId: string,
+		accountName: string | undefined,
 		account: Rail.Address,
 		rail: Rail,
 		transaction: Creatable,
@@ -96,6 +97,7 @@ export namespace Transaction {
 			...transaction,
 			organization,
 			accountId,
+			accountName,
 			account,
 			id,
 			posted: isoly.DateTime.now(),
@@ -112,6 +114,7 @@ export namespace Transaction {
 	export function fromIncoming(
 		organization: string,
 		accountId: string,
+		accountName: string | undefined,
 		transaction: Incoming,
 		operations: Operation.Creatable[],
 		balance: {
@@ -125,6 +128,7 @@ export namespace Transaction {
 			...transaction,
 			organization,
 			accountId,
+			accountName,
 			balance,
 			id,
 			operations: operations.map(o => Operation.fromCreatable(id, o)),
