@@ -14,6 +14,7 @@ import { Status as TransactionStatus } from "./Status"
 export interface Transaction extends Transaction.Creatable {
 	organization: string
 	accountId: string
+	accountName?: string
 	account: Rail.Address
 	readonly id: cryptly.Identifier
 	readonly reference?: Transaction.Reference
@@ -54,6 +55,7 @@ export namespace Transaction {
 	export const type = Creatable.type.extend<Transaction>({
 		organization: isly.string(),
 		accountId: isly.string(),
+		accountName: isly.string().optional(),
 		account: isly.fromIs("Rail", Rail.Address.is),
 		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
 		reference: Reference.type.readonly().optional(),
@@ -78,6 +80,7 @@ export namespace Transaction {
 	export function fromCreatable(
 		organization: string,
 		accountId: string,
+		accountName: string,
 		account: Rail.Address,
 		rail: Rail,
 		transaction: Creatable,
@@ -94,6 +97,7 @@ export namespace Transaction {
 			...transaction,
 			organization,
 			accountId,
+			accountName,
 			account,
 			id,
 			posted: isoly.DateTime.now(),
@@ -110,6 +114,7 @@ export namespace Transaction {
 	export function fromIncoming(
 		organization: string,
 		accountId: string,
+		accountName: string,
 		transaction: Incoming,
 		operations: Operation.Creatable[],
 		balance: {
@@ -123,6 +128,7 @@ export namespace Transaction {
 			...transaction,
 			organization,
 			accountId,
+			accountName,
 			balance,
 			id,
 			operations: operations.map(o => Operation.fromCreatable(id, o)),
