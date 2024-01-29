@@ -5,7 +5,7 @@ import { rest } from "cloudly-rest"
 import { Accounts } from "./Accounts"
 import { Cards } from "./Cards"
 import { Exchanges } from "./Exchanges"
-import { Flags } from "./Flags"
+import { Labels } from "./Labels"
 import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
 import { Reports } from "./Reports"
@@ -28,7 +28,8 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly settlements = new Settlements(this.client)
 	readonly transactions = new Transactions(this.client)
 	readonly treasury = new Treasury(this.client)
-	readonly flags = new Flags(this.client)
+	readonly flags = new Labels(this.client, "flag")
+	readonly groups = new Labels(this.client, "group")
 	readonly userwidgets = (server: string, application: string) =>
 		new userwidgets.ClientCollection(new http.Client(server), { application })
 	readonly version = new Version(this.client)
