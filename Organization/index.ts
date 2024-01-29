@@ -10,6 +10,7 @@ export interface Organization {
 	realm: Realm
 	rules: Rule[]
 	contact?: Organization.Contact
+	groups?: string[]
 }
 export namespace Organization {
 	export const type = isly.object<Organization>({
@@ -18,6 +19,7 @@ export namespace Organization {
 		realm: Realm.type,
 		rules: Rule.type.array(),
 		contact: OrganizationContact.type.optional(),
+		groups: isly.string().array().optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
