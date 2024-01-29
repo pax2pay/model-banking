@@ -80,7 +80,7 @@ export namespace Transaction {
 	export function fromCreatable(
 		organization: string,
 		accountId: string,
-		accountName: string | undefined,
+		accountName: string,
 		account: Rail.Address,
 		rail: Rail,
 		transaction: Creatable,
@@ -114,7 +114,7 @@ export namespace Transaction {
 	export function fromIncoming(
 		organization: string,
 		accountId: string,
-		accountName: string | undefined,
+		accountName: string,
 		transaction: Incoming,
 		operations: Operation.Creatable[],
 		balance: {
