@@ -25,7 +25,8 @@ export namespace State {
 		days: StateAccount.Days,
 		transaction: ModelTransaction.Creatable,
 		authorization?: StateAuthorization,
-		card?: StateCard
+		card?: StateCard,
+		organization?: StateOrganization
 	): State {
 		return {
 			data,
@@ -33,6 +34,7 @@ export namespace State {
 			transaction: Transaction.from(transaction),
 			authorization,
 			card,
+			organization,
 		}
 	}
 	export type Partial = StatePartial
