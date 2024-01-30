@@ -1,6 +1,6 @@
 import { isly } from "isly"
 import { Realm } from "../Realm"
-import { Rule } from "../Rule"
+import { Rule, type as ruleType } from "../Rule/Rule"
 import { Changeable as OrganizationChangeable } from "./Changeable"
 import { Contact as OrganizationContact } from "./Contact"
 
@@ -10,14 +10,16 @@ export interface Organization {
 	realm: Realm
 	rules: Rule[]
 	contact?: Organization.Contact
+	groups?: string[]
 }
 export namespace Organization {
 	export const type = isly.object<Organization>({
 		name: isly.string(),
 		code: isly.string(new RegExp(/^[A-Za-z0-9\-_]+$/)),
 		realm: Realm.type,
-		rules: Rule.type.array(),
+		rules: ruleType.array(),
 		contact: OrganizationContact.type.optional(),
+		groups: isly.string().array().optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
