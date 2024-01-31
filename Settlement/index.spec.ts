@@ -99,7 +99,7 @@ const entries: pax2pay.Settlement.Entry[] = [
 const settlement: pax2pay.Settlement = {
 	id: "abcd1234",
 	created: "2000-01-01T00:00:00.001",
-	reference: "string",
+	references: ["string"],
 	batch: "202327301",
 	processor: "test-paxgiro",
 	status: { collected: "pending", settled: "pending" },
