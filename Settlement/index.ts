@@ -10,15 +10,11 @@ import { Settled as SettlementSettled } from "./Settled"
 import { Status } from "./Status"
 import { Total as SettlementTotal } from "./Total"
 
-export interface Settlement {
+export interface Settlement extends Settlement.Creatable {
 	id: string
 	by?: string
 	created: isoly.DateTime
-	reference?: string
-	batch: SettlementBatch
-	processor: Card.Stack
 	status: Status
-	expected?: Settlement.Total
 	collected?: Settlement.Total
 	outcome: Settlement.Total
 	settled?: Settlement.Settled
@@ -103,22 +99,18 @@ export namespace Settlement {
 			status: { collected: "failed", settled: "failed" }, // ["failed", reason],
 			by,
 			processor: creatable.processor,
-			reference: creatable.reference,
+			references: creatable.references,
 			batch: creatable.batch,
 			expected: Total.initiate(),
 			outcome: Total.initiate(),
 			entries: { count: 0 },
 		}
 	}
-	export const type = isly.object<Settlement>({
+	export const type = SettlementCreatable.type.extend<Settlement>({
 		id: isly.string(),
 		by: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
-		reference: isly.string().optional(),
-		processor: Card.Stack.type,
-		batch: Batch.type,
 		status: Status.type,
-		expected: Settlement.Total.type.optional(),
 		collected: Settlement.Total.type.optional(),
 		outcome: Settlement.Total.type,
 		settled: Settled.type.optional(),
