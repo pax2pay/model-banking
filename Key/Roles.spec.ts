@@ -19,9 +19,14 @@ describe("Roles", () => {
 			},
 			{ label: "realm-finance", permission: "test-*.treasury.rebalance test-*.treasury.view test-*.settlements.view" },
 			{
+				label: "realm-operations",
+				permission:
+					"test-*.organizations.create test-*.organizations.update test-*.organizations.accounts test-*.organizations.rules",
+			},
+			{
 				label: "realm-support",
 				permission:
-					"test-*.organizations.create test-*.organizations.view test-*.organizations.accounts test-*.organizations.rules.view test-*.transactions.view test-*.cards.view test-*.cards.cancel test-*.rules.view",
+					"test-*.organizations.create test-*.organizations.view test-*.organizations.accounts test-*.organizations.rules.view test-*.organizations.rules.edit test-*.transactions.view test-*.cards.view test-*.cards.cancel test-*.rules.view",
 			},
 			{ label: "organization-admin", permission: "test-paxair" },
 			{
@@ -41,7 +46,8 @@ describe("Roles", () => {
 			"test-*.organizations.view test-*.organizations.accounts.view test-*.organizations.rules.view test-*.transactions.view test-*.cards.view test-*.rules.view",
 			"test-*.organizations.view test-*.organizations.accounts.balance test-*.organizations.accounts.view test-*.organizations.rules test-*.transactions.view test-*.transactions.resolve test-*.transactions.comment test-*.cards.view test-*.cards.cancel test-*.rules",
 			"test-*.treasury.rebalance test-*.treasury.view test-*.settlements.view",
-			"test-*.organizations.create test-*.organizations.view test-*.organizations.accounts test-*.organizations.rules.view test-*.transactions.view test-*.cards.view test-*.cards.cancel test-*.rules.view",
+			"test-*.organizations.create test-*.organizations.update test-*.organizations.accounts test-*.organizations.rules",
+			"test-*.organizations.create test-*.organizations.view test-*.organizations.accounts test-*.organizations.rules.view test-*.organizations.rules.edit test-*.transactions.view test-*.cards.view test-*.cards.cancel test-*.rules.view",
 			"paxair",
 			"paxair.accounts.balance paxair.accounts.view paxair.accounts.transactions.view paxair.accounts.transactions.create paxair.cards",
 			"paxair.cards paxair.accounts.view paxair.accounts.transactions.create",
