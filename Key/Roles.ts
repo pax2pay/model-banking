@@ -43,7 +43,7 @@ export namespace Roles {
 	export namespace Realm {
 		export type Roles = Partial<Record<Role, true>>
 		export type Role = typeof roles[number]
-		export const roles = ["admin", "fincrime-readonly", "fincrime", "finance", "support"] as const
+		export const roles = ["admin", "fincrime-readonly", "fincrime", "finance", "operations", "support"] as const
 		export const type = isly.string(roles)
 		export const is = type.is
 		export const definitions: Record<Role, Permissions.Realm | true> = {
@@ -72,6 +72,14 @@ export namespace Roles {
 				treasury: { rebalance: true, view: true },
 				settlements: { view: true },
 			},
+			operations: {
+				organizations: {
+					create: true,
+					update: true,
+					accounts: true,
+					rules: true,
+				},
+			},
 			support: {
 				organizations: {
 					create: true,
@@ -79,6 +87,7 @@ export namespace Roles {
 					accounts: true,
 					rules: {
 						view: true,
+						edit: true,
 					},
 				},
 				transactions: { view: true },
