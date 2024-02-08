@@ -1,6 +1,7 @@
 import { gracely } from "gracely"
 import { pax2pay } from "../index"
 
+// cSpell:disable
 describe("authorization", () => {
 	it("reason array", () => {
 		expect(pax2pay.Authorization.is(authorization1)).toBeTruthy()

@@ -25,18 +25,24 @@
 	"javascript.format.enable": false,
 	"typescript.format.enable": false,
 	"cSpell.words": [
+		"addendee",
 		"authly",
 		"clearbank",
 		"cloudly",
 		"cryptly",
+		"fincrime",
 		"flagly",
 		"gracely",
 		"Iban",
 		"isly",
 		"isoly",
 		"langly",
+		"marqeta",
 		"paramly",
+		"paxair",
+		"paxgiro",
 		"persistly",
+		"rebalance",
 		"selectivly",
 		"servly",
 		"servly-azure",
@@ -44,6 +50,7 @@
 		"tidily",
 		"transactly",
 		"upcheck",
-		"uply"
+		"uply",
+		"userwidgets"
 	]
 }
