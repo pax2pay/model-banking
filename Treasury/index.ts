@@ -2,6 +2,8 @@ import { isoly } from "isoly"
 import { Account as TreasuryAccount } from "./Account"
 import { Balance as TreasuryBalance } from "./Balance"
 import { Fiat as TreasuryFiat } from "./Fiat"
+import { Snapshot as TreasurySnapshot } from "./Snapshot"
+import { Snapshots as TreasurySnapshots } from "./Snapshots"
 import { Transaction as TreasuryTransaction } from "./Transaction"
 
 export { Treasury } from "./Treasury"
@@ -19,6 +21,8 @@ export namespace Treasury {
 	export type Balance = TreasuryBalance
 	export type Fiat = TreasuryFiat
 	export const Balance = TreasuryBalance
+	export type Snapshot = TreasurySnapshot
+	export type Snapshots = TreasurySnapshots
 	export namespace Account {
 		export type Creatable = TreasuryAccount.Creatable
 		export const Creatable = TreasuryAccount.Creatable
