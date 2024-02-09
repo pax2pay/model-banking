@@ -1,15 +1,15 @@
 import { pax2pay } from "./index"
 
-describe("Exchange", () => {
+describe("FX", () => {
 	it("static", () => {
-		expect(pax2pay.Exchange.convert(30.72, "SEK", "GBP", table)).toEqual(2.31)
-		expect(pax2pay.Exchange.convert(2.31, "GBP", "GBP", table)).toEqual(2.31)
+		expect(pax2pay.FX.convert(30.72, "SEK", "GBP", fx)).toEqual(2.31)
+		expect(pax2pay.FX.convert(2.31, "GBP", "GBP", fx)).toEqual(2.31)
 	})
 	it("undefined", () => {
-		expect(pax2pay.Exchange.convert(2.31, "GBP", "SEK", table)).toEqual(undefined)
+		expect(pax2pay.FX.convert(2.31, "GBP", "SEK", fx)).toEqual(undefined)
 	})
 })
-const table = {
+const fx = {
 	GBP: {
 		AUD: 1.9333968256,
 		BGN: 2.2802871481,

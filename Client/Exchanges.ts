@@ -2,7 +2,7 @@ import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
-import { Exchange } from "../Exchange"
+import { Exchange } from "../FX"
 
 export class Exchanges extends rest.Collection<gracely.Error> {
 	constructor(client: http.Client) {
