@@ -1,7 +1,12 @@
 import { Balances } from "../Balances"
-
+export interface Overdraft {
+	type: "overdraft"
+	account: string
+	balance: Balances.Balance
+}
+export type Warning = Overdraft
 export interface Snapshot {
-	deficientAccounts: { account: string; balance: Balances.Balance }[]
+	warnings: Warning[]
 	emoney: Balances.Balance
 	fiat: {
 		safe: number
