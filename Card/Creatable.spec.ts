@@ -1,5 +1,6 @@
 import { pax2pay } from "../index"
 
+// cSpell:disable
 const optional: string[] = ["meta", "rules", "number"]
 const Creatable: pax2pay.Card.Creatable = {
 	account: "example",

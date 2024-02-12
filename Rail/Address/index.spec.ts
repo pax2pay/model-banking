@@ -1,5 +1,6 @@
 import { pax2pay } from "../../index"
 
+// cSpell:disable
 describe("Rail.Address", () => {
 	it("compare", () => {
 		expect(pax2pay.Rail.Address.compare([{ ...iban1 }, { ...iban1 }])).toBeTruthy()

@@ -1,5 +1,6 @@
 import { pax2pay } from "../index"
 
+// cSpell:disable
 describe("Operation", () => {
 	it("is", () => {
 		expect(pax2pay.Operation.is(operation)).toBeTruthy()
