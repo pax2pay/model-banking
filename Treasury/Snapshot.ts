@@ -1,18 +1,4 @@
-import { Balances } from "../Balances"
-export interface Overdraft {
-	type: "overdraft"
-	account: string
-	balance: Balances.Balance
-}
-export type Warning = Overdraft
-export interface Snapshot {
-	warnings: Warning[]
-	emoney: Balances.Balance
-	fiat: {
-		safe: number
-		unsafe: number
-		total: number // emoney issuable total amount
-		other: number
-		buffer: number
-	}
-}
+import { isoly } from "isoly"
+import { Snapshot } from "./Fragment"
+
+export type Snapshot = Partial<Record<isoly.Currency, Snapshot>>
