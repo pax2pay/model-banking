@@ -2,6 +2,7 @@ import { isoly } from "isoly"
 import "jest"
 import { pax2pay } from "./index"
 
+// cSpell:disable
 describe("library", () => {
 	it("scan from iban", () => {
 		expect(

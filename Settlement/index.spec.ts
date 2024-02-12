@@ -1,6 +1,7 @@
 import { gracely } from "gracely"
 import { pax2pay } from "../index"
 
+// cSpell:disable
 describe("Settlement", () => {
 	it("compile", () => {
 		expect(pax2pay.Settlement.compile(settlement, entries).outcome).toEqual(settlement.expected)

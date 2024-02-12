@@ -1,5 +1,6 @@
 import { pax2pay } from "../../../index"
 
+// cSpell:disable
 describe("Address", () => {
 	it("countryCode determines type", () => {
 		expect(address1.countryCode == "GB" && address1.building).toBeTruthy()

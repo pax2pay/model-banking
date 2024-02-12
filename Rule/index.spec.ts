@@ -1,5 +1,6 @@
 import { pax2pay } from "../index"
 
+// cSpell:disable
 export const transaction1: pax2pay.Transaction.Creatable = {
 	counterpart: {
 		identifier: "bvMkSwAG",
