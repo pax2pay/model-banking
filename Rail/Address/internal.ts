@@ -5,7 +5,7 @@ export interface Internal {
 	type: "internal"
 	name?: string
 	identifier: cryptly.Identifier
-	organization?: cryptly.Identifier
+	organization?: string
 }
 export namespace Internal {
 	export const currencies = ["EUR", "GBP", "SEK", "USD"] as const
@@ -13,7 +13,7 @@ export namespace Internal {
 		type: isly.string("internal"),
 		name: isly.string().optional(),
 		identifier: isly.fromIs("Identifier", cryptly.Identifier.is),
-		organization: isly.fromIs("Identifier", cryptly.Identifier.is).optional(),
+		organization: isly.string().optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
