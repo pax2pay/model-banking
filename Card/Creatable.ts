@@ -17,6 +17,7 @@ export interface Creatable {
 	limit: Amount
 	rules?: Rule[]
 	meta?: Meta
+	key?: isoly.Date | string
 }
 
 export namespace Creatable {
@@ -31,6 +32,7 @@ export namespace Creatable {
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		rules: ruleType.array().optional(),
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
+		key: isly.string().optional(),
 	})
 	export const is = type.is
 }
