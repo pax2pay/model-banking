@@ -5,7 +5,6 @@ import { Fiat as TreasuryFiat } from "./Fiat"
 import { Snapshot as TreasurySnapshot } from "./Snapshot"
 import { Transaction as TreasuryTransaction } from "./Transaction"
 
-export { Treasury } from "./Treasury"
 export namespace Treasury {
 	export function key(hour?: isoly.DateTime): isoly.DateTime {
 		const now = isoly.DateTime.now()

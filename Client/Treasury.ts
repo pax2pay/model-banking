@@ -13,9 +13,9 @@ export class Treasury extends rest.Collection<gracely.Error> {
 	async change(currency: isoly.Currency, changes: Result[]): Promise<gracely.Result> {
 		return this.client.patch(`/treasury/${currency}`, changes)
 	}
-	async fetch(hour?: isoly.DateTime): Promise<TreasuryModel | gracely.Error> {
+	async fetch(hour?: isoly.DateTime): Promise<TreasuryModel.Snapshot | gracely.Error> {
 		const path = hour ? `/${isoly.DateTime.truncate(hour, "hours")}` : ""
-		return this.client.get<TreasuryModel>(`/treasury${path}`)
+		return this.client.get<TreasuryModel.Snapshot>(`/treasury${path}`)
 	}
 	async listTransactions(accountId: string): Promise<TreasuryModel.Transaction[] | gracely.Error> {
 		return this.client.get<TreasuryModel.Transaction[]>(`/treasury/account/${accountId}/transaction`)
