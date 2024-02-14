@@ -2,14 +2,17 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Changes as OperationChanges } from "./Changes"
 import { Creatable as OperationCreatable } from "./Creatable"
+import { Signer as OperationSigner } from "./Signer"
 
 export interface Operation extends OperationCreatable {
 	transaction: string
 	counter: number
 	created: isoly.DateTime
 	signature?: string
+	previous?: string
 }
 export namespace Operation {
+	export const Signer = OperationSigner
 	export type Creatable = OperationCreatable
 	export const Creatable = OperationCreatable
 	export type Changes = OperationChanges
@@ -22,21 +25,16 @@ export namespace Operation {
 		counter: isly.number(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		signature: isly.string().optional(),
+		previous: isly.string().optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
-	//TODO: actual signing function
-	function sign(precursor: string): string | undefined {
-		const signature = Number.parseInt(precursor)
-		return Number.isNaN(signature) ? undefined : (signature + 1).toString()
-	}
-	export function fromCreatable(transaction: string, creatable: Creatable, oldSignature?: string): Operation {
+	export function fromCreatable(transaction: string, creatable: Creatable): Operation {
 		return {
 			...creatable,
 			transaction,
 			counter: 0,
 			created: isoly.DateTime.now(),
-			signature: oldSignature && sign(oldSignature),
 		}
 	}
 }
