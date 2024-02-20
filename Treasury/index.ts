@@ -21,6 +21,7 @@ export namespace Treasury {
 	export const Snapshot = TreasurySnapshot
 	export namespace Snapshot {
 		export type Fragment = TreasurySnapshot.Fragment
+		export type Warning = TreasurySnapshot.Warning
 	}
 	export namespace Account {
 		export type Creatable = TreasuryAccount.Creatable

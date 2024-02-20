@@ -16,6 +16,7 @@ const fragment: pax2pay.Treasury.Snapshot.Fragment = {
 		total: 1,
 		other: 1,
 		buffer: 1,
+		accounts: [],
 	},
 	warnings: [],
 }
