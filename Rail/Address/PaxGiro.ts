@@ -1,4 +1,4 @@
-import * as cryptly from "cryptly"
+import { cryptly } from "cryptly"
 
 export interface PaxGiro {
 	type: "paxgiro"
