@@ -1,4 +1,4 @@
-import * as cryptly from "cryptly"
+import { cryptly } from "cryptly"
 import { isly } from "isly"
 
 export interface Internal {

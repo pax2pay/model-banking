@@ -1,4 +1,4 @@
-import * as cryptly from "cryptly"
+import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Realm } from "../../Realm"

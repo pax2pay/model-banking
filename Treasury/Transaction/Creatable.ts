@@ -1,4 +1,4 @@
-import * as isoly from "isoly"
+import { isoly } from "isoly"
 import { Rail } from "../../Rail"
 
 export interface Creatable {
