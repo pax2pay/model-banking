@@ -6,6 +6,7 @@ export interface Card extends Omit<ModelCard, "limit">, Card.Statistics {
 	age: { days: number; minutes: number }
 	limit: number
 	original: { currency: isoly.Currency; limit: number }
+	used: { merchants: string[] }
 }
 
 export namespace Card {
