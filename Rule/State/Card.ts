@@ -6,12 +6,11 @@ export interface Card extends Omit<ModelCard, "limit">, Card.Statistics {
 	age: { days: number; minutes: number }
 	limit: number
 	original: { currency: isoly.Currency; limit: number }
-	used: { merchants: string[] }
 }
 
 export namespace Card {
 	export type Statistics = {
-		used: { count: number; amount: number }
+		used: { count: number; amount: number; merchants: string[] /* `${acquirer.id}-${merchant.id}` */ }
 		reject: { count: number }
 	}
 	export const initialStatistics = {
