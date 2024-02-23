@@ -5,6 +5,10 @@ import { Batch } from "../Settlement/Batch"
 import { Supplier } from "../Supplier"
 
 export type Counterbalance = Partial<Record<Counterbalance.Entry, number>>
+export type Counterbalance2 = {
+	minted: Partial<Record<Counterbalance.Source, number>>
+	burned: Partial<Record<Counterbalance.Sink, number>>
+}
 
 export namespace Counterbalance {
 	export type Entry = Entry.Internal | Entry.Settlement
@@ -12,9 +16,8 @@ export namespace Counterbalance {
 		export type Internal = typeof Entry.values[number]
 		export type Settlement = `${"fee" | "settle"}_${Card.Stack}_${Batch}`
 		export const values = [
-			...Supplier.names.flatMap(s => [`incoming_${s}`, `outgoing_${s}`] as const),
-			`incoming_internal`,
-			`outgoing_internal`,
+			...Supplier.names.flatMap(s => [`minted_${s}`, `burned_${s}`] as const),
+			`internal`,
 			"fee_other",
 		] as const
 		const valueType = isly.string(values)
@@ -37,4 +40,6 @@ export namespace Counterbalance {
 			addendee
 		)
 	}
+	export type Source = `${Supplier | "internal"}|${isoly.DateTime}`
+	export type Sink = `${Supplier | "internal"}|${isoly.DateTime}`
 }

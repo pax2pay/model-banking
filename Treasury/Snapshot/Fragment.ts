@@ -6,7 +6,7 @@ import { Warning } from "./Warning"
 
 export interface Fragment {
 	warnings: Warning[]
-	emoney: Balances.Balance & { minted: Counterbalances.Counterbalance; burned: Counterbalances.Counterbalance }
+	emoney: Balances.Balance & Counterbalances.Counterbalance
 	fiat: {
 		safe: number
 		unsafe: number
@@ -18,6 +18,7 @@ export interface Fragment {
 }
 
 export namespace Fragment {
+	con
 	export const type = isly.object<Fragment>({
 		warnings: Warning.type.array(),
 		emoney: Balances.Balance.type,
