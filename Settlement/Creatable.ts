@@ -18,7 +18,7 @@ type Amounts = Partial<
 	>
 >
 export interface Creatable {
-	amounts: Amounts
+	totals: Amounts
 	processor: Card.Stack
 	references?: string[] //File name
 	batch: Batch

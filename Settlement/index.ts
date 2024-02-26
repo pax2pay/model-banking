@@ -11,7 +11,7 @@ import { Status } from "./Status"
 import { Total as SettlementTotal } from "./Total"
 
 // const a = {} as any as Settlement
-type Amounts = Partial<
+type Totals = Partial<
 	Record<
 		isoly.Currency,
 		{
@@ -41,7 +41,7 @@ type Amounts = Partial<
 			}
 			settled?: {
 				amount: number
-				transaction: string[]
+				transactions: string[]
 			}
 		}
 	>
@@ -52,7 +52,7 @@ export interface Settlement extends Settlement.Creatable {
 	by?: string
 	created: isoly.DateTime
 	status: Status
-	amounts: Amounts
+	totals: Totals
 	entries: Settlement.Entry.Summary
 }
 export namespace Settlement {
