@@ -1,10 +1,24 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../Card"
 import { Batch } from "./Batch"
 import { Total } from "./Total"
 
+type Amounts = Partial<
+	Record<
+		isoly.Currency,
+		{
+			expected: {
+				fee: {
+					other: number
+				}
+				net: number
+			}
+		}
+	>
+>
 export interface Creatable {
-	expected?: Total
+	amounts: Amounts
 	processor: Card.Stack
 	references?: string[] //File name
 	batch: Batch
