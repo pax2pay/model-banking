@@ -1,12 +1,14 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Creatable as AuthorizationCreatable } from "../../Authorization/Creatable"
+import { Merchant } from "../../Merchant"
 
 export interface Authorization extends Omit<AuthorizationCreatable, "amount"> {
 	time: string
 	hour: number
 	currency: isoly.Currency
 	amount: number
+	merchant: Merchant & { reference: string }
 }
 export namespace Authorization {
 	export function from(authorization: AuthorizationCreatable): Authorization {
@@ -16,6 +18,7 @@ export namespace Authorization {
 			hour: isoly.DateTime.getHour(isoly.DateTime.now()),
 			currency: authorization.amount[0],
 			amount: Math.abs(authorization.amount[1]),
+			merchant: { ...authorization.merchant, reference: `${authorization.acquirer.id}-${authorization.merchant.id}` },
 		}
 	}
 	export const type = AuthorizationCreatable.type.omit(["amount"]).extend<Authorization>({
@@ -23,6 +26,10 @@ export namespace Authorization {
 		hour: isly.number(),
 		currency: isly.string(isoly.Currency.types),
 		amount: isly.number(),
+		merchant: isly.intersection<Authorization["merchant"], Merchant, { reference: string }>(
+			Merchant.type,
+			isly.object<{ reference: string }>({ reference: isly.string() })
+		),
 	})
 	export const is = type.is
 	export const flaw = type.flaw

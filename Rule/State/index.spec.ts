@@ -17,6 +17,7 @@ describe("State", () => {
 				city: "CityTown",
 				zip: "12345",
 				country: "KP",
+				reference: "2345erty-abcd1234",
 			},
 			acquirer: {
 				id: "2345erty",
