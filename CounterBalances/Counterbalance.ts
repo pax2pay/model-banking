@@ -12,7 +12,6 @@ export namespace Counterbalance {
 		export type Settlement = `${"fee" | "settle"}_${Card.Stack}_${Batch}`
 		export const values = [
 			...Supplier.names.flatMap(s => [`incoming_${s}`, `outgoing_${s}`] as const),
-			`internal`,
 			`incoming_internal`,
 			`outgoing_internal`,
 			"fee_other",
