@@ -4,8 +4,8 @@ import { Counterbalance2 } from "../Counterbalance2"
 import { Counterbalances } from "../CounterBalances"
 import { Change as Change } from "./Change"
 
-export type Changes = Partial<Record<Changes.Entry | Counterbalance2.Link, Change>> &
-	Record<Counterbalances.Counterbalance.Entry.Settlement, Change>
+export type Changes = Partial<Record<Changes.Entry, Change>> &
+	Record<Counterbalances.Counterbalance.Entry.Settlement | Counterbalance2.Link, Change>
 
 export namespace Changes {
 	export type Entry = Balances.Balance.Entry
