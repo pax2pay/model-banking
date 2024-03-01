@@ -15,6 +15,8 @@ export namespace Counterbalance2 {
 		minted: isly.record<Counterbalance2["minted"]>(Source, isly.number()),
 		burned: isly.record<Counterbalance2["burned"]>(Sink, isly.number()),
 	})
+	export type Link = Source | Sink
+	export const Link = isly.union<Link, Source, Sink>(Source, Sink)
 	export function add(currency: isoly.Currency, addendee: Counterbalance2, addend: Counterbalance2): Counterbalance2 {
 		const result: Counterbalance2 = { minted: {}, burned: {} }
 		for (const [source, value] of Object.entries(addendee["minted"]) as [Source, number][]) {
