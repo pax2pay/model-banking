@@ -10,8 +10,8 @@ export type Changes = Partial<Record<Changes.Entry, Change>> &
 export namespace Changes {
 	export type Entry = Balances.Balance.Entry
 	export namespace Entry {
-		export const values = [...Balances.Balance.Entry.values, ...Counterbalances.Counterbalance.Entry.values]
-		export const type = isly.string(values)
+		export const entries = [...Balances.Balance.Entry.values, ...Counterbalances.Counterbalance.Entry.values]
+		export const type = isly.string(entries)
 	}
 	export const type = isly.record<Changes>(
 		isly.union(Entry.type, Counterbalances.Counterbalance.Entry.type, Counterbalance2.Link),

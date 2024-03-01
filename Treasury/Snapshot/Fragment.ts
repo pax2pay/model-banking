@@ -1,12 +1,12 @@
 import { isly } from "isly"
 import { Balances } from "../../Balances"
-import { Counterbalances2 } from "../../Counterbalances2"
+import { Counterbalance2 } from "../../Counterbalance2"
 import { Account } from "../Account"
 import { Warning } from "./Warning"
 
 export interface Fragment {
 	warnings: Warning[]
-	emoney: Balances.Balance & Counterbalances2
+	emoney: Balances.Balance & Counterbalance2
 	fiat: {
 		safe: number
 		unsafe: number
@@ -19,7 +19,10 @@ export interface Fragment {
 export namespace Fragment {
 	export const type = isly.object<Fragment>({
 		warnings: Warning.type.array(),
-		emoney: Balances.Balance.type,
+		emoney: isly.intersection<Fragment["emoney"], Balances.Balance, Counterbalance2>(
+			Balances.Balance.type,
+			Counterbalance2.type
+		),
 		fiat: isly.object({
 			safe: isly.number(),
 			unsafe: isly.number(),
