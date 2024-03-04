@@ -19,7 +19,8 @@ export interface Fragment {
 export namespace Fragment {
 	export const type = isly.object<Fragment>({
 		warnings: Warning.type.array(),
-		emoney: isly.intersection<Fragment["emoney"], Balances.Balance, Counterbalance2>(
+		// there is a problem with isly.intersection, but isly.union works for this case
+		emoney: isly.union<Fragment["emoney"], Balances.Balance, Counterbalance2>(
 			Balances.Balance.type,
 			Counterbalance2.type
 		),

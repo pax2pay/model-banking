@@ -8,16 +8,16 @@ export type Counterbalance2 = {
 }
 export namespace Counterbalance2 {
 	export const sources = [...Supplier.names, "internal"] as const
-	export type Source = `${typeof sources[number]}|${isoly.DateTime}`
+	export type Source = `${typeof sources[number]}-${string}` // string: fiat account identifier
 	export const Source = isly.fromIs<Source>("Source", (value: any | Source) => {
-		const result = !value ? false : typeof value == "string" && value.split("|")
-		return result && result.length == 2 && sources.includes(result[0] as any) && isoly.DateTime.is(result[1])
+		const result = !value ? false : typeof value == "string" && value.split("-")
+		return result && result.length == 2 && sources.includes(result[0] as any) && typeof result[1] == "string"
 	})
 	export const sinks = [...Supplier.names, "internal"] as const
-	export type Sink = `${typeof sinks[number]}|${isoly.DateTime}`
+	export type Sink = `${typeof sinks[number]}-${string}` // string: fiat account identifier
 	export const Sink = isly.fromIs<Sink>("Sink", (value: any | Sink) => {
-		const result = !value ? false : typeof value == "string" && value.split("|")
-		return result && result.length == 2 && sinks.includes(result[0] as any) && isoly.DateTime.is(result[1])
+		const result = !value ? false : typeof value == "string" && value.split("-")
+		return result && result.length == 2 && sinks.includes(result[0] as any) && typeof result[1] == "string"
 	})
 	export const type = isly.object<Counterbalance2>({
 		minted: isly.record<Counterbalance2["minted"]>(Source, isly.number()),

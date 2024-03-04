@@ -1,20 +1,37 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Balances } from "../Balances"
 import { Counterbalance2 } from "../Counterbalance2"
 import { Counterbalances } from "../CounterBalances"
-import { Change as Change } from "./Change"
+import { Change } from "./Change"
 
-export type Changes = Partial<Record<Changes.Entry, Change>> &
-	Record<Counterbalances.Counterbalance.Entry.Settlement | Counterbalance2.Link, Change>
+// TODO: remove old counterbalances
+export type Changes = Partial<Record<Balances.Balance.Entry, Change>> &
+	Record<Counterbalances.Counterbalance.Entry.Settlement | Changes.Entry.Counterbalance, Change>
 
 export namespace Changes {
-	export type Entry = Balances.Balance.Entry
 	export namespace Entry {
-		export const entries = [...Balances.Balance.Entry.values, ...Counterbalances.Counterbalance.Entry.values]
-		export const type = isly.string(entries)
+		export type Counterbalance = `${Counterbalance2.Link}-${isoly.DateTime}`
+		export const Counterbalance = isly.fromIs<Counterbalance>(
+			"Changes.Counterbalance",
+			(value: any | Counterbalance) => {
+				const result = !value ? false : typeof value == "string" && value.split("-")
+				return (
+					result &&
+					result.length == 3 &&
+					Counterbalance2.Link.is(`${result[0]}-${result[1]}`) &&
+					isoly.DateTime.is(result[2])
+				)
+			}
+		)
 	}
+	export type Entry = Balances.Balance.Entry | Entry.Counterbalance | Counterbalances.Counterbalance.Entry.Settlement
 	export const type = isly.record<Changes>(
-		isly.union(Entry.type, Counterbalances.Counterbalance.Entry.type, Counterbalance2.Link),
+		isly.union<Entry, Balances.Balance.Entry, Entry.Counterbalance, Counterbalances.Counterbalance.Entry>(
+			Balances.Balance.Entry.type,
+			Entry.Counterbalance,
+			Counterbalances.Counterbalance.Entry.type
+		),
 		Change.type
 	)
 	export const is = type.is
