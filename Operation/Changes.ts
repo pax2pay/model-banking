@@ -13,19 +13,17 @@ export namespace Changes {
 	export namespace Entry {
 		export type Counterbalance = `${Counterbalance2.Link}-${isoly.DateTime}`
 		export const Counterbalance = isly.fromIs<Counterbalance>(
-			"Changes.Counterbalance",
+			"Changes.Entry.Counterbalance",
 			(value: any | Counterbalance) => {
 				const result = !value ? false : typeof value == "string" && value.split("-")
 				return (
-					result &&
-					result.length == 3 &&
-					Counterbalance2.Link.is(`${result[0]}-${result[1]}`) &&
-					isoly.DateTime.is(result[2])
+					result && Counterbalance2.Link.is(`${result[0]}-${result[1]}`) && isoly.DateTime.is(result.slice(2).join("-"))
 				)
 			}
 		)
 		export function split(counterbalance: Counterbalance): [Counterbalance2.Link, isoly.DateTime] {
-			const [supplier, account, hour] = counterbalance.split("-")
+			const split = counterbalance.split("-")
+			const [supplier, account, hour] = [split[0], split[1], split.slice(2).join("-")]
 			return [`${supplier}-${account}` as Counterbalance2.Link, hour]
 		}
 	}

@@ -33,6 +33,15 @@ describe("Operation", () => {
 		})
 		expect(verified).toBe(true)
 	})
+	it("changes is", async () => {
+		expect(pax2pay.Operation.is(operation3)).toBe(true)
+	})
+	it("split", async () => {
+		expect(pax2pay.Operation.Changes.Entry.split("internal-safe01-2024-03-04T15Z")).toEqual([
+			"internal-safe01",
+			"2024-03-04T15Z",
+		])
+	})
 })
 const operation: pax2pay.Operation = {
 	account: "3Lb41MlP",
@@ -65,4 +74,20 @@ const operation2: pax2pay.Operation = {
 	transaction: "manual",
 	counter: 71,
 	created: "2024-02-14T14:47:41.472Z",
+}
+const operation3: pax2pay.Operation = {
+	account: "3Lb41MlP",
+	currency: "GBP",
+	type: "collect",
+	changes: {
+		"internal-safe01-2024-03-04T15Z": {
+			type: "subtract",
+			amount: 10,
+			status: "success",
+			result: 0,
+		},
+	},
+	transaction: "zzzyRwIvXovdzVNA",
+	counter: 0,
+	created: "2023-12-05T17:26:36.977Z",
 }
