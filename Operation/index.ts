@@ -19,6 +19,9 @@ export namespace Operation {
 	export const Changes = OperationChanges
 	export namespace Changes {
 		export type Entry = OperationChanges.Entry
+		export namespace Entry {
+			export type Counterbalance = OperationChanges.Entry.Counterbalance
+		}
 	}
 	export const type = OperationCreatable.type.extend<Operation>({
 		transaction: isly.string(),
