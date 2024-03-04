@@ -24,6 +24,10 @@ export namespace Changes {
 				)
 			}
 		)
+		export function split(counterbalance: Counterbalance): [Counterbalance2.Link, isoly.DateTime] {
+			const [supplier, account, hour] = counterbalance.split("-")
+			return [`${supplier}-${account}` as Counterbalance2.Link, hour]
+		}
 	}
 	export type Entry = Balances.Balance.Entry | Entry.Counterbalance | Counterbalances.Counterbalance.Entry.Settlement
 	export const type = isly.record<Changes>(
