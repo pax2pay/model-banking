@@ -22,6 +22,7 @@ export namespace Treasury {
 	export namespace Snapshot {
 		export type Fragment = TreasurySnapshot.Fragment
 		export type Warning = TreasurySnapshot.Warning
+		export type Emoney = TreasurySnapshot.Emoney
 	}
 	export namespace Account {
 		export type Creatable = TreasuryAccount.Creatable
