@@ -5,7 +5,6 @@ import { Batch } from "../Settlement/Batch"
 import { Supplier } from "../Supplier"
 
 export type Counterbalance = Partial<Record<Counterbalance.Entry, number>>
-
 export namespace Counterbalance {
 	export type Entry = Entry.Internal | Entry.Settlement
 	export namespace Entry {
