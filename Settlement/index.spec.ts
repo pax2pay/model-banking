@@ -4,7 +4,8 @@ import { pax2pay } from "../index"
 // cSpell:disable
 describe("Settlement", () => {
 	it("compile", () => {
-		expect(pax2pay.Settlement.compile(settlement, entries).outcome).toEqual(settlement.expected)
+		const result = pax2pay.Settlement.compile(settlement, entries)
+		expect(result.totals.GBP?.outcome?.net).toEqual(settlement.totals.GBP?.expected.net)
 	})
 	it("batch regexp", () => {
 		expect(pax2pay.Settlement.Batch.is("202300101")).toBeTruthy()
@@ -104,13 +105,13 @@ const settlement: pax2pay.Settlement = {
 	batch: "202327301",
 	processor: "test-paxgiro",
 	status: { collected: "pending", settled: "pending" },
-	expected: {
-		amount: { GBP: 1350 },
-		fee: { other: { GBP: 13.5 } },
+	totals: {
+		GBP: {
+			expected: {
+				net: 450,
+				fee: { other: 4.5 },
+			},
+		},
 	},
-	outcome: {
-		amount: { GBP: 900 },
-		fee: { other: { GBP: 900 * 0.01 } },
-	},
-	entries: { count: entries.length },
+	entries: { count: 0 },
 }

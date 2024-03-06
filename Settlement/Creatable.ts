@@ -1,24 +1,10 @@
-import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../Card"
 import { Batch } from "./Batch"
-import { Total } from "./Total"
+import { Totals } from "./Totals"
 
-type Amounts = Partial<
-	Record<
-		isoly.Currency,
-		{
-			expected: {
-				fee: {
-					other: number
-				}
-				net: number
-			}
-		}
-	>
->
 export interface Creatable {
-	totals: Amounts
+	totals: Totals
 	processor: Card.Stack
 	references?: string[] //File name
 	batch: Batch
@@ -26,7 +12,7 @@ export interface Creatable {
 
 export namespace Creatable {
 	export const type = isly.object<Creatable>({
-		expected: Total.type.optional(),
+		totals: Totals.type,
 		processor: Card.Stack.type,
 		references: isly.string().array().optional(),
 		batch: Batch.type,

@@ -1,65 +1,26 @@
 import { isoly } from "isoly"
-// import { isly } from "isly"
-// import { Card } from "../Card"
-// import { Identifier } from "../Identifier"
+import { isly } from "isly"
+import { Identifier } from "../Identifier"
 import { Batch as SettlementBatch } from "./Batch"
 import { Creatable as SettlementCreatable } from "./Creatable"
 import { Entry as SettlementEntry } from "./Entry"
 import { Fee as SettlementFee } from "./Fee"
-import { Settled as SettlementSettled } from "./Settled"
 import { Status } from "./Status"
 import { Total as SettlementTotal } from "./Total"
-
-// const a = {} as any as Settlement
-type Totals = Partial<
-	Record<
-		isoly.Currency,
-		{
-			collected?: {
-				fee: {
-					amount: {
-						other: number
-					}
-					transaction: string
-				}
-				net: {
-					amount: number
-					transaction: string
-				}
-			}
-			outcome?: {
-				fee: {
-					other: number
-				}
-				net: number
-			}
-			expected: {
-				fee: {
-					other: number
-				}
-				net: number
-			}
-			settled?: {
-				amount: number
-				transactions: string[]
-			}
-		}
-	>
->
+import { Totals as SettlementTotals } from "./Totals"
 
 export interface Settlement extends Settlement.Creatable {
 	id: string
 	by?: string
 	created: isoly.DateTime
 	status: Status
-	totals: Totals
 	entries: Settlement.Entry.Summary
 }
 export namespace Settlement {
-	export type Settled = SettlementSettled
-	export const Settled = SettlementSettled
 	export const Total = SettlementTotal
 	export type Total = SettlementTotal
+	export const Totals = SettlementTotals
+	export type Totals = SettlementTotals
 	export const Fee = SettlementFee
 	export type Fee = SettlementFee
 	export type Creatable = SettlementCreatable
@@ -88,69 +49,38 @@ export namespace Settlement {
 			export type Creatable = SettlementEntry.Unknown.Creatable
 		}
 	}
-	// export function initiate(id: string, by: string, batch: Batch, processor: Card.Stack): Settlement {
-	// 	return {
-	// 		id: id ?? Identifier.generate(),
-	// 		by,
-	// 		created: isoly.DateTime.now(),
-	// 		batch,
-	// 		processor,
-	// 		status: { collected: "pending", settled: "pending" },
-	// 		expected: Total.initiate(),
-	// 		outcome: Total.initiate(),
-	// 		entries: { count: 0 },
-	// 	}
-	// }
-	// export function from(id: string, creatable: Settlement.Creatable, by: string): Settlement {
-	// 	return {
-	// 		id,
-	// 		status: { collected: "pending", settled: "pending" },
-	// 		by,
-	// 		outcome: Total.initiate(),
-	// 		...creatable,
-	// 		created: isoly.DateTime.now(),
-	// 		entries: { count: 0 },
-	// 	}
-	// }
-	// export function compile(settlement: Settlement, entries: Settlement.Entry[]): Settlement {
-	// 	const result = { ...settlement }
-	// 	for (const entry of entries) {
-	// 		switch (entry.status) {
-	// 			case "succeeded":
-	// 				result.outcome = Total.add(result.outcome, Entry.compile(entry))
-	// 				result.entries.count++
-	// 				break
-	// 			case "failed":
-	// 				result.entries.failed ? result.entries.failed.count++ : (result.entries.failed = { count: 1 })
-	// 				break
-	// 		}
-	// 	}
-	// 	return result
-	// }
-	// export function toFailed(id: string, creatable: Settlement.Creatable, by: string, reason: string): Settlement {
-	// 	return {
-	// 		id,
-	// 		created: isoly.DateTime.now(),
-	// 		status: { collected: "failed", settled: "failed" }, // ["failed", reason],
-	// 		by,
-	// 		processor: creatable.processor,
-	// 		references: creatable.references,
-	// 		batch: creatable.batch,
-	// 		expected: Total.initiate(),
-	// 		outcome: Total.initiate(),
-	// 		entries: { count: 0 },
-	// 	}
-	// }
-	// export const type = SettlementCreatable.type.extend<Settlement>({
-	// 	id: isly.string(),
-	// 	by: isly.string().optional(),
-	// 	created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
-	// 	status: Status.type,
-	// 	collected: Settlement.Total.type.optional(),
-	// 	outcome: Settlement.Total.type,
-	// 	settled: Settled.type.optional(),
-	// 	entries: Settlement.Entry.Summary.type,
-	// })
-	// export const is = type.is
-	// export const flaw = type.flaw
+	export function from(creatable: Settlement.Creatable, by: string): Settlement {
+		return {
+			id: Identifier.generate(),
+			status: { collected: "pending", settled: "pending" },
+			by,
+			...creatable,
+			created: isoly.DateTime.now(),
+			entries: { count: 0 },
+		}
+	}
+	export function compile(settlement: Settlement, entries: Settlement.Entry[]): Settlement {
+		const result = { ...settlement }
+		for (const entry of entries) {
+			switch (entry.status) {
+				case "succeeded":
+					result.totals = Totals.addEntry(result.totals, entry)
+					result.entries.count++
+					break
+				case "failed":
+					result.entries.failed ? result.entries.failed.count++ : (result.entries.failed = { count: 1 })
+					break
+			}
+		}
+		return result
+	}
+	export const type = SettlementCreatable.type.extend<Settlement>({
+		id: isly.string(),
+		by: isly.string().optional(),
+		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		status: Status.type,
+		entries: Settlement.Entry.Summary.type,
+	})
+	export const is = type.is
+	export const flaw = type.flaw
 }
