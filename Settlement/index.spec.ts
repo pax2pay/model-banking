@@ -111,10 +111,6 @@ const settlement: pax2pay.Settlement = {
 				net: 450,
 				fee: { other: 4.5 },
 			},
-			// outcome: {
-			// 	net: 900,
-			// 	fee: { other: 900 * 0.01 },
-			// },
 		},
 	},
 	entries: { count: 0 },
