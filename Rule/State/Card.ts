@@ -10,11 +10,11 @@ export interface Card extends Omit<ModelCard, "limit">, Card.Statistics {
 
 export namespace Card {
 	export type Statistics = {
-		used: { count: number; amount: number }
+		used: { count: number; amount: number; merchants: string[] }
 		reject: { count: number }
 	}
-	export const initialStatistics = {
-		used: { count: 0, amount: 0 },
+	export const initialStatistics: Statistics = {
+		used: { count: 0, amount: 0, merchants: [] },
 		reject: { count: 0 },
 	}
 	function ageFromTime(time: isoly.DateTime): Card["age"] {
@@ -37,7 +37,7 @@ export namespace Card {
 			currency: isly.string(isoly.Currency.types),
 			limit: isly.number(),
 		}),
-		used: isly.object<Card["used"]>({ amount: isly.number(), count: isly.number() }),
+		used: isly.object<Card["used"]>({ amount: isly.number(), count: isly.number(), merchants: isly.string().array() }),
 		reject: isly.object<Card["reject"]>({ count: isly.number() }),
 	})
 	export const is = type.is

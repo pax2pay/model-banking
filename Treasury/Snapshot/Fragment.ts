@@ -1,11 +1,12 @@
 import { isly } from "isly"
 import { Balances } from "../../Balances"
+import { Counterbalance2 } from "../../Counterbalance2"
 import { Account } from "../Account"
 import { Warning } from "./Warning"
 
 export interface Fragment {
 	warnings: Warning[]
-	emoney: Balances.Balance
+	emoney: Balances.Balance & Counterbalance2
 	fiat: {
 		safe: number
 		unsafe: number
@@ -15,11 +16,14 @@ export interface Fragment {
 		accounts: Account[]
 	}
 }
-
 export namespace Fragment {
 	export const type = isly.object<Fragment>({
 		warnings: Warning.type.array(),
-		emoney: Balances.Balance.type,
+		// there is a problem with isly.intersection, but isly.union works for this case
+		emoney: isly.union<Fragment["emoney"], Balances.Balance, Counterbalance2>(
+			Balances.Balance.type,
+			Counterbalance2.type
+		),
 		fiat: isly.object({
 			safe: isly.number(),
 			unsafe: isly.number(),
