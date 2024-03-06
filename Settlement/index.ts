@@ -64,7 +64,7 @@ export namespace Settlement {
 		for (const entry of entries) {
 			switch (entry.status) {
 				case "succeeded":
-					result.outcome = Total.add(result.outcome, Entry.compile(entry))
+					result.totals = Totals.addEntry(result.totals, entry)
 					result.entries.count++
 					break
 				case "failed":

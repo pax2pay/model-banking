@@ -19,7 +19,6 @@ export namespace Capture {
 	export interface Creatable {
 		type: "capture"
 		authorization: Authorization
-		collect: { settlementTransaction: string; feeTransaction: string }
 		reference: string // card transaction
 		batch: Batch
 		fee: Fee
