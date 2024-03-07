@@ -24,4 +24,18 @@ export namespace Totals {
 		}
 		return result
 	}
+	export namespace add {
+		export function settled(totals: Totals, settles: Partial<Record<isoly.Currency, Total.Settled>>): Totals {
+			const result = { ...totals }
+			for (const [currency, settled] of Object.entries(settles) as [isoly.Currency, Total.Settled][]) {
+				result[currency] = Total.add.settled(
+					currency,
+					result[currency] ?? Total.create(),
+					settled.net,
+					settled.transactions
+				)
+			}
+			return result
+		}
+	}
 }
