@@ -3,11 +3,11 @@ import { pax2pay } from "../index"
 
 describe("Settlement.Totals", () => {
 	it("verify", () => {
-		expect(pax2pay.Settlement.Totals.verify(totals).every(([_, v]) => v == true)).toEqual(true)
-		expect(pax2pay.Settlement.Totals.verify(totals2).every(([_, v]) => v == true)).toEqual(false)
+		expect(pax2pay.Settlement.Totals.verify(totals, "outcome").every(([_, v]) => v == true)).toEqual(true)
+		expect(pax2pay.Settlement.Totals.verify(totals2, "outcome").every(([_, v]) => v == true)).toEqual(false)
 	})
 	it("some problems", () => {
-		const result = pax2pay.Settlement.Totals.verify(totals3).reduce(
+		const result = pax2pay.Settlement.Totals.verify(totals3, "outcome").reduce(
 			(result, [currency, value]) => {
 				value ? result.successes.push(currency) : result.problems.push(currency)
 				return result

@@ -59,8 +59,22 @@ export namespace Total {
 	export function create(): Total {
 		return { expected: { net: 0, fee: { other: 0 } } }
 	}
-	export function verify(total: Total): boolean {
-		return total.outcome?.net == total.expected.net && total.outcome.fee.other == total.expected.fee.other
+	export function verify(total: Total, type: "outcome" | "collected" | "settled"): boolean {
+		let result: boolean
+		switch (type) {
+			case "outcome":
+				result = total.outcome?.net == total.expected.net && total.outcome.fee.other == total.expected.fee.other
+				break
+			case "collected":
+				result =
+					total.collected?.net.amount == total.outcome?.net &&
+					total.collected?.fee.amount.other == total.outcome?.fee.other
+				break
+			case "settled":
+				result = total.settled?.amount == total.collected?.net
+				break
+		}
+		return result
 	}
 	export namespace add {
 		export function expected(currency: isoly.Currency, total: Total, expected: Total["expected"]): Total {
