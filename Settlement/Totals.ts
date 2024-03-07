@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import type { Collect } from "../Transaction/Collect"
 import { Entry } from "./Entry"
 import { Total } from "./Total"
 
@@ -33,6 +34,26 @@ export namespace Totals {
 					result[currency] ?? Total.create(),
 					settled.net,
 					settled.transactions
+				)
+			}
+			return result
+		}
+		// TODO: update this for new collection method
+		export function collected(totals: Totals, collect: Collect): Totals {
+			const result: Totals = { ...totals }
+			for (const [currency, counterbalance] of Object.entries(collect.counterbalances)) {
+				const collected: Total.Amount = { net: 0, fee: { other: 0 } }
+				for (const [entry, amount] of Object.entries(counterbalance)) {
+					if (entry.startsWith("fee"))
+						collected.fee.other = isoly.Currency.add(currency as isoly.Currency, collected.fee.other, amount ?? 0)
+					else if (entry.startsWith("settle"))
+						collected.net = isoly.Currency.add(currency as isoly.Currency, collected.net, amount ?? 0)
+				}
+				result[currency as isoly.Currency] = Total.add.collected(
+					currency as isoly.Currency,
+					result[currency as isoly.Currency] ?? Total.create(),
+					collected,
+					{ net: "", fee: "" }
 				)
 			}
 			return result
