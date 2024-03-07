@@ -2,36 +2,23 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 
 export interface Total {
-	expected: {
+	expected: Total.Amount
+	outcome?: Total.Amount
+	collected?: Total.Amount & { transactions: { net: string; fee: string } }
+	settled?: Total.Settled
+}
+export namespace Total {
+	export type Amount = {
 		fee: {
 			other: number
 		}
 		net: number
 	}
-	outcome?: {
-		fee: {
-			other: number
-		}
-		net: number
-	}
-	collected?: {
-		fee: {
-			amount: {
-				other: number
-			}
-			transaction: string
-		}
-		net: {
-			amount: number
-			transaction: string
-		}
-	}
-	settled?: {
+	export type Settled = {
 		amount: number
 		transactions: string[]
 	}
-}
-export namespace Total {
+
 	export const type = isly.object<Total>({
 		expected: isly.object<Total["expected"]>({
 			fee: isly.object<Total["expected"]["fee"]>({ other: isly.number() }),
