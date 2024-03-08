@@ -17,6 +17,7 @@ export namespace Cancel {
 		batch: Batch
 		fee?: Fee
 		amount?: Amount
+		final?: boolean
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -26,6 +27,7 @@ export namespace Cancel {
 			fee: Fee.type.optional(),
 			amount: Amount.type.optional(),
 			batch: Batch.type,
+			final: isly.boolean().optional(),
 		})
 		export const is = type.is
 		export const flaw = type.flaw

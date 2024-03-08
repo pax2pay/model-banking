@@ -23,6 +23,7 @@ export namespace Capture {
 		batch: Batch
 		fee: Fee
 		amount: Amount
+		final?: boolean
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -32,6 +33,7 @@ export namespace Capture {
 			fee: Fee.type,
 			amount: Amount.type,
 			batch: Batch.type,
+			final: isly.boolean().optional()
 		})
 		export const is = type.is
 		export const flaw = type.flaw
