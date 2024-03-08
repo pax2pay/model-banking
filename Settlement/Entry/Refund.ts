@@ -24,6 +24,7 @@ export namespace Refund {
 		batch: Batch
 		fee: Fee
 		amount: Amount
+		final?: boolean
 	}
 	export function from(refund: Refund.Creatable, transaction: Transaction): Refund {
 		return { ...refund, status: "succeeded", transaction }
@@ -39,6 +40,7 @@ export namespace Refund {
 			fee: Fee.type,
 			amount: Amount.type,
 			batch: Batch.type,
+			final: isly.boolean().optional(),
 		})
 		export const is = type.is
 		export const flaw = type.flaw
