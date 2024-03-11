@@ -1,12 +1,12 @@
 import { isoly } from "isoly"
 
 export interface Transaction {
-	type: "account" | "funding" | "settlement"
 	id: string
 	reference: string
+	counterpart: { type: "fiat"; id: string } | { type: "ledger"; id: string } | { type: "external" }
 	created: isoly.DateTime
-	link: string
 	currency: isoly.Currency
 	amount: number
 	balance: number
+	description?: string
 }
