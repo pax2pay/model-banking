@@ -1,12 +1,10 @@
 import { isoly } from "isoly"
 
-export interface Transaction {
-	type: "account" | "funding" | "settlement"
+export interface Funding {
 	id: string
 	reference: string
 	created: isoly.DateTime
 	link: string
 	currency: isoly.Currency
 	amount: number
-	balance: number
 }

@@ -2,11 +2,13 @@ import { isly } from "isly"
 import { Balances } from "../../Balances"
 import { Counterbalance2 } from "../../Counterbalance2"
 import { Account } from "../Account"
+import { Funding } from "./Funding"
 import { Warning } from "./Warning"
 
 export interface Fragment {
 	warnings: Warning[]
 	emoney: Balances.Balance & Counterbalance2
+	funding: Funding
 	fiat: {
 		safe: number
 		unsafe: number
