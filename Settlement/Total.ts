@@ -1,37 +1,30 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Amount } from "./Amount"
 
 export interface Total {
-	expected: Total.Amount
-	outcome?: Total.Amount
-	collected?: Total.Amount & { transactions: { net: string; fee: string } }
+	expected: Amount
+	outcome?: Amount
+	collected?: Amount & { transactions: { net: string; fee: string } }
 	settled?: Total.Settled
 }
 export namespace Total {
-	export type Amount = {
-		net: number
-		fee: {
-			other: number
-		}
-	}
-	export const Amount = isly.object<Amount>({
-		net: isly.number(),
-		fee: isly.object<Amount["fee"]>({ other: isly.number() }),
-	})
 	export type Settled = {
 		net: number
 		transactions: string[]
 	}
 	export const Settled = isly.object<Settled>({ net: isly.number(), transactions: isly.string().array() })
 	export const type = isly.object<Total>({
-		expected: Amount,
-		outcome: Amount.optional(),
-		collected: Amount.extend<Required<Total>["collected"]>({
-			transactions: isly.object<Required<Total>["collected"]["transactions"]>({
-				net: isly.string(),
-				fee: isly.string(),
-			}),
-		}).optional(),
+		expected: Amount.type,
+		outcome: Amount.type.optional(),
+		collected: Amount.type
+			.extend<Required<Total>["collected"]>({
+				transactions: isly.object<Required<Total>["collected"]["transactions"]>({
+					net: isly.string(),
+					fee: isly.string(),
+				}),
+			})
+			.optional(),
 		settled: Settled.optional(),
 	})
 	export function create(): Total {
@@ -50,6 +43,13 @@ export namespace Total {
 				result = total.settled?.net == total.collected?.net
 				break
 		}
+		return result
+	}
+	export function add2(currency: isoly.Currency, addendee: Total, addend: Partial<Total>): Total {
+		const result: Total = { ...addendee }
+		addend.expected && (result.expected = Amount.add(currency, result.expected, addend.expected))
+		addendee.outcome && result.outcome && (result.outcome = Amount.add(currency, result.outcome, addendee.outcome))
+		
 		return result
 	}
 	export namespace add {

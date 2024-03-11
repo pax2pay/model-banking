@@ -25,6 +25,13 @@ export namespace Totals {
 		}
 		return result
 	}
+	export function add2(addendee: Totals, addends: Partial<Record<isoly.Currency, Partial<Total>>>): Totals {
+		const result = { ...addendee }
+		for (const [currency, addend] of Object.entries(addends) as [isoly.Currency, Partial<Total>][]) {
+			result[currency] = Total.add2(currency, result[currency] ?? Total.create(), addend)
+		}
+		return result
+	}
 	export namespace add {
 		export function settled(totals: Totals, settles: Partial<Record<isoly.Currency, Total.Settled>>): Totals {
 			const result = { ...totals }
