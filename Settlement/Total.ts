@@ -45,54 +45,47 @@ export namespace Total {
 		}
 		return result
 	}
-	export function add2(currency: isoly.Currency, addendee: Total, addend: Partial<Total>): Total {
+	export function add(currency: isoly.Currency, addendee: Total, addend: Partial<Total>): Total {
 		const result: Total = { ...addendee }
 		addend.expected && (result.expected = Amount.add(currency, result.expected, addend.expected))
-		addendee.outcome && result.outcome && (result.outcome = Amount.add(currency, result.outcome, addendee.outcome))
-		
+		if (result.outcome || addend.outcome)
+			result.outcome = Amount.add(currency, result.outcome ?? { net: 0, fee: { other: 0 } }, addend.outcome ?? {})
+		if (result.collected || addend.collected)
+			result.collected = {
+				...Amount.add(currency, result.collected ?? { net: 0, fee: { other: 0 } }, addend.collected ?? {}),
+				transactions: {
+					net: addend.collected?.transactions.net ?? result.collected?.transactions.net ?? "",
+					fee: addend.collected?.transactions.fee ?? result.collected?.transactions.fee ?? "",
+				},
+			}
+		if (result.settled || addend.settled)
+			result.settled = {
+				net: isoly.Currency.add(currency, result.settled?.net ?? 0, addend.settled?.net ?? 0),
+				transactions: (result.settled?.transactions ?? []).concat(addend.settled?.transactions ?? []),
+			}
 		return result
 	}
-	export namespace add {
-		export function expected(currency: isoly.Currency, total: Total, expected: Amount): Total {
-			return {
-				...total,
-				expected: {
-					net: isoly.Currency.add(currency, total.expected.net, expected.net),
-					fee: { other: isoly.Currency.add(currency, total.expected.fee.other, expected.fee.other) },
-				},
-			}
-		}
-		export function outcome(currency: isoly.Currency, total: Total, outcome: Amount): Total {
-			return {
-				...total,
-				outcome: {
-					net: isoly.Currency.add(currency, total.outcome?.net ?? 0, outcome.net),
-					fee: { other: isoly.Currency.add(currency, total.outcome?.fee.other ?? 0, outcome.fee.other) },
-				},
-			}
-		}
-		export function collected(
-			currency: isoly.Currency,
-			total: Total,
-			collected: Amount,
-			transactions: { net: string; fee: string }
-		): Total {
-			const result = { ...total }
-			if (result.collected) {
-				result.collected.net = isoly.Currency.add(currency, result.collected.net, collected.net)
-				result.collected.fee.other = isoly.Currency.add(currency, result.collected.fee.other, collected.fee.other)
-			} else
-				result.collected = { ...collected, transactions }
-			return result
-		}
-		export function settled(currency: isoly.Currency, total: Total, net: number, transactions: string[]): Total {
-			const result = { ...total }
-			if (result.settled) {
-				result.settled.net = isoly.Currency.add(currency, result.settled.net, net)
-				result.settled.transactions.push(...transactions)
-			} else
-				result.settled = { net, transactions }
-			return result
-		}
+	export function collect(
+		currency: isoly.Currency,
+		total: Total,
+		collected: Amount,
+		transactions: { net: string; fee: string }
+	): Total {
+		const result = { ...total }
+		if (result.collected) {
+			result.collected.net = isoly.Currency.add(currency, result.collected.net, collected.net)
+			result.collected.fee.other = isoly.Currency.add(currency, result.collected.fee.other, collected.fee.other)
+		} else
+			result.collected = { ...collected, transactions }
+		return result
+	}
+	export function settled(currency: isoly.Currency, total: Total, net: number, transactions: string[]): Total {
+		const result = { ...total }
+		if (result.settled) {
+			result.settled.net = isoly.Currency.add(currency, result.settled.net, net)
+			result.settled.transactions.push(...transactions)
+		} else
+			result.settled = { net, transactions }
+		return result
 	}
 }

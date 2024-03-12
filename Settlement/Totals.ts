@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import type { Collect } from "../Transaction/Collect"
+import { Amount } from "./Amount"
 import { Entry } from "./Entry"
 import { Total } from "./Total"
 
@@ -10,10 +11,12 @@ export namespace Totals {
 	export function addEntry(totals: Totals, entry: Entry): Totals {
 		const result = { ...totals }
 		if (entry.status == "succeeded" && (entry.type == "capture" || entry.type == "refund")) {
-			result[entry.amount[0]] = Total.add.outcome(entry.amount[0], result[entry.amount[0]] ?? Total.create(), {
-				net: entry.amount[1],
-				// TODO: other currencies in fees
-				fee: { other: entry.fee.other[entry.amount[0]] ?? 0 },
+			result[entry.amount[0]] = Total.add(entry.amount[0], result[entry.amount[0]] ?? Total.create(), {
+				outcome: {
+					net: entry.amount[1],
+					// TODO: other currencies in fees
+					fee: { other: entry.fee.other[entry.amount[0]] ?? 0 },
+				},
 			})
 		}
 		return result
@@ -25,45 +28,31 @@ export namespace Totals {
 		}
 		return result
 	}
-	export function add2(addendee: Totals, addends: Partial<Record<isoly.Currency, Partial<Total>>>): Totals {
+	export function add(addendee: Totals, addends: Partial<Record<isoly.Currency, Partial<Total>>>): Totals {
 		const result = { ...addendee }
 		for (const [currency, addend] of Object.entries(addends) as [isoly.Currency, Partial<Total>][]) {
-			result[currency] = Total.add2(currency, result[currency] ?? Total.create(), addend)
+			result[currency] = Total.add(currency, result[currency] ?? Total.create(), addend)
 		}
 		return result
 	}
-	export namespace add {
-		export function settled(totals: Totals, settles: Partial<Record<isoly.Currency, Total.Settled>>): Totals {
-			const result = { ...totals }
-			for (const [currency, settled] of Object.entries(settles) as [isoly.Currency, Total.Settled][]) {
-				result[currency] = Total.add.settled(
-					currency,
-					result[currency] ?? Total.create(),
-					settled.net,
-					settled.transactions
-				)
+	// TODO: update this for new collection method
+	export function collect(totals: Totals, collect: Collect): Totals {
+		const result: Totals = { ...totals }
+		for (const [currency, counterbalance] of Object.entries(collect.counterbalances)) {
+			const collected: Amount = { net: 0, fee: { other: 0 } }
+			for (const [entry, amount] of Object.entries(counterbalance)) {
+				if (entry.startsWith("fee"))
+					collected.fee.other = isoly.Currency.add(currency as isoly.Currency, collected.fee.other, amount ?? 0)
+				else if (entry.startsWith("settle"))
+					collected.net = isoly.Currency.add(currency as isoly.Currency, collected.net, amount ?? 0)
 			}
-			return result
+			result[currency as isoly.Currency] = Total.collect(
+				currency as isoly.Currency,
+				result[currency as isoly.Currency] ?? Total.create(),
+				collected,
+				{ net: "", fee: "" }
+			)
 		}
-		// TODO: update this for new collection method
-		export function collected(totals: Totals, collect: Collect): Totals {
-			const result: Totals = { ...totals }
-			for (const [currency, counterbalance] of Object.entries(collect.counterbalances)) {
-				const collected: Total.Amount = { net: 0, fee: { other: 0 } }
-				for (const [entry, amount] of Object.entries(counterbalance)) {
-					if (entry.startsWith("fee"))
-						collected.fee.other = isoly.Currency.add(currency as isoly.Currency, collected.fee.other, amount ?? 0)
-					else if (entry.startsWith("settle"))
-						collected.net = isoly.Currency.add(currency as isoly.Currency, collected.net, amount ?? 0)
-				}
-				result[currency as isoly.Currency] = Total.add.collected(
-					currency as isoly.Currency,
-					result[currency as isoly.Currency] ?? Total.create(),
-					collected,
-					{ net: "", fee: "" }
-				)
-			}
-			return result
-		}
+		return result
 	}
 }

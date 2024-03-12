@@ -17,6 +17,46 @@ describe("Settlement.Totals", () => {
 		expect(result.successes).toEqual(["USD"])
 		expect(result.problems).toEqual(["BOV"])
 	})
+	it("add", () => {
+		expect(pax2pay.Settlement.Totals.add(totals, totals2)).toEqual({
+			USD: {
+				expected: { fee: { other: 20 }, net: 10 },
+				outcome: { fee: { other: 20 }, net: 7782 },
+			},
+		})
+	})
+	it("add several currencies", () => {
+		expect(pax2pay.Settlement.Totals.add(totals2, totals3)).toEqual({
+			BOV: { expected: { fee: { other: 10 }, net: 5 }, outcome: { fee: { other: 10 }, net: 7777 } },
+			USD: { expected: { fee: { other: 20 }, net: 10 }, outcome: { fee: { other: 20 }, net: 7782 } },
+		})
+	})
+	it("add collected", () => {
+		expect(
+			pax2pay.Settlement.Totals.add(totals2, {
+				USD: { collected: { net: 123, fee: { other: 5 }, transactions: { net: "aaaa", fee: "bbb" } } },
+			})
+		).toEqual({
+			USD: {
+				collected: { fee: { other: 5 }, net: 123, transactions: { fee: "bbb", net: "aaaa" } },
+				expected: { fee: { other: 20 }, net: 5 },
+				outcome: { fee: { other: 20 }, net: 7777 },
+			},
+		})
+	})
+	it("add settled", () => {
+		expect(
+			pax2pay.Settlement.Totals.add(totals2, {
+				USD: { settled: { net: 123, transactions: ["aaaa", "bbbb"] } },
+			})
+		).toEqual({
+			USD: {
+				expected: { fee: { other: 20 }, net: 5 },
+				outcome: { fee: { other: 20 }, net: 7777 },
+				settled: { net: 123, transactions: ["aaaa", "bbbb"] },
+			},
+		})
+	})
 })
 
 const totals: pax2pay.Settlement.Totals = {
