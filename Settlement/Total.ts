@@ -79,13 +79,4 @@ export namespace Total {
 			result.collected = { ...collected, transactions }
 		return result
 	}
-	export function settled(currency: isoly.Currency, total: Total, net: number, transactions: string[]): Total {
-		const result = { ...total }
-		if (result.settled) {
-			result.settled.net = isoly.Currency.add(currency, result.settled.net, net)
-			result.settled.transactions.push(...transactions)
-		} else
-			result.settled = { net, transactions }
-		return result
-	}
 }

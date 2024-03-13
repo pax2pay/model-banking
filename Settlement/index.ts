@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Identifier } from "../Identifier"
+import { Amount as SettlementAmount } from "./Amount"
 import { Batch as SettlementBatch } from "./Batch"
 import { Creatable as SettlementCreatable } from "./Creatable"
 import { Entry as SettlementEntry } from "./Entry"
@@ -21,6 +22,8 @@ export namespace Settlement {
 	export type Total = SettlementTotal
 	export const Totals = SettlementTotals
 	export type Totals = SettlementTotals
+	export const Amount = SettlementAmount
+	export type Amount = SettlementAmount
 	export const Fee = SettlementFee
 	export type Fee = SettlementFee
 	export type Creatable = SettlementCreatable
