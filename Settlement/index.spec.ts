@@ -13,6 +13,16 @@ describe("Settlement", () => {
 		expect(pax2pay.Settlement.Batch.is("202344401")).toBeFalsy()
 		expect(pax2pay.Settlement.Batch.is("aaaaaaa")).toBeFalsy()
 	})
+	it("from legacy", () => {
+		const transformed = pax2pay.Settlement.fromLegacy(oldSettlement)
+		expect(pax2pay.Settlement.is(transformed)).toBeTruthy()
+		expect(transformed.totals.GBP?.outcome?.net).toEqual(oldSettlement.outcome.amount.GBP)
+		expect(transformed.totals.GBP?.outcome?.fee.other).toEqual(oldSettlement.outcome.fee.other.GBP)
+		expect("expected" in transformed.totals.GBP!).toBeTruthy()
+		// Should not add properties not in legacy settlement object
+		expect("collected" in transformed.totals.GBP!).toBeFalsy()
+		expect("settled" in transformed.totals.GBP!).toBeFalsy()
+	})
 })
 
 const authorization1: pax2pay.Authorization = {
@@ -97,7 +107,23 @@ const entries: pax2pay.Settlement.Entry[] = [
 		amount: authorization2.amount,
 	},
 ]
-
+const oldSettlement: pax2pay.Settlement.OldSettlement = {
+	id: "abcd1234",
+	created: "2000-01-01T00:00:00.001",
+	references: ["string"],
+	batch: "202327301",
+	processor: "test-paxgiro",
+	status: { collected: "pending", settled: "pending" },
+	expected: {
+		amount: { GBP: 1350 },
+		fee: { other: { GBP: 13.5 } },
+	},
+	outcome: {
+		amount: { GBP: 900 },
+		fee: { other: { GBP: 9 } },
+	},
+	entries: { count: entries.length },
+}
 const settlement: pax2pay.Settlement = {
 	id: "abcd1234",
 	created: "2000-01-01T00:00:00.001",

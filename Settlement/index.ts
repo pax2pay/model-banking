@@ -79,7 +79,7 @@ export namespace Settlement {
 		return result
 	}
 	type OldTotal = { amount: Amounts; fee: Fee }
-	type OldSettlement = Omit<Settlement, "totals"> & {
+	export type OldSettlement = Omit<Settlement, "totals"> & {
 		expected?: OldTotal
 		collected?: OldTotal
 		outcome: OldTotal
