@@ -23,6 +23,145 @@ describe("Settlement", () => {
 		expect("collected" in transformed.totals.GBP!).toBeFalsy()
 		expect("settled" in transformed.totals.GBP!).toBeFalsy()
 	})
+	it("from legacy 2", () => {
+		const transformed = pax2pay.Settlement.fromLegacy({
+			id: "zzzyRknSygIiGVju",
+			status: { collected: "done", settled: "done" },
+			by: "automatic",
+			outcome: {
+				amount: {
+					GBP: 1.22,
+				},
+				fee: {
+					other: {
+						GBP: 0.02,
+					},
+				},
+			},
+			batch: "202401004",
+			processor: "uk-mc-tpl-marqeta",
+			created: "2024-01-10T11:29:02.267Z",
+			entries: {
+				count: 1,
+			},
+			expected: {
+				amount: {},
+				fee: {
+					other: {},
+				},
+			},
+			collected: {
+				amount: {
+					GBP: 1.22,
+				},
+				fee: {
+					other: {
+						GBP: 0.02,
+					},
+				},
+			},
+			settled: {
+				paid: { GBP: 1.22 },
+				transactions: [],
+			},
+		})
+		expect(pax2pay.Settlement.is(transformed)).toBeTruthy()
+		expect(transformed).toEqual({
+			batch: "202401004",
+			by: "automatic",
+			created: "2024-01-10T11:29:02.267Z",
+			entries: { count: 1 },
+			id: "zzzyRknSygIiGVju",
+			processor: "uk-mc-tpl-marqeta",
+			status: { collected: "done", settled: "done" },
+			totals: {
+				GBP: {
+					collected: { fee: { other: 0.02 }, net: 1.22, transactions: { fee: "", net: "" } },
+					expected: { fee: { other: 0 }, net: 0 },
+					outcome: { fee: { other: 0.02 }, net: 1.22 },
+					settled: { net: 1.22, transactions: [] },
+				},
+			},
+		})
+	})
+	it("from legacy 3", () => {
+		const transformed = pax2pay.Settlement.fromLegacy({
+			id: "zzzyRT4oypE6qZlS",
+			status: {
+				collected: "done",
+				settled: "done",
+			},
+			by: "automatic",
+			outcome: {
+				amount: {
+					GBP: 596.82,
+				},
+				fee: {
+					other: {
+						GBP: 12.18,
+					},
+				},
+			},
+			batch: "202406806",
+			processor: "uk-mc-tpl-marqeta",
+			created: "2024-03-08T14:50:10.988Z",
+			entries: {
+				count: 1,
+			},
+			expected: {
+				amount: {
+					GBP: 596.82,
+				},
+				fee: {
+					other: {
+						GBP: 12.18,
+					},
+				},
+			},
+			references: [
+				"T140-00000033400-2024-03-08-T1408871006805.ASCII.T140.20240308124132.txt.pgp",
+				"T140-00000033400-2024-03-08-T1408871006806.ASCII.T140.20240308151957.txt.pgp",
+			],
+			collected: {
+				amount: {
+					GBP: 596.82,
+				},
+				fee: {
+					other: {
+						GBP: 12.18,
+					},
+				},
+			},
+			settled: {
+				paid: {
+					GBP: 596.82,
+				},
+				transactions: ["zzzyRT31VQM8hZaC"],
+			},
+		})
+		expect(pax2pay.Settlement.is(transformed)).toBeTruthy()
+		expect(transformed).toEqual({
+			batch: "202406806",
+			by: "automatic",
+			created: "2024-03-08T14:50:10.988Z",
+			entries: { count: 1 },
+			id: "zzzyRT4oypE6qZlS",
+			processor: "uk-mc-tpl-marqeta",
+			references: [
+				"T140-00000033400-2024-03-08-T1408871006805.ASCII.T140.20240308124132.txt.pgp",
+				"T140-00000033400-2024-03-08-T1408871006806.ASCII.T140.20240308151957.txt.pgp",
+			],
+			status: { collected: "done", settled: "done" },
+			totals: {
+				GBP: {
+					collected: { fee: { other: 12.18 }, net: 596.82, transactions: { fee: "", net: "" } },
+					expected: { fee: { other: 12.18 }, net: 596.82 },
+					outcome: { fee: { other: 12.18 }, net: 596.82 },
+					settled: { net: 596.82, transactions: ["zzzyRT31VQM8hZaC"] },
+				},
+			},
+		})
+	})
 })
 
 const authorization1: pax2pay.Authorization = {

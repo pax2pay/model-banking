@@ -1,21 +1,10 @@
-import { isoly } from "isoly"
 import { pax2pay } from "../index"
 
 describe("Settlement.Totals", () => {
 	it("verify", () => {
-		expect(pax2pay.Settlement.Totals.verify(totals, "outcome").every(([_, v]) => v == true)).toEqual(true)
-		expect(pax2pay.Settlement.Totals.verify(totals2, "outcome").every(([_, v]) => v == true)).toEqual(false)
-	})
-	it("some problems", () => {
-		const result = pax2pay.Settlement.Totals.verify(totals3, "outcome").reduce(
-			(result, [currency, value]) => {
-				value ? result.successes.push(currency) : result.problems.push(currency)
-				return result
-			},
-			{ successes: [], problems: [] } as { successes: isoly.Currency[]; problems: isoly.Currency[] }
-		)
-		expect(result.successes).toEqual(["USD"])
-		expect(result.problems).toEqual(["BOV"])
+		expect(pax2pay.Settlement.Totals.verify(totals, "outcome")).toEqual(true)
+		expect(pax2pay.Settlement.Totals.verify(totals2, "outcome")).toEqual(false)
+		expect(pax2pay.Settlement.Totals.verify(totals3, "outcome")).toEqual(false)
 	})
 	it("add", () => {
 		expect(pax2pay.Settlement.Totals.add(totals, totals2)).toEqual({
