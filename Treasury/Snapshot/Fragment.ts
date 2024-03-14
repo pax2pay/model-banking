@@ -6,11 +6,9 @@ import { Warning } from "./Warning"
 
 export interface Fragment {
 	warnings: Warning[]
-	emoney: Balances.Balance & Counterbalance2
-	links: {
-		minted: Record<Counterbalance2.Source, Record<string, { ledger: number; supplier: number }>>
-		burned: Record<Counterbalance2.Sink, Record<string, { ledger: number; supplier: number }>>
-	}
+	emoney: Balances.Balance
+	minted: Record<Counterbalance2.Source, { accounts: Record<string, number>; amount: number }>
+	burned: Record<Counterbalance2.Sink, { accounts: Record<string, number>; amount: number }>
 	fiat: {
 		safe: number
 		unsafe: number
