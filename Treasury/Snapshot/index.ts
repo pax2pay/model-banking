@@ -7,8 +7,7 @@ import { Warning as SnapshotWarning } from "./Warning"
 export type Snapshot = Partial<Record<isoly.Currency, Snapshot.Fragment>>
 
 export namespace Snapshot {
-	export type Fragment = SnapshotFragment
-	export const Fragment = SnapshotFragment
+	export import Fragment = SnapshotFragment
 	export type Warning = SnapshotWarning
 	export const Warning = SnapshotWarning
 	export type Emoney = SnapshotEmoney
