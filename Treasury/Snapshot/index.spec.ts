@@ -9,7 +9,9 @@ describe("Treasury.Snapshot", () => {
 	})
 })
 const fragment: pax2pay.Treasury.Snapshot.Fragment = {
-	emoney: { actual: 2, burned: { "paxgiro-safe01": 5 }, minted: {} },
+	emoney: { actual: 2 },
+	burned: { "paxgiro-safe01": { account: { account1: 1, account2: 2 }, amount: 3 } },
+	minted: { "paxgiro-safe01": { account: { account1: 3, account2: 4 }, amount: 7 } },
 	fiat: {
 		safe: 1,
 		unsafe: 1,
