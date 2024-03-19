@@ -3,6 +3,7 @@ import { Amount } from "../../Amount"
 import { Authorization } from "../../Authorization"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
+import { Destinations } from "./Destinations"
 
 export interface Capture extends Capture.Creatable {
 	status: "succeeded" | "failed"
@@ -23,6 +24,7 @@ export namespace Capture {
 		batch: Batch
 		fee: Fee
 		amount: Amount
+		destinations?: Destinations
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -32,6 +34,7 @@ export namespace Capture {
 			fee: Fee.type,
 			amount: Amount.type,
 			batch: Batch.type,
+			destinations: Destinations.type.optional(),
 		})
 		export const is = type.is
 		export const flaw = type.flaw
