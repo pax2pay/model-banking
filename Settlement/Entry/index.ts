@@ -4,6 +4,7 @@ import { Transaction } from "../../Transaction"
 import { Cancel as EntryCancel } from "./Cancel"
 import { Capture as EntryCapture } from "./Capture"
 import { Creatable as EntryCreatable } from "./Creatable"
+import { Destinations as EntryDestinations } from "./Destinations"
 import { Refund as EntryRefund } from "./Refund"
 import { Summary as EntrySummary } from "./Summary"
 import { Unknown as EntryUnknown } from "./Unknown"
@@ -36,6 +37,7 @@ export namespace Entry {
 	export const Summary = EntrySummary
 	export type Creatable = EntryCreatable
 	export const Creatable = EntryCreatable
+	export import Destinations = EntryDestinations
 	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
 		let result: Entry
 		if (!Transaction.is(transaction) || transaction.status != "finalized")
