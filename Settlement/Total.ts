@@ -1,34 +1,82 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
-import { Amounts } from "../Amounts"
-import { Transaction } from "../Transaction"
-import { Fee } from "./Fee"
+import { Amount } from "./Amount"
 
-export type Total = {
-	amount: Amounts
-	fee: Fee
+export interface Total {
+	expected: Amount
+	outcome?: Amount
+	collected?: Amount & { transactions: { net: string; fee: string } }
+	settled?: Total.Settled
 }
 export namespace Total {
-	export function initiate(partial?: Partial<Total>): Total {
-		return { amount: partial?.amount ?? {}, fee: partial?.fee ?? { other: {} } }
+	export type Settled = {
+		net: number
+		transactions: string[]
 	}
-	export function add(addendee: Total, addend: Total): Total {
-		return { amount: Amounts.add(addendee.amount, addend.amount), fee: Fee.add(addendee.fee, addend.fee) }
+	export const Settled = isly.object<Settled>({ net: isly.number(), transactions: isly.string().array() })
+	export const type = isly.object<Total>({
+		expected: Amount.type,
+		outcome: Amount.type.optional(),
+		collected: Amount.type
+			.extend<Required<Total>["collected"]>({
+				transactions: isly.object<Required<Total>["collected"]["transactions"]>({
+					net: isly.string(),
+					fee: isly.string(),
+				}),
+			})
+			.optional(),
+		settled: Settled.optional(),
+	})
+	export function create(): Total {
+		return { expected: { net: 0, fee: { other: 0 } } }
 	}
-	export function compare(expected: Total, outcome: Total): boolean {
-		return Amounts.compare(expected.amount, outcome.amount) && Amounts.compare(expected.fee.other, outcome.fee.other)
-	}
-	export function from(collect: Transaction.Collect, collected: Total = initiate()): Total {
-		let result: Total = collected
-		for (const [currency, counterbalance] of Object.entries(collect.counterbalances)) {
-			for (const [entry, amount] of Object.entries(counterbalance))
-				if (entry.startsWith("fee"))
-					result = add(result, initiate({ fee: { other: { [currency]: amount } } }))
-				else if (entry.startsWith("settle"))
-					result = add(result, initiate({ amount: { [currency]: amount } }))
+	export function verify(total: Total, type: "outcome" | "collected" | "settled"): boolean {
+		let result: boolean
+		switch (type) {
+			case "outcome":
+				result = total.outcome?.net == total.expected.net && total.outcome.fee.other == total.expected.fee.other
+				break
+			case "collected":
+				result = total.collected?.net == total.outcome?.net && total.collected?.fee.other == total.outcome?.fee.other
+				break
+			case "settled":
+				result = total.settled?.net == total.collected?.net
+				break
 		}
 		return result
 	}
-	export const type = isly.object<Total>({ amount: Amounts.type, fee: Fee.type })
-	export const is = type.is
-	export const flaw = type.flaw
+	export function add(currency: isoly.Currency, addendee: Total, addend: Partial<Total>): Total {
+		const result: Total = { ...addendee }
+		addend.expected && (result.expected = Amount.add(currency, result.expected, addend.expected))
+		if (result.outcome || addend.outcome)
+			result.outcome = Amount.add(currency, result.outcome ?? { net: 0, fee: { other: 0 } }, addend.outcome ?? {})
+		if (result.collected || addend.collected)
+			result.collected = {
+				...Amount.add(currency, result.collected ?? { net: 0, fee: { other: 0 } }, addend.collected ?? {}),
+				transactions: {
+					net: addend.collected?.transactions.net ?? result.collected?.transactions.net ?? "",
+					fee: addend.collected?.transactions.fee ?? result.collected?.transactions.fee ?? "",
+				},
+			}
+		if (result.settled || addend.settled)
+			result.settled = {
+				net: isoly.Currency.add(currency, result.settled?.net ?? 0, addend.settled?.net ?? 0),
+				transactions: (result.settled?.transactions ?? []).concat(addend.settled?.transactions ?? []),
+			}
+		return result
+	}
+	export function collect(
+		currency: isoly.Currency,
+		total: Total,
+		collected: Amount,
+		transactions: { net: string; fee: string }
+	): Total {
+		const result = { ...total }
+		if (result.collected) {
+			result.collected.net = isoly.Currency.add(currency, result.collected.net, collected.net)
+			result.collected.fee.other = isoly.Currency.add(currency, result.collected.fee.other, collected.fee.other)
+		} else
+			result.collected = { ...collected, transactions }
+		return result
+	}
 }
