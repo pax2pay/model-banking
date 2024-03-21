@@ -37,8 +37,8 @@ describe("Operation", () => {
 		expect(pax2pay.Operation.is(operation3)).toBe(true)
 	})
 	it("split", async () => {
-		expect(pax2pay.Operation.Changes.Entry.split("internal-safe01-2024-03-04T15Z")).toEqual([
-			"internal-safe01",
+		expect(pax2pay.Operation.Changes.Entry.split("uk-cb-safe01-2024-03-04T15Z")).toEqual([
+			"uk-cb-safe01",
 			"2024-03-04T15Z",
 		])
 	})
