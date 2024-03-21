@@ -23,11 +23,11 @@ describe("Settlement.Totals", () => {
 	it("add collected", () => {
 		expect(
 			pax2pay.Settlement.Totals.add(totals2, {
-				USD: { collected: { net: 123, fee: { other: 5 }, transactions: { net: "aaaa", fee: "bbb" } } },
+				USD: { collected: { transactions: { net: "aaaa", fee: "bbb" } } },
 			})
 		).toEqual({
 			USD: {
-				collected: { fee: { other: 5 }, net: 123, transactions: { fee: "bbb", net: "aaaa" } },
+				collected: { transactions: { fee: "bbb", net: "aaaa" } },
 				expected: { fee: { other: 20 }, net: 5 },
 				outcome: { fee: { other: 20 }, net: 7777 },
 			},

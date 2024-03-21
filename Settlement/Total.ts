@@ -5,7 +5,7 @@ import { Amount } from "./Amount"
 export interface Total {
 	expected: Amount
 	outcome?: Amount
-	collected?: Amount & { transactions: { net: string; fee: string } }
+	collected?: { transactions: { net: string; fee: string } }
 	settled?: Total.Settled
 }
 export namespace Total {
@@ -17,8 +17,8 @@ export namespace Total {
 	export const type = isly.object<Total>({
 		expected: Amount.type,
 		outcome: Amount.type.optional(),
-		collected: Amount.type
-			.extend<Required<Total>["collected"]>({
+		collected: isly
+			.object<Required<Total>["collected"]>({
 				transactions: isly.object<Required<Total>["collected"]["transactions"]>({
 					net: isly.string(),
 					fee: isly.string(),
@@ -30,17 +30,14 @@ export namespace Total {
 	export function create(): Total {
 		return { expected: { net: 0, fee: { other: 0 } } }
 	}
-	export function verify(total: Total, type: "outcome" | "collected" | "settled"): boolean {
+	export function verify(total: Total, type: "outcome" | "settled"): boolean {
 		let result: boolean
 		switch (type) {
 			case "outcome":
 				result = total.outcome?.net == total.expected.net && total.outcome.fee.other == total.expected.fee.other
 				break
-			case "collected":
-				result = total.collected?.net == total.outcome?.net && total.collected?.fee.other == total.outcome?.fee.other
-				break
 			case "settled":
-				result = total.settled?.net == total.collected?.net
+				result = total.settled?.net == total.expected.net
 				break
 		}
 		return result
@@ -52,7 +49,6 @@ export namespace Total {
 			result.outcome = Amount.add(currency, result.outcome ?? { net: 0, fee: { other: 0 } }, addend.outcome ?? {})
 		if (result.collected || addend.collected)
 			result.collected = {
-				...Amount.add(currency, result.collected ?? { net: 0, fee: { other: 0 } }, addend.collected ?? {}),
 				transactions: {
 					net: addend.collected?.transactions.net ?? result.collected?.transactions.net ?? "",
 					fee: addend.collected?.transactions.fee ?? result.collected?.transactions.fee ?? "",
@@ -63,20 +59,6 @@ export namespace Total {
 				net: isoly.Currency.add(currency, result.settled?.net ?? 0, addend.settled?.net ?? 0),
 				transactions: (result.settled?.transactions ?? []).concat(addend.settled?.transactions ?? []),
 			}
-		return result
-	}
-	export function collect(
-		currency: isoly.Currency,
-		total: Total,
-		collected: Amount,
-		transactions: { net: string; fee: string }
-	): Total {
-		const result = { ...total }
-		if (result.collected) {
-			result.collected.net = isoly.Currency.add(currency, result.collected.net, collected.net)
-			result.collected.fee.other = isoly.Currency.add(currency, result.collected.fee.other, collected.fee.other)
-		} else
-			result.collected = { ...collected, transactions }
 		return result
 	}
 }
