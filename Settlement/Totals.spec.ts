@@ -27,7 +27,7 @@ describe("Settlement.Totals", () => {
 			})
 		).toEqual({
 			USD: {
-				collected: { fee: { other: 5 }, net: 123, transactions: { fee: "bbb", net: "aaaa" } },
+				collected: { transactions: { fee: "bbb", net: "aaaa" } },
 				expected: { fee: { other: 20 }, net: 5 },
 				outcome: { fee: { other: 20 }, net: 7777 },
 			},
