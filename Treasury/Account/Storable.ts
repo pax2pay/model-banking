@@ -11,6 +11,7 @@ export interface Storable {
 	created: isoly.DateTime
 	realm: Realm
 	supplier: Supplier
+	link: string
 	type: Category
 	reference: string
 	conditions?: Conditions
@@ -22,6 +23,7 @@ export namespace Storable {
 		created: isly.fromIs("Treasury.Account.Storable", isoly.DateTime.is),
 		realm: isly.fromIs("realm", Realm.is),
 		supplier: isly.fromIs("supplier", Supplier.is),
+		link: isly.string(),
 		type: Category.type,
 		reference: isly.string(),
 		conditions: Conditions.type.optional(),

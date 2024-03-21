@@ -17,13 +17,7 @@ export namespace Treasury {
 	export type Transaction = TreasuryTransaction
 	export type Balance = TreasuryBalance
 	export const Balance = TreasuryBalance
-	export type Snapshot = TreasurySnapshot
-	export const Snapshot = TreasurySnapshot
-	export namespace Snapshot {
-		export type Fragment = TreasurySnapshot.Fragment
-		export type Warning = TreasurySnapshot.Warning
-		export type Emoney = TreasurySnapshot.Emoney
-	}
+	export import Snapshot = TreasurySnapshot
 	export namespace Account {
 		export type Creatable = TreasuryAccount.Creatable
 		export const Creatable = TreasuryAccount.Creatable

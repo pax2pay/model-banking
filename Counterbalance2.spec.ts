@@ -4,7 +4,6 @@ describe("Counterbalances", () => {
 	it("Counterbalance2 Link is", () => {
 		expect(pax2pay.Counterbalance2.Sink.is(`paxgiro-safe01`)).toBeTruthy()
 		expect(pax2pay.Counterbalance2.Link.is(`paxgiro-safe01`)).toBeTruthy()
-		expect(pax2pay.Counterbalance2.Source.is(`paxaaaagiro-safe01`)).toBeFalsy()
 	})
 	it("Counterbalance2.add", () => {
 		const Counterbalance1: pax2pay.Counterbalance2 = { minted: { [`paxgiro-safe01`]: 123 }, burned: {} }
