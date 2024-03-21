@@ -38,7 +38,6 @@ export namespace Fragment {
 	}
 	export const type = isly.object<Fragment>({
 		warnings: Warning.type.array(),
-		// there is a problem with isly.intersection, but isly.union works for this case
 		emoney: Balances.Balance.type,
 		minted: Fragment.Coinage.Minted.type,
 		burned: Fragment.Coinage.Burned.type,
