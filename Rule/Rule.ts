@@ -1,20 +1,20 @@
 import { isly } from "isly"
-import { Evaluation as RuleEvaluation } from "./Evaluation"
+import { Other as RuleOther } from "./Evaluation"
 import { Score as RuleScore } from "./Score"
 
-export type Rule = Rule.Score | Rule.Evaluation
+export type Rule = Rule.Score | Rule.Other
 
 // type Changed = { changed: { by: string; time: isoly.DateTime; after: Omit<Rule, "changed"> }[] }
 // Only fincrime can write rules that generate risk
 export namespace Rule {
 	export import Score = RuleScore
-	export import Evaluation = RuleEvaluation
+	export import Other = RuleOther
 	export const actions = ["review", "reject", "flag"] as const
 	export type Action = typeof actions[number]
 	export const kinds = ["authorization", "outbound", "inbound"] as const
 	export type Kind = typeof kinds[number]
 
-	export const type = isly.object<Evaluation>({
+	export const type = isly.object<RuleOther>({
 		name: isly.string(),
 		description: isly.string(),
 		action: isly.string(actions),

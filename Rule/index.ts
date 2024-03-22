@@ -41,7 +41,7 @@ export namespace Rule {
 			(r: number | undefined, rule) => (resolve(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : undefined),
 			undefined
 		)
-		return { ...state, risk }
+		return { ...state, transaction: { ...state.transaction, risk } }
 	}
 	export function resolve(rule: ModelRule, state: State, macros?: Record<string, selectively.Definition>) {
 		return selectively.resolve({ ...macros, ...definitions }, selectively.parse(rule.condition)).is(state)
@@ -52,12 +52,12 @@ export namespace Rule {
 		macros?: Record<string, selectively.Definition>
 	): Record<Action, Rule[]> {
 		const result: Record<Action, Rule[]> = { review: [], reject: [], flag: [] }
-		const [evaluators, scorers] = rules.reduce(
-			(r: [ModelRule.Evaluation[], ModelRule.Score[]], rule) =>
+		const [other, scorers] = rules.reduce(
+			(r: [ModelRule.Other[], ModelRule.Score[]], rule) =>
 				rule.action == "score" ? [r[0], r[1].concat(rule)] : [r[0].concat(rule), r[1]],
 			[[], []]
 		)
-		evaluators.forEach(rule => resolve(rule, score(scorers, state, macros), macros) && result[rule.action].push(rule))
+		other.forEach(rule => resolve(rule, score(scorers, state, macros), macros) && result[rule.action].push(rule))
 		return result
 	}
 }

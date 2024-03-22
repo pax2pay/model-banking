@@ -1,6 +1,6 @@
 import { Rule } from "./Rule"
 
-export interface Evaluation {
+export interface Other {
 	name: string
 	description: string
 	action: Rule.Action
@@ -10,4 +10,4 @@ export interface Evaluation {
 	groups?: string[]
 }
 
-export namespace Evaluation {}
+export namespace Other {}

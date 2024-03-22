@@ -1,6 +1,6 @@
-import { Evaluation } from "./Evaluation"
+import { Other } from "./Evaluation"
 
-export interface Score extends Omit<Evaluation, "action"> {
+export interface Score extends Omit<Other, "action"> {
 	action: "score"
 	risk: number
 }
