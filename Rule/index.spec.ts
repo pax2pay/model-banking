@@ -48,6 +48,7 @@ const rule1: pax2pay.Rule = {
 	type: "inbound",
 	flags: [],
 	description: "",
+	category: "product",
 	action: "reject",
 	condition: "transaction.amount>200",
 }
@@ -56,6 +57,7 @@ const rule2: pax2pay.Rule = {
 	type: "inbound",
 	flags: ["review"],
 	description: "",
+	category: "product",
 	action: "flag",
 	condition: "isInternal()",
 }
@@ -64,6 +66,7 @@ const rule3: pax2pay.Rule = {
 	type: "inbound",
 	flags: [],
 	description: "",
+	category: "product",
 	action: "reject",
 	condition: "alwaysTrue()",
 }
@@ -72,6 +75,7 @@ const rule4: pax2pay.Rule = {
 	type: "authorization",
 	flags: [],
 	description: "",
+	category: "product",
 	action: "reject",
 	condition: "alwaysTrue()",
 }
@@ -80,6 +84,7 @@ export const dailyRule = {
 	type: "outbound",
 	flags: ["daily spending flag"],
 	description: "Flag transactions that occur after more than 200 GBP have been spent today",
+	category: "product",
 	action: "flag",
 	condition: "account.transactions.today.amount>200",
 }
@@ -88,6 +93,7 @@ export const dailyTransactionRule = {
 	type: "outbound",
 	flags: ["daily transactions flag"],
 	description: "Flag transactions that occur after more than 2 outgoing transactions have occurred in a day",
+	category: "product",
 	action: "flag",
 	condition: "account.transactions.outgoing.today.count>2",
 }
@@ -97,6 +103,7 @@ export const cardSpendingLimit = {
 	type: "authorization",
 	flags: [],
 	description: "Reject multiple uses of the same card",
+	category: "product",
 	action: "reject",
 	condition: "card.used.amount>0",
 }
@@ -105,6 +112,7 @@ export const cardUsageLimit = {
 	type: "authorization",
 	flags: [],
 	description: "Reject multiple uses of the same card",
+	category: "product",
 	action: "reject",
 	condition: "card.used.count>0",
 }
@@ -183,6 +191,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		action: "reject",
 		type: "authorization",
 		condition: "authorization.merchant.country:within(data.countries.sanctioned)",
+		category: "fincrime",
 		flags: ["sanctioned", "country"],
 	},
 	{
@@ -191,6 +200,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		action: "flag",
 		type: "authorization",
 		condition: "card.used.count>0",
+		category: "product",
 		flags: ["strict single use"],
 	},
 	{
@@ -200,6 +210,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		action: "flag",
 		type: "authorization",
 		condition: "card.used.amount>2 | card.used.count>1",
+		category: "product",
 		flags: ["single use"],
 	},
 	{
@@ -208,6 +219,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		action: "reject",
 		type: "authorization",
 		condition: "!authorization.merchant.country:within(data.countries.risk.low)",
+		category: "fincrime",
 		flags: ["not low", "country"],
 	},
 	{
@@ -216,6 +228,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		action: "flag",
 		type: "authorization",
 		condition: "!transaction.amount>2500",
+		category: "product",
 		flags: ["too high amount"],
 	},
 	{
@@ -224,6 +237,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		action: "flag",
 		type: "authorization",
 		condition: "authorization.merchant.country:within(data.countries.risk.high)",
+		category: "fincrime",
 		flags: ["high risk", "country"],
 	},
 	{
@@ -232,6 +246,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		action: "flag",
 		type: "authorization",
 		condition: "authorization.merchant.country:within(data.countries.risk.mediumHigh)",
+		category: "fincrime",
 		flags: ["medium high", "country"],
 	},
 	{
@@ -240,6 +255,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		action: "flag",
 		type: "authorization",
 		condition: "!transaction.amount<5",
+		category: "fincrime",
 		flags: ["low amount"],
 	},
 	{
@@ -248,6 +264,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		action: "flag",
 		type: "authorization",
 		condition: "!transaction.amount>800",
+		category: "product",
 		flags: ["high amount"],
 	},
 	{
@@ -256,6 +273,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		action: "flag",
 		type: "authorization",
 		condition: "!authorization.merchant.name.within(data.merchant.known)",
+		category: "product",
 		flags: ["new merchant"],
 	},
 ]
