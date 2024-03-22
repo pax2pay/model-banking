@@ -30,6 +30,7 @@ const Card: pax2pay.Card = {
 			condition: "",
 			action: "flag",
 			flags: ["example"],
+			category: "product",
 			description: "flag transactions with example if they exist",
 		},
 	],

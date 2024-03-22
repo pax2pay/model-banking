@@ -1,9 +1,9 @@
 import { selectively } from "selectively"
 import { definitions } from "./definitions"
-import * as ModelRule from "./Rule"
+import { Rule as ModelRule } from "./Rule"
 import { State as RuleState } from "./State"
 
-export type Rule = ModelRule.Rule
+export type Rule = ModelRule
 
 export namespace Rule {
 	export const actions = ModelRule.actions
