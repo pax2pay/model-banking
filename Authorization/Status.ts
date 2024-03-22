@@ -25,7 +25,10 @@ export namespace Status {
 			} //default
 			else {
 				const reasons: string[] = error.reduce(
-					(a: string[], c: Transaction.Note) => [...a, `${c.created} ${c.author}: ${c.text ?? ""}`],
+					(a: string[], c: Transaction.Note) =>
+						c.action != "reject" && c.rule?.action != "reject"
+							? a
+							: [...a, `${c.created} ${c.author}: ${c.text ?? c.rule?.name ?? ""}`],
 					[]
 				)
 				result = {

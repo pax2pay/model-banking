@@ -12,6 +12,7 @@ export interface State {
 	data: StateData
 	account: StateAccount
 	transaction: StateTransaction
+	score?: number
 	authorization?: StateAuthorization
 	card?: StateCard
 	organization?: StateOrganization

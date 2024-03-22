@@ -1,9 +1,9 @@
 import { selectively } from "selectively"
 import { definitions } from "./definitions"
-import * as ModelRule from "./Rule"
+import { Rule as ModelRule } from "./Rule"
 import { State as RuleState } from "./State"
 
-export type Rule = ModelRule.Rule
+export type Rule = ModelRule
 
 export namespace Rule {
 	export const actions = ModelRule.actions
@@ -32,6 +32,12 @@ export namespace Rule {
 	export const type = ModelRule.type
 	export const is = ModelRule.type.is
 	export const flaw = ModelRule.type.flaw
+	export function score(rules: Rule[], state: State, macros?: Record<string, selectively.Definition>): State {
+		const result = { ...state }
+		const scorers = rules.filter(rule => rule.action == "score")
+		const score = rules.reduce((r, rule) => selectively.resolve({ma}))
+	}
+	function resolve(){}
 	export function evaluate(
 		rules: Rule[],
 		state: State,
