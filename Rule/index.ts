@@ -1,9 +1,9 @@
 import { selectively } from "selectively"
 import { definitions } from "./definitions"
-import * as ModelRule from "./Rule"
+import { Rule as ModelRule } from "./Rule"
 import { State as RuleState } from "./State"
 
-export type Rule = ModelRule.Rule
+export type Rule = ModelRule
 
 export namespace Rule {
 	export const actions = ModelRule.actions
@@ -32,17 +32,32 @@ export namespace Rule {
 	export const type = ModelRule.type
 	export const is = ModelRule.type.is
 	export const flaw = ModelRule.type.flaw
+	export function score(
+		rules: ModelRule.Score[],
+		state: State,
+		macros?: Record<string, selectively.Definition>
+	): State {
+		const risk = rules.reduce(
+			(r: number | undefined, rule) => (resolve(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : undefined),
+			undefined
+		)
+		return { ...state, risk }
+	}
+	export function resolve(rule: ModelRule, state: State, macros?: Record<string, selectively.Definition>) {
+		return selectively.resolve({ ...macros, ...definitions }, selectively.parse(rule.condition)).is(state)
+	}
 	export function evaluate(
 		rules: Rule[],
 		state: State,
 		macros?: Record<string, selectively.Definition>
 	): Record<Action, Rule[]> {
 		const result: Record<Action, Rule[]> = { review: [], reject: [], flag: [] }
-		rules.forEach(
-			r =>
-				selectively.resolve({ ...macros, ...definitions }, selectively.parse(r.condition)).is(state) &&
-				result[r.action].push(r)
+		const [evaluators, scorers] = rules.reduce(
+			(r: [ModelRule.Evaluation[], ModelRule.Score[]], rule) =>
+				rule.action == "score" ? [r[0], r[1].concat(rule)] : [r[0].concat(rule), r[1]],
+			[[], []]
 		)
+		evaluators.forEach(rule => resolve(rule, score(scorers, state, macros), macros) && result[rule.action].push(rule))
 		return result
 	}
 }
