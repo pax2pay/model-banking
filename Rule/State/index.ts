@@ -12,6 +12,7 @@ export interface State {
 	data: StateData
 	account: StateAccount
 	transaction: StateTransaction
+	score: number
 	authorization?: StateAuthorization
 	card?: StateCard
 	organization?: StateOrganization
@@ -32,6 +33,7 @@ export namespace State {
 			data,
 			account: Account.from(account, transactions, days),
 			transaction: Transaction.from(transaction),
+			score: 1,
 			authorization,
 			card,
 			organization,

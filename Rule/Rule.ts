@@ -8,6 +8,7 @@ export interface Rule {
 	condition: string
 	flags: string[]
 	groups?: string[]
+	score?: number
 }
 
 export const actions = ["review", "reject", "flag"] as const
@@ -23,6 +24,7 @@ export const type = isly.object<Rule>({
 	condition: isly.string(),
 	flags: isly.string().array(),
 	groups: isly.string().array().optional(),
+	score: isly.number().optional(),
 })
 export const is = type.is
 export const flaw = type.flaw
