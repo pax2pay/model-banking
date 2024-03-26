@@ -14,7 +14,7 @@ export namespace Rule {
 	export const type = ruleType
 	export const is = ruleType.is
 	export const flaw = ruleType.flaw
-	function resolve(rule: ModelRule, state: State, macros?: Record<string, selectively.Definition>) {
+	function control(rule: ModelRule, state: State, macros?: Record<string, selectively.Definition>) {
 		return selectively.resolve({ ...macros, ...definitions }, selectively.parse(rule.condition)).is(state)
 	}
 	function score(
@@ -23,7 +23,7 @@ export namespace Rule {
 		macros?: Record<string, selectively.Definition>
 	): number | undefined {
 		return rules.reduce(
-			(r: number | undefined, rule) => (resolve(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : undefined),
+			(r: number | undefined, rule) => (control(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : undefined),
 			undefined
 		)
 	}
@@ -42,7 +42,7 @@ export namespace Rule {
 		)
 		state.transaction.risk = score(scorers, state, macros)
 		result.risk = state.transaction.risk
-		other.forEach(rule => resolve(rule, state, macros) && result[rule.action].push(rule))
+		other.forEach(rule => control(rule, state, macros) && result[rule.action].push(rule))
 		return result
 	}
 }

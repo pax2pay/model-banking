@@ -31,7 +31,7 @@ export namespace Rule {
 		action: "score"
 		risk: number
 	}
-	export const Score = isly.object<Score>({ action: isly.string("score"), risk: isly.number(["positive"]) })
+	export const Score = isly.object<Score>({ action: isly.string("score"), risk: isly.number(["positive", "integer"]) })
 }
 // Outside of the namespace otherwise the Rule import in Card/Card.Creatable and Organization causes a circular dependency crash
 export const type = isly.intersection<Rule, Rule.Base, Rule.Other | Rule.Score>(
