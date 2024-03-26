@@ -1,28 +1,40 @@
 import { isly } from "isly"
-import { Other as RuleOther } from "./Evaluation"
-import { Score as RuleScore } from "./Score"
 
-export type Rule = Rule.Score | Rule.Other
+export type Rule = Rule.Base & (Rule.Other | Rule.Score)
 
-// type Changed = { changed: { by: string; time: isoly.DateTime; after: Omit<Rule, "changed"> }[] }
-// Only fincrime can write rules that generate risk
 export namespace Rule {
-	export import Score = RuleScore
-	export import Other = RuleOther
 	export const actions = ["review", "reject", "flag"] as const
 	export type Action = typeof actions[number]
 	export const kinds = ["authorization", "outbound", "inbound"] as const
 	export type Kind = typeof kinds[number]
-
-	export const type = isly.object<RuleOther>({
+	export interface Base {
+		name: string
+		description: string
+		type: Rule.Kind
+		condition: string
+		flags: string[]
+		groups?: string[]
+	}
+	export const Base = isly.object<Base>({
 		name: isly.string(),
 		description: isly.string(),
-		action: isly.string(actions),
 		type: isly.string(kinds),
 		condition: isly.string(),
 		flags: isly.string().array(),
 		groups: isly.string().array().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
+	export interface Other {
+		action: Action
+	}
+	export const Other = isly.object<Other>({ action: isly.string<Action>(actions) })
+	export interface Score {
+		action: "score"
+		risk: number
+	}
+	export const Score = isly.object<Score>({ action: isly.string("score"), risk: isly.number(["positive"]) })
 }
+// Outside of the namespace otherwise the Rule import in Card/Card.Creatable and Organization causes a circular dependency crash
+export const type = isly.intersection<Rule, Rule.Base, Rule.Other | Rule.Score>(
+	Rule.Base,
+	isly.union<Rule.Other | Rule.Score, Rule.Other, Rule.Score>(Rule.Other, Rule.Score)
+)

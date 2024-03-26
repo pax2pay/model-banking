@@ -108,6 +108,32 @@ export const cardUsageLimit = {
 	action: "reject",
 	condition: "card.used.count>0",
 }
+export const score: pax2pay.Rule = {
+	name: "risk score test",
+	type: "authorization",
+	flags: [],
+	description: "multiply risk by 600",
+	action: "score",
+	risk: 600,
+	condition: "transaction.amount > 1",
+}
+export const riskCheck: pax2pay.Rule = {
+	name: "risk check test",
+	type: "authorization",
+	flags: [],
+	description: "Reject if risk is more than 500",
+	action: "reject",
+	condition: "transaction.risk > 500",
+}
+export const riskFlag: pax2pay.Rule = {
+	name: "risk check flag test",
+	type: "authorization",
+	flags: [],
+	description: "flag if risk is less than 500",
+	action: "flag",
+	condition: "transaction.risk < 500",
+}
+
 describe("definitions", () => {
 	const state = pax2pay.Rule.State.from(
 		{
@@ -144,6 +170,22 @@ describe("definitions", () => {
 			flag: [],
 			reject: [rule1],
 			review: [],
+		})
+	})
+	it("more risk", () => {
+		expect(pax2pay.Rule.evaluate([score, riskCheck], state)).toEqual({
+			flag: [],
+			reject: [riskCheck],
+			review: [],
+			risk: 600,
+		})
+	})
+	it("less risk", () => {
+		expect(pax2pay.Rule.evaluate([score, riskFlag], state)).toEqual({
+			flag: [],
+			reject: [],
+			review: [],
+			risk: 600,
 		})
 	})
 	it("isInternal", () => {

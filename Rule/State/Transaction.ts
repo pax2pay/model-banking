@@ -1,10 +1,9 @@
 import { isoly } from "isoly"
 import type { Transaction as ModelTransaction } from "../../Transaction"
 
-type Risk = number // TODO More stuff
 export interface Transaction extends Omit<ModelTransaction.Creatable, "currency" | "amount"> {
 	amount: number
-	risk?: Risk
+	risk?: number
 	original: { currency: isoly.Currency; amount: number }
 }
 export namespace Transaction {
