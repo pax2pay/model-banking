@@ -56,8 +56,8 @@ export namespace Total {
 			}
 		if (result.settled || addend.settled)
 			result.settled = {
-				net: isoly.Currency.add(currency, result.settled?.net ?? 0, addend.settled?.net ?? 0),
-				transactions: (result.settled?.transactions ?? []).concat(addend.settled?.transactions ?? []),
+				net: addend.settled?.net ?? result.settled?.net ?? 0,
+				transactions: result.settled?.transactions ?? addend.settled?.transactions ?? [],
 			}
 		return result
 	}
