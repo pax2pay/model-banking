@@ -1,8 +1,13 @@
-import { pax2pay } from "../index"
+import { pax2pay } from "../../index"
 
 describe("Rules", () => {
 	it("is", () => {
 		expect(rules.reduce<boolean>((p, c) => p && pax2pay.Rule.type.is(c), true)).toEqual(true)
+	})
+	it("risk is", () => {
+		expect(pax2pay.Rule.Score.Risk.is(5)).toEqual(true)
+		expect(pax2pay.Rule.Score.Risk.is(-5)).toEqual(false)
+		expect(pax2pay.Rule.Score.Risk.is(5.5)).toEqual(false)
 	})
 })
 

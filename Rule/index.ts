@@ -10,6 +10,8 @@ export namespace Rule {
 	export type Action = ModelRule.Action
 	export const kinds = ModelRule.kinds
 	export type Kind = ModelRule.Kind
+	export import Other = ModelRule.Other
+	export import Score = ModelRule.Score
 	export import State = RuleState
 	export const type = ruleType
 	export const is = ruleType.is
@@ -31,8 +33,8 @@ export namespace Rule {
 		rules: Rule[],
 		state: State,
 		macros?: Record<string, selectively.Definition>
-	): Record<Action, Rule[]> & { risk?: number } {
-		const result: Record<Action, Rule[]> & { risk?: number } = { review: [], reject: [], flag: [] }
+	): Record<ModelRule.Other.Action, Rule[]> & { risk?: number } {
+		const result: Record<ModelRule.Other.Action, Rule[]> & { risk?: number } = { review: [], reject: [], flag: [] }
 		const [other, scorers] = rules.reduce(
 			(r: [(Rule & ModelRule.Other)[], (Rule & ModelRule.Score)[]], rule) => {
 				rule.action == "score" ? r[1].push(rule) : r[0].push(rule)
