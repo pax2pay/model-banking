@@ -32,6 +32,7 @@ export interface Transaction extends Transaction.Creatable {
 	flags: ("review" | string)[]
 	oldFlags: string[]
 	notes: Transaction.Note[]
+	risk?: number
 }
 export namespace Transaction {
 	export type Creatable = TransactionCreatable
@@ -73,6 +74,7 @@ export namespace Transaction {
 		flags: isly.array(isly.string() || "review"),
 		oldFlags: isly.string().array(),
 		notes: Note.type.array(),
+		risk: isly.number().optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw

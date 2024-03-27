@@ -3,6 +3,7 @@ import type { Transaction as ModelTransaction } from "../../Transaction"
 
 export interface Transaction extends Omit<ModelTransaction.Creatable, "currency" | "amount"> {
 	amount: number
+	risk?: number
 	original: { currency: isoly.Currency; amount: number }
 }
 export namespace Transaction {
