@@ -71,7 +71,7 @@
 	},
 	"dependencies": {
 		"@userwidgets/model": "0.8.24",
-		"authly": "^3.0.11",
+		"authly": "^3.0.12",
 		"cloudly-http": "^0.1.7",
 		"cloudly-rest": "^0.1.3",
 		"cryptly": "^4.0.4",

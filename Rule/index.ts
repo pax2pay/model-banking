@@ -8,8 +8,8 @@ export type Rule = ModelRule
 export namespace Rule {
 	export const actions = ModelRule.actions
 	export type Action = ModelRule.Action
-	export const kinds = ModelRule.kinds
-	export type Kind = ModelRule.Kind
+	export const kinds = ModelRule.Base.kinds
+	export type Kind = ModelRule.Base.Kind
 	export import Other = ModelRule.Other
 	export import Score = ModelRule.Score
 	export import State = RuleState
