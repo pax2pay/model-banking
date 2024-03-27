@@ -1,11 +1,12 @@
 import { isly } from "isly"
+import { Base } from "./Base"
 
-export interface Score {
+export interface Score extends Base {
 	action: "score"
 	risk: Score.Risk
 }
 export namespace Score {
 	export type Risk = number
 	export const Risk = isly.number<Risk>(["positive", "integer"])
-	export const type = isly.object<Score>({ action: isly.string("score"), risk: Risk })
+	export const type = Base.type.extend<Score>({ action: isly.string("score"), risk: Risk })
 }
