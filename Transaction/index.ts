@@ -16,8 +16,8 @@ export interface Transaction extends Transaction.Creatable {
 	accountId: string
 	accountName?: string
 	account: Rail.Address
-	type: Transaction.Types
-	direction: Transaction.Direction
+	type?: Transaction.Types
+	direction?: Transaction.Direction
 	readonly id: cryptly.Identifier
 	readonly reference?: Transaction.Reference
 	readonly posted: isoly.DateTime
@@ -64,8 +64,8 @@ export namespace Transaction {
 		accountId: isly.string(),
 		accountName: isly.string().optional(),
 		account: isly.fromIs("Rail", Rail.Address.is),
-		type: isly.string(types),
-		direction: isly.string(directions),
+		type: isly.string(types).optional(),
+		direction: isly.string(directions).optional(),
 		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
 		reference: Reference.type.readonly().optional(),
 		posted: isly.string(),
