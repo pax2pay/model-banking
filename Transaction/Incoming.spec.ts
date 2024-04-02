@@ -6,7 +6,7 @@ describe("Transaction", () => {
 		expect(pax2pay.Transaction.is(transaction)).toBeTruthy()
 	})
 })
-const transaction = {
+const transaction: pax2pay.Transaction = {
 	amount: -10,
 	counterpart: {
 		type: "internal",
@@ -21,6 +21,8 @@ const transaction = {
 		identifier: "3Lb41MlP",
 	},
 	id: "zzzyRwIvXovdzVNA",
+	type: "internal",
+	direction: "outbound",
 	posted: "2023-12-05T17:26:36.977Z",
 	balance: {
 		actual: 420,
