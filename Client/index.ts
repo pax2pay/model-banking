@@ -6,6 +6,7 @@ import { Accounts } from "./Accounts"
 import { Cards } from "./Cards"
 import { Exchanges } from "./Exchanges"
 import { Labels } from "./Labels"
+import { Logs } from "./Logs"
 import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
 import { Reports } from "./Reports"
@@ -24,6 +25,7 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly exchanges = new Exchanges(this.client)
 	readonly organizations = new Organizations(this.client)
 	readonly reports = new Reports(this.client)
+	readonly logs = new Logs(this.client)
 	readonly rules = new Rules(this.client)
 	readonly settlements = new Settlements(this.client)
 	readonly transactions = new Transactions(this.client)
