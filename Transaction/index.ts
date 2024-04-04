@@ -192,4 +192,13 @@ export namespace Transaction {
 		}
 		return direction
 	}
+	export function updateTypeAndDirection(
+		transaction: Transaction
+	): Transaction & { type: Types; direction: Direction } {
+		return {
+			...transaction,
+			type: transaction.type ?? getType(transaction, transaction.accountName ?? ""),
+			direction: transaction.direction ?? getDirection(transaction),
+		}
+	}
 }
