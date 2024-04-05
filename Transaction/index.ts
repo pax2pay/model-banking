@@ -192,4 +192,26 @@ export namespace Transaction {
 			result = "inbound"
 		return result
 	}
+	//WIP
+	// if and how to include flags?
+	// what reference?
+	export function toCsv(transaction: Transaction): Record<string, string | number | undefined> {
+		return {
+			id: transaction.id,
+			reference: transaction.reference?.reference,
+			amount: transaction.amount,
+			currency: transaction.currency,
+			posted: transaction.posted,
+			transacted: transaction.transacted,
+			by: transaction.by,
+			status: transaction.status,
+			organization: transaction.organization,
+			"account id": transaction.accountId,
+			"account name": transaction.accountName,
+			rail: transaction.rail,
+			"rail address": Rail.Address.stringify(transaction.account),
+			"counterpart address": Rail.Address.stringify(transaction.counterpart),
+			risk: transaction.risk,
+		}
+	}
 }
