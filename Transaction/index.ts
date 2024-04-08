@@ -172,24 +172,22 @@ export namespace Transaction {
 	}
 	export function getType(transaction: TransactionCreatable, accountName: string): Types {
 		let type: Types
-		if (transaction.counterpart.type == "internal") {
-			type = "internal"
-		} else if (transaction.counterpart.type == "card") {
-			type = "card"
-		} else {
-			type = "external"
-		}
 		if (accountName.startsWith("settlement-") || accountName.startsWith("fee-"))
 			type = "system"
+		else if (transaction.counterpart.type == "internal")
+			type = "internal"
+		else if (transaction.counterpart.type == "card")
+			type = "card"
+		else
+			type = "external"
 		return type
 	}
 	export function getDirection(transaction: TransactionCreatable): Direction {
 		let direction: Direction
-		if (transaction.amount < 0) {
+		if (transaction.amount < 0)
 			direction = "outbound"
-		} else {
+		else
 			direction = "inbound"
-		}
 		return direction
 	}
 	export function updateTypeAndDirection(
