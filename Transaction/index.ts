@@ -143,15 +143,19 @@ export namespace Transaction {
 	export function isIdentifier(value: string | any): value is string {
 		return typeof value == "string"
 	}
-	export function flag(transaction: Transaction, note: Note): void {
-		const flagSet = new Set<string>(transaction.flags)
-		const oldFlagSet = new Set<string>(transaction.oldFlags)
-		note.flags?.forEach(f =>
-			f.startsWith("-")
-				? (oldFlagSet.add(f.substring(1)), flagSet.delete(f.substring(1)))
-				: (flagSet.add(f), oldFlagSet.delete(f))
-		)
-		transaction.flags = Array.from(flagSet)
-		transaction.oldFlags = Array.from(oldFlagSet)
+	export function flag(transaction: Transaction, flags: string[] | undefined): void {
+		const current = new Set<string>(transaction.flags)
+		const old = new Set<string>(transaction.oldFlags)
+		for (const flag of flags ?? []) {
+			if (flag.startsWith("-") && current.has(flag.substring(1))) {
+				current.delete(flag.substring(1))
+				old.add(flag.substring(1))
+			} else {
+				old.delete(flag)
+				current.add(flag)
+			}
+		}
+		transaction.flags = Array.from(current)
+		transaction.oldFlags = Array.from(old)
 	}
 }
