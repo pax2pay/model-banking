@@ -93,7 +93,7 @@ export namespace Transaction {
 		accountName: string,
 		account: Rail.Address,
 		rail: Rail,
-		transaction: Creatable,
+		creatable: Creatable,
 		operations: Operation.Creatable[],
 		balance: {
 			actual: number
@@ -103,10 +103,12 @@ export namespace Transaction {
 		by?: string
 	): Transaction {
 		const id = Identifier.generate()
+		const amount = -creatable.amount
 		return {
-			...transaction,
-			type: getType(transaction, accountName),
-			direction: getDirection(transaction),
+			...creatable,
+			amount,
+			type: getType(creatable, accountName),
+			direction: getDirection(amount),
 			organization,
 			accountId,
 			accountName,
@@ -182,21 +184,12 @@ export namespace Transaction {
 			result = "external"
 		return result
 	}
-	export function getDirection(transaction: TransactionCreatable): Direction {
+	export function getDirection(amount: number): Direction {
 		let result: Direction
-		if (transaction.amount < 0)
+		if (amount < 0)
 			result = "outbound"
 		else
 			result = "inbound"
 		return result
-	}
-	export function updateTypeAndDirection(
-		transaction: Transaction
-	): Transaction & { type: Types; direction: Direction } {
-		return {
-			...transaction,
-			type: transaction.type ?? getType(transaction, transaction.accountName ?? ""),
-			direction: transaction.direction ?? getDirection(transaction),
-		}
 	}
 }
