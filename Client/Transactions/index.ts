@@ -25,12 +25,12 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		account?: string
 		limit?: number
 		cursor?: string
-		index?: "review"
+		query?: "created" | "changed" | "review"
 		dateRange?: isoly.DateRange
 	}): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
 		const query = Object.entries({
 			...(options?.cursor ? { cursor: options.cursor } : {}),
-			...(options?.index ? { index: options?.index } : {}),
+			...(!options?.query ? {} : options?.query == "review" ? { status: "review" } : { order: options?.query }),
 			...(options?.dateRange ?? {}),
 		})
 			.map(([k, v]) => `${k}=${v}`)
