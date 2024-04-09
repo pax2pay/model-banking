@@ -16,6 +16,8 @@ export interface Transaction extends Transaction.Creatable {
 	accountId: string
 	accountName?: string
 	account: Rail.Address
+	type?: Transaction.Types
+	direction?: Transaction.Direction
 	readonly id: cryptly.Identifier
 	readonly reference?: Transaction.Reference
 	readonly posted: isoly.DateTime
@@ -35,6 +37,10 @@ export interface Transaction extends Transaction.Creatable {
 	risk?: number
 }
 export namespace Transaction {
+	export const types = ["card", "internal", "external", "system"] as const
+	export type Types = typeof types[number]
+	export const directions = ["inbound", "outbound"] as const
+	export type Direction = typeof directions[number]
 	export type Creatable = TransactionCreatable
 	export const Creatable = TransactionCreatable
 	export type Collect = TransactionCollect
@@ -58,6 +64,8 @@ export namespace Transaction {
 		accountId: isly.string(),
 		accountName: isly.string().optional(),
 		account: isly.fromIs("Rail", Rail.Address.is),
+		type: isly.string(types).optional(),
+		direction: isly.string(directions).optional(),
 		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
 		reference: Reference.type.readonly().optional(),
 		posted: isly.string(),
@@ -97,6 +105,8 @@ export namespace Transaction {
 		const id = Identifier.generate()
 		return {
 			...transaction,
+			type: getType(transaction, accountName),
+			direction: getDirection(transaction),
 			organization,
 			accountId,
 			accountName,
@@ -128,6 +138,8 @@ export namespace Transaction {
 		const id = Identifier.generate()
 		return {
 			...transaction,
+			type: getType(transaction, accountName),
+			direction: "inbound",
 			organization,
 			accountId,
 			accountName,
@@ -157,5 +169,34 @@ export namespace Transaction {
 		}
 		transaction.flags = Array.from(current)
 		transaction.oldFlags = Array.from(old)
+	}
+	export function getType(transaction: TransactionCreatable, accountName: string): Types {
+		let result: Types
+		if (accountName.startsWith("settlement-") || accountName.startsWith("fee-"))
+			result = "system"
+		else if (transaction.counterpart.type == "internal")
+			result = "internal"
+		else if (transaction.counterpart.type == "card")
+			result = "card"
+		else
+			result = "external"
+		return result
+	}
+	export function getDirection(transaction: TransactionCreatable): Direction {
+		let result: Direction
+		if (transaction.amount < 0)
+			result = "outbound"
+		else
+			result = "inbound"
+		return result
+	}
+	export function updateTypeAndDirection(
+		transaction: Transaction
+	): Transaction & { type: Types; direction: Direction } {
+		return {
+			...transaction,
+			type: transaction.type ?? getType(transaction, transaction.accountName ?? ""),
+			direction: transaction.direction ?? getDirection(transaction),
+		}
 	}
 }
