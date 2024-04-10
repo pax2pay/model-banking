@@ -161,12 +161,12 @@ export namespace Transaction {
 		const current = new Set<string>(transaction.flags)
 		const old = new Set<string>(transaction.oldFlags)
 		for (const flag of flags ?? []) {
-			if (flag.startsWith("-") && current.has(flag.substring(1))) {
-				current.delete(flag.substring(1))
-				old.add(flag.substring(1))
-			} else {
+			if (!flag.startsWith("-")) {
 				old.delete(flag)
 				current.add(flag)
+			} else if (current.has(flag.substring(1))) {
+				current.delete(flag.substring(1))
+				old.add(flag.substring(1))
 			}
 		}
 		transaction.flags = Array.from(current)
