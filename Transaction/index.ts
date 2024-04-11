@@ -4,6 +4,7 @@ import { isly } from "isly"
 import { Identifier } from "../Identifier"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
+import { Report } from "../Report"
 import { Collect as TransactionCollect } from "./Collect"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
@@ -191,5 +192,31 @@ export namespace Transaction {
 		else
 			result = "inbound"
 		return result
+	}
+
+	const csvMap: Record<string, (transaction: Transaction) => string | number | undefined> = {
+		id: (transaction: Transaction) => transaction.id,
+		created: (transaction: Transaction) => transaction.posted,
+		changed: (transaction: Transaction) => transaction.transacted,
+		by: (transaction: Transaction) => transaction.by,
+		organization: (transaction: Transaction) => transaction.organization,
+		account: (transaction: Transaction) => transaction.accountId,
+		rail: (transaction: Transaction) => transaction.rail + " " + Rail.Address.stringify(transaction.account),
+		counterpart: (transaction: Transaction) => transaction.rail + " " + Rail.Address.stringify(transaction.counterpart),
+		amount: (transaction: Transaction) => transaction.amount,
+		currency: (transaction: Transaction) => transaction.currency,
+		status: (transaction: Transaction) => transaction.status,
+	}
+	export function toCsv(transactions: Transaction[]): string {
+		return Report.toCsv(
+			Object.keys(csvMap),
+			transactions.map(transaction =>
+				Report.Row.toCsv(
+					Object.values(csvMap).map(c => c(transaction)),
+					","
+				)
+			),
+			","
+		)
 	}
 }
