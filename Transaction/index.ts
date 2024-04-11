@@ -4,6 +4,7 @@ import { isly } from "isly"
 import { Identifier } from "../Identifier"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
+import { Report } from "../Report"
 import { Collect as TransactionCollect } from "./Collect"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
@@ -192,26 +193,30 @@ export namespace Transaction {
 			result = "inbound"
 		return result
 	}
-	//WIP
-	// if and how to include flags?
-	// what reference?
-	export function toCsv(transaction: Transaction): Record<string, string | number | undefined> {
-		return {
-			id: transaction.id,
-			reference: transaction.reference?.reference,
-			amount: transaction.amount,
-			currency: transaction.currency,
-			posted: transaction.posted,
-			transacted: transaction.transacted,
-			by: transaction.by,
-			status: transaction.status,
-			organization: transaction.organization,
-			"account id": transaction.accountId,
-			"account name": transaction.accountName,
-			rail: transaction.rail,
-			"rail address": Rail.Address.stringify(transaction.account),
-			"counterpart address": Rail.Address.stringify(transaction.counterpart),
-			risk: transaction.risk,
-		}
+
+	const csvMap: Record<string, (transaction: Transaction) => string | number | undefined> = {
+		id: (transaction: Transaction) => transaction.id,
+		created: (transaction: Transaction) => transaction.posted,
+		changed: (transaction: Transaction) => transaction.transacted,
+		by: (transaction: Transaction) => transaction.by,
+		organization: (transaction: Transaction) => transaction.organization,
+		account: (transaction: Transaction) => transaction.accountId,
+		rail: (transaction: Transaction) => transaction.rail + " " + Rail.Address.stringify(transaction.account),
+		counterpart: (transaction: Transaction) => transaction.rail + " " + Rail.Address.stringify(transaction.counterpart),
+		amount: (transaction: Transaction) => transaction.amount,
+		currency: (transaction: Transaction) => transaction.currency,
+		status: (transaction: Transaction) => transaction.status,
+	}
+	export function toCsv(transactions: Transaction[]): string {
+		return Report.toCsv(
+			Object.keys(csvMap),
+			transactions.map(transaction =>
+				Report.Row.toCsv(
+					Object.values(csvMap).map(c => c(transaction)),
+					","
+				)
+			),
+			","
+		)
 	}
 }
