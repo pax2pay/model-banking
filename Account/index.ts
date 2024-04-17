@@ -3,6 +3,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Balances } from "../Balances"
 import { Rail } from "../Rail"
+import { Rule } from "../Rule"
 import { Creatable as AccountCreatable } from "./Creatable"
 
 export interface Account extends Account.Creatable {
@@ -11,7 +12,7 @@ export interface Account extends Account.Creatable {
 	readonly balances: Balances
 	readonly rails: Rail.Address[]
 	key?: string
-	//readonly rules: Rule[]
+	readonly rules?: Rule[]
 }
 
 export namespace Account {
@@ -22,6 +23,7 @@ export namespace Account {
 		balances: isly.fromIs("Balances", Balances.is),
 		rails: isly.fromIs("Rail.Address", Rail.Address.is).array(),
 		key: isly.string().optional(),
+		rules: Rule.type.array().optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
