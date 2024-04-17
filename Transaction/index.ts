@@ -4,6 +4,7 @@ import { isly } from "isly"
 import { Identifier } from "../Identifier"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
+import { Report } from "../Report"
 import { Collect as TransactionCollect } from "./Collect"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
@@ -16,6 +17,8 @@ export interface Transaction extends Transaction.Creatable {
 	accountId: string
 	accountName?: string
 	account: Rail.Address
+	type?: Transaction.Types
+	direction?: Transaction.Direction
 	readonly id: cryptly.Identifier
 	readonly reference?: Transaction.Reference
 	readonly posted: isoly.DateTime
@@ -35,6 +38,10 @@ export interface Transaction extends Transaction.Creatable {
 	risk?: number
 }
 export namespace Transaction {
+	export const types = ["card", "internal", "external", "system"] as const
+	export type Types = typeof types[number]
+	export const directions = ["inbound", "outbound"] as const
+	export type Direction = typeof directions[number]
 	export type Creatable = TransactionCreatable
 	export const Creatable = TransactionCreatable
 	export type Collect = TransactionCollect
@@ -58,6 +65,8 @@ export namespace Transaction {
 		accountId: isly.string(),
 		accountName: isly.string().optional(),
 		account: isly.fromIs("Rail", Rail.Address.is),
+		type: isly.string(types).optional(),
+		direction: isly.string(directions).optional(),
 		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
 		reference: Reference.type.readonly().optional(),
 		posted: isly.string(),
@@ -85,7 +94,7 @@ export namespace Transaction {
 		accountName: string,
 		account: Rail.Address,
 		rail: Rail,
-		transaction: Creatable,
+		creatable: Creatable,
 		operations: Operation.Creatable[],
 		balance: {
 			actual: number
@@ -95,8 +104,12 @@ export namespace Transaction {
 		by?: string
 	): Transaction {
 		const id = Identifier.generate()
+		const amount = -creatable.amount
 		return {
-			...transaction,
+			...creatable,
+			amount,
+			type: getType(creatable, accountName),
+			direction: getDirection(amount),
 			organization,
 			accountId,
 			accountName,
@@ -128,6 +141,8 @@ export namespace Transaction {
 		const id = Identifier.generate()
 		return {
 			...transaction,
+			type: getType(transaction, accountName),
+			direction: "inbound",
 			organization,
 			accountId,
 			accountName,
@@ -143,15 +158,65 @@ export namespace Transaction {
 	export function isIdentifier(value: string | any): value is string {
 		return typeof value == "string"
 	}
-	export function flag(transaction: Transaction, note: Note): void {
-		const flagSet = new Set<string>(transaction.flags)
-		const oldFlagSet = new Set<string>(transaction.oldFlags)
-		note.flags?.forEach(f =>
-			f.startsWith("-")
-				? (oldFlagSet.add(f.substring(1)), flagSet.delete(f.substring(1)))
-				: (flagSet.add(f), oldFlagSet.delete(f))
+	export function flag(transaction: Transaction, flags: string[] | undefined): void {
+		const current = new Set<string>(transaction.flags)
+		const old = new Set<string>(transaction.oldFlags)
+		for (const flag of flags ?? []) {
+			if (!flag.startsWith("-")) {
+				old.delete(flag)
+				current.add(flag)
+			} else if (current.has(flag.substring(1))) {
+				current.delete(flag.substring(1))
+				old.add(flag.substring(1))
+			}
+		}
+		transaction.flags = Array.from(current)
+		transaction.oldFlags = Array.from(old)
+	}
+	export function getType(transaction: TransactionCreatable, accountName: string): Types {
+		let result: Types
+		if (accountName.startsWith("settlement-") || accountName.startsWith("fee-"))
+			result = "system"
+		else if (transaction.counterpart.type == "internal")
+			result = "internal"
+		else if (transaction.counterpart.type == "card")
+			result = "card"
+		else
+			result = "external"
+		return result
+	}
+	export function getDirection(amount: number): Direction {
+		let result: Direction
+		if (amount < 0)
+			result = "outbound"
+		else
+			result = "inbound"
+		return result
+	}
+
+	const csvMap: Record<string, (transaction: Transaction) => string | number | undefined> = {
+		id: (transaction: Transaction) => transaction.id,
+		created: (transaction: Transaction) => transaction.posted,
+		changed: (transaction: Transaction) => transaction.transacted,
+		by: (transaction: Transaction) => transaction.by,
+		organization: (transaction: Transaction) => transaction.organization,
+		account: (transaction: Transaction) => transaction.accountId,
+		rail: (transaction: Transaction) => transaction.rail + " " + Rail.Address.stringify(transaction.account),
+		counterpart: (transaction: Transaction) => transaction.rail + " " + Rail.Address.stringify(transaction.counterpart),
+		amount: (transaction: Transaction) => transaction.amount,
+		currency: (transaction: Transaction) => transaction.currency,
+		status: (transaction: Transaction) => transaction.status,
+	}
+	export function toCsv(transactions: Transaction[]): string {
+		return Report.toCsv(
+			Object.keys(csvMap),
+			transactions.map(transaction =>
+				Report.Row.toCsv(
+					Object.values(csvMap).map(c => c(transaction)),
+					","
+				)
+			),
+			","
 		)
-		transaction.flags = Array.from(flagSet)
-		transaction.oldFlags = Array.from(oldFlagSet)
 	}
 }

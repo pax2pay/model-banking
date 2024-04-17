@@ -2,8 +2,11 @@ import { pax2pay } from "../index"
 
 // cSpell:disable
 describe("Transaction", () => {
-	it("is", () => {
-		expect(pax2pay.Transaction.is(transaction)).toBeTruthy()
+	it("toCsv", () => {
+		expect(pax2pay.Transaction.toCsv([transaction])).toMatchInlineSnapshot(`
+""id","created","changed","by","organization","account","rail","counterpart","amount","currency","status"
+"zzzyRwIvXovdzVNA","2023-12-05T17:26:36.977Z","","","paxair","3Lb41MlP","paxgiro internal-3Lb41MlP","paxgiro internal-IkToJ5Ep","-10","GBP","created""
+`)
 	})
 })
 const transaction: pax2pay.Transaction = {
