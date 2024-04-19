@@ -15,15 +15,21 @@ export namespace Permissions {
 					accounts?: { balance?: true; view?: true; create?: true; change?: true; cancel?: true } | true
 					rules?:
 						| {
-								edit?: true
-								view?: true
+								customer: { edit?: true; view?: true }
+								product: { edit?: true; view?: true }
+								fincrime: { edit?: true; view?: true }
 						  }
 						| true
 			  }
 			| true
 		transactions?: { create?: true; view?: true; resolve?: true; comment?: true } | true
 		cards?: { create?: true; view?: true; change?: true; cancel?: true } | true
-		rules?: { edit?: true; view?: true } | true
+		rules?:
+			| {
+					product: { edit?: true; view?: true }
+					fincrime: { edit?: true; view?: true }
+			  }
+			| true
 		settlements?: { create?: true; view?: true; ammend?: true } | true
 		treasury?: { rebalance?: true; view?: true } | true
 		operations?: { view?: true } | true

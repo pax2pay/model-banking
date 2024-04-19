@@ -3,6 +3,7 @@ import { Base } from "./Base"
 
 export interface Score extends Base {
 	action: "score"
+	category: "fincrime"
 	risk: Score.Risk
 }
 export namespace Score {
