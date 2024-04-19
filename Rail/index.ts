@@ -3,7 +3,16 @@ import { Address as RailAddress } from "./Address"
 
 export type Rail = typeof Rail.rails[number]
 export namespace Rail {
-	export const rails = ["internal", "paxgiro", "mastercard", "fasterpayments", "chaps", "bacs", "transfer"] as const
+	export const rails = [
+		"internal",
+		"paxgiro",
+		"mastercard",
+		"fasterpayments",
+		"chaps",
+		"bacs",
+		"transfer",
+		"credit",
+	] as const
 	export const type = isly.string<Rail>(rails)
 	export type Address = RailAddress
 	export namespace Address {

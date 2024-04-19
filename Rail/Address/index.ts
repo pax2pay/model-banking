@@ -1,17 +1,19 @@
 import { isly } from "isly"
 import { Card as AddressCard } from "./Card"
+import { Credit as AddressCredit } from "./Credit"
 import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
 import { PaxGiro as AddressPaxGiro } from "./PaxGiro"
 import { Scan as AddressScan } from "./Scan"
 
 export type Address =
-	| AddressPaxGiro
-	| AddressInternal
-	| AddressIban
-	| AddressScan
 	| AddressCard
 	| AddressCard.Counterpart
+	| AddressCredit
+	| AddressIban
+	| AddressInternal
+	| AddressPaxGiro
+	| AddressScan
 export namespace Address {
 	export const types = ["paxgiro", "internal", "iban", "scan", "card"] as const
 	export type Type = typeof types[number]
