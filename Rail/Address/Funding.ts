@@ -1,12 +1,13 @@
-import { isly } from "isly"
+// import { isly } from "isly"
 
-export interface Credit {
-	type: "credit"
-	supplier: string
-	reference: string
+export interface Funding {
+	type: "funding"
+	code: string
+	supplier?: string // account.funder[code].supplier
+	reference?: string // account.funder[code].reference
 }
 
-export namespace Credit {
+export namespace Funding {
 	// export const type = isly.object<Iban>({
 	// type: isly.string("iban"),
 	// iban: isly.string(),
