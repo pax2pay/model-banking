@@ -1,6 +1,6 @@
 import { isly } from "isly"
 import { Card as AddressCard } from "./Card"
-import { Credit as AddressCredit } from "./Credit"
+import { Funding as AddressInitiate } from "./Funding"
 import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
 import { PaxGiro as AddressPaxGiro } from "./PaxGiro"
@@ -9,7 +9,7 @@ import { Scan as AddressScan } from "./Scan"
 export type Address =
 	| AddressCard
 	| AddressCard.Counterpart
-	| AddressCredit
+	| AddressInitiate
 	| AddressIban
 	| AddressInternal
 	| AddressPaxGiro
