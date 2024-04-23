@@ -196,16 +196,37 @@ export namespace Transaction {
 
 	const csvMap: Record<string, (transaction: Transaction) => string | number | undefined> = {
 		id: (transaction: Transaction) => transaction.id,
-		created: (transaction: Transaction) => transaction.posted,
-		changed: (transaction: Transaction) => transaction.transacted,
-		by: (transaction: Transaction) => transaction.by,
-		organization: (transaction: Transaction) => transaction.organization,
-		account: (transaction: Transaction) => transaction.accountId,
-		rail: (transaction: Transaction) => transaction.rail + " " + Rail.Address.stringify(transaction.account),
-		counterpart: (transaction: Transaction) => transaction.rail + " " + Rail.Address.stringify(transaction.counterpart),
-		amount: (transaction: Transaction) => transaction.amount,
+		created: (transaction: Transaction) => readableDate(transaction.posted),
+		changed: (transaction: Transaction) => readableDate(transaction.transacted),
+		"organization.code": (transaction: Transaction) => transaction.organization,
+		"account.id": (transaction: Transaction) => transaction.accountId,
+		"rail.id": (transaction: Transaction) => railAddressId(transaction.account),
+		"rail.address": (transaction: Transaction) => railAddress(transaction.account),
+		"counterpart.id": (transaction: Transaction) => railAddressId(transaction.counterpart),
+		"counterpart.address": (transaction: Transaction) => railAddress(transaction.counterpart),
+		amount: (transaction: Transaction) =>
+			transaction.amount.toFixed(isoly.Currency.decimalDigits(transaction.currency)),
 		currency: (transaction: Transaction) => transaction.currency,
 		status: (transaction: Transaction) => transaction.status,
+		"flags.current": (transaction: Transaction) => transaction.flags.join(" "),
+		"flags.past": (transaction: Transaction) => transaction.oldFlags.join(" "),
+	}
+	function readableDate(date: isoly.DateTime | undefined): string | undefined {
+		return date && date.slice(0, 10) + " " + (date.endsWith("Z") ? date.slice(11, -1) : date.slice(11))
+	}
+	function railAddress(address: Rail.Address): string {
+		return address.type != "card"
+			? Rail.Address.stringify(address)
+			: Rail.Address.Card.Counterpart.type.is(address)
+			? `${address.merchant.category} ${address.merchant.name}`
+			: `${address.iin}******${address.last4}`
+	}
+	function railAddressId(address: Rail.Address): string {
+		return address.type != "card"
+			? Rail.Address.stringify(address)
+			: Rail.Address.Card.Counterpart.type.is(address)
+			? address.merchant.id
+			: address.id
 	}
 	export function toCsv(transactions: Transaction[]): string {
 		return Report.toCsv(
