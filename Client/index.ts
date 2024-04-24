@@ -41,6 +41,18 @@ export class Client extends rest.Client<gracely.Error> {
 		const result: Client = new Client(
 			(httpClient = new http.Client<gracely.Error>(server, key, {
 				appendHeader: request => ({ ...request.header, realm: result.realm, organization: result.organization }),
+				postprocess: async response => {
+					let result = response
+					const body = await response.body
+					if (Array.isArray(body)) {
+						result = http.Response.create(
+							Object.defineProperty(body, "cursor", {
+								value: response.header.cursor ?? response.header.link?.split?.(",")[0],
+							})
+						)
+					}
+					return result
+				},
 			}))
 		)
 		if (load)
