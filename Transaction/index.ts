@@ -62,6 +62,7 @@ export namespace Transaction {
 	}
 	export type Status = TransactionStatus
 	export const Status = TransactionStatus
+
 	export const type = Creatable.type.extend<Transaction>({
 		organization: isly.string(),
 		accountId: isly.string(),
@@ -91,6 +92,15 @@ export namespace Transaction {
 	export const is = type.is
 	export const flaw = type.flaw
 	export const get = type.get
+	export type Event = Omit<Transaction, "state">
+	export namespace Event {
+		export const type = Transaction.type.omit(["state"])
+		export const is = type.is
+		export const get = type.get
+		export function from(transaction: Transaction): Event {
+			return (({ state, ...event }) => event)(transaction)
+		}
+	}
 	export function fromCreatable(
 		organization: string,
 		accountId: string,

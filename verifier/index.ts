@@ -4,8 +4,7 @@ import { Transaction } from "../Transaction"
 export namespace verifier {
 	export async function verify(event: string | undefined): Promise<authly.Payload | undefined> {
 		const verifier = authly.Verifier.create(authly.Algorithm.RS256(publicKey))
-		const transaction = Transaction.get(verifier && (await verifier.verify(event)))
-		return transaction && (({ state, ...transaction }) => transaction)(transaction)
+		return Transaction.Event.get(verifier && (await verifier.verify(event)))
 		//TODO: Expand to work with other types for other hook-events
 	}
 }
