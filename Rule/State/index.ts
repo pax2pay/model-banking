@@ -37,24 +37,11 @@ export namespace State {
 			organization,
 		}
 	}
-	export type Partial = StatePartial
-	export const Partial = StatePartial
-	export type Authorization = StateAuthorization
-	export const Authorization = StateAuthorization
-	export type Card = StateCard
-	export const Card = StateCard
-	export namespace Card {
-		export type Statistics = StateCard.Statistics
-	}
-	export type Account = StateAccount
-	export const Account = StateAccount
-	export namespace Account {
-		export type Transactions = StateAccount.Transactions
-		export type Days = StateAccount.Days
-	}
-	export type Transaction = StateTransaction
-	export const Transaction = StateTransaction
-	export type Organization = StateOrganization
-	export const Organization = StateOrganization
+	export import Partial = StatePartial
+	export import Authorization = StateAuthorization
+	export import Card = StateCard
+	export import Account = StateAccount
+	export import Transaction = StateTransaction
+	export import Organization = StateOrganization
 	export type Data = StateData
 }

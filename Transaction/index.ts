@@ -5,6 +5,7 @@ import { Identifier } from "../Identifier"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 import { Report } from "../Report"
+import type { Rule } from "../Rule"
 import { Collect as TransactionCollect } from "./Collect"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
@@ -36,6 +37,7 @@ export interface Transaction extends Transaction.Creatable {
 	oldFlags: string[]
 	notes: Transaction.Note[]
 	risk?: number
+	state?: Rule.State
 }
 export namespace Transaction {
 	export const types = ["card", "internal", "external", "system"] as const
@@ -84,6 +86,7 @@ export namespace Transaction {
 		oldFlags: isly.string().array(),
 		notes: Note.type.array(),
 		risk: isly.number().optional(),
+		state: isly.any().optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
