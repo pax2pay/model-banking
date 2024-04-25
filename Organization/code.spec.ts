@@ -8,5 +8,6 @@ describe("Organization.Code", () => {
 		expect(Code.is("aa aa")).toBeFalsy()
 		expect(Code.is("aa&aa")).toBeFalsy()
 		expect(Code.is("aa|aa")).toBeFalsy()
+		expect(Code.is("")).toBeFalsy()
 	})
 })
