@@ -5,11 +5,14 @@ export interface Base {
 	name: string
 	description: string
 	type: Base.Kind
+	category: Base.Category
 	condition: string
 	flags: string[]
 	groups?: string[]
 }
 export namespace Base {
+	export const categories = ["customer", "product", "fincrime"] as const
+	export type Category = typeof categories[number]
 	export const kinds = ["authorization", "outbound", "inbound"] as const
 	export type Kind = typeof kinds[number]
 	export const type = isly.object<Base>({
