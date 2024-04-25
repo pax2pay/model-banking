@@ -5,6 +5,7 @@ import { Identifier } from "../Identifier"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 import { Report } from "../Report"
+import type { Rule } from "../Rule"
 import { Collect as TransactionCollect } from "./Collect"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
@@ -36,6 +37,7 @@ export interface Transaction extends Transaction.Creatable {
 	oldFlags: string[]
 	notes: Transaction.Note[]
 	risk?: number
+	state?: Rule.State
 }
 export namespace Transaction {
 	export const types = ["card", "internal", "external", "system"] as const
@@ -60,6 +62,7 @@ export namespace Transaction {
 	}
 	export type Status = TransactionStatus
 	export const Status = TransactionStatus
+
 	export const type = Creatable.type.extend<Transaction>({
 		organization: isly.string(),
 		accountId: isly.string(),
@@ -84,10 +87,20 @@ export namespace Transaction {
 		oldFlags: isly.string().array(),
 		notes: Note.type.array(),
 		risk: isly.number().optional(),
+		state: isly.any().optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
 	export const get = type.get
+	export type Event = Omit<Transaction, "state">
+	export namespace Event {
+		export const type = Transaction.type.omit(["state"])
+		export const is = type.is
+		export const get = type.get
+		export function from(transaction: Transaction): Event {
+			return (({ state, ...event }) => event)(transaction)
+		}
+	}
 	export function fromCreatable(
 		organization: string,
 		accountId: string,
@@ -196,16 +209,37 @@ export namespace Transaction {
 
 	const csvMap: Record<string, (transaction: Transaction) => string | number | undefined> = {
 		id: (transaction: Transaction) => transaction.id,
-		created: (transaction: Transaction) => transaction.posted,
-		changed: (transaction: Transaction) => transaction.transacted,
-		by: (transaction: Transaction) => transaction.by,
-		organization: (transaction: Transaction) => transaction.organization,
-		account: (transaction: Transaction) => transaction.accountId,
-		rail: (transaction: Transaction) => transaction.rail + " " + Rail.Address.stringify(transaction.account),
-		counterpart: (transaction: Transaction) => transaction.rail + " " + Rail.Address.stringify(transaction.counterpart),
-		amount: (transaction: Transaction) => transaction.amount,
+		created: (transaction: Transaction) => readableDate(transaction.posted),
+		changed: (transaction: Transaction) => readableDate(transaction.transacted),
+		"organization.code": (transaction: Transaction) => transaction.organization,
+		"account.id": (transaction: Transaction) => transaction.accountId,
+		"rail.id": (transaction: Transaction) => railAddressId(transaction.account),
+		"rail.address": (transaction: Transaction) => railAddress(transaction.account),
+		"counterpart.id": (transaction: Transaction) => railAddressId(transaction.counterpart),
+		"counterpart.address": (transaction: Transaction) => railAddress(transaction.counterpart),
+		amount: (transaction: Transaction) =>
+			transaction.amount.toFixed(isoly.Currency.decimalDigits(transaction.currency)),
 		currency: (transaction: Transaction) => transaction.currency,
 		status: (transaction: Transaction) => transaction.status,
+		"flags.current": (transaction: Transaction) => transaction.flags.join(" "),
+		"flags.past": (transaction: Transaction) => transaction.oldFlags.join(" "),
+	}
+	function readableDate(date: isoly.DateTime | undefined): string | undefined {
+		return date && date.slice(0, 10) + " " + (date.endsWith("Z") ? date.slice(11, -1) : date.slice(11))
+	}
+	function railAddress(address: Rail.Address): string {
+		return address.type != "card"
+			? Rail.Address.stringify(address)
+			: Rail.Address.Card.Counterpart.type.is(address)
+			? `${address.merchant.category} ${address.merchant.name}`
+			: `${address.iin}******${address.last4}`
+	}
+	function railAddressId(address: Rail.Address): string {
+		return address.type != "card"
+			? Rail.Address.stringify(address)
+			: Rail.Address.Card.Counterpart.type.is(address)
+			? address.merchant.id
+			: address.id
 	}
 	export function toCsv(transactions: Transaction[]): string {
 		return Report.toCsv(

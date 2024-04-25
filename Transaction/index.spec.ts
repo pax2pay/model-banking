@@ -4,8 +4,8 @@ import { pax2pay } from "../index"
 describe("Transaction", () => {
 	it("toCsv", () => {
 		expect(pax2pay.Transaction.toCsv([transaction])).toMatchInlineSnapshot(`
-""id","created","changed","by","organization","account","rail","counterpart","amount","currency","status"
-"zzzyRwIvXovdzVNA","2023-12-05T17:26:36.977Z","","","paxair","3Lb41MlP","paxgiro internal-3Lb41MlP","paxgiro internal-IkToJ5Ep","-10","GBP","created""
+""id","created","changed","organization.code","account.id","rail.id","rail.address","counterpart.id","counterpart.address","amount","currency","status","flags.current","flags.past"
+"zzzyRwIvXovdzVNA","2023-12-05 17:26:36.977","","paxair","3Lb41MlP","internal-3Lb41MlP","internal-3Lb41MlP","internal-IkToJ5Ep","internal-IkToJ5Ep","-10.00","GBP","created","dannebrogen union-jack","sssr""
 `)
 	})
 })
@@ -52,7 +52,7 @@ const transaction: pax2pay.Transaction = {
 	],
 	status: "created",
 	rail: "paxgiro",
-	flags: [],
-	oldFlags: [],
+	flags: ["dannebrogen", "union-jack"],
+	oldFlags: ["sssr"],
 	notes: [],
 }

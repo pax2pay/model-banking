@@ -1,12 +1,9 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
-import * as rest from "cloudly-rest"
 import { Settlement } from "../Settlement"
 
-export class Settlements extends rest.Collection<gracely.Error> {
-	constructor(client: http.Client) {
-		super(client)
-	}
+export class Settlements {
+	constructor(private readonly client: http.Client) {}
 
 	async create(configuration: string): Promise<Settlement | gracely.Error> {
 		return this.client.post<Settlement>(`/settlement`, { configuration: configuration })
@@ -14,8 +11,14 @@ export class Settlements extends rest.Collection<gracely.Error> {
 	async fetch(id: string): Promise<Settlement | gracely.Error> {
 		return this.client.get<Settlement>(`/settlement/${id}`)
 	}
-	async list(): Promise<Settlement[] | gracely.Error> {
-		return this.client.get<Settlement[] & { cursor?: string | undefined }>(`/settlement`)
+	async list(options?: {
+		limit?: number
+		cursor?: string
+	}): Promise<(Settlement[] & { cursor?: string }) | gracely.Error> {
+		return this.client.get<Settlement[] & { cursor?: string | undefined }>(
+			`/settlement${options?.cursor ? `?cursor=${options.cursor}` : ""}`,
+			options?.limit ? { limit: options?.limit.toString() } : {}
+		)
 	}
 	async remove(settlement: string): Promise<Settlement | gracely.Error> {
 		return this.client.delete<Settlement>(`/settlement/${settlement}`)
