@@ -27,6 +27,7 @@ const Card: pax2pay.Card = {
 		{
 			name: "example",
 			type: "authorization",
+			category: "product",
 			condition: "",
 			action: "flag",
 			flags: ["example"],

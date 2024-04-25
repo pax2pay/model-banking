@@ -14,6 +14,7 @@ const Creatable: pax2pay.Card.Creatable = {
 		{
 			name: "example",
 			type: "authorization",
+			category: "product",
 			condition: "",
 			action: "flag",
 			flags: ["example"],
