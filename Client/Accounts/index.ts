@@ -3,9 +3,12 @@ import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Account } from "../../Account"
 import { Rails } from "./Rails"
+import { Rules } from "./Rules"
 
 export class Accounts extends rest.Collection<gracely.Error> {
 	readonly Rails = new Rails(this.client)
+
+	readonly rules = new Rules(this.client)
 	constructor(client: http.Client) {
 		super(client)
 	}

@@ -25,7 +25,7 @@ export class Identity {
 
 	static async authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
-		constraint: Key.Permissions,
+		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier
 	): Promise<(keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity) | undefined> {
@@ -47,7 +47,12 @@ export class Identity {
 			| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
 			| undefined =>
 			(requires?.organization ? !!identity?.organization : true) && (requires?.realm ? Realm.is(identity?.realm) : true)
-		return (!constraint || identity?.check(constraint)) && requirement(identity) ? identity : undefined
+		return (
+			((Array.isArray(constraint) ? constraint.some(c => identity?.check(c)) : identity?.check(constraint)) &&
+				requirement(identity) &&
+				identity) ||
+			undefined
+		)
 	}
 	static async verify(
 		authorization: string | undefined,

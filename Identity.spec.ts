@@ -15,6 +15,17 @@ describe("Identity", () => {
 		expect(await authenticate({ [`test-*`]: ["finance"] }, constraint, "test", orgCode)).toBeTruthy()
 		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, constraint, "test", orgCode)).toBeFalsy()
 	})
+	it("authenticate finance roll with several constraints", async () => {
+		const failingConstraint: pax2pay.Key.Permissions[] = [
+			{
+				organizations: true,
+			},
+		]
+		const passingConstraint: pax2pay.Key.Permissions[] = failingConstraint.concat({ treasury: { rebalance: true } })
+		const role: pax2pay.Key.Roles = { [`test-*`]: ["finance"] }
+		expect(await authenticate(role, failingConstraint, "test", orgCode)).toBeFalsy()
+		expect(await authenticate(role, passingConstraint, "test", orgCode)).toBeTruthy()
+	})
 	it("authenticate organization finance roll on test", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			cards: { view: true },
@@ -75,7 +86,7 @@ const publicKey =
 const orgCode = "paxair"
 async function authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
 	roles: pax2pay.Key.Roles,
-	constraint: pax2pay.Key.Permissions,
+	constraint: pax2pay.Key.Permissions | pax2pay.Key.Permissions[],
 	realm?: pax2pay.Realm,
 	organization?: string,
 	options?: T

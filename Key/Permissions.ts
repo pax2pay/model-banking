@@ -17,14 +17,24 @@ export namespace Permissions {
 						| {
 								edit?: true
 								view?: true
+								customer?: { edit?: true; view?: true } | true
+								product?: { edit?: true; view?: true } | true
+								fincrime?: { edit?: true; view?: true } | true
 						  }
 						| true
 			  }
 			| true
 		transactions?: { create?: true; view?: true; resolve?: true; comment?: true } | true
 		cards?: { create?: true; view?: true; change?: true; cancel?: true } | true
-		rules?: { edit?: true; view?: true } | true
-		settlements?: { create?: true; view?: true; ammend?: true } | true
+		rules?:
+			| {
+					edit?: true
+					view?: true
+					product?: { edit?: true; view?: true } | true
+					fincrime?: { edit?: true; view?: true } | true
+			  }
+			| true
+		settlements?: { create?: true; view?: true; amend?: true } | true
 		treasury?: { rebalance?: true; view?: true } | true
 		operations?: { view?: true } | true
 	}
