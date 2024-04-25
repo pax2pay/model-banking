@@ -11,7 +11,10 @@ describe("verifier", () => {
 	const publicKey =
 		"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzWKqXfw8HU6lMtoLdc1WEkEZP/Dmhx8JmfMMQxcUIiFUkObL9zAEo/pk4/1FCaAy/l14yX76OU97Eannq8FObjd8tU5UOqb4n9RpXO3md1JDIZkuqhjQwuCJax/0nyNY+WH5MLWCBgo5kw6R+AHBdCXQGSGoMGfm0qQAySDE1PmZWc/6sR4WacK+ooMO/YtP7HuQQeG8qsJ44wbQXaYlKupxJr3EDo+Un4N9/PHmXlTTz1u7/aO2KbzP+V6kevvPzf+mS+KvSLMYMgIuDiQXvlor9UeC1M5VNj7Trx6HKnoiekKUt3tL14cIHVKhpOTlN2l2yj4ImmAG3qZ4gMO6DwIDAQAB"
 	it("Verifier test", async () => {
-		const issuer = authly.Issuer.create<pax2pay.Transaction>("pax2pay", authly.Algorithm.RS256(publicKey, privateKey))
+		const issuer = authly.Issuer.create<pax2pay.Transaction.Event>(
+			"pax2pay",
+			authly.Algorithm.RS256(publicKey, privateKey)
+		)
 		if (issuer) {
 			const token = await issuer.sign(transaction, Math.floor(now.getTime() / 1000))
 			expect(await verifier.verify(token)).toEqual(transaction)
@@ -19,7 +22,7 @@ describe("verifier", () => {
 	})
 })
 
-const transaction: pax2pay.Transaction = {
+const transaction: pax2pay.Transaction.Event = {
 	organization: "organization",
 	accountId: "qwerty12",
 	account: {
