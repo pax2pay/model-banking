@@ -20,7 +20,7 @@ export namespace Rule {
 		return selectively.resolve({ ...macros, ...definitions }, selectively.parse(rule.condition)).is(state)
 	}
 	function score(
-		rules: (Rule & ModelRule.Score)[],
+		rules: ModelRule.Score[],
 		state: State,
 		macros?: Record<string, selectively.Definition>
 	): number | undefined {
@@ -36,7 +36,7 @@ export namespace Rule {
 	): Record<ModelRule.Other.Action, Rule[]> & { risk?: number } {
 		const result: Record<ModelRule.Other.Action, Rule[]> & { risk?: number } = { review: [], reject: [], flag: [] }
 		const [other, scorers] = rules.reduce(
-			(r: [(Rule & ModelRule.Other)[], (Rule & ModelRule.Score)[]], rule) => {
+			(r: [ModelRule.Other[], ModelRule.Score[]], rule) => {
 				rule.action == "score" ? r[1].push(rule) : r[0].push(rule)
 				return r
 			},
@@ -46,5 +46,8 @@ export namespace Rule {
 		result.risk = state.transaction.risk
 		other.forEach(rule => control(rule, state, macros) && result[rule.action].push(rule))
 		return result
+	}
+	export function fromLegacy(rule: Rule): Rule {
+		return "category" in rule ? rule : { category: "fincrime", ...rule }
 	}
 }
