@@ -3,7 +3,7 @@ import { Base } from "./Base"
 
 export interface Score extends Base {
 	action: "score"
-	category?: "fincrime"
+	category: "fincrime"
 	risk: Score.Risk
 }
 export namespace Score {
@@ -11,7 +11,7 @@ export namespace Score {
 	export const Risk = isly.number<Risk>(["positive", "integer"])
 	export const type = Base.type.extend<Score>({
 		action: isly.string("score"),
-		category: isly.string("fincrime").optional(),
+		category: isly.string("fincrime"),
 		risk: Risk,
 	})
 }

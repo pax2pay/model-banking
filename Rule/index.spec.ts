@@ -44,6 +44,7 @@ export const account: pax2pay.Account = {
 	},
 }
 const rule1: pax2pay.Rule = {
+	code: "abc",
 	name: "amount limit",
 	type: "inbound",
 	category: "product",
@@ -53,6 +54,7 @@ const rule1: pax2pay.Rule = {
 	condition: "transaction.amount>200",
 }
 const rule2: pax2pay.Rule = {
+	code: "abc",
 	name: "reject internal transactions",
 	type: "inbound",
 	category: "product",
@@ -62,6 +64,7 @@ const rule2: pax2pay.Rule = {
 	condition: "isInternal()",
 }
 const rule3: pax2pay.Rule = {
+	code: "abc",
 	name: "amount limit",
 	type: "inbound",
 	category: "product",
@@ -71,6 +74,7 @@ const rule3: pax2pay.Rule = {
 	condition: "alwaysTrue()",
 }
 const rule4: pax2pay.Rule = {
+	code: "abc",
 	name: "amount limit",
 	type: "authorization",
 	category: "product",
@@ -79,7 +83,8 @@ const rule4: pax2pay.Rule = {
 	action: "reject",
 	condition: "alwaysTrue()",
 }
-export const dailyRule = {
+export const dailyRule: pax2pay.Rule = {
+	code: "abc",
 	name: "Flag daily spending",
 	type: "outbound",
 	category: "product",
@@ -88,7 +93,8 @@ export const dailyRule = {
 	action: "flag",
 	condition: "account.transactions.today.amount>200",
 }
-export const dailyTransactionRule = {
+export const dailyTransactionRule: pax2pay.Rule = {
+	code: "abc",
 	name: "Flag daily outgoing transactions volume",
 	type: "outbound",
 	category: "product",
@@ -98,7 +104,8 @@ export const dailyTransactionRule = {
 	condition: "account.transactions.outgoing.today.count>2",
 }
 // TODO: add support for these in card state
-export const cardSpendingLimit = {
+export const cardSpendingLimit: pax2pay.Rule = {
+	code: "single-use-card",
 	name: "single use card",
 	type: "authorization",
 	category: "product",
@@ -107,7 +114,8 @@ export const cardSpendingLimit = {
 	action: "reject",
 	condition: "card.used.amount>0",
 }
-export const cardUsageLimit = {
+export const cardUsageLimit: pax2pay.Rule = {
+	code: "single-use-card",
 	name: "single use card",
 	type: "authorization",
 	category: "product",
@@ -117,6 +125,7 @@ export const cardUsageLimit = {
 	condition: "card.used.count>0",
 }
 export const score: pax2pay.Rule = {
+	code: "risk-score-test",
 	name: "risk score test",
 	type: "authorization",
 	category: "fincrime",
@@ -127,6 +136,7 @@ export const score: pax2pay.Rule = {
 	condition: "transaction.amount > 1",
 }
 export const riskCheck: pax2pay.Rule = {
+	code: "risk-check-test",
 	name: "risk check test",
 	type: "authorization",
 	category: "fincrime",
@@ -136,6 +146,7 @@ export const riskCheck: pax2pay.Rule = {
 	condition: "transaction.risk > 500",
 }
 export const riskFlag: pax2pay.Rule = {
+	code: "risk-check-flag-test",
 	name: "risk check flag test",
 	type: "authorization",
 	category: "fincrime",
@@ -231,6 +242,7 @@ describe("definitions", () => {
 
 export const realmWideUKRules: pax2pay.Rule[] = [
 	{
+		code: "abc",
 		name: "Sanctioned Countries and Territories",
 		description: "Reject transactions to merchants in sanctioned countries.",
 		action: "reject",
@@ -240,6 +252,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		flags: ["sanctioned", "country"],
 	},
 	{
+		code: "abc",
 		name: "Single Use",
 		description: "Reject authorization if card already has performed an authorization.",
 		action: "flag",
@@ -249,6 +262,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		flags: ["strict single use"],
 	},
 	{
+		code: "abc",
 		name: "Single Use",
 		description:
 			"Reject authorization if card has previously been used to authorize more than 2 GBP in total. Allows for probing auths.",
@@ -259,6 +273,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		flags: ["single use"],
 	},
 	{
+		code: "abc",
 		name: "Only Low Risk Countries",
 		description: "Reject transactions to merchants not in a low risk country.",
 		action: "reject",
@@ -268,6 +283,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		flags: ["not low", "country"],
 	},
 	{
+		code: "abc",
 		name: "Too High Amount",
 		description: "Reject authorizations with an amount above 2500 GBP.",
 		action: "flag",
@@ -277,6 +293,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		flags: ["too high amount"],
 	},
 	{
+		code: "abc",
 		name: "High Risk Country",
 		description: "Flag authorizations to merchants from high risk countries.",
 		action: "flag",
@@ -286,6 +303,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		flags: ["high risk", "country"],
 	},
 	{
+		code: "abc",
 		name: "Medium High Risk Country",
 		description: "Flag authorizations to merchants from medium high risk countries.",
 		action: "flag",
@@ -295,6 +313,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		flags: ["medium high", "country"],
 	},
 	{
+		code: "abc",
 		name: "Low Amount",
 		description: "Flag authorizations with an amount below 5 GBP.",
 		action: "flag",
@@ -304,6 +323,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		flags: ["low amount"],
 	},
 	{
+		code: "abc",
 		name: "High Amount",
 		description: "Flag authorizations with an amount above 800 GBP.",
 		action: "flag",
@@ -313,6 +333,7 @@ export const realmWideUKRules: pax2pay.Rule[] = [
 		flags: ["high amount"],
 	},
 	{
+		code: "abc",
 		name: "New Merchant",
 		description: "Flag authorizations involving a new merchant.",
 		action: "flag",

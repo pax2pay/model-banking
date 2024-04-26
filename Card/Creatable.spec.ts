@@ -12,6 +12,7 @@ const Creatable: pax2pay.Card.Creatable = {
 	limit: ["GBP", 2000],
 	rules: [
 		{
+			code: "abc",
 			name: "example",
 			type: "authorization",
 			category: "product",

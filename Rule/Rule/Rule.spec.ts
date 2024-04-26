@@ -13,6 +13,7 @@ describe("Rules", () => {
 
 const rules: pax2pay.Rule[] = [
 	{
+		code: "abc",
 		name: "Sanctioned Countries and Territories",
 		description: "Reject transactions to merchants in sanctioned countries.",
 		action: "reject",
@@ -22,6 +23,7 @@ const rules: pax2pay.Rule[] = [
 		flags: ["sanctioned", "country"],
 	},
 	{
+		code: "abc",
 		name: "Single Use",
 		description: "Reject authorization if card already has performed an authorization.",
 		action: "flag",
@@ -31,6 +33,7 @@ const rules: pax2pay.Rule[] = [
 		flags: ["strict single use"],
 	},
 	{
+		code: "abc",
 		name: "Single Use",
 		description:
 			"Reject authorization if card has previously been used to authorize more than 2 GBP in total. Allows for probing auths.",

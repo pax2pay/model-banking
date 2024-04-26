@@ -1,11 +1,11 @@
 import { isly } from "isly"
 
 export interface Base {
-	code?: string
+	code: string
 	name: string
 	description: string
 	type: Base.Kind
-	category?: Base.Category
+	category: Base.Category
 	condition: string
 	flags: string[]
 	groups?: string[]
@@ -16,7 +16,7 @@ export namespace Base {
 	export const categories = ["customer", "product", "fincrime"] as const
 	export type Category = typeof categories[number]
 	export const type = isly.object<Base>({
-		code: isly.string(new RegExp(/^[a-z0-9\-_]+$/)).optional(),
+		code: isly.string(new RegExp(/^[a-z0-9\-_]+$/)),
 		name: isly.string(),
 		description: isly.string(),
 		type: isly.string(kinds),

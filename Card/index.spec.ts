@@ -25,6 +25,7 @@ const Card: pax2pay.Card = {
 	history: [],
 	rules: [
 		{
+			code: "abc",
 			name: "example",
 			type: "authorization",
 			category: "product",
