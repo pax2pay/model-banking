@@ -9,13 +9,15 @@ export class Identity {
 	}
 
 	constructor(readonly key: Key, readonly realm?: Realm, readonly organization?: string) {}
-	check(constraint: Key.Permissions, realm?: Realm, organization?: string): boolean {
-		return [
-			{ [`${realm ?? this.realm}-${organization ?? this.organization}`]: constraint },
-			{ [`${organization ?? this.organization}`]: constraint },
-			{ [`${realm ?? this.realm}-*`]: constraint },
-			{ [`*-*`]: constraint },
-		].some(e => userwidgets.User.Permissions.check(this.key.permissions, e))
+	check(constraint: Key.Permissions | Key.Permissions[], realm?: Realm, organization?: string): boolean {
+		return Array.isArray(constraint)
+			? constraint.some(c => this.check(c))
+			: [
+					{ [`${realm ?? this.realm}-${organization ?? this.organization}`]: constraint },
+					{ [`${organization ?? this.organization}`]: constraint },
+					{ [`${realm ?? this.realm}-*`]: constraint },
+					{ [`*-*`]: constraint },
+			  ].some(e => userwidgets.User.Permissions.check(this.key.permissions, e))
 	}
 	collectionCheck(collection: string): boolean {
 		return Object.values(this.key.permissions).some(
@@ -47,12 +49,7 @@ export class Identity {
 			| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
 			| undefined =>
 			(requires?.organization ? !!identity?.organization : true) && (requires?.realm ? Realm.is(identity?.realm) : true)
-		return (
-			((Array.isArray(constraint) ? constraint.some(c => identity?.check(c)) : identity?.check(constraint)) &&
-				requirement(identity) &&
-				identity) ||
-			undefined
-		)
+		return (identity?.check(constraint) && requirement(identity) && identity) || undefined
 	}
 	static async verify(
 		authorization: string | undefined,
