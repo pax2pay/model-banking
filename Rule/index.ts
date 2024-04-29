@@ -7,10 +7,18 @@ import { State as RuleState } from "./State"
 export type Rule = ModelRule
 
 export namespace Rule {
-	export const actions = ModelRule.actions
 	export type Action = ModelRule.Action
-	export const kinds = ModelRule.Base.kinds
+	export namespace Action {
+		export const values = ModelRule.actions
+	}
+	export type Category = ModelRule.Base.Category
+	export namespace Category {
+		export const values = ModelRule.Base.categories
+	}
 	export type Kind = ModelRule.Base.Kind
+	export namespace Kind {
+		export const values = ModelRule.Base.kinds
+	}
 	export import Other = ModelRule.Other
 	export import Score = ModelRule.Score
 	export import State = RuleState
