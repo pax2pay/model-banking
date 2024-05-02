@@ -1,24 +1,9 @@
-// import { isly } from "isly"
+import { Base } from "./Base"
+import { Paxgiro as FundingPaxgiro } from "./Paxgiro"
 
-export interface Funding {
-	type: "funding"
-	code: string
-	source: Funding.Source
-	reference: string // account.funder[code].reference
-}
+export type Funding = Funding.Paxgiro
 
 export namespace Funding {
-	export namespace Source {
-		export const values = ["paxgiro"] as const
-	}
-	export type Source = typeof Source.values[number]
-
-	// export const type = isly.object<Iban>({
-	// type: isly.string("iban"),
-	// iban: isly.string(),
-	// holder: isly.string(),
-	// institution: isly.string().optional(),
-	// transactor: isly.string().optional(),
-	// })
-	// export const is = type.is
+	export import Source = Base.Source
+	export type Paxgiro = FundingPaxgiro
 }

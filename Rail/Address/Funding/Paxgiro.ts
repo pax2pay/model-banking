@@ -1,5 +1,6 @@
-import type { Funding } from "./index"
+import { Base } from "./Base"
 
-export interface Paxgiro extends Funding {
+export interface Paxgiro extends Base {
 	source: "paxgiro"
+	reference: string
 }

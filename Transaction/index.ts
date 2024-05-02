@@ -13,6 +13,15 @@ import { Note as TransactionNote } from "./Note"
 import { Reference as TransactionReference } from "./Reference"
 import { Status as TransactionStatus } from "./Status"
 
+export const a: Pick<Transaction, "counterpart"> = {
+	counterpart: {
+		source: "paxgiro",
+		reference: "string",
+		type: "funding",
+		code: "string",
+	},
+}
+
 export interface Transaction extends Transaction.Creatable {
 	organization: string
 	accountId: string
