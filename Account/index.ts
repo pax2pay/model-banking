@@ -15,7 +15,7 @@ export interface Account extends Account.Creatable {
 		string, // code
 		{
 			// support many?
-			supplier: string // "paxgiro"
+			source: Rail.Address.Funding.Source // "paxgiro"
 			reference: string // "abc123" (account id)
 		}
 	>

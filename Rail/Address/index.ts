@@ -1,6 +1,6 @@
 import { isly } from "isly"
 import { Card as AddressCard } from "./Card"
-import { Funding as AddressInitiate } from "./Funding"
+import { Funding as AddressFunding } from "./Funding"
 import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
 import { PaxGiro as AddressPaxGiro } from "./PaxGiro"
@@ -9,7 +9,7 @@ import { Scan as AddressScan } from "./Scan"
 export type Address =
 	| AddressCard
 	| AddressCard.Counterpart
-	| AddressInitiate
+	| AddressFunding
 	| AddressIban
 	| AddressInternal
 	| AddressPaxGiro
@@ -87,17 +87,10 @@ export namespace Address {
 				Card.Counterpart.type.is(value))
 		)
 	}
-	export type PaxGiro = AddressPaxGiro
-	export const PaxGiro = AddressPaxGiro
-	export type Iban = AddressIban
-	export const Iban = AddressIban
-	export type Scan = AddressScan
-	export const Scan = AddressScan
-	export type Internal = AddressInternal
-	export const Internal = AddressInternal
-	export type Card = AddressCard
-	export const Card = AddressCard
-	export namespace Card {
-		export type Counterpart = AddressCard.Counterpart
-	}
+	export import PaxGiro = AddressPaxGiro
+	export import Iban = AddressIban
+	export import Scan = AddressScan
+	export import Internal = AddressInternal
+	export import Card = AddressCard
+	export import Funding = AddressFunding
 }

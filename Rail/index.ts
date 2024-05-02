@@ -14,26 +14,5 @@ export namespace Rail {
 		"credit",
 	] as const
 	export const type = isly.string<Rail>(rails)
-	export type Address = RailAddress
-	export namespace Address {
-		export type Type = RailAddress.Type
-		export const types = RailAddress.types
-		export const is = RailAddress.is
-		export const compare = RailAddress.compare
-		export const stringify = RailAddress.stringify
-		export const beautify = RailAddress.beautify
-		export type PaxGiro = RailAddress.PaxGiro
-		export const PaxGiro = RailAddress.PaxGiro
-		export type Iban = RailAddress.Iban
-		export const Iban = RailAddress.Iban
-		export type Scan = RailAddress.Scan
-		export const Scan = RailAddress.Scan
-		export type Internal = RailAddress.Internal
-		export const Internal = RailAddress.Internal
-		export type Card = RailAddress.Card
-		export const Card = RailAddress.Card
-		export namespace Card {
-			export type Counterpart = RailAddress.Card.Counterpart
-		}
-	}
+	export import Address = RailAddress
 }

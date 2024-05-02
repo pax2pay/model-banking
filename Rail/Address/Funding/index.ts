@@ -3,11 +3,16 @@
 export interface Funding {
 	type: "funding"
 	code: string
-	supplier?: string // account.funder[code].supplier
-	reference?: string // account.funder[code].reference
+	source: Funding.Source
+	reference: string // account.funder[code].reference
 }
 
 export namespace Funding {
+	export namespace Source {
+		export const values = ["paxgiro"] as const
+	}
+	export type Source = typeof Source.values[number]
+
 	// export const type = isly.object<Iban>({
 	// type: isly.string("iban"),
 	// iban: isly.string(),
