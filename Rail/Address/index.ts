@@ -3,13 +3,13 @@ import { Card as AddressCard } from "./Card"
 import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
 import { PaxGiro as AddressPaxGiro } from "./PaxGiro"
-import { PaxgiroFunding as AddressPaxgiroFunding } from "./PaxgiroFunding"
+import { PaxgiroCredit as AddressPaxgiroCredit } from "./PaxgiroCredit"
 import { Scan as AddressScan } from "./Scan"
 
 export type Address =
 	| AddressCard
 	| AddressCard.Counterpart
-	| AddressPaxgiroFunding
+	| AddressPaxgiroCredit
 	| AddressIban
 	| AddressInternal
 	| AddressPaxGiro
@@ -92,5 +92,5 @@ export namespace Address {
 	export import Scan = AddressScan
 	export import Internal = AddressInternal
 	export import Card = AddressCard
-	export import PaxgiroFunding = AddressPaxgiroFunding
+	export import PaxgiroFunding = AddressPaxgiroCredit
 }
