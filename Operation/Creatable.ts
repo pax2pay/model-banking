@@ -57,16 +57,6 @@ export namespace Creatable {
 					amount: isoly.Currency.add(currency, operationAmount, operationFee),
 					status: "pending",
 				},
-				[`fee_${stack}_${entry.batch}`]: {
-					type: "subtract" as const,
-					amount: operationFee,
-					status: "pending" as const,
-				},
-				[`settle_${stack}_${entry.batch}`]: {
-					type: "subtract" as const,
-					amount: operationAmount,
-					status: "pending" as const,
-				},
 			},
 		}
 	}
