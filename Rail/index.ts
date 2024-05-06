@@ -6,6 +6,7 @@ export namespace Rail {
 	export const rails = [
 		"internal",
 		"paxgiro",
+		"paxgiro-funding",
 		"mastercard",
 		"fasterpayments",
 		"chaps",

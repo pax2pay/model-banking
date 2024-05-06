@@ -11,7 +11,7 @@ export interface Account extends Account.Creatable {
 	readonly created: isoly.DateTime
 	readonly balances: Balances
 	readonly rails: Rail.Address[]
-	funders?: Rail.Address.Funding[]
+	counterparts?: Record<string, Rail.Address>
 	key?: string
 	readonly rules?: Rule[]
 }

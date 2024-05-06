@@ -1,21 +1,21 @@
 import { isly } from "isly"
 import { Card as AddressCard } from "./Card"
-import { Funding as AddressFunding } from "./Funding"
 import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
 import { PaxGiro as AddressPaxGiro } from "./PaxGiro"
+import { PaxgiroFunding as AddressPaxgiroFunding } from "./PaxgiroFunding"
 import { Scan as AddressScan } from "./Scan"
 
 export type Address =
 	| AddressCard
 	| AddressCard.Counterpart
-	| AddressFunding
+	| AddressPaxgiroFunding
 	| AddressIban
 	| AddressInternal
 	| AddressPaxGiro
 	| AddressScan
 export namespace Address {
-	export const types = ["paxgiro", "internal", "iban", "scan", "card"] as const
+	export const types = ["paxgiro", "internal", "iban", "scan", "card", "funding"] as const
 	export type Type = typeof types[number]
 	export const type = isly.string(types)
 	export function compare(addresses: [Address, Address]): boolean {
@@ -92,5 +92,5 @@ export namespace Address {
 	export import Scan = AddressScan
 	export import Internal = AddressInternal
 	export import Card = AddressCard
-	export import Funding = AddressFunding
+	export import PaxgiroFunding = AddressPaxgiroFunding
 }

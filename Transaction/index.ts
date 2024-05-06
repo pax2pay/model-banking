@@ -13,16 +13,11 @@ import { Note as TransactionNote } from "./Note"
 import { Reference as TransactionReference } from "./Reference"
 import { Status as TransactionStatus } from "./Status"
 
-export const a: Pick<Transaction, "counterpart"> = {
-	counterpart: {
-		source: "paxgiro",
-		reference: "string",
-		type: "funding",
-		code: "string",
-	},
-}
-
-export interface Transaction extends Transaction.Creatable {
+export interface Transaction {
+	counterpart: Rail.Address
+	currency: isoly.Currency
+	amount: number
+	description: string
 	organization: string
 	accountId: string
 	accountName?: string
@@ -72,7 +67,11 @@ export namespace Transaction {
 	export type Status = TransactionStatus
 	export const Status = TransactionStatus
 
-	export const type = Creatable.type.extend<Transaction>({
+	export const type = isly.object<Transaction>({
+		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
+		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
+		amount: isly.number(),
+		description: isly.string(),
 		organization: isly.string(),
 		accountId: isly.string(),
 		accountName: isly.string().optional(),

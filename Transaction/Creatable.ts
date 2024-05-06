@@ -3,7 +3,7 @@ import { isly } from "isly"
 import { Rail } from "../Rail"
 
 export interface Creatable {
-	counterpart: Rail.Address
+	counterpart: string | Rail.Address
 	currency: isoly.Currency
 	amount: number
 	description: string
