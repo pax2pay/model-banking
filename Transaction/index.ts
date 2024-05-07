@@ -14,7 +14,7 @@ import { Reference as TransactionReference } from "./Reference"
 import { Status as TransactionStatus } from "./Status"
 
 export interface Transaction {
-	counterpart: Rail.Address
+	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
 	amount: number
 	description: string
