@@ -21,8 +21,8 @@ export namespace Account {
 		id: isly.string(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		balances: Balances.type,
-		rails: Rail.Address.isType.array(),
-		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.isType).optional(),
+		rails: Rail.Address.type.array(),
+		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.type).optional(),
 		key: isly.string().optional(),
 		rules: Rule.type.array().optional(),
 	})

@@ -67,7 +67,7 @@ export namespace Transaction {
 		organization: isly.string(),
 		accountId: isly.string(),
 		accountName: isly.string().optional(),
-		account: Rail.Address.isType,
+		account: Rail.Address.type,
 		type: isly.string(types).optional(),
 		direction: isly.string(directions).optional(),
 		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
