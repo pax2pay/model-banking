@@ -17,7 +17,6 @@ export type Address =
 export namespace Address {
 	export const types = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
 	export type Type = typeof types[number]
-	export const type = isly.string(types)
 	export function compare(addresses: [Address, Address]): boolean {
 		return Object.entries(addresses[0]).every(
 			([key, value]: [keyof Address, Address[keyof Address]]) => value == addresses[1][key]
@@ -81,7 +80,7 @@ export namespace Address {
 		}
 		return result
 	}
-	export const isType = isly.union<Address>(
+	export const type = isly.union<Address>(
 		AddressCard.type,
 		AddressCard.Counterpart.type,
 		AddressPaxgiroCredit.type,
@@ -90,7 +89,7 @@ export namespace Address {
 		AddressPaxGiro.type,
 		AddressScan.type
 	)
-	export const is = isType.is
+	export const is = type.is
 	export import PaxGiro = AddressPaxGiro
 	export import Iban = AddressIban
 	export import Scan = AddressScan
