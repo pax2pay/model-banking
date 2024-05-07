@@ -21,8 +21,8 @@ export namespace Account {
 		id: isly.string(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		balances: Balances.type,
-		rails: Rail.Address.isType.array(),
-		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.isType),
+		rails: Rail.Address.type.array(),
+		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.type).optional(),
 		key: isly.string().optional(),
 		rules: Rule.type.array().optional(),
 	})
@@ -31,7 +31,5 @@ export namespace Account {
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
 		return cryptly.Identifier.is(value, 8)
 	}
-
-	export type Creatable = AccountCreatable
-	export const Creatable = AccountCreatable
+	export import Creatable = AccountCreatable
 }

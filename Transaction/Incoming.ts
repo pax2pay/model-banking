@@ -16,8 +16,8 @@ export interface Incoming {
 }
 export namespace Incoming {
 	export const type = isly.object<Incoming>({
-		account: Rail.Address.isType,
-		counterpart: Rail.Address.isType,
+		account: Rail.Address.type,
+		counterpart: Rail.Address.type,
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		amount: isly.number(),
 		description: isly.string(),
