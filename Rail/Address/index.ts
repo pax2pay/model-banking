@@ -3,17 +3,19 @@ import { Card as AddressCard } from "./Card"
 import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
 import { PaxGiro as AddressPaxGiro } from "./PaxGiro"
+import { PaxgiroCredit as AddressPaxgiroCredit } from "./PaxgiroCredit"
 import { Scan as AddressScan } from "./Scan"
 
 export type Address =
-	| AddressPaxGiro
-	| AddressInternal
-	| AddressIban
-	| AddressScan
 	| AddressCard
 	| AddressCard.Counterpart
+	| AddressPaxgiroCredit
+	| AddressIban
+	| AddressInternal
+	| AddressPaxGiro
+	| AddressScan
 export namespace Address {
-	export const types = ["paxgiro", "internal", "iban", "scan", "card"] as const
+	export const types = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
 	export type Type = typeof types[number]
 	export const type = isly.string(types)
 	export function compare(addresses: [Address, Address]): boolean {
@@ -49,6 +51,9 @@ export namespace Address {
 			case "card":
 				result = "id" in Address ? `${Address.type}-${Address.id}` : `${Address.type}-merchant-${Address.merchant.id}`
 				break
+			case "paxgiro-credit":
+				result = `${Address.type}-${Address.reference}`
+				break
 		}
 		return result
 	}
@@ -70,32 +75,26 @@ export namespace Address {
 			case "card":
 				result = "id" in Address ? `${Address.type}-${Address.id}` : `${Address.type}-merchant-${Address.merchant.id}`
 				break
+			case "paxgiro-credit":
+				result = `${Address.type}-${Address.reference}`
+				break
 		}
 		return result
 	}
-	export function is(value: Address | any): value is Address {
-		return (
-			value &&
-			typeof value == "object" &&
-			(PaxGiro.is(value) ||
-				Iban.is(value) ||
-				Internal.is(value) ||
-				Scan.is(value) ||
-				Card.is(value) ||
-				Card.Counterpart.type.is(value))
-		)
-	}
-	export type PaxGiro = AddressPaxGiro
-	export const PaxGiro = AddressPaxGiro
-	export type Iban = AddressIban
-	export const Iban = AddressIban
-	export type Scan = AddressScan
-	export const Scan = AddressScan
-	export type Internal = AddressInternal
-	export const Internal = AddressInternal
-	export type Card = AddressCard
-	export const Card = AddressCard
-	export namespace Card {
-		export type Counterpart = AddressCard.Counterpart
-	}
+	export const isType = isly.union<Address>(
+		AddressCard.type,
+		AddressCard.Counterpart.type,
+		AddressPaxgiroCredit.type,
+		AddressIban.type,
+		AddressInternal.type,
+		AddressPaxGiro.type,
+		AddressScan.type
+	)
+	export const is = isType.is
+	export import PaxGiro = AddressPaxGiro
+	export import Iban = AddressIban
+	export import Scan = AddressScan
+	export import Internal = AddressInternal
+	export import Card = AddressCard
+	export import PaxgiroFunding = AddressPaxgiroCredit
 }

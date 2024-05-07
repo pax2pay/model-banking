@@ -7,21 +7,22 @@ import { Rule } from "../Rule"
 import { Creatable as AccountCreatable } from "./Creatable"
 
 export interface Account extends Account.Creatable {
-	readonly id: cryptly.Identifier
-	readonly created: isoly.DateTime
-	readonly balances: Balances
-	readonly rails: Rail.Address[]
+	id: cryptly.Identifier
+	created: isoly.DateTime
+	balances: Balances
+	rails: Rail.Address[]
+	counterparts?: Record<string, Rail.Address>
 	key?: string
-	readonly rules?: Rule[]
+	rules?: Rule[]
 }
-
 export namespace Account {
 	export const type = isly.object<Account>({
 		name: isly.string(),
 		id: isly.string(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
-		balances: isly.fromIs("Balances", Balances.is),
-		rails: isly.fromIs("Rail.Address", Rail.Address.is).array(),
+		balances: Balances.type,
+		rails: Rail.Address.isType.array(),
+		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.isType),
 		key: isly.string().optional(),
 		rules: Rule.type.array().optional(),
 	})
