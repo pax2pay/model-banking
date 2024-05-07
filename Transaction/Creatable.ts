@@ -10,7 +10,7 @@ export interface Creatable {
 }
 export namespace Creatable {
 	export const type = isly.object<Creatable>({
-		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
+		counterpart: isly.union<string | Rail.Address, string, Rail.Address>(isly.string(), Rail.Address.isType),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		amount: isly.number(),
 		description: isly.string(),

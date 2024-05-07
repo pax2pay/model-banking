@@ -2,18 +2,25 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Rail } from "../Rail"
 import { Settlement } from "../Settlement"
-import { Creatable as TransactionCreatable } from "./Creatable"
 import { Reference as TransactionReference } from "./Reference"
 
-export interface Incoming extends TransactionCreatable {
+export interface Incoming {
 	account: Rail.Address
+	counterpart: Rail.Address
+	currency: isoly.Currency
+	amount: number
+	description: string
 	posted: string
 	rail?: Rail
 	reference?: TransactionReference
 }
 export namespace Incoming {
-	export const type = TransactionCreatable.type.extend<Incoming>({
-		account: isly.fromIs("Rail.Address", Rail.Address.is),
+	export const type = isly.object<Incoming>({
+		account: Rail.Address.isType,
+		counterpart: Rail.Address.isType,
+		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
+		amount: isly.number(),
+		description: isly.string(),
 		posted: isly.string(),
 		rail: Rail.type.optional(),
 		reference: TransactionReference.type.optional(),

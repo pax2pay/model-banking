@@ -1,6 +1,9 @@
+import { isly } from "isly"
+
 export interface PaxgiroCredit {
-	source: "paxgiro"
-	type: "funding"
+	type: "paxgiro-credit"
 	reference: string
 }
-export namespace PaxgiroCredit {}
+export namespace PaxgiroCredit {
+	export const type = isly.object<PaxgiroCredit>({ type: isly.string("paxgiro-credit"), reference: isly.string() })
+}

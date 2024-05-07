@@ -15,7 +15,7 @@ export type Address =
 	| AddressPaxGiro
 	| AddressScan
 export namespace Address {
-	export const types = ["paxgiro", "internal", "iban", "scan", "card", "funding"] as const
+	export const types = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
 	export type Type = typeof types[number]
 	export const type = isly.string(types)
 	export function compare(addresses: [Address, Address]): boolean {
@@ -51,6 +51,9 @@ export namespace Address {
 			case "card":
 				result = "id" in Address ? `${Address.type}-${Address.id}` : `${Address.type}-merchant-${Address.merchant.id}`
 				break
+			case "paxgiro-credit":
+				result = `${Address.type}-${Address.reference}`
+				break
 		}
 		return result
 	}
@@ -72,21 +75,22 @@ export namespace Address {
 			case "card":
 				result = "id" in Address ? `${Address.type}-${Address.id}` : `${Address.type}-merchant-${Address.merchant.id}`
 				break
+			case "paxgiro-credit":
+				result = `${Address.type}-${Address.reference}`
+				break
 		}
 		return result
 	}
-	export function is(value: Address | any): value is Address {
-		return (
-			value &&
-			typeof value == "object" &&
-			(PaxGiro.is(value) ||
-				Iban.is(value) ||
-				Internal.is(value) ||
-				Scan.is(value) ||
-				Card.is(value) ||
-				Card.Counterpart.type.is(value))
-		)
-	}
+	export const isType = isly.union<Address>(
+		AddressCard.type,
+		AddressCard.Counterpart.type,
+		AddressPaxgiroCredit.type,
+		AddressIban.type,
+		AddressInternal.type,
+		AddressPaxGiro.type,
+		AddressScan.type
+	)
+	export const is = isType.is
 	export import PaxGiro = AddressPaxGiro
 	export import Iban = AddressIban
 	export import Scan = AddressScan

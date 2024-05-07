@@ -24,9 +24,9 @@ export interface Transaction {
 	account: Rail.Address
 	type?: Transaction.Types
 	direction?: Transaction.Direction
-	readonly id: cryptly.Identifier
-	readonly reference?: Transaction.Reference
-	readonly posted: isoly.DateTime
+	id: cryptly.Identifier
+	reference?: Transaction.Reference
+	posted: isoly.DateTime
 	transacted?: isoly.DateTime
 	by?: string
 	balance: {
@@ -48,24 +48,16 @@ export namespace Transaction {
 	export type Types = typeof types[number]
 	export const directions = ["inbound", "outbound"] as const
 	export type Direction = typeof directions[number]
-	export type Creatable = TransactionCreatable
-	export const Creatable = TransactionCreatable
+	export import Creatable = TransactionCreatable
 	export type Collect = TransactionCollect
 	export const Collect = TransactionCollect
 	export namespace Collect {
 		export type Creatable = TransactionCollect.Creatable
 	}
-	export type Incoming = TransactionIncoming
-	export const Incoming = TransactionIncoming
-	export type Reference = TransactionReference
-	export const Reference = TransactionReference
-	export type Note = TransactionNote
-	export const Note = TransactionNote
-	export namespace Note {
-		export type Creatable = TransactionNote.Creatable
-	}
-	export type Status = TransactionStatus
-	export const Status = TransactionStatus
+	export import Incoming = TransactionIncoming
+	export import Reference = TransactionReference
+	export import Note = TransactionNote
+	export import Status = TransactionStatus
 
 	export const type = isly.object<Transaction>({
 		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
@@ -75,7 +67,7 @@ export namespace Transaction {
 		organization: isly.string(),
 		accountId: isly.string(),
 		accountName: isly.string().optional(),
-		account: isly.fromIs("Rail", Rail.Address.is),
+		account: Rail.Address.isType,
 		type: isly.string(types).optional(),
 		direction: isly.string(directions).optional(),
 		id: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is).readonly(),
@@ -115,7 +107,7 @@ export namespace Transaction {
 		accountName: string,
 		account: Rail.Address,
 		rail: Rail,
-		creatable: Creatable,
+		creatable: Creatable & { counterpart: Rail.Address },
 		operations: Operation.Creatable[],
 		balance: {
 			actual: number
@@ -194,7 +186,10 @@ export namespace Transaction {
 		transaction.flags = Array.from(current)
 		transaction.oldFlags = Array.from(old)
 	}
-	export function getType(transaction: TransactionCreatable, accountName: string): Types {
+	export function getType(
+		transaction: TransactionCreatable & { counterpart: Rail.Address },
+		accountName: string
+	): Types {
 		let result: Types
 		if (accountName.startsWith("settlement-") || accountName.startsWith("fee-"))
 			result = "system"

@@ -1,4 +1,5 @@
 import { cryptly } from "cryptly"
+import { isly } from "isly"
 
 export interface PaxGiro {
 	type: "paxgiro"
@@ -6,7 +7,6 @@ export interface PaxGiro {
 }
 export namespace PaxGiro {
 	export const currencies = ["EUR", "GBP", "SEK", "USD"] as const
-	export function is(value: PaxGiro | any): value is PaxGiro {
-		return typeof value == "object" && cryptly.Identifier.is(value.identifier, 8) && value.type == "paxgiro"
-	}
+	export const type = isly.object<PaxGiro>({ type: isly.string("paxgiro"), identifier: isly.string() })
+	export const is = type.is
 }
