@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { Realm } from "../../Realm"
 import { Card as AddressCard } from "./Card"
 import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
@@ -15,8 +16,15 @@ export type Address =
 	| AddressPaxGiro
 	| AddressScan
 export namespace Address {
-	export const types = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
-	export type Type = typeof types[number]
+	export const realm: Record<Realm, string[]> = {
+		test: ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"],
+		testUK: ["internal", "iban", "scan", "card"],
+		uk: ["internal", "iban", "scan", "card"],
+		eu: ["internal", "iban", "scan", "card"],
+		upcheck: ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"],
+	}
+	export const values = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
+	export type Type = typeof values[number]
 	export function compare(addresses: [Address, Address]): boolean {
 		return Object.entries(addresses[0]).every(
 			([key, value]: [keyof Address, Address[keyof Address]]) => value == addresses[1][key]
