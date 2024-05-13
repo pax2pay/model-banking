@@ -20,14 +20,14 @@ export namespace Realm {
 		eu: "EUR",
 	}
 	export const suppliers: Record<Realm, modelSupplier[]> = {
-		test: ["paxgiro"],
+		test: ["paxgiro", "paxgiro-credit"],
 		testUK: ["clearbank"],
 		uk: ["clearbank"],
 		eu: [],
 		upcheck: ["paxgiro"],
 	}
 	export interface Suppliers extends Record<Realm, modelSupplier[]> {
-		test: ["paxgiro"]
+		test: ["paxgiro", "paxgiro-credit"]
 		testUK: ["clearbank"]
 		uk: ["clearbank"]
 		eu: []
