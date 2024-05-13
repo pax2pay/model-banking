@@ -63,20 +63,12 @@ export namespace Card {
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 	})
 	export const is = type.is
-	export type Creatable = CardCreatable
-	export const Creatable = CardCreatable
-	export type Preset = CardPreset
-	export const Preset = CardPreset
-	export type Meta = CardMeta
-	export const Meta = CardMeta
-	export type Expiry = CardExpiry
-	export const Expiry = CardExpiry
-	export type Changeable = CardChangeable
-	export const Changeable = CardChangeable
-	export type Operation = CardOperation
-	export const Operation = CardOperation
-	export type Scheme = CardScheme
-	export const Scheme = CardScheme
-	export type Stack = CardStack
-	export const Stack = CardStack
+	export import Creatable = CardCreatable
+	export import Preset = CardPreset
+	export import Meta = CardMeta
+	export import Expiry = CardExpiry
+	export import Changeable = CardChangeable
+	export import Operation = CardOperation
+	export import Scheme = CardScheme
+	export import Stack = CardStack
 }
