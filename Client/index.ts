@@ -40,7 +40,11 @@ export class Client extends rest.Client<gracely.Error> {
 		let httpClient: http.Client<gracely.Error>
 		const result: Client = new Client(
 			(httpClient = new http.Client<gracely.Error>(server, key, {
-				appendHeader: request => ({ ...request.header, realm: result.realm, organization: result.organization }),
+				appendHeader: request => ({
+					...request.header,
+					realm: result.realm,
+					organization: request.header.organization ?? result.organization,
+				}),
 				postprocess: async response => {
 					let result = response
 					const body = await response.body
