@@ -20,6 +20,7 @@ export class Accounts extends rest.Collection<gracely.Error> {
 	async list(options?: {
 		limit?: string
 		cursor?: string
+		organization?: string
 	}): Promise<(Account[] & { cursor?: string | undefined }) | gracely.Error> {
 		return this.client.get<Account[] & { cursor?: string | undefined }>("/account", options)
 	}
