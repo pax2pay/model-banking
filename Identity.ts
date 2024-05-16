@@ -11,7 +11,7 @@ export class Identity {
 	constructor(readonly key: Key, readonly realm?: Realm, readonly organization?: string) {}
 	check(constraint: Key.Permissions | Key.Permissions[], realm?: Realm, organization?: string): boolean {
 		return Array.isArray(constraint)
-			? constraint.some(c => this.check(c))
+			? constraint.some(c => this.check(c, realm, organization))
 			: [
 					{ [`${realm ?? this.realm}-${organization ?? this.organization}`]: constraint },
 					{ [`${organization ?? this.organization}`]: constraint },
