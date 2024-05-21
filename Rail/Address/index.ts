@@ -5,6 +5,7 @@ import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
 import { PaxGiro as AddressPaxGiro } from "./PaxGiro"
 import { PaxgiroCredit as AddressPaxgiroCredit } from "./PaxgiroCredit"
+import { Route as AddressRoute } from "./Route"
 import { Scan as AddressScan } from "./Scan"
 
 export type Address =
@@ -104,4 +105,5 @@ export namespace Address {
 	export import Internal = AddressInternal
 	export import Card = AddressCard
 	export import PaxgiroFunding = AddressPaxgiroCredit
+	export import Route = AddressRoute
 }
