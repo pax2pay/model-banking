@@ -1,15 +1,11 @@
 import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { http } from "cloudly-http"
-import * as rest from "cloudly-rest"
 import { Treasury as TreasuryModel } from "../Treasury"
 import { Result } from "../Treasury/Balance"
 
-export class Treasury extends rest.Collection<gracely.Error> {
-	constructor(client: http.Client) {
-		super(client)
-	}
-
+export class Treasury {
+	constructor(private readonly client: http.Client) {}
 	async change(currency: isoly.Currency, changes: Result[]): Promise<gracely.Result> {
 		return this.client.patch(`/treasury/${currency}`, changes)
 	}
@@ -19,5 +15,8 @@ export class Treasury extends rest.Collection<gracely.Error> {
 	}
 	async listTransactions(accountId: string): Promise<TreasuryModel.Transaction[] | gracely.Error> {
 		return this.client.get<TreasuryModel.Transaction[]>(`/treasury/account/${accountId}/transaction`)
+	}
+	async listAccounts(): Promise<TreasuryModel.Account[] | gracely.Error> {
+		return this.client.get<TreasuryModel.Account[]>(`/treasury/account`)
 	}
 }
