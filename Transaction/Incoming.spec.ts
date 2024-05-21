@@ -47,7 +47,7 @@ const transaction: pax2pay.Transaction = {
 			created: "2023-12-05T17:26:36.977Z",
 		},
 	],
-	status: "created",
+	status: "review",
 	rail: "paxgiro",
 	flags: [],
 	oldFlags: [],
