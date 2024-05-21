@@ -17,6 +17,7 @@ export namespace Status {
 		"invalid csc",
 		"system failure",
 		"invalid request",
+		"expired",
 		"denied",
 	] as const
 	export type Reason = typeof reasons[number]
