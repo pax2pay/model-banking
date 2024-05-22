@@ -79,7 +79,7 @@ const transaction: pax2pay.Transaction.Event = {
 			created: "2023-08-29T13:28:37.269Z",
 		},
 	],
-	status: "rejected",
+	status: ["rejected", "denied"],
 	rail: "mastercard",
 	flags: [],
 	oldFlags: [],

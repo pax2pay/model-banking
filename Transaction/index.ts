@@ -37,7 +37,7 @@ export interface Transaction {
 	operations: Operation[]
 	status: Transaction.Status
 	rail?: Rail
-	flags: ("review" | string)[]
+	flags: string[]
 	oldFlags: string[]
 	notes: Transaction.Note[]
 	risk?: number
@@ -83,7 +83,7 @@ export namespace Transaction {
 		operations: Operation.type.array(),
 		status: Status.type,
 		rail: Rail.type.optional(),
-		flags: isly.array(isly.string() || "review"),
+		flags: isly.string().array(),
 		oldFlags: isly.string().array(),
 		notes: Note.type.array(),
 		risk: isly.number().optional(),
@@ -132,7 +132,7 @@ export namespace Transaction {
 			by,
 			balance,
 			operations: operations.map(o => Operation.fromCreatable(id, o)),
-			status: "created",
+			status: "review",
 			rail,
 			flags: [],
 			oldFlags: [],
@@ -162,7 +162,7 @@ export namespace Transaction {
 			balance,
 			id,
 			operations: operations.map(o => Operation.fromCreatable(id, o)),
-			status: "created",
+			status: "review",
 			flags: [],
 			oldFlags: [],
 			notes: [],
@@ -223,9 +223,11 @@ export namespace Transaction {
 		amount: (transaction: Transaction) =>
 			transaction.amount.toFixed(isoly.Currency.decimalDigits(transaction.currency)),
 		currency: (transaction: Transaction) => transaction.currency,
-		status: (transaction: Transaction) => transaction.status,
+		status: (transaction: Transaction) =>
+			typeof transaction.status == "string" ? transaction.status : transaction.status[0],
 		"flags.current": (transaction: Transaction) => transaction.flags.join(" "),
 		"flags.past": (transaction: Transaction) => transaction.oldFlags.join(" "),
+		reason: (transaction: Transaction) => (typeof transaction.status == "string" ? undefined : transaction.status[1]),
 	}
 	function readableDate(date: isoly.DateTime | undefined): string | undefined {
 		return date && date.slice(0, 10) + " " + (date.endsWith("Z") ? date.slice(11, -1) : date.slice(11))
