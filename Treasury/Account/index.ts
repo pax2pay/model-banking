@@ -5,6 +5,7 @@ import { Rail } from "../../Rail"
 import { Realm } from "../../Realm"
 import { Supplier } from "../../Supplier"
 import { Balance } from "../Balance"
+import { Transaction } from "../Transaction"
 import { Category as AccountCategory } from "./Category"
 import { Conditions as AccountConditions } from "./Conditions"
 import { Creatable as AccountCreatable } from "./Creatable"
@@ -24,35 +25,24 @@ export interface Account {
 	rail: Rail.Address[]
 	balance: Balance
 }
-
 export namespace Account {
 	export const type = isly.object<Account>({
 		id: isly.string(),
 		created: isly.fromIs("Treasury.Account.Created", isoly.DateTime.is),
 		name: isly.string(),
-		realm: isly.fromIs("realm", Realm.is),
-		supplier: isly.fromIs("supplier", Supplier.is),
+		realm: Realm.type,
+		supplier: Supplier.type,
 		reference: isly.string(),
 		currencies: isly.fromIs("Treasury.Account.currencies", isoly.Currency.is).array(),
 		type: AccountCategory.type,
 		conditions: AccountConditions.type,
-		rail: isly.fromIs("Treasury.Account.rail", Rail.Address.is).array(),
+		rail: Rail.Address.type.array(),
 		balance: isly.fromIs("Treasury.Account.balance", Balance.is),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
-	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
-		return cryptly.Identifier.is(value, 8)
-	}
-
-	export type Creatable = AccountCreatable
-	export const Creatable = AccountCreatable
-	export type Storable = AccountStorable
-	export const Storable = AccountStorable
-	export type Fetchable = AccountFetchable
-	export const Fetchable = AccountFetchable
-	export type Category = AccountCategory
-	export const Category = AccountCategory
-	export type Conditions = AccountConditions
-	export const Conditions = AccountConditions
+	export type Listable = Account & { transactions: Transaction[] }
+	export import Creatable = AccountCreatable
+	export import Storable = AccountStorable
+	export import Fetchable = AccountFetchable
+	export import Category = AccountCategory
+	export import Conditions = AccountConditions
 }
