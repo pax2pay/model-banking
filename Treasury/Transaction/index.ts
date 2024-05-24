@@ -1,25 +1,17 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
+import { isly } from "isly"
 import { Rail } from "../../Rail"
 import { Creatable as TransactionCreatable } from "./Creatable"
 
 export interface Transaction extends TransactionCreatable {
+	id: cryptly.Identifier
+	created: string
 	debtor: Rail.Address
-	readonly id: cryptly.Identifier
-	readonly created: isoly.DateTime
 }
 export namespace Transaction {
-	export function is(value: any | Transaction): value is Transaction {
-		return (
-			value &&
-			typeof value == "object" &&
-			Rail.Address.is(value.debtor) &&
-			cryptly.Identifier.is(value.id) &&
-			isoly.DateTime.is(value.created) &&
-			Creatable.is({ ...value })
-		)
-	}
-	export function fromCreatable(transaction: TransactionCreatable, debtor: Rail.Address): Transaction {
+	export import Creatable = TransactionCreatable
+	export function fromCreatable(transaction: Creatable, debtor: Rail.Address): Transaction {
 		return {
 			debtor,
 			id: cryptly.Identifier.generate(8),
@@ -27,7 +19,9 @@ export namespace Transaction {
 			...transaction,
 		}
 	}
-
-	export const Creatable = TransactionCreatable
-	export type Creatable = TransactionCreatable
+	export const type = Creatable.type.extend<Transaction>({
+		id: isly.string(),
+		created: isly.string(),
+		debtor: Rail.Address.type,
+	})
 }

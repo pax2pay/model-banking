@@ -1,4 +1,5 @@
 import { isoly } from "isoly"
+import { isly } from "isly"
 import { Rail } from "../../Rail"
 
 export interface Creatable {
@@ -6,18 +7,14 @@ export interface Creatable {
 	currency: isoly.Currency
 	amount: number
 	description: string
+	external?: string
 }
-
 export namespace Creatable {
-	export function is(value: Creatable | any): value is Creatable {
-		return (
-			value &&
-			typeof value == "object" &&
-			value.creditor &&
-			Rail.Address.is(value.creditor) &&
-			isoly.Currency.is(value.currency) &&
-			typeof value.amount == "number" &&
-			typeof value.description == "string"
-		)
-	}
+	export const type = isly.object<Creatable>({
+		creditor: Rail.Address.type,
+		currency: isly.fromIs("transaction.currency", isoly.Currency.is),
+		amount: isly.number(),
+		description: isly.string(),
+		external: isly.string().optional(),
+	})
 }

@@ -13,11 +13,11 @@ export namespace Treasury {
 			"hours"
 		)
 	}
-	export type Account = TreasuryAccount
-	export type Transaction = TreasuryTransaction
+	export import Transaction = TreasuryTransaction
+	export import Snapshot = TreasurySnapshot
 	export type Balance = TreasuryBalance
 	export const Balance = TreasuryBalance
-	export import Snapshot = TreasurySnapshot
+	export type Account = TreasuryAccount
 	export namespace Account {
 		export type Creatable = TreasuryAccount.Creatable
 		export const Creatable = TreasuryAccount.Creatable
