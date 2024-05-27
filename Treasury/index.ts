@@ -15,20 +15,7 @@ export namespace Treasury {
 	}
 	export import Transaction = TreasuryTransaction
 	export import Snapshot = TreasurySnapshot
+	export import Account = TreasuryAccount
 	export type Balance = TreasuryBalance
 	export const Balance = TreasuryBalance
-	export type Account = TreasuryAccount
-	export namespace Account {
-		export type Creatable = TreasuryAccount.Creatable
-		export const Creatable = TreasuryAccount.Creatable
-		export type Storable = TreasuryAccount.Storable
-		export const Storable = TreasuryAccount.Storable
-		export type Fetchable = TreasuryAccount.Fetchable
-		export const Fetchable = TreasuryAccount.Fetchable
-		export type Conditions = TreasuryAccount.Conditions
-		export const Conditions = TreasuryAccount.Conditions
-		export type Category = TreasuryAccount.Category
-		export const Category = TreasuryAccount.Category
-		export const is = TreasuryAccount.is
-	}
 }
