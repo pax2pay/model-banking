@@ -16,21 +16,14 @@ export namespace funding {
 			return isoly.DateTime.invert(cursor.split("|")[1])
 		}
 	}
-	type FundingCursors = Partial<Record<isoly.Currency, Cursor>>
-	type SnapshotCursor = { snapshot?: string }
-	export type Cursors = FundingCursors & SnapshotCursor
+	export type Cursors = Partial<Record<isoly.Currency, Cursor>>
 	export namespace Cursors {
-		export const type = isly.intersection<Cursors, FundingCursors, SnapshotCursor>(
-			isly.record<FundingCursors>(isly.fromIs("isoly.Currency", isoly.Currency.is), Cursor.type),
-			isly.object<SnapshotCursor>({
-				snapshot: isly.string().optional(),
-			})
-		)
+		export const type = isly.record<Cursors>(isly.fromIs("isoly.Currency", isoly.Currency.is), Cursor.type)
 		export function updateAmount(settlement: Transaction, cursors: Cursors): Cursors {
 			const cursor = cursors[settlement.currency]
 			if (!cursor)
 				cursors[settlement.currency] = {
-					cursor: cursors.snapshot ?? Cursor.fromTransaction(settlement),
+					cursor: Cursor.fromTransaction(settlement),
 					amount: Math.abs(settlement.amount),
 				}
 			else {
