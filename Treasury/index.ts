@@ -16,6 +16,5 @@ export namespace Treasury {
 	export import Transaction = TreasuryTransaction
 	export import Snapshot = TreasurySnapshot
 	export import Account = TreasuryAccount
-	export type Balance = TreasuryBalance
-	export const Balance = TreasuryBalance
+	export import Balance = TreasuryBalance
 }
