@@ -3,12 +3,14 @@ import { Realm } from "../Realm"
 
 export type Stack = typeof Stack.stacks[number]
 
+// realm-scheme-processor(-processor...)
 export namespace Stack {
 	export const stacks = [
 		"test-paxgiro",
 		"test-tpl-paxgiro",
 		"testUK-marqeta",
 		"testUK-tpl-marqeta",
+		"test-diners-dpg",
 		"uk-mc-tpl-marqeta",
 	] as const
 	export const type = isly.string(stacks)
