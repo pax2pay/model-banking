@@ -8,6 +8,7 @@ export namespace Rail {
 		"paxgiro",
 		"paxgiro-credit",
 		"mastercard",
+		"diners",
 		"fasterpayments",
 		"chaps",
 		"bacs",
