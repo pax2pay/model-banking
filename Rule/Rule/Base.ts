@@ -13,7 +13,7 @@ export interface Base {
 export namespace Base {
 	export const kinds = ["authorization", "outbound", "inbound"] as const
 	export type Kind = typeof kinds[number]
-	export const categories = ["customer", "product", "fincrime"] as const
+	export const categories = ["fincrime", "product", "customer"] as const
 	export type Category = typeof categories[number]
 	export const type = isly.object<Base>({
 		code: isly.string(new RegExp(/^[a-z0-9\-_]+$/)),
