@@ -17,5 +17,6 @@ export interface Data {
 			media: string[]
 			sabre: string[]
 		}
+		code: Record<string, string[]>
 	}
 }
