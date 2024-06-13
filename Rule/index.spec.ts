@@ -175,6 +175,7 @@ describe("definitions", () => {
 					media: [],
 					sabre: [],
 				},
+				code: {},
 			},
 		},
 		account,
