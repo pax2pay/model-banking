@@ -19,4 +19,15 @@ export namespace Stack {
 	export function toRealm(stack: Stack): Realm {
 		return stack.split("-")[0] as Realm
 	}
+	export function toScheme(stack: Stack): string {
+		const scheme = stack.split("-")[1]
+		return scheme == "mc" ? "mastercard" : scheme == "diners" ? "diners" : "unknown"
+	}
+	export function toProcessor(stack: Stack): string {
+		return stack
+			.split("-")
+			.slice(2)
+			.map(e => (e == "tpl" ? "transact" : e))
+			.join("-")
+	}
 }
