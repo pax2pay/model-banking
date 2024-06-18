@@ -1,18 +1,15 @@
 import { isly } from "isly"
 import { Identifier } from "./Identifier"
-import { Realm } from "./Realm"
 
 export namespace Logger {
 	export interface Configuration {
-		realm: Realm
-		user?: string
+		realm?: string
 		collection: string
 		resource?: string
 	}
 	export namespace Configuration {
 		export const type = isly.object<Configuration>({
-			realm: Realm.type,
-			user: isly.string().optional(),
+			realm: isly.string().optional(),
 			collection: isly.string(),
 			resource: isly.string().optional(),
 		})
@@ -47,8 +44,8 @@ export namespace Logger {
 	export function addEntry(log: Log, entry: LogCreatable): Log {
 		return log.entries.concat(entry), log
 	}
-	export function configure(configuration: Configuration) {
-		console.log(configuration)
+	export function configure(collection: string, realm: string | undefined, resource?: string) {
+		console.log({ collection, realm, resource })
 	}
 	export function log(message: string, data?: any, resource?: any) {
 		console.log(toMessage(message, resource, data))
