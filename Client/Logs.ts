@@ -1,10 +1,10 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
-import { Log } from "../Log"
+import { Audit as AuditLog } from "../Audit"
 
-export class Logs {
+export class Audit {
 	constructor(private readonly client: http.Client) {}
-	async list(resource?: Log.Resource): Promise<Log[] | gracely.Error> {
-		return this.client.get<Log[]>(`/audit/${resource}`)
+	async list(resource?: AuditLog.Resource): Promise<AuditLog[] | gracely.Error> {
+		return this.client.get<AuditLog[]>(`/audit/${resource}`)
 	}
 }
