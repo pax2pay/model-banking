@@ -6,7 +6,6 @@ import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 import { Report } from "../Report"
 import type { Rule } from "../Rule"
-import { Collect as TransactionCollect } from "./Collect"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
@@ -49,11 +48,6 @@ export namespace Transaction {
 	export const directions = ["inbound", "outbound"] as const
 	export type Direction = typeof directions[number]
 	export import Creatable = TransactionCreatable
-	export type Collect = TransactionCollect
-	export const Collect = TransactionCollect
-	export namespace Collect {
-		export type Creatable = TransactionCollect.Creatable
-	}
 	export import Incoming = TransactionIncoming
 	export import Reference = TransactionReference
 	export import Note = TransactionNote
