@@ -11,16 +11,22 @@ export interface Base {
 	groups?: string[]
 }
 export namespace Base {
-	export const kinds = ["authorization", "outbound", "inbound"] as const
-	export type Kind = typeof kinds[number]
-	export const categories = ["fincrime", "product", "customer"] as const
-	export type Category = typeof categories[number]
+	export type Kind = typeof Kind.values[number]
+	export namespace Kind {
+		export const values = ["authorization", "outbound", "inbound"] as const
+		export const type = isly.string<Kind>(values)
+	}
+	export type Category = typeof Category.values[number]
+	export namespace Category {
+		export const values = ["fincrime", "product", "customer"] as const
+		export const type = isly.string<Category>(values)
+	}
 	export const type = isly.object<Base>({
-		code: isly.string(new RegExp(/^[a-z0-9\-_]+$/)),
+		code: isly.string(/^[a-z0-9\-_]+$/),
 		name: isly.string(),
 		description: isly.string(),
-		type: isly.string(kinds),
-		category: isly.string(categories),
+		type: Kind.type,
+		category: Category.type,
 		condition: isly.string(),
 		flags: isly.string().array(),
 		groups: isly.string().array().optional(),

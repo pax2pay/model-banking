@@ -5,7 +5,10 @@ export interface Other extends Base {
 	action: Other.Action
 }
 export namespace Other {
-	export const actions = ["review", "reject", "flag"] as const
-	export type Action = typeof actions[number]
-	export const type = Base.type.extend<Other>({ action: isly.string<Action>(actions) })
+	export type Action = typeof Action.values[number]
+	export namespace Action {
+		export const values = ["review", "reject", "flag"] as const
+		export const type = isly.string<Action>(values)
+	}
+	export const type = Base.type.extend<Other>({ action: Action.type })
 }

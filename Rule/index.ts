@@ -1,5 +1,4 @@
 import { selectively } from "selectively"
-import { isly } from "isly"
 import { definitions } from "./definitions"
 import { Rule as ModelRule, type as ruleType } from "./Rule"
 import { State as RuleState } from "./State"
@@ -7,18 +6,9 @@ import { State as RuleState } from "./State"
 export type Rule = ModelRule
 
 export namespace Rule {
-	export type Action = ModelRule.Action
-	export namespace Action {
-		export const values = ModelRule.actions
-	}
-	export type Category = ModelRule.Base.Category
-	export namespace Category {
-		export const values = ModelRule.Base.categories
-	}
-	export type Kind = ModelRule.Base.Kind
-	export namespace Kind {
-		export const values = ModelRule.Base.kinds
-	}
+	export import Action = ModelRule.Action
+	export import Category = ModelRule.Base.Category
+	export import Kind = ModelRule.Base.Kind
 	export import Other = ModelRule.Other
 	export import Score = ModelRule.Score
 	export import State = RuleState
@@ -46,7 +36,14 @@ export namespace Rule {
 		const result: Record<ModelRule.Other.Action, Rule[]> & { risk?: number } = { review: [], reject: [], flag: [] }
 		const [other, scorers] = rules.reduce(
 			(r: [ModelRule.Other[], ModelRule.Score[]], rule) => {
-				rule.action == "score" ? r[1].push(rule) : r[0].push(rule)
+				if (
+					!rule.groups ||
+					rule.groups.some(ruleGroup =>
+						state.organization?.groups?.some(organizationGroup => organizationGroup == ruleGroup)
+					)
+				) {
+					rule.action == "score" ? r[1].push(rule) : r[0].push(rule)
+				}
 				return r
 			},
 			[[], []]
@@ -57,7 +54,7 @@ export namespace Rule {
 		return result
 	}
 	export function isLegacy(rule: Rule): boolean {
-		return !isly.string(ModelRule.Base.categories).is(rule.category)
+		return !ModelRule.Base.Category.type.is(rule.category)
 	}
 	export function fromLegacy(rule: Rule): Rule {
 		return isLegacy(rule) ? { ...rule, category: "fincrime" } : rule
