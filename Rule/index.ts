@@ -32,8 +32,8 @@ export namespace Rule {
 		rules: Rule[],
 		state: State,
 		macros?: Record<string, selectively.Definition>
-	): Record<ModelRule.Other.Action, Rule[]> & { risk?: number } {
-		const result: Record<ModelRule.Other.Action, Rule[]> & { risk?: number } = { review: [], reject: [], flag: [] }
+	): Record<ModelRule.Other.Action, Rule[]> {
+		const result: Record<ModelRule.Other.Action, Rule[]> = { review: [], reject: [], flag: [] }
 		const [other, scorers] = rules.reduce(
 			(r: [ModelRule.Other[], ModelRule.Score[]], rule) => {
 				if (
@@ -49,7 +49,6 @@ export namespace Rule {
 			[[], []]
 		)
 		state.transaction.risk = score(scorers, state, macros)
-		result.risk = state.transaction.risk
 		other.forEach(rule => control(rule, state, macros) && result[rule.action].push(rule))
 		return result
 	}

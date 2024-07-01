@@ -1,5 +1,7 @@
+import { isly } from "isly"
 import { Account as ModelAccount } from "../../Account"
 import { Transaction as ModelTransaction } from "../../Transaction"
+import { Rule } from "../Rule"
 import { Account as StateAccount } from "./Account"
 import { Authorization as StateAuthorization } from "./Authorization"
 import { Card as StateCard } from "./Card"
@@ -15,15 +17,23 @@ export interface State {
 	authorization?: StateAuthorization
 	card?: StateCard
 	organization?: StateOrganization
+	outcome?: State.Outcome
+	flags?: string[]
+	notes?: ModelTransaction.Note[]
 }
-
 export namespace State {
+	export type Outcome = typeof Outcome.values[number]
+	export namespace Outcome {
+		export const values = ["approve", "reject", "review"]
+		export const type = isly.string<Outcome>(values)
+	}
 	export function from(
 		data: StateData,
 		account: ModelAccount,
 		transactions: StateAccount.Transactions,
 		days: StateAccount.Days,
 		transaction: ModelTransaction.Creatable,
+		kind: Rule.Base.Kind,
 		authorization?: StateAuthorization,
 		card?: StateCard,
 		organization?: StateOrganization
@@ -31,7 +41,7 @@ export namespace State {
 		return {
 			data,
 			account: Account.from(account, transactions, days),
-			transaction: Transaction.from(transaction),
+			transaction: Transaction.from(transaction, kind),
 			authorization,
 			card,
 			organization,

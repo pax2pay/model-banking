@@ -185,7 +185,8 @@ describe("definitions", () => {
 			card: { today: { count: 1, amount: 1 } },
 		},
 		{ currency: 1, merchant: { category: 1, country: 1, name: 1 } },
-		transaction1
+		transaction1,
+		"authorization"
 	)
 	it("exceedsAmount", () => {
 		expect(pax2pay.Rule.evaluate([rule1], state)).toEqual({
