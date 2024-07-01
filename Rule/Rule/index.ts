@@ -11,6 +11,9 @@ export namespace Rule {
 	export import Base = RuleBase
 	export const actions = [...Other.actions, "score"] as const
 	export type Action = typeof actions[number]
+	export namespace Action {
+		export const type = isly.string<Action>(actions)
+	}
 }
 // Outside of the namespace otherwise the Rule import in Card/Card.Creatable and Organization causes a circular dependency crash
 export const type = isly.union<Rule.Other | Rule.Score, Rule.Other, Rule.Score>(Rule.Other.type, Rule.Score.type)
