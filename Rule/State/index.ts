@@ -24,7 +24,7 @@ export interface State {
 export namespace State {
 	export type Outcome = typeof Outcome.values[number]
 	export namespace Outcome {
-		export const values = ["approve", "reject", "review"]
+		export const values = ["approve", "reject", "review"] as const
 		export const type = isly.string<Outcome>(values)
 	}
 	export function from(

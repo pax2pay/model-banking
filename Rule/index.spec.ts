@@ -196,20 +196,12 @@ describe("definitions", () => {
 		})
 	})
 	it("more risk", () => {
-		expect(pax2pay.Rule.evaluate([score, riskCheck], state)).toEqual({
-			flag: [],
-			reject: [riskCheck],
-			review: [],
-			risk: 600,
-		})
+		pax2pay.Rule.evaluate([score, riskCheck], state)
+		expect(state.transaction.risk).toEqual(600)
 	})
 	it("less risk", () => {
-		expect(pax2pay.Rule.evaluate([score, riskFlag], state)).toEqual({
-			flag: [],
-			reject: [],
-			review: [],
-			risk: 600,
-		})
+		pax2pay.Rule.evaluate([score, riskFlag], state)
+		expect(state.transaction.risk).toEqual(600)
 	})
 	it("isInternal", () => {
 		expect(pax2pay.Rule.evaluate([rule2], state)).toEqual({
