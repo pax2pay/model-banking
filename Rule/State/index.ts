@@ -11,12 +11,12 @@ import { Partial as StatePartial } from "./Partial"
 import { Transaction as StateTransaction } from "./Transaction"
 
 export interface State {
-	data: StateData
-	account: StateAccount
-	transaction: StateTransaction
-	authorization?: StateAuthorization
-	card?: StateCard
-	organization?: StateOrganization
+	data: State.Data
+	account: State.Account
+	transaction: State.Transaction
+	authorization?: State.Authorization
+	card?: State.Card
+	organization?: State.Organization
 }
 export namespace State {
 	export import Partial = StatePartial
