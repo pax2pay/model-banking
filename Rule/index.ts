@@ -55,7 +55,7 @@ export namespace Rule {
 		return result
 	}
 	export function isLegacy(rule: Rule): boolean {
-		return !isly.string(ModelRule.Base.categories).is(rule.category)
+		return !isly.string(ModelRule.Base.Category.values).is(rule.category)
 	}
 	export function fromLegacy(rule: Rule): Rule {
 		return isLegacy(rule) ? { ...rule, category: "fincrime" } : rule
