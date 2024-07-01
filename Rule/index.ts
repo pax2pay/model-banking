@@ -57,12 +57,7 @@ export namespace Rule {
 		for (const rule of other) {
 			if (control(rule, state, macros)) {
 				outcomes[rule.action].push(rule)
-				notes.push({
-					author: "automatic",
-					created: now,
-					text: rule.name,
-					rule,
-				})
+				notes.push({ author: "automatic", created: now, text: rule.name, rule })
 				rule.flags.forEach(f => flags.add(f))
 			}
 		}
