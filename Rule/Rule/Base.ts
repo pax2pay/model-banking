@@ -22,7 +22,7 @@ export namespace Base {
 		export const type = isly.string<Category>(values)
 	}
 	export const type = isly.object<Base>({
-		code: isly.string(new RegExp(/^[a-z0-9\-_]+$/)),
+		code: isly.string(/^[a-z0-9\-_]+$/),
 		name: isly.string(),
 		description: isly.string(),
 		type: Kind.type,

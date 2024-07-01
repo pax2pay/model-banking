@@ -1,5 +1,4 @@
 import { selectively } from "selectively"
-import { isly } from "isly"
 import { definitions } from "./definitions"
 import { Rule as ModelRule, type as ruleType } from "./Rule"
 import { State as RuleState } from "./State"
@@ -55,7 +54,7 @@ export namespace Rule {
 		return result
 	}
 	export function isLegacy(rule: Rule): boolean {
-		return !isly.string(ModelRule.Base.Category.values).is(rule.category)
+		return !ModelRule.Base.Category.type.is(rule.category)
 	}
 	export function fromLegacy(rule: Rule): Rule {
 		return isLegacy(rule) ? { ...rule, category: "fincrime" } : rule
