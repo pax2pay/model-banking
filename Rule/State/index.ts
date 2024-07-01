@@ -17,26 +17,36 @@ export interface State {
 	authorization?: StateAuthorization
 	card?: StateCard
 	organization?: StateOrganization
-	outcome?: State.Outcome
-	flags?: string[]
-	notes?: ModelTransaction.Note[]
 }
 export namespace State {
+	export import Partial = StatePartial
+	export import Authorization = StateAuthorization
+	export import Card = StateCard
+	export import Account = StateAccount
+	export import Transaction = StateTransaction
+	export import Organization = StateOrganization
+	export type Data = StateData
 	export type Outcome = typeof Outcome.values[number]
 	export namespace Outcome {
 		export const values = ["approve", "reject", "review"] as const
 		export const type = isly.string<Outcome>(values)
 	}
+	export interface Evaluated extends State {
+		outcomes: Record<Rule.Other.Action, Rule[]>
+		outcome: Outcome
+		flags: string[]
+		notes: ModelTransaction.Note[]
+	}
 	export function from(
-		data: StateData,
+		data: Data,
 		account: ModelAccount,
-		transactions: StateAccount.Transactions,
-		days: StateAccount.Days,
+		transactions: Account.Transactions,
+		days: Account.Days,
 		transaction: ModelTransaction.Creatable,
 		kind: Rule.Base.Kind,
-		authorization?: StateAuthorization,
-		card?: StateCard,
-		organization?: StateOrganization
+		authorization?: Authorization,
+		card?: Card,
+		organization?: Organization
 	): State {
 		return {
 			data,
@@ -47,11 +57,4 @@ export namespace State {
 			organization,
 		}
 	}
-	export import Partial = StatePartial
-	export import Authorization = StateAuthorization
-	export import Card = StateCard
-	export import Account = StateAccount
-	export import Transaction = StateTransaction
-	export import Organization = StateOrganization
-	export type Data = StateData
 }
