@@ -59,6 +59,7 @@ export namespace Rule {
 				outcomes[rule.action].push(rule)
 				notes.push({ author: "automatic", created: now, text: rule.name, rule })
 				rule.flags.forEach(f => flags.add(f))
+				rule.action == "review" && flags.add("review")
 			}
 		}
 		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
