@@ -46,7 +46,7 @@ export const account: pax2pay.Account = {
 const rule1: pax2pay.Rule = {
 	code: "abc",
 	name: "amount limit",
-	type: "inbound",
+	type: "authorization",
 	category: "product",
 	flags: [],
 	description: "",
@@ -56,7 +56,7 @@ const rule1: pax2pay.Rule = {
 const rule2: pax2pay.Rule = {
 	code: "abc",
 	name: "reject internal transactions",
-	type: "inbound",
+	type: "authorization",
 	category: "product",
 	flags: ["review"],
 	description: "",
@@ -66,7 +66,7 @@ const rule2: pax2pay.Rule = {
 const rule3: pax2pay.Rule = {
 	code: "abc",
 	name: "amount limit",
-	type: "inbound",
+	type: "authorization",
 	category: "product",
 	flags: [],
 	description: "",
@@ -185,54 +185,45 @@ describe("definitions", () => {
 			card: { today: { count: 1, amount: 1 } },
 		},
 		{ currency: 1, merchant: { category: 1, country: 1, name: 1 } },
-		transaction1
+		transaction1,
+		"authorization"
 	)
 	it("exceedsAmount", () => {
-		expect(pax2pay.Rule.evaluate([rule1], state)).toEqual({
+		expect(pax2pay.Rule.evaluate([rule1], state).outcomes).toEqual({
 			flag: [],
 			reject: [rule1],
 			review: [],
 		})
 	})
 	it("more risk", () => {
-		expect(pax2pay.Rule.evaluate([score, riskCheck], state)).toEqual({
-			flag: [],
-			reject: [riskCheck],
-			review: [],
-			risk: 600,
-		})
+		expect(pax2pay.Rule.evaluate([score, riskCheck], state).transaction.risk).toEqual(600)
 	})
 	it("less risk", () => {
-		expect(pax2pay.Rule.evaluate([score, riskFlag], state)).toEqual({
-			flag: [],
-			reject: [],
-			review: [],
-			risk: 600,
-		})
+		expect(pax2pay.Rule.evaluate([score, riskFlag], state).transaction.risk).toEqual(600)
 	})
 	it("isInternal", () => {
-		expect(pax2pay.Rule.evaluate([rule2], state)).toEqual({
+		expect(pax2pay.Rule.evaluate([rule2], state).outcomes).toEqual({
 			review: [],
 			reject: [],
 			flag: [rule2],
 		})
 	})
 	it("always reject", () => {
-		expect(pax2pay.Rule.evaluate([rule3], state)).toEqual({
+		expect(pax2pay.Rule.evaluate([rule3], state).outcomes).toEqual({
 			review: [],
 			reject: [rule3],
 			flag: [],
 		})
 	})
 	it("optional authorization", () => {
-		expect(pax2pay.Rule.evaluate([rule4], state)).toEqual({
+		expect(pax2pay.Rule.evaluate([rule4], state).outcomes).toEqual({
 			review: [],
 			reject: [rule4],
 			flag: [],
 		})
 	})
 	it("many rules", () => {
-		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], state)).toEqual({
+		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], state).outcomes).toEqual({
 			review: [],
 			reject: [rule1, rule3],
 			flag: [rule2],
