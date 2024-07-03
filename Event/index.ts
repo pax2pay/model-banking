@@ -11,7 +11,7 @@ export interface Event {
 	action: string
 	data: any
 }
-
+// TODO: Is this used??
 type Entity = "account" | "transaction" | "operation" | "rail" | "organization" | "authorization" | "supplier"
 export namespace Event {
 	export namespace Account {
