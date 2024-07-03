@@ -36,7 +36,7 @@ export namespace Configuration {
 	export function create(
 		mapping: Mapping,
 		schema: Schema,
-		config?: { projectName?: "paxpay-prod" | "paxpay-nonprod"; datasetName?: string; tableName?: string },
+		config: { projectName?: "paxpay-prod" | "paxpay-nonprod"; datasetName?: string; tableName: string },
 		filter?: string
 	) {
 		return {
@@ -60,9 +60,13 @@ export namespace Configuration {
 			batchInterval: 3,
 			projectName: "paxpay-nonprod",
 			datasetName: "banking_ledger",
-			tableName: "backup_test",
 			...config,
 			tableSchema: [...baseTableSchema, ...schema],
 		}
 	}
+	export const backup = create(
+		{ value: { selector: "value", transform: "stringify" } },
+		[{ name: "value", type: "STRING" }],
+		{ tableName: "backup_test" }
+	)
 }
