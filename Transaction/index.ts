@@ -104,7 +104,6 @@ export namespace Transaction {
 		operation: Operation | undefined,
 		reason: Status.Reason | undefined
 	): Transaction {
-		const amount = -creatable.amount
 		const status: Status = reason
 			? ["rejected", reason]
 			: state.outcome == "reject"
@@ -121,7 +120,7 @@ export namespace Transaction {
 			: "fasterpayments"
 		return {
 			...creatable,
-			amount,
+			amount: -creatable.amount,
 			type: getType(creatable.counterpart, account.name),
 			direction: "outbound",
 			organization: account.organization,
@@ -162,7 +161,7 @@ export namespace Transaction {
 			by,
 			balance,
 			operations: [],
-			status: "processing",
+			status: "review",
 			rail: "internal",
 			flags: [],
 			oldFlags: [],
