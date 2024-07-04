@@ -1,6 +1,8 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card as ModelCard } from "../../Card"
+import type { Rail } from "../../Rail"
+import type { Status as TransactionStatus } from "../../Transaction/Status"
 
 export interface Card extends Omit<ModelCard, "limit">, Card.Statistics {
 	age: { days: number; minutes: number }
@@ -28,6 +30,27 @@ export namespace Card {
 			age: ageFromTime(card.created),
 			limit: card.limit[1], // TODO add currency conversion
 			original: { currency: card.limit[0], limit: card.limit[1] },
+		}
+	}
+	export function check(card: Card, amount: number): TransactionStatus {
+		let result: TransactionStatus
+		if (ModelCard.Expiry.isExpired(card.details.expiry))
+			result = ["rejected", "card expired"]
+		else if (amount + card.spent[1] > card.limit)
+			result = ["rejected", "exceeds limit"]
+		else
+			result = "processing"
+		return result
+	}
+	export function toAddress(card: Card): Rail.Address.Card {
+		return {
+			type: "card",
+			id: card.id,
+			expiry: card.details.expiry,
+			holder: card.details.holder,
+			iin: card.details.iin,
+			last4: card.details.last4,
+			scheme: card.scheme,
 		}
 	}
 	export const type = ModelCard.type.omit(["limit"]).extend<Card>({
