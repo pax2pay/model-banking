@@ -123,7 +123,7 @@ export namespace Transaction {
 			...creatable,
 			amount,
 			type: getType(creatable.counterpart, account.name),
-			direction: getDirection(amount),
+			direction: "outbound",
 			organization: account.organization,
 			accountId: account.id,
 			accountName: account.name,
@@ -140,6 +140,33 @@ export namespace Transaction {
 			notes: state.notes,
 			state,
 			risk: state.transaction.risk,
+		}
+	}
+	export function empty(
+		creatable: Creatable & { counterpart: Rail.Address },
+		account: { id: string; name: string; organization: string; address: Rail.Address },
+		balance: { actual: number; reserved: number; available: number },
+		by: string | undefined
+	): Transaction {
+		return {
+			...creatable,
+			amount: 0,
+			type: getType(creatable.counterpart, account.name),
+			direction: "inbound",
+			organization: account.organization,
+			accountId: account.id,
+			accountName: account.name,
+			account: account.address,
+			id: Identifier.generate(),
+			posted: isoly.DateTime.now(),
+			by,
+			balance,
+			operations: [],
+			status: "processing",
+			rail: "internal",
+			flags: [],
+			oldFlags: [],
+			notes: [],
 		}
 	}
 	export function fromIncoming(
@@ -199,14 +226,6 @@ export namespace Transaction {
 			result = "card"
 		else
 			result = "external"
-		return result
-	}
-	export function getDirection(amount: number): Direction {
-		let result: Direction
-		if (amount < 0)
-			result = "outbound"
-		else
-			result = "inbound"
 		return result
 	}
 
