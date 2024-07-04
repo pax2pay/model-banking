@@ -16,4 +16,12 @@ export namespace Expiry {
 			"20" + expiry[0].toString() + "-" + expiry[1].toString().padStart(2, "0") + "-01T00:00:01.000Z"
 		)
 	}
+	export function isExpired(expiry: Expiry): boolean {
+		const now = isoly.DateTime.now()
+		const expiryYear = 2000 + expiry[0]
+		return (
+			expiryYear < isoly.DateTime.getYear(now) ||
+			(expiryYear == isoly.DateTime.getYear(now) && expiry[1] < isoly.DateTime.getMonth(now))
+		)
+	}
 }
