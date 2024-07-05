@@ -52,7 +52,6 @@ export namespace Transaction {
 	export import Reference = TransactionReference
 	export import Note = TransactionNote
 	export import Status = TransactionStatus
-
 	export const type = isly.object<Transaction>({
 		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
@@ -96,38 +95,74 @@ export namespace Transaction {
 		}
 	}
 	export function fromCreatable(
-		organization: string,
-		accountId: string,
-		accountName: string,
-		account: Rail.Address,
-		rail: Rail,
 		creatable: Creatable & { counterpart: Rail.Address },
-		operations: Operation.Creatable[],
-		balance: {
-			actual: number
-			reserved: number
-			available: number
-		},
-		by?: string
+		id: string,
+		state: Rule.State.Evaluated,
+		account: { id: string; name: string; organization: string; address: Rail.Address },
+		balance: { actual: number; reserved: number; available: number },
+		by: string | undefined,
+		operation: Operation | undefined,
+		reason: Status.Reason | undefined
 	): Transaction {
-		const id = Identifier.generate()
-		const amount = -creatable.amount
+		const status: Status = reason
+			? ["rejected", reason]
+			: state.outcome == "reject"
+			? ["rejected", "denied"]
+			: state.outcome == "review"
+			? "review"
+			: "processing"
+		const rail: Rail = state.card
+			? state.card.scheme
+			: account.address.type == "internal"
+			? "internal"
+			: account.address.type == "paxgiro"
+			? "paxgiro"
+			: "fasterpayments"
 		return {
 			...creatable,
-			amount,
-			type: getType(creatable, accountName),
-			direction: getDirection(amount),
-			organization,
-			accountId,
-			accountName,
-			account,
+			amount: -creatable.amount,
+			type: getType(creatable.counterpart, account.name),
+			direction: "outbound",
+			organization: account.organization,
+			accountId: account.id,
+			accountName: account.name,
+			account: account.address,
 			id,
 			posted: isoly.DateTime.now(),
 			by,
 			balance,
-			operations: operations.map(o => Operation.fromCreatable(id, o)),
-			status: "review",
+			operations: !operation ? [] : [operation],
+			status,
 			rail,
+			flags: state.flags,
+			oldFlags: [],
+			notes: state.notes,
+			state,
+			risk: state.transaction.risk,
+		}
+	}
+	export function empty(
+		creatable: Creatable & { counterpart: Rail.Address },
+		account: { id: string; name: string; organization: string; address: Rail.Address },
+		balance: { actual: number; reserved: number; available: number },
+		by: string | undefined
+	): Transaction {
+		return {
+			...creatable,
+			amount: 0,
+			type: getType(creatable.counterpart, account.name),
+			direction: "inbound",
+			organization: account.organization,
+			accountId: account.id,
+			accountName: account.name,
+			account: account.address,
+			id: Identifier.generate(),
+			posted: isoly.DateTime.now(),
+			by,
+			balance,
+			operations: [],
+			status: "review",
+			rail: "internal",
 			flags: [],
 			oldFlags: [],
 			notes: [],
@@ -148,7 +183,7 @@ export namespace Transaction {
 		const id = Identifier.generate()
 		return {
 			...transaction,
-			type: getType(transaction, accountName),
+			type: getType(transaction.counterpart, accountName),
 			direction: "inbound",
 			organization,
 			accountId,
@@ -180,27 +215,16 @@ export namespace Transaction {
 		transaction.flags = Array.from(current)
 		transaction.oldFlags = Array.from(old)
 	}
-	export function getType(
-		transaction: TransactionCreatable & { counterpart: Rail.Address },
-		accountName: string
-	): Types {
+	export function getType(counterpart: Rail.Address, accountName: string): Types {
 		let result: Types
 		if (accountName.startsWith("settlement-") || accountName.startsWith("fee-"))
 			result = "system"
-		else if (transaction.counterpart.type == "internal")
+		else if (counterpart.type == "internal")
 			result = "internal"
-		else if (transaction.counterpart.type == "card")
+		else if (counterpart.type == "card")
 			result = "card"
 		else
 			result = "external"
-		return result
-	}
-	export function getDirection(amount: number): Direction {
-		let result: Direction
-		if (amount < 0)
-			result = "outbound"
-		else
-			result = "inbound"
 		return result
 	}
 
