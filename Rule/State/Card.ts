@@ -32,14 +32,12 @@ export namespace Card {
 			original: { currency: card.limit[0], limit: card.limit[1] },
 		}
 	}
-	export function check(card: Card, amount: number): TransactionStatus {
-		let result: TransactionStatus
+	export function check(card: Card, amount: number): TransactionStatus.Reason | undefined {
+		let result: TransactionStatus.Reason | undefined = undefined
 		if (ModelCard.Expiry.isExpired(card.details.expiry))
-			result = ["rejected", "card expired"]
+			result = "card expired"
 		else if (amount + card.spent[1] > card.limit)
-			result = ["rejected", "exceeds limit"]
-		else
-			result = "processing"
+			result = "exceeds limit"
 		return result
 	}
 	export function toAddress(card: Card): Rail.Address.Card {
