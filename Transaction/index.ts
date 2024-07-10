@@ -246,6 +246,8 @@ export namespace Transaction {
 		"flags.current": (transaction: Transaction) => transaction.flags.join(" "),
 		"flags.past": (transaction: Transaction) => transaction.oldFlags.join(" "),
 		reason: (transaction: Transaction) => (typeof transaction.status == "string" ? undefined : transaction.status[1]),
+		"merchant.country": transaction =>
+			"merchant" in transaction.counterpart ? transaction.counterpart.merchant.country : undefined,
 	}
 	function readableDate(date: isoly.DateTime | undefined): string | undefined {
 		return date && date.slice(0, 10) + " " + (date.endsWith("Z") ? date.slice(11, -1) : date.slice(11))
