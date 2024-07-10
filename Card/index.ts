@@ -88,8 +88,8 @@ export namespace Card {
 		expiry: card => readableDate(Expiry.toDateTime(card.details.expiry)),
 		iin: card => card.details.iin,
 		holder: card => card.details.holder,
-		"authorization.count": card => card.history.map(o => o.type == "authorization" && o.status == "created").length,
-		"capture.count": card => card.history.map(o => o.type == "authorization" && o.status == "captured").length,
+		"authorization.count": card => card.history.filter(o => o.type == "authorization" && o.status == "created").length,
+		"capture.count": card => card.history.filter(o => o.type == "authorization" && o.status == "captured").length,
 	}
 	function readableDate(date: isoly.DateTime | undefined): string | undefined {
 		return date && date.slice(0, 10) + " " + (date.endsWith("Z") ? date.slice(11, -1) : date.slice(11))
