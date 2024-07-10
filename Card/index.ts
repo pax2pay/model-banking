@@ -76,6 +76,7 @@ export namespace Card {
 	const csvMap: Record<string, (card: Card) => string | number | undefined> = {
 		id: card => card.id,
 		created: card => readableDate(card.created),
+		cancelled: card => readableDate(card.history.find(o => o.type == "card" && o.status == "cancelled")?.created),
 		"organization.code": card => card.organization,
 		realm: card => card.realm,
 		account: card => card.account,
