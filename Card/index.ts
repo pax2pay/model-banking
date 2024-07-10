@@ -37,7 +37,6 @@ export interface Card {
 	rules: Rule[]
 	meta?: CardMeta
 }
-
 export namespace Card {
 	export const type = isly.object<Card>({
 		id: isly.string(),
@@ -72,7 +71,6 @@ export namespace Card {
 	export import Operation = CardOperation
 	export import Scheme = CardScheme
 	export import Stack = CardStack
-
 	const csvMap: Record<string, (card: Card) => string | number | undefined> = {
 		id: card => card.id,
 		created: card => readableDate(card.created),
