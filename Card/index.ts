@@ -90,14 +90,16 @@ export namespace Card {
 		expiry: card => readableDate(Expiry.toDateTime(card.details.expiry)),
 		iin: card => card.details.iin,
 		holder: card => card.details.holder,
+		"authorization.count": card => card.history.map(o => o.type == "authorization" && o.status == "created").length,
+		"capture.count": card => card.history.map(o => o.type == "authorization" && o.status == "captured").length,
 	}
 	function readableDate(date: isoly.DateTime | undefined): string | undefined {
 		return date && date.slice(0, 10) + " " + (date.endsWith("Z") ? date.slice(11, -1) : date.slice(11))
 	}
-	export function toCsv(transactions: Card[]): string {
+	export function toCsv(cards: Card[]): string {
 		return Report.toCsv(
 			Object.keys(csvMap),
-			transactions.map(card =>
+			cards.map(card =>
 				Report.Row.toCsv(
 					Object.values(csvMap).map(c => c(card)),
 					","
