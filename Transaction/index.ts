@@ -100,17 +100,17 @@ export namespace Transaction {
 		state: Rule.State.Evaluated,
 		account: { id: string; name: string; organization: string; address: Rail.Address },
 		balance: { actual: number; reserved: number; available: number },
-		by: string | undefined,
-		operation: Operation | undefined,
-		reason: Status.Reason | undefined
+		operation: Operation | Status.Reason,
+		by: string | undefined
 	): Transaction {
-		const status: Status = reason
-			? ["rejected", reason]
-			: state.outcome == "reject"
-			? ["rejected", "denied"]
-			: state.outcome == "review"
-			? "review"
-			: "processing"
+		const status: Status =
+			typeof operation == "string"
+				? ["rejected", operation]
+				: state.outcome == "reject"
+				? ["rejected", "denied"]
+				: state.outcome == "review"
+				? "review"
+				: "processing"
 		const rail: Rail = state.card
 			? state.card.scheme
 			: account.address.type == "internal"
@@ -131,7 +131,7 @@ export namespace Transaction {
 			posted: isoly.DateTime.now(),
 			by,
 			balance,
-			operations: !operation ? [] : [operation],
+			operations: typeof operation == "string" ? [] : [operation],
 			status,
 			rail,
 			flags: state.flags,
