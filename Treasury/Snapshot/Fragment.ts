@@ -1,6 +1,5 @@
 import { isly } from "isly"
 import { Balances } from "../../Balances"
-import { Account } from "../Account"
 import { Warning } from "./Warning"
 
 export interface Fragment {
@@ -14,7 +13,6 @@ export interface Fragment {
 		total: number // emoney issuable total amount
 		other: number
 		buffer: number
-		accounts: Account[]
 	}
 }
 export namespace Fragment {
@@ -47,7 +45,6 @@ export namespace Fragment {
 			total: isly.number(),
 			other: isly.number(),
 			buffer: isly.number(),
-			accounts: Account.type.array(),
 		}),
 	})
 }
