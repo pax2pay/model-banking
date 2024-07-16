@@ -25,6 +25,7 @@ export namespace Creatable {
 		"remove",
 		"collect",
 		"manual",
+		"fund",
 		"legacy",
 	] as const
 	export type Type = typeof types[number]
