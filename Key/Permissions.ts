@@ -37,6 +37,7 @@ export namespace Permissions {
 		settlements?: { create?: true; view?: true; amend?: true } | true
 		treasury?: { rebalance?: true; view?: true } | true
 		operations?: { view?: true } | true
+		logs?: { view?: true } | true
 	}
 	export interface Organization extends userwidgets.User.Permissions {
 		accounts?:
