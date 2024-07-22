@@ -10,7 +10,7 @@ export namespace Stack {
 		"test-tpl-paxgiro",
 		"testUK-marqeta",
 		"testUK-tpl-marqeta",
-		"test-diners-dpg",
+		"testUK-diners-dpg",
 		"uk-mc-tpl-marqeta",
 	] as const
 	export const type = isly.string(stacks)
