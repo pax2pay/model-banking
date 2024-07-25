@@ -13,12 +13,11 @@ export namespace Status {
 			if (gracely.Error.is(error)) {
 				if (error.error?.includes("Card with id"))
 					result = "card not found"
-				else if (error.error?.includes("Failed to reach account")) {
+				else if (error.error?.includes("Failed to reach account"))
 					result = "account not found"
-				} else
+				else
 					result = "other"
-			} //default
-			else
+			} else
 				result = error
 			return result
 		}
