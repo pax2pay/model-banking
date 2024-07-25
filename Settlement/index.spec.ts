@@ -1,4 +1,3 @@
-import { gracely } from "gracely"
 import { pax2pay } from "../index"
 
 // cSpell:disable
@@ -194,11 +193,7 @@ const authorization1: pax2pay.Authorization = {
 	description: "golf trip",
 }
 const authorization2: pax2pay.Authorization = {
-	status: {
-		code: "05",
-		reason: "Do not honor.",
-		error: gracely.server.backendFailure(),
-	},
+	status: "other",
 	id: "ahgt3817",
 	card: {
 		id: "string",
