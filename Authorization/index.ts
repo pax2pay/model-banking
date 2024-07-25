@@ -10,12 +10,12 @@ import { Merchant } from "../Merchant"
 import { Transaction } from "../Transaction"
 import { Creatable as AuthorizationCreatable } from "./Creatable"
 import { Exchange as AuthorizationExchange } from "./Exchange"
-import { Status } from "./Status"
+import { Status as AuthorizationStatus } from "./Status"
 
 export interface Authorization {
 	id: cryptly.Identifier
 	created: isoly.DateTime
-	status: Status
+	status: Authorization.Status
 	reference: string
 	approvalCode?: string
 	amount: Amount
@@ -37,10 +37,9 @@ export interface Authorization {
 	description: string
 }
 export namespace Authorization {
-	export type Creatable = AuthorizationCreatable
-	export const Creatable = AuthorizationCreatable
-	export type Exchange = AuthorizationExchange
-	export const Exchange = AuthorizationExchange
+	export import Creatable = AuthorizationCreatable
+	export import Exchange = AuthorizationExchange
+	export import Status = AuthorizationStatus
 	export const type = isly.object<Authorization>({
 		id: isly.fromIs("Authorization.id", cryptly.Identifier.is),
 		status: Status.type,
@@ -67,8 +66,6 @@ export namespace Authorization {
 		approvalCode: isly.string().optional(),
 		description: isly.string(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 	export function fromCreatable(
 		creatable: Creatable,
 		card: Card | gracely.Error,
@@ -97,10 +94,10 @@ export namespace Authorization {
 				...partial,
 				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
 			}
-		else if (transaction.status != "processing")
+		else if (!Transaction.Status.Success.is(transaction.status))
 			result = {
-				id: Identifier.generate(),
-				status: Status.Failed.from(transaction.notes),
+				id: transaction.id,
+				status: Status.Failed.from(transaction.status[1]),
 				...partial,
 				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
 			}
@@ -114,17 +111,5 @@ export namespace Authorization {
 				transaction: { id: transaction.id, posted: transaction.posted, description: transaction.description },
 			}
 		return result
-	}
-	export function toTransaction(authorization: Authorization): Transaction.Creatable {
-		return {
-			amount: authorization.amount[1],
-			currency: authorization.amount[0],
-			description: authorization.description,
-			counterpart: {
-				type: "card",
-				acquirer: authorization.acquirer,
-				merchant: authorization.merchant,
-			},
-		}
 	}
 }
