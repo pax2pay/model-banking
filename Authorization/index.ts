@@ -97,10 +97,10 @@ export namespace Authorization {
 				...partial,
 				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
 			}
-		else if (transaction.status != "processing")
+		else if (!Transaction.Status.Success.is(transaction.status))
 			result = {
-				id: Identifier.generate(),
-				status: Status.Failed.from(transaction.notes),
+				id: transaction.id,
+				status: Status.Failed.from(transaction.status[1]),
 				...partial,
 				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
 			}
