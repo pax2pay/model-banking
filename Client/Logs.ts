@@ -12,15 +12,14 @@ export class Logs {
 		dateRange?: isoly.DateRange
 	}): Promise<(Log[] & { cursor?: string | undefined }) | gracely.Error> {
 		const query = Object.entries({
-			...(options?.cursor ? { cursor: options.cursor } : {}),
 			...(options?.dateRange ?? {}),
 		})
 			.map(([k, v]) => `${k}=${v}`)
 			.join("&")
 		const path = options?.collection ? `/log/${options.collection}` : `/log`
-		return await this.client.get<Log[] & { cursor?: string | undefined }>(
-			path + (query && "?" + query),
-			options?.limit ? { limit: options?.limit.toString() } : {}
-		)
+		return await this.client.get<Log[] & { cursor?: string | undefined }>(path + (query && "?" + query), {
+			...(options?.cursor ? { cursor: options.cursor } : {}),
+			...(options?.limit ? { limit: options?.limit.toString() } : {}),
+		})
 	}
 }
