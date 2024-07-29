@@ -3,10 +3,11 @@ import { userwidgets } from "@userwidgets/model"
 import { http } from "cloudly-http"
 import { rest } from "cloudly-rest"
 import { Accounts } from "./Accounts"
+import { Audit } from "./Audit"
 import { Cards } from "./Cards"
 import { Exchanges } from "./Exchanges"
 import { Labels } from "./Labels"
-import { Audit } from "./Logs"
+import { Logs } from "./Logs"
 import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
 import { Reports } from "./Reports"
@@ -25,7 +26,8 @@ export class Client extends rest.Client<gracely.Error> {
 	readonly exchanges = new Exchanges(this.client)
 	readonly organizations = new Organizations(this.client)
 	readonly reports = new Reports(this.client)
-	readonly logs = new Audit(this.client)
+	readonly audits = new Audit(this.client)
+	readonly logs = new Logs(this.client)
 	readonly rules = new Rules(this.client)
 	readonly settlements = new Settlements(this.client)
 	readonly transactions = new Transactions(this.client)
