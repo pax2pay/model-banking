@@ -10,7 +10,7 @@ export namespace Preset {
 		"test-mc-200",
 		"test-ta-mq-200",
 		"test-pg-200",
-		"test-pg-14",
+		"test-pg-150",
 		"test-ta-pg-200",
 		"test-ta-mc-200",
 		"test-diners-200",
@@ -26,6 +26,6 @@ export namespace Preset {
 		"test-pg-200": "test-paxgiro",
 		"test-ta-mc-200": "test-tpl-paxgiro",
 		"test-ta-pg-200": "test-tpl-paxgiro",
-		"test-pg-14": "test-paxgiro",
+		"test-pg-150": "test-paxgiro",
 	}
 }
