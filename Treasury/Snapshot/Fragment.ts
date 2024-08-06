@@ -1,3 +1,4 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Balances } from "../../Balances"
 import { Account } from "../Account"
@@ -35,6 +36,9 @@ export namespace Fragment {
 		export namespace Burned {
 			export const type = isly.record<Burned>(isly.string(), Fragment.Coinage.change)
 		}
+		export function sum(currency: isoly.Currency, coinage: Burned | Minted): number {
+			return Object.values(coinage).reduce((result, change) => isoly.Currency.add(currency, result, change.amount), 0)
+		}
 	}
 	export const type = isly.object<Fragment>({
 		warnings: Warning.type.array(),
@@ -50,4 +54,12 @@ export namespace Fragment {
 			accounts: Account.type.array(),
 		}),
 	})
+	export function validate(currency: isoly.Currency, fragment: Fragment): boolean {
+		const issuable = fragment.fiat.total
+		const actual = fragment.emoney.actual ?? 0
+		const burned = Coinage.sum(currency, fragment.burned)
+		const minted = Coinage.sum(currency, fragment.minted)
+		const total = isoly.Currency.subtract(currency, isoly.Currency.add(currency, actual, burned), minted)
+		return issuable == total
+	}
 }
