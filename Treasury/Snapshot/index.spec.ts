@@ -7,6 +7,18 @@ describe("Treasury.Snapshot", () => {
 	it("is", () => {
 		expect(pax2pay.Treasury.Snapshot.type.is(snapshot)).toBeTruthy()
 	})
+	it("coinage sum", () => {
+		pax2pay.Treasury.Snapshot.Fragment.Coinage.sum("USD", {
+			one: { account: { asdf: 4 }, amount: 4 },
+			two: { account: { qwer: 5, zxcv: 7 }, amount: 13 },
+		})
+		expect(
+			pax2pay.Treasury.Snapshot.Fragment.Coinage.sum("USD", {
+				one: { account: { asdf: 4 }, amount: 4 },
+				two: { account: { qwer: 5, zxcv: 7 }, amount: 13 },
+			})
+		).toEqual(17)
+	})
 })
 const fragment: pax2pay.Treasury.Snapshot.Fragment = {
 	emoney: { actual: 2 },

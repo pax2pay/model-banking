@@ -1,3 +1,4 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Balances } from "../../Balances"
 import { Account } from "../Account"
@@ -34,6 +35,9 @@ export namespace Fragment {
 		export type Burned = Record<Sink, Change>
 		export namespace Burned {
 			export const type = isly.record<Burned>(isly.string(), Fragment.Coinage.change)
+		}
+		export function sum(currency: isoly.Currency, coinage: Burned | Minted): number {
+			return Object.values(coinage).reduce((result, change) => isoly.Currency.add(currency, result, change.amount), 0)
 		}
 	}
 	export const type = isly.object<Fragment>({
