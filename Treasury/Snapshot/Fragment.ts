@@ -60,11 +60,6 @@ export namespace Fragment {
 		const burned = Coinage.sum(currency, fragment.burned)
 		const minted = Coinage.sum(currency, fragment.minted)
 		const total = isoly.Currency.subtract(currency, isoly.Currency.add(currency, actual, burned), minted)
-		console.log("issuable: ", issuable)
-		console.log("actual: ", actual)
-		console.log("burned: ", burned)
-		console.log("minted: ", minted)
-		console.log("total: ", total)
 		return issuable == total
 	}
 }
