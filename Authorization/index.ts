@@ -71,13 +71,17 @@ export namespace Authorization {
 		card: Card | gracely.Error,
 		transaction: Transaction | gracely.Error
 	): Authorization {
-		const partial: Pick<Authorization, "created" | "amount" | "merchant" | "acquirer" | "reference" | "description"> = {
+		const partial: Pick<
+			Authorization,
+			"created" | "amount" | "merchant" | "acquirer" | "reference" | "description" | "exchange"
+		> = {
 			created: isoly.DateTime.now(),
 			amount: creatable.amount,
 			merchant: creatable.merchant,
 			acquirer: creatable.acquirer,
 			reference: creatable.reference,
 			description: creatable.description,
+			exchange: creatable.exchange,
 		}
 		let result: Authorization
 		if (gracely.Error.is(card))
