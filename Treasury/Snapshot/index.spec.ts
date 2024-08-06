@@ -19,6 +19,30 @@ describe("Treasury.Snapshot", () => {
 			})
 		).toEqual(17)
 	})
+	it("validate fragment", () => {
+		const fragment: pax2pay.Treasury.Snapshot.Fragment = {
+			warnings: [],
+			fiat: {
+				safe: 23846.03,
+				unsafe: 0,
+				total: 23846.03,
+				other: 0,
+				buffer: 0,
+				accounts: [],
+			},
+			emoney: { actual: 22975.3 },
+			burned: {
+				"uk-cb-safe01": {
+					account: {
+						"23Md_znq": 870.73,
+					},
+					amount: 870.73,
+				},
+			},
+			minted: {},
+		}
+		expect(pax2pay.Treasury.Snapshot.Fragment.validate("GBP", fragment)).toEqual(true)
+	})
 })
 const fragment: pax2pay.Treasury.Snapshot.Fragment = {
 	emoney: { actual: 2 },
