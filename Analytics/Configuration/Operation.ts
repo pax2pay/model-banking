@@ -9,7 +9,7 @@ export namespace Operation {
 		type: "value.type",
 		transaction: "value.transaction",
 		counter: { selector: "value.counter", transform: "integer"},
-		created: "value.created",
+		operationCreated: "value.created",
 		signature: "value.signature",
 		previous: "value.previous",
 		// eslint-disable-next-line
@@ -30,7 +30,7 @@ export namespace Operation {
 		{ name: "type", type: "STRING" },
 		{ name: "transaction", type: "STRING" },
 		{ name: "counter", type: "NUMERIC" },
-		{ name: "created", type: "DATETIME" },
+		{ name: "operationCreated", type: "DATETIME" },
 		{ name: "signature", type: "STRING" },
 		{ name: "previous", type: "STRING" },
 	]

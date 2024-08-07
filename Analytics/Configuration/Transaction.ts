@@ -1,5 +1,4 @@
 import { Mapping } from "./Mapping"
-import { Operation } from "./Operation"
 import { Schema } from "./Schema"
 
 export namespace Transaction {
@@ -75,7 +74,26 @@ export namespace Transaction {
 		{ name: "actualBalance", type: "NUMERIC" },
 		{ name: "reservedBalance", type: "NUMERIC" },
 		{ name: "availableBalance", type: "NUMERIC" },
-		{ name: "operations", type: "RECORD", mode: "REPEATED", fields: Operation.schema },
+		{ name: "operations", type: "RECORD", mode: "REPEATED", fields: [
+				{ name: "account", type: "STRING" },
+				{ name: "currency", type: "STRING" },
+				{ name: "changes", type: "RECORD", mode: "REPEATED", fields: [
+					{ name: "key", type: "STRING" },
+					{ name: "value", type: "RECORD", fields: [
+						{ name: "type", type: "STRING" },
+						{ name: "amount", type: "NUMERIC" },
+						{ name: "status", type: "STRING" },
+						{ name: "result", type: "STRING", mode: "NULLABLE" },
+					]}
+				] },
+				{ name: "type", type: "STRING" },
+				{ name: "transaction", type: "STRING" },
+				{ name: "counter", type: "NUMERIC" },
+				{ name: "created", type: "DATETIME" },
+				{ name: "signature", type: "STRING" },
+				{ name: "previous", type: "STRING" },
+			] 
+		},
 		{ name: "status", type: "STRING" },
 		{ name: "rail", type: "STRING", mode: "NULLABLE" },
 		{ name: "railType", type: "STRING" },
