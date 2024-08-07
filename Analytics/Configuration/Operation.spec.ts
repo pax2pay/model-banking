@@ -60,6 +60,7 @@ const result = {
 	currency: "GBP",
 	entity: "operation",
 	entityId: "",
+	operationCreated: "2023-12-05T17:26:36.977Z",
 	realm: "test",
 	transaction: "zzzyRwIvXovdzVNA",
 	type: "collect",
