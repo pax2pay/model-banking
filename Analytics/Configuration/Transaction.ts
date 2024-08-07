@@ -47,6 +47,7 @@ export namespace Transaction {
 		notes: { selector: "value.notes", transform: "stringify" },
 		risk: { selector: "value.risk", transform: "number" },
 		state: { selector: "value.state", transform: "stringify" },
+		// eslint-disable-next-line
 	} as const satisfies Mapping
 	export type Fields = keyof typeof mapping
 	export const schema: Schema<Fields> = [

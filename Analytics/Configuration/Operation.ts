@@ -12,6 +12,7 @@ export namespace Operation {
 		created: "value.created",
 		signature: "value.signature",
 		previous: "value.previous",
+		// eslint-disable-next-line
 	} as const satisfies Mapping
 	export type Fields = keyof typeof mapping
 	export const schema: Schema<Fields> = [

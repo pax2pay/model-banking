@@ -20,6 +20,7 @@ export namespace Base {
 		isError: { selector: "isError", transform: "boolean" },
 		version: "version",
 		source: "source",
+		// eslint-disable-next-line
 	} as const satisfies Mapping<Selectors>;
 	export type Fields = keyof typeof mapping
 	export const schema: Schema<Fields> = [
