@@ -18,13 +18,14 @@ export namespace Configuration {
 		tableName: string
 	}
 	export function create(
+		name: string,
 		mapping: Mapping,
 		schema: Schema,
 		config: BigQueryTableConfig,
 		filter: string
 	): Listener.Configuration.BigQuery.BaseConfiguration {
 		return {
-			name: "ledger-events",
+			name,
 			type: "bigquery",
 			filter: [
 				{
@@ -47,6 +48,7 @@ export namespace Configuration {
 		}
 	}
 	export const backup = create(
+		"backup",
 		{ value: { selector: "value", transform: "stringify" } },
 		[{ name: "value", type: "STRING" }],
 		{
@@ -57,6 +59,7 @@ export namespace Configuration {
 		"source:pax2pay-worker-banking-ledger realm:within(uk, eu)"
 	)
 	export const operation = create(
+		"operations",
 		Operation.mapping,
 		Operation.schema,
 		{
@@ -67,6 +70,7 @@ export namespace Configuration {
 		"source:pax2pay-worker-banking-ledger entity:operation realm:within(uk, eu)"
 	)
 	export const transaction = create(
+		"transactions",
 		Transaction.mapping,
 		Transaction.schema,
 		{
