@@ -6,6 +6,7 @@ import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 import { Report } from "../Report"
 import type { Rule } from "../Rule"
+import { Settlement } from "../Settlement"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
@@ -28,11 +29,7 @@ export interface Transaction {
 	posted: isoly.DateTime
 	transacted?: isoly.DateTime
 	by?: string
-	balance: {
-		actual: number
-		reserved: number
-		available: number
-	}
+	balance: { actual: number; reserved: number; available: number }
 	operations: Operation[]
 	status: Transaction.Status
 	rail?: Rail
@@ -169,28 +166,51 @@ export namespace Transaction {
 		}
 	}
 	export function fromIncoming(
-		organization: string,
-		accountId: string,
-		accountName: string,
-		transaction: Incoming,
-		operations: Operation.Creatable[],
-		balance: {
-			actual: number
-			reserved: number
-			available: number
-		}
+		transaction: Transaction.Incoming,
+		id: string,
+		state: Rule.State.Evaluated,
+		account: { id: string; name: string; organization: string },
+		balance: { actual: number; reserved: number; available: number },
+		operation: Operation | undefined
 	): Transaction {
-		const id = Identifier.generate()
+		const status: Transaction.Status =
+			state.outcome == "reject" ? ["rejected", "denied"] : state.outcome == "review" ? "review" : "processing"
 		return {
 			...transaction,
-			type: getType(transaction.counterpart, accountName),
+			type: getType(transaction.counterpart, account.name),
 			direction: "inbound",
-			organization,
-			accountId,
-			accountName,
+			organization: account.organization,
+			accountId: account.id,
+			accountName: account.name,
 			balance,
 			id,
-			operations: operations.map(o => Operation.fromCreatable(id, o)),
+			operations: !operation ? [] : [operation],
+			status,
+			flags: state.flags,
+			oldFlags: [],
+			notes: state.notes,
+			state,
+			risk: state.transaction.risk,
+		}
+	}
+	export function fromRefund(
+		refund: Settlement.Entry.Refund.Creatable,
+		id: string,
+		account: { id: string; name: string; organization: string },
+		card: Rail.Address.Card,
+		operation: Operation,
+		balance: { actual: number; reserved: number; available: number }
+	): Transaction {
+		return {
+			...Incoming.fromRefund(refund, card),
+			type: "card",
+			direction: "inbound",
+			organization: account.organization,
+			accountId: account.id,
+			accountName: account.name,
+			balance,
+			id,
+			operations: [operation],
 			status: "review",
 			flags: [],
 			oldFlags: [],
