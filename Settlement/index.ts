@@ -1,24 +1,26 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amounts } from "../Amounts"
-import { Identifier } from "../Identifier"
 import { Amount as SettlementAmount } from "./Amount"
 import { Batch as SettlementBatch } from "./Batch"
 import { Creatable as SettlementCreatable } from "./Creatable"
 import { Entry as SettlementEntry } from "./Entry"
 import { Fee as SettlementFee } from "./Fee"
+import { Identifier as SettlementIdentifier } from "./Identifier"
 import { Status } from "./Status"
 import { Total as SettlementTotal } from "./Total"
 import { Totals as SettlementTotals } from "./Totals"
 
 export interface Settlement extends Settlement.Creatable {
-	id: string
+	id: SettlementIdentifier | string // string is deprecated and there for legacy reasons
 	by?: string
 	created: isoly.DateTime
 	status: Status
 	entries: Settlement.Entry.Summary
 }
 export namespace Settlement {
+	export const Identifier = SettlementIdentifier
+	export type Identifier = SettlementIdentifier
 	export const Total = SettlementTotal
 	export type Total = SettlementTotal
 	export const Totals = SettlementTotals
@@ -53,9 +55,9 @@ export namespace Settlement {
 			export type Creatable = SettlementEntry.Unknown.Creatable
 		}
 	}
-	export function from(creatable: Settlement.Creatable, by: string): Settlement {
+	export function from(id: Settlement.Identifier, creatable: Settlement.Creatable, by: string): Settlement {
 		return {
-			id: Identifier.generate(),
+			id,
 			status: { collected: "pending", settled: "pending" },
 			by,
 			...creatable,
@@ -120,7 +122,7 @@ export namespace Settlement {
 		return result
 	}
 	export const type = SettlementCreatable.type.extend<Settlement>({
-		id: isly.string(),
+		id: isly.union(SettlementIdentifier.type, isly.string()),
 		by: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		status: Status.type,
