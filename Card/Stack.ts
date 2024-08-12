@@ -30,4 +30,46 @@ export namespace Stack {
 			.map(e => (e == "tpl" ? "transact" : e))
 			.join("-")
 	}
+	export namespace Character {
+		export const values = [
+			"a",
+			"b",
+			"c",
+			"d",
+			"e",
+			"f",
+			"g",
+			"h",
+			"i",
+			"j",
+			"k",
+			"l",
+			"m",
+			"n",
+			"o",
+			"p",
+			"q",
+			"r",
+			"s",
+			"t",
+			"u",
+			"v",
+			"w",
+			"x",
+			"y",
+			"z",
+		] as const
+		const table: Record<Stack, Stack.Character> = {
+			"test-paxgiro": "z",
+			"test-tpl-paxgiro": "y",
+			"testUK-marqeta": "x",
+			"testUK-tpl-marqeta": "w",
+			"testUK-diners-dpg": "u",
+			"uk-mc-tpl-marqeta": "a",
+		}
+		export function from(stack: Stack): Stack.Character {
+			return table[stack]
+		}
+	}
+	export type Character = typeof Character.values[number]
 }
