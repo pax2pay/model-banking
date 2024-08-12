@@ -19,42 +19,14 @@ export interface Settlement extends Settlement.Creatable {
 	entries: Settlement.Entry.Summary
 }
 export namespace Settlement {
-	export const Identifier = SettlementIdentifier
-	export type Identifier = SettlementIdentifier
-	export const Total = SettlementTotal
-	export type Total = SettlementTotal
-	export const Totals = SettlementTotals
-	export type Totals = SettlementTotals
-	export const Amount = SettlementAmount
-	export type Amount = SettlementAmount
-	export const Fee = SettlementFee
-	export type Fee = SettlementFee
-	export type Creatable = SettlementCreatable
-	export const Creatable = SettlementCreatable
-	export type Entry = SettlementEntry
-	export const Entry = SettlementEntry
-	export type Batch = SettlementBatch
-	export const Batch = SettlementBatch
-	export namespace Entry {
-		export type Summary = SettlementEntry.Summary
-		export type Creatable = SettlementEntry.Creatable
-		export type Refund = SettlementEntry.Refund
-		export namespace Refund {
-			export type Creatable = SettlementEntry.Refund.Creatable
-		}
-		export type Cancel = SettlementEntry.Cancel
-		export namespace Cancel {
-			export type Creatable = SettlementEntry.Cancel.Creatable
-		}
-		export type Capture = SettlementEntry.Capture
-		export namespace Capture {
-			export type Creatable = SettlementEntry.Capture.Creatable
-		}
-		export type Unknown = SettlementEntry.Unknown
-		export namespace Unknown {
-			export type Creatable = SettlementEntry.Unknown.Creatable
-		}
-	}
+	export import Identifier = SettlementIdentifier
+	export import Total = SettlementTotal
+	export import Totals = SettlementTotals
+	export import Amount = SettlementAmount
+	export import Fee = SettlementFee
+	export import Creatable = SettlementCreatable
+	export import Entry = SettlementEntry
+	export import Batch = SettlementBatch
 	export function from(id: Settlement.Identifier, creatable: Settlement.Creatable, by: string): Settlement {
 		return {
 			id,
