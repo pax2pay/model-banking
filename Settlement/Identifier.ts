@@ -7,7 +7,7 @@ import { Card } from "../Card"
 export type Identifier = `${isoly.Date}${string}`
 export namespace Identifier {
 	export const type = isly.string()
-	export function create(date: isoly.Date, stack: Card.Stack, order: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9): Identifier {
+	export function create(date: isoly.Date, stack: Card.Stack, order: number): Identifier {
 		return date.replace(/-/g, "") + Card.Stack.Character.from(stack) + order
 	}
 	export function getDate(identifier: Identifier): isoly.Date | undefined {
