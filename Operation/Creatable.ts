@@ -1,7 +1,6 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Card } from "../Card"
 import { Settlement } from "../Settlement"
 import { Changes } from "./Changes"
 
@@ -37,7 +36,7 @@ export namespace Creatable {
 	})
 	export const is = type.is
 	export const flaw = type.flaw
-	export function fromRefund(account: string, entry: Settlement.Entry.Refund.Creatable, stack: Card.Stack): Creatable {
+	export function fromRefund(account: string, entry: Settlement.Entry.Refund.Creatable): Creatable {
 		// The Entry.Refund.Creatable has negative amount and fee
 		// The operation amounts should always be positive
 		const [currency, entryAmount] = entry.amount
