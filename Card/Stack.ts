@@ -70,6 +70,11 @@ export namespace Stack {
 		export function from(stack: Stack): Stack.Character {
 			return table[stack]
 		}
+		export function toStack(character: Stack.Character): Stack | undefined {
+			return Object.entries(table).find<[Stack, Character]>(
+				(value): value is [Stack, Character] => value[1] == character
+			)?.[0]
+		}
 	}
 	export type Character = typeof Character.values[number]
 }
