@@ -8,6 +8,7 @@ import { Report } from "../Report"
 import type { Rule } from "../Rule"
 import { Settlement } from "../Settlement"
 import { Creatable as TransactionCreatable } from "./Creatable"
+import { Flags as TransactionFlags } from "./Flags"
 import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
 import { Reference as TransactionReference } from "./Reference"
@@ -33,8 +34,8 @@ export interface Transaction {
 	operations: Operation[]
 	status: Transaction.Status
 	rail?: Rail
-	flags: string[]
-	oldFlags: string[]
+	flags: string[] | Transaction.Flags
+	oldFlags?: string[]
 	notes: Transaction.Note[]
 	risk?: number
 	state?: Rule.State
@@ -49,6 +50,7 @@ export namespace Transaction {
 	export import Reference = TransactionReference
 	export import Note = TransactionNote
 	export import Status = TransactionStatus
+	export import Flags = TransactionFlags
 	export const type = isly.object<Transaction>({
 		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
@@ -221,19 +223,12 @@ export namespace Transaction {
 		return typeof value == "string"
 	}
 	export function flag(transaction: Transaction, flags: string[] | undefined): void {
-		const current = new Set<string>(transaction.flags)
-		const old = new Set<string>(transaction.oldFlags)
-		for (const flag of flags ?? []) {
-			if (!flag.startsWith("-")) {
-				old.delete(flag)
-				current.add(flag)
-			} else if (current.has(flag.substring(1))) {
-				current.delete(flag.substring(1))
-				old.add(flag.substring(1))
-			}
-		}
-		transaction.flags = Array.from(current)
-		transaction.oldFlags = Array.from(old)
+		if (Array.isArray(transaction.flags)) {
+			const fromLegacy: Flags = { current: transaction.flags, previous: transaction.oldFlags ?? [] }
+			const newFlags = Flags.flag(fromLegacy, flags)
+			transaction.flags = newFlags
+		} else
+			transaction.flags = Flags.flag(transaction.flags, flags)
 	}
 	export function getType(counterpart: Rail.Address, accountName: string): Types {
 		let result: Types
