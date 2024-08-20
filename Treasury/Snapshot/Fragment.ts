@@ -57,9 +57,6 @@ export namespace Fragment {
 	export function validate(currency: isoly.Currency, fragment: Fragment): boolean {
 		const issuable = fragment.fiat.total
 		const actual = fragment.emoney.actual ?? 0
-		const burned = Coinage.sum(currency, fragment.burned)
-		const minted = Coinage.sum(currency, fragment.minted)
-		const total = isoly.Currency.subtract(currency, isoly.Currency.add(currency, actual, burned), minted)
-		return issuable == total
+		return issuable == actual
 	}
 }
