@@ -30,7 +30,7 @@ describe("Treasury.Snapshot", () => {
 				buffer: 0,
 				accounts: [],
 			},
-			emoney: { actual: 22975.3 },
+			emoney: { actual: 23846.3 },
 			burned: {
 				"uk-cb-safe01": {
 					account: {
