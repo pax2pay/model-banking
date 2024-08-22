@@ -63,7 +63,7 @@ export namespace Configuration {
 			datasetName: "pays_ledger",
 			tableName: "operations",
 		},
-		"source:pax2pay-worker-banking-ledger entity:operation realm:within(uk, eu)"
+		"source:pax2pay-worker-banking-ledger entity.type:operation realm:within(uk, eu)"
 	)
 	export const transaction = create(
 		"transactions",
@@ -74,6 +74,6 @@ export namespace Configuration {
 			datasetName: "pays_ledger",
 			tableName: "transactions",
 		},
-		"source:pax2pay-worker-banking-ledger entity:transaction realm:within(uk, eu)"
+		"source:pax2pay-worker-banking-ledger entity.type:transaction realm:within(uk, eu)"
 	)
 }
