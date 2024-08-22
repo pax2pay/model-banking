@@ -3,6 +3,7 @@ import { isly } from "isly"
 import { Account } from "../../Account"
 
 export interface Buffer {
+	type: "buffer"
 	account: string
 	currency: isoly.Currency
 	minimum: number
@@ -10,6 +11,7 @@ export interface Buffer {
 }
 export namespace Buffer {
 	export const type = isly.object<Buffer>({
+		type: isly.string("buffer"),
 		account: isly.string(),
 		currency: isly.string(),
 		minimum: isly.number(),
@@ -20,7 +22,13 @@ export namespace Buffer {
 		for (const [currency, amount] of Object.entries(account.balance)) {
 			const minimum = account.conditions?.minimum?.[currency as isoly.Currency]
 			if (typeof minimum != "undefined" && minimum > amount)
-				result.push({ account: account.id, currency: currency as isoly.Currency, minimum, balance: amount })
+				result.push({
+					type: "buffer",
+					account: account.id,
+					currency: currency as isoly.Currency,
+					minimum,
+					balance: amount,
+				})
 		}
 		return result
 	}
