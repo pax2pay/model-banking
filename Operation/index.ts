@@ -5,7 +5,7 @@ import { Creatable as OperationCreatable } from "./Creatable"
 import { Signer as OperationSigner } from "./Signer"
 
 export interface Operation extends OperationCreatable {
-	transaction: string
+	transaction?: string
 	counter: number
 	created: isoly.DateTime
 	signature?: string

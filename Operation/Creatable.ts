@@ -26,6 +26,7 @@ export namespace Creatable {
 		"manual",
 		"fund",
 		"legacy",
+		"adjustBuffer",
 	] as const
 	export type Type = typeof types[number]
 	export const type = isly.object<Creatable>({
