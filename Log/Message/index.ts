@@ -10,10 +10,16 @@ export namespace Message {
 	export function fromEventLogs(
 		traces: TraceLog[]
 	): Pick<Log, "realm" | "collection" | "resource" | "entries"> | undefined {
-		const configuration: Pick<Log, "realm" | "collection" | "resource"> | undefined =
-			Message.Configuration.fromTraceLog(traces.find(trace => Message.Configuration.type.is(trace.message[0])))
+		const configuration: Configuration | undefined = Message.Configuration.fromTraceLog(
+			traces.find(trace => Message.Configuration.type.is(trace.message[0]))
+		)
 		const result: Pick<Log, "realm" | "collection" | "resource" | "entries"> | undefined = configuration
-			? { ...configuration, entries: [] }
+			? {
+					collection: configuration.collection,
+					realm: configuration.realm,
+					resource: configuration.resource,
+					entries: [],
+			  }
 			: undefined
 		if (result)
 			for (const trace of traces) {
@@ -22,6 +28,9 @@ export namespace Message {
 				logFragment?.resource && (result.resource ??= logFragment.resource)
 				logFragment?.entry && result.entries.push(logFragment.entry)
 			}
-		return result
+		return (configuration?.requireEntries && result?.entries && result.entries.length > 0) ||
+			!configuration?.requireEntries
+			? result
+			: undefined
 	}
 }

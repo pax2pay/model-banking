@@ -77,6 +77,10 @@ describe("Reworking incoming logs to processable logs", () => {
 ]
 `)
 	})
+	it("Require entries", () => {
+		const log = pax2pay.Log.fromEvents(eventsWithoutEntries as any)
+		expect(log).toMatchInlineSnapshot(`[]`)
+	})
 })
 const events = [
 	{
@@ -140,6 +144,20 @@ const events = [
 				],
 				level: "log",
 				timestamp: 1718805618912,
+			},
+		],
+		eventTimestamp: 1718805617264,
+	},
+]
+
+const eventsWithoutEntries = [
+	{
+		scriptName: "worker-banking-card",
+		logs: [
+			{
+				message: [{ collection: "card", realm: "test", requireEntries: true }],
+				level: "log",
+				timestamp: 1718805617276,
 			},
 		],
 		eventTimestamp: 1718805617264,
