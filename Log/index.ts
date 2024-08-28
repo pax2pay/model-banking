@@ -49,8 +49,13 @@ export namespace Log {
 		}
 		return result
 	}
-	export function configure(collection: string, realm: string | undefined, resource?: string): void {
-		const configuration = { collection, realm, resource }
+	export function configure(
+		collection: string,
+		realm: string | undefined,
+		resource?: string,
+		requireEntries?: boolean
+	): void {
+		const configuration = { collection, realm, resource, requireEntries }
 		if (Log.Message.Configuration.type.is(configuration))
 			console.log(configuration)
 	}
