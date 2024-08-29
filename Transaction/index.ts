@@ -165,6 +165,43 @@ export namespace Transaction {
 			notes: [],
 		}
 	}
+	export function buffer(
+		id: Identifier,
+		account: { id: string; name: string; organization: string; address: Rail.Address },
+		currency: isoly.Currency,
+		balance: { actual: number; reserved: number; available: number },
+		operation: Operation,
+		by: string | undefined
+	): Transaction {
+		return {
+			id,
+			currency,
+			counterpart: {
+				type: "internal",
+				identifier: account.id,
+				name: account.name,
+				organization: account.organization,
+			},
+			amount: 0,
+			type: "internal",
+			direction: "inbound",
+			organization: account.organization,
+			accountId: account.id,
+			accountName: account.name,
+			account: account.address,
+			posted: isoly.DateTime.now(),
+			transacted: isoly.DateTime.now(),
+			by,
+			balance,
+			operations: [operation],
+			status: "finalized",
+			rail: "internal",
+			flags: [],
+			oldFlags: [],
+			notes: [],
+			description: "Buffer adjustment.",
+		}
+	}
 	export function fromIncoming(
 		transaction: Transaction.Incoming,
 		id: string,
