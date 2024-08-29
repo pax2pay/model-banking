@@ -2,11 +2,13 @@ import { gracely } from "gracely"
 import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Account } from "../../Account"
+import { Buffer } from "./Buffer"
 import { Counterparts } from "./Counterparts"
 import { Rails } from "./Rails"
 import { Rules } from "./Rules"
 
 export class Accounts extends rest.Collection<gracely.Error> {
+	readonly buffer = new Buffer(this.client)
 	readonly Rails = new Rails(this.client)
 	readonly rules = new Rules(this.client)
 	readonly counterparts = new Counterparts(this.client)
