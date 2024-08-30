@@ -13,6 +13,7 @@ export namespace Rule {
 	export import Kind = ModelRule.Base.Kind
 	export import Other = ModelRule.Other
 	export import Score = ModelRule.Score
+	export import Charge = ModelRule.Charge
 	export import State = RuleState
 	export const type = ruleType
 	export const is = ruleType.is
@@ -23,7 +24,7 @@ export namespace Rule {
 			(!rule.groups || rule.groups.some(ruleGroup => groups?.some(organizationGroup => organizationGroup == ruleGroup)))
 		)
 	}
-	function control(rule: ModelRule, state: State, macros?: Record<string, selectively.Definition>) {
+	function control(rule: ModelRule, state: State, macros?: Record<string, selectively.Definition>): boolean {
 		return selectively.resolve({ ...macros, ...definitions }, selectively.parse(rule.condition)).is(state)
 	}
 	function score(
@@ -32,9 +33,12 @@ export namespace Rule {
 		macros?: Record<string, selectively.Definition>
 	): number | undefined {
 		return rules.reduce(
-			(r: number | undefined, rule) => (control(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : undefined),
+			(r: number | undefined, rule) => (control(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : r),
 			undefined
 		)
+	}
+	function charge(rules: ModelRule.Charge[], state: State, macros?: Record<string, selectively.Definition>): number {
+		return rules.reduce((r: number, rule) => (control(rule, state, macros) ? r + rule.fee.percentage : r), 0)
 	}
 	export function evaluate(
 		rules: Rule[],
@@ -42,15 +46,20 @@ export namespace Rule {
 		macros?: Record<string, selectively.Definition>
 	): State.Evaluated {
 		const outcomes: Record<ModelRule.Other.Action, Rule[]> = { review: [], reject: [], flag: [] }
-		const [other, scorers] = rules.reduce(
-			(r: [ModelRule.Other[], ModelRule.Score[]], rule) => {
+		const { other, chargers, scorers } = rules.reduce(
+			(r: { other: ModelRule.Other[]; chargers: ModelRule.Charge[]; scorers: ModelRule.Score[] }, rule) => {
 				if (shouldUse(state.transaction.kind, rule, state.organization?.groups))
-					rule.action == "score" ? r[1].push(rule) : r[0].push(rule)
+					rule.action == "score"
+						? r.scorers.push(rule)
+						: rule.action == "charge"
+						? r.chargers.push(rule)
+						: r.other.push(rule)
 				return r
 			},
-			[[], []]
+			{ other: [], chargers: [], scorers: [] }
 		)
 		state.transaction.risk = score(scorers, state, macros)
+		state.transaction.fee = charge(chargers, state, macros)
 		const notes: Note[] = []
 		const flags: Set<string> = new Set()
 		const now = isoly.DateTime.now()

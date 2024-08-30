@@ -5,6 +5,7 @@ import { Rule } from "../Rule"
 export interface Transaction extends Omit<ModelTransaction.Creatable, "currency" | "amount"> {
 	kind: Rule.Base.Kind
 	amount: number
+	fee?: number
 	risk?: number
 	original: { currency: isoly.Currency; amount: number }
 }

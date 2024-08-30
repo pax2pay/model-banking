@@ -1,6 +1,95 @@
 import { pax2pay } from "../index"
 
 // cSpell:disable
+
+describe("definitions", () => {
+	const state = pax2pay.Rule.State.from(
+		{
+			countries: {
+				eea: ["AD"],
+				sanctioned: ["AD"],
+				risk: { high: ["AD"], mediumHigh: ["AD"] },
+			},
+			merchant: {
+				known: [],
+				categories: {
+					payment: [],
+					crypto: [],
+					gambling: [],
+					travel: [],
+					specialist: [],
+					media: [],
+					sabre: [],
+				},
+			},
+		},
+		account,
+		{
+			today: { count: 3, amount: 3 },
+			incoming: { today: { count: 1, amount: 1 } },
+			outgoing: { today: { count: 1, amount: 1 } },
+			card: { today: { count: 1, amount: 1 } },
+		},
+		{ currency: 1, merchant: { category: 1, country: 1, name: 1 } },
+		transaction1,
+		"authorization"
+	)
+	it("exceedsAmount", () => {
+		expect(pax2pay.Rule.evaluate([rule1], state).outcomes).toEqual({
+			flag: [],
+			reject: [rule1],
+			review: [],
+		})
+	})
+	it("more risk", () => {
+		const evaluated = pax2pay.Rule.evaluate([score, riskCheck], state)
+		expect(evaluated.outcome).toEqual("reject")
+		expect(evaluated.transaction.risk).toEqual(600)
+	})
+	it("double risk", () => {
+		expect(pax2pay.Rule.evaluate([score, notScore, score, notScore], state).transaction.risk).toEqual(3600)
+	})
+	it("less risk", () => {
+		const evaluated = pax2pay.Rule.evaluate([score, riskFlag], state)
+		expect(evaluated.transaction.risk).toEqual(600)
+		expect(evaluated.outcome).toEqual("approve")
+		expect(evaluated.outcomes.flag).toEqual([riskFlag])
+	})
+	// it("one fee", () => {
+	// 	const evaluated = pax2pay.Rule.evaluate([charge], state)
+	// 	const fee = state.transaction.amount * (charge.fee.percentage / 100)
+	// 	expect(evaluated.transaction.amount).toEqual(state.transaction.amount + fee)
+	// 	expect(evaluated.transaction.fee).toEqual(fee)
+	// })
+	it("isInternal", () => {
+		expect(pax2pay.Rule.evaluate([rule2], state).outcomes).toEqual({
+			review: [],
+			reject: [],
+			flag: [rule2],
+		})
+	})
+	it("always reject", () => {
+		expect(pax2pay.Rule.evaluate([rule3], state).outcomes).toEqual({
+			review: [],
+			reject: [rule3],
+			flag: [],
+		})
+	})
+	it("optional authorization", () => {
+		expect(pax2pay.Rule.evaluate([rule4], state).outcomes).toEqual({
+			review: [],
+			reject: [rule4],
+			flag: [],
+		})
+	})
+	it("many rules", () => {
+		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], state).outcomes).toEqual({
+			review: [],
+			reject: [rule1, rule3],
+			flag: [rule2],
+		})
+	})
+})
 export const transaction1: pax2pay.Transaction.Creatable = {
 	counterpart: {
 		identifier: "bvMkSwAG",
@@ -124,7 +213,7 @@ export const cardUsageLimit: pax2pay.Rule = {
 	action: "reject",
 	condition: "card.used.count>0",
 }
-export const score: pax2pay.Rule = {
+const score: pax2pay.Rule = {
 	code: "risk-score-test",
 	name: "risk score test",
 	type: "authorization",
@@ -135,7 +224,29 @@ export const score: pax2pay.Rule = {
 	risk: 600,
 	condition: "transaction.amount > 1",
 }
-export const riskCheck: pax2pay.Rule = {
+const charge: pax2pay.Rule.Charge = {
+	code: "charge-test",
+	name: "charge test",
+	type: "authorization",
+	category: "fincrime",
+	flags: [],
+	description: "Charge 1.5% fee.",
+	action: "charge",
+	fee: { percentage: 1.5 },
+	condition: "transaction.amount > 1",
+}
+const notScore: pax2pay.Rule = {
+	code: "risk-score-test",
+	name: "risk score test",
+	type: "authorization",
+	category: "fincrime",
+	flags: [],
+	description: "multiply risk by 600",
+	action: "score",
+	risk: 600,
+	condition: "transaction.amount < 1",
+}
+const riskCheck: pax2pay.Rule = {
 	code: "risk-check-test",
 	name: "risk check test",
 	type: "authorization",
@@ -145,92 +256,16 @@ export const riskCheck: pax2pay.Rule = {
 	action: "reject",
 	condition: "transaction.risk > 500",
 }
-export const riskFlag: pax2pay.Rule = {
+const riskFlag: pax2pay.Rule = {
 	code: "risk-check-flag-test",
 	name: "risk check flag test",
 	type: "authorization",
 	category: "fincrime",
 	flags: [],
-	description: "flag if risk is less than 500",
+	description: "flag if risk is greater than 500",
 	action: "flag",
-	condition: "transaction.risk < 500",
+	condition: "transaction.risk > 500",
 }
-
-describe("definitions", () => {
-	const state = pax2pay.Rule.State.from(
-		{
-			countries: {
-				eea: ["AD"],
-				sanctioned: ["AD"],
-				risk: { high: ["AD"], mediumHigh: ["AD"] },
-			},
-			merchant: {
-				known: [],
-				categories: {
-					payment: [],
-					crypto: [],
-					gambling: [],
-					travel: [],
-					specialist: [],
-					media: [],
-					sabre: [],
-				},
-			},
-		},
-		account,
-		{
-			today: { count: 3, amount: 3 },
-			incoming: { today: { count: 1, amount: 1 } },
-			outgoing: { today: { count: 1, amount: 1 } },
-			card: { today: { count: 1, amount: 1 } },
-		},
-		{ currency: 1, merchant: { category: 1, country: 1, name: 1 } },
-		transaction1,
-		"authorization"
-	)
-	it("exceedsAmount", () => {
-		expect(pax2pay.Rule.evaluate([rule1], state).outcomes).toEqual({
-			flag: [],
-			reject: [rule1],
-			review: [],
-		})
-	})
-	it("more risk", () => {
-		expect(pax2pay.Rule.evaluate([score, riskCheck], state).transaction.risk).toEqual(600)
-	})
-	it("less risk", () => {
-		expect(pax2pay.Rule.evaluate([score, riskFlag], state).transaction.risk).toEqual(600)
-	})
-	it("isInternal", () => {
-		expect(pax2pay.Rule.evaluate([rule2], state).outcomes).toEqual({
-			review: [],
-			reject: [],
-			flag: [rule2],
-		})
-	})
-	it("always reject", () => {
-		expect(pax2pay.Rule.evaluate([rule3], state).outcomes).toEqual({
-			review: [],
-			reject: [rule3],
-			flag: [],
-		})
-	})
-	it("optional authorization", () => {
-		expect(pax2pay.Rule.evaluate([rule4], state).outcomes).toEqual({
-			review: [],
-			reject: [rule4],
-			flag: [],
-		})
-	})
-	it("many rules", () => {
-		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], state).outcomes).toEqual({
-			review: [],
-			reject: [rule1, rule3],
-			flag: [rule2],
-		})
-	})
-})
-
 export const realmWideUKRules: pax2pay.Rule[] = [
 	{
 		code: "abc",
