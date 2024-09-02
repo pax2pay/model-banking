@@ -38,7 +38,7 @@ export namespace Rule {
 		)
 	}
 	function charge(rules: ModelRule.Charge[], state: State, macros?: Record<string, selectively.Definition>): number {
-		return rules.reduce((r: number, rule) => (control(rule, state, macros) ? r + rule.fee.percentage : r), 0)
+		return rules.reduce((r: number, rule) => (control(rule, state, macros) ? r + rule.fee.percentage : r), 0) / 100
 	}
 	export function evaluate(
 		rules: Rule[],
@@ -59,7 +59,13 @@ export namespace Rule {
 			{ other: [], chargers: [], scorers: [] }
 		)
 		state.transaction.risk = score(scorers, state, macros)
-		state.transaction.fee = charge(chargers, state, macros)
+		const fee = isoly.Currency.multiply(
+			state.transaction.original.currency,
+			state.transaction.amount,
+			charge(chargers, state, macros)
+		)
+		state.transaction.fee = isoly.Currency.add(state.transaction.original.currency, state.transaction.fee ?? 0, fee)
+		state.transaction.amount = isoly.Currency.add(state.transaction.original.currency, state.transaction.amount, fee)
 		const notes: Note[] = []
 		const flags: Set<string> = new Set()
 		const now = isoly.DateTime.now()
