@@ -117,8 +117,8 @@ const riskFlag: pax2pay.Rule = {
 	action: "flag",
 	condition: "transaction.risk > 500",
 }
-describe("definitions", () => {
-	const state = pax2pay.Rule.State.from(
+function getState(): pax2pay.Rule.State {
+	return pax2pay.Rule.State.from(
 		{
 			countries: {
 				eea: ["AD"],
@@ -149,39 +149,32 @@ describe("definitions", () => {
 		transaction1,
 		"authorization"
 	)
+}
+describe("definitions", () => {
 	it("exceedsAmount", () => {
-		expect(pax2pay.Rule.evaluate([rule1], state).outcomes).toEqual({
+		expect(pax2pay.Rule.evaluate([rule1], getState()).outcomes).toEqual({
 			flag: [],
 			reject: [rule1],
 			review: [],
 		})
 	})
 	it("more risk", () => {
-		const evaluated = pax2pay.Rule.evaluate([score, riskCheck], state)
+		const evaluated = pax2pay.Rule.evaluate([score, riskCheck], getState())
 		expect(evaluated.outcome).toEqual("reject")
 		expect(evaluated.transaction.risk).toEqual(600)
 	})
 	it("double risk", () => {
-		expect(pax2pay.Rule.evaluate([score, notScore, score, notScore], state).transaction.risk).toEqual(3600)
+		expect(pax2pay.Rule.evaluate([score, notScore, score, notScore], getState()).transaction.risk).toEqual(3600)
 	})
 	it("less risk", () => {
-		const evaluated = pax2pay.Rule.evaluate([score, riskFlag], { ...state })
+		const evaluated = pax2pay.Rule.evaluate([score, riskFlag], getState())
 		expect(evaluated.transaction.risk).toEqual(600)
 		expect(evaluated.outcome).toEqual("approve")
 		expect(evaluated.outcomes.flag).toEqual([riskFlag])
 	})
-	it("two fees", () => {
-		const evaluated = pax2pay.Rule.evaluate([charge, charge], { ...state, transaction: { ...state.transaction } })
-		const fee = isoly.Currency.multiply(
-			state.transaction.original.currency,
-			state.transaction.original.amount,
-			(2 * charge.fee.percentage) / 100
-		)
-		expect(evaluated.transaction.fee).toEqual(fee)
-		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
-	})
 	it("one fee", () => {
-		const evaluated = pax2pay.Rule.evaluate([charge], { ...state, transaction: { ...state.transaction } })
+		const state = getState()
+		const evaluated = pax2pay.Rule.evaluate([charge], state)
 		const fee = isoly.Currency.multiply(
 			state.transaction.original.currency,
 			state.transaction.original.amount,
@@ -190,29 +183,40 @@ describe("definitions", () => {
 		expect(evaluated.transaction.fee).toEqual(7.52)
 		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
 	})
+	it("two fees", () => {
+		const state = getState()
+		const evaluated = pax2pay.Rule.evaluate([charge, charge], state)
+		const fee = isoly.Currency.multiply(
+			state.transaction.original.currency,
+			state.transaction.original.amount,
+			(2 * charge.fee.percentage) / 100
+		)
+		expect(evaluated.transaction.fee).toEqual(fee)
+		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
+	})
 	it("isInternal", () => {
-		expect(pax2pay.Rule.evaluate([rule2], state).outcomes).toEqual({
+		expect(pax2pay.Rule.evaluate([rule2], getState()).outcomes).toEqual({
 			review: [],
 			reject: [],
 			flag: [rule2],
 		})
 	})
 	it("always reject", () => {
-		expect(pax2pay.Rule.evaluate([rule3], state).outcomes).toEqual({
+		expect(pax2pay.Rule.evaluate([rule3], getState()).outcomes).toEqual({
 			review: [],
 			reject: [rule3],
 			flag: [],
 		})
 	})
 	it("optional authorization", () => {
-		expect(pax2pay.Rule.evaluate([rule4], state).outcomes).toEqual({
+		expect(pax2pay.Rule.evaluate([rule4], getState()).outcomes).toEqual({
 			review: [],
 			reject: [rule4],
 			flag: [],
 		})
 	})
 	it("many rules", () => {
-		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], state).outcomes).toEqual({
+		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], getState()).outcomes).toEqual({
 			review: [],
 			reject: [rule1, rule3],
 			flag: [rule2],
