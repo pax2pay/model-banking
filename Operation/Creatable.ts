@@ -19,6 +19,7 @@ export namespace Creatable {
 		"finalizeOutgoing",
 		"authorization",
 		"capture",
+		"charge",
 		"refund",
 		"cancel",
 		"remove",

@@ -13,6 +13,7 @@ export namespace Rule {
 	export import Kind = ModelRule.Base.Kind
 	export import Other = ModelRule.Other
 	export import Score = ModelRule.Score
+	export import Charge = ModelRule.Charge
 	export import State = RuleState
 	export const type = ruleType
 	export const is = ruleType.is
@@ -23,7 +24,7 @@ export namespace Rule {
 			(!rule.groups || rule.groups.some(ruleGroup => groups?.some(organizationGroup => organizationGroup == ruleGroup)))
 		)
 	}
-	function control(rule: ModelRule, state: State, macros?: Record<string, selectively.Definition>) {
+	function control(rule: ModelRule, state: State, macros?: Record<string, selectively.Definition>): boolean {
 		return selectively.resolve({ ...macros, ...definitions }, selectively.parse(rule.condition)).is(state)
 	}
 	function score(
@@ -32,23 +33,46 @@ export namespace Rule {
 		macros?: Record<string, selectively.Definition>
 	): number | undefined {
 		return rules.reduce(
-			(r: number | undefined, rule) => (control(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : undefined),
+			(r: number | undefined, rule) => (control(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : r),
 			undefined
 		)
+	}
+	function charge(
+		rules: ModelRule.Charge[],
+		state: State,
+		macros?: Record<string, selectively.Definition>
+	): { outcomes: Rule[]; fee: number } {
+		const result: { outcomes: Rule[]; fee: number } = { outcomes: [], fee: 0 }
+		for (const rule of rules) {
+			if (control(rule, state, macros)) {
+				result.fee += (state.transaction.amount * rule.fee.percentage) / 100
+				result.outcomes.push(rule)
+			}
+		}
+		return result
 	}
 	export function evaluate(
 		rules: Rule[],
 		state: State,
 		macros?: Record<string, selectively.Definition>
 	): State.Evaluated {
-		const outcomes: Record<ModelRule.Other.Action, Rule[]> = { review: [], reject: [], flag: [] }
-		const [other, scorers] = rules.reduce(
-			(r: [ModelRule.Other[], ModelRule.Score[]], rule) => {
+		const outcomes: Record<ModelRule.Other.Action | ModelRule.Charge.Action, Rule[]> = {
+			review: [],
+			reject: [],
+			flag: [],
+			charge: [],
+		}
+		const { other, chargers, scorers } = rules.reduce(
+			(r: { other: ModelRule.Other[]; chargers: ModelRule.Charge[]; scorers: ModelRule.Score[] }, rule) => {
 				if (shouldUse(state.transaction.kind, rule, state.organization?.groups))
-					rule.action == "score" ? r[1].push(rule) : r[0].push(rule)
+					rule.action == "score"
+						? r.scorers.push(rule)
+						: rule.action == "charge"
+						? r.chargers.push(rule)
+						: r.other.push(rule)
 				return r
 			},
-			[[], []]
+			{ other: [], chargers: [], scorers: [] }
 		)
 		state.transaction.risk = score(scorers, state, macros)
 		const notes: Note[] = []
@@ -62,6 +86,18 @@ export namespace Rule {
 				rule.action == "review" && flags.add("review")
 			}
 		}
+		const charged = charge(chargers, state, macros)
+		state.transaction.fee = isoly.Currency.add(
+			state.transaction.original.currency,
+			state.transaction.fee ?? 0,
+			charged.fee
+		)
+		state.transaction.amount = isoly.Currency.add(
+			state.transaction.original.currency,
+			state.transaction.amount,
+			charged.fee
+		)
+		outcomes.charge.push(...charged.outcomes)
 		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
 		return { ...state, flags: [...flags], notes, outcomes, outcome }
 	}

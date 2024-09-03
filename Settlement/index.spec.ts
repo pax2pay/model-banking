@@ -75,7 +75,7 @@ describe("Settlement", () => {
 			status: { collected: "done", settled: "done" },
 			totals: {
 				GBP: {
-					collected: { fee: { other: 0.02 }, net: 1.22, transactions: { fee: "", net: "" } },
+					collected: { fee: { other: 0.02 }, net: 1.22, transactions: { fee: "", net: "", charge: "" } },
 					expected: { fee: { other: 0 }, net: 0 },
 					outcome: { fee: { other: 0.02 }, net: 1.22 },
 					settled: { net: 1.22, transactions: [] },
@@ -153,7 +153,7 @@ describe("Settlement", () => {
 			status: { collected: "done", settled: "done" },
 			totals: {
 				GBP: {
-					collected: { fee: { other: 12.18 }, net: 596.82, transactions: { fee: "", net: "" } },
+					collected: { fee: { other: 12.18 }, net: 596.82, transactions: { fee: "", net: "", charge: "" } },
 					expected: { fee: { other: 12.18 }, net: 596.82 },
 					outcome: { fee: { other: 12.18 }, net: 596.82 },
 					settled: { net: 596.82, transactions: ["zzzyRT31VQM8hZaC"] },
