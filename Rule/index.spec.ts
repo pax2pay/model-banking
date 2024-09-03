@@ -153,6 +153,7 @@ function getState(): pax2pay.Rule.State {
 describe("definitions", () => {
 	it("exceedsAmount", () => {
 		expect(pax2pay.Rule.evaluate([rule1], getState()).outcomes).toEqual({
+			charge: [],
 			flag: [],
 			reject: [rule1],
 			review: [],
@@ -180,7 +181,7 @@ describe("definitions", () => {
 			state.transaction.original.amount,
 			charge.fee.percentage / 100
 		)
-		expect(evaluated.transaction.fee).toEqual(7.52)
+		expect(evaluated.transaction.fee).toEqual(fee)
 		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
 	})
 	it("two fees", () => {
@@ -196,6 +197,7 @@ describe("definitions", () => {
 	})
 	it("isInternal", () => {
 		expect(pax2pay.Rule.evaluate([rule2], getState()).outcomes).toEqual({
+			charge: [],
 			review: [],
 			reject: [],
 			flag: [rule2],
@@ -203,6 +205,7 @@ describe("definitions", () => {
 	})
 	it("always reject", () => {
 		expect(pax2pay.Rule.evaluate([rule3], getState()).outcomes).toEqual({
+			charge: [],
 			review: [],
 			reject: [rule3],
 			flag: [],
@@ -210,13 +213,15 @@ describe("definitions", () => {
 	})
 	it("optional authorization", () => {
 		expect(pax2pay.Rule.evaluate([rule4], getState()).outcomes).toEqual({
+			charge: [],
 			review: [],
 			reject: [rule4],
 			flag: [],
 		})
 	})
 	it("many rules", () => {
-		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3], getState()).outcomes).toEqual({
+		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3, charge], getState()).outcomes).toEqual({
+			charge: [charge],
 			review: [],
 			reject: [rule1, rule3],
 			flag: [rule2],

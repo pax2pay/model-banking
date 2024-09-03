@@ -37,15 +37,31 @@ export namespace Rule {
 			undefined
 		)
 	}
-	function charge(rules: ModelRule.Charge[], state: State, macros?: Record<string, selectively.Definition>): number {
-		return rules.reduce((r: number, rule) => (control(rule, state, macros) ? r + rule.fee.percentage : r), 0) / 100
+	function charge(
+		rules: ModelRule.Charge[],
+		state: State,
+		macros?: Record<string, selectively.Definition>
+	): { outcomes: Rule[]; fee: number } {
+		const result: { outcomes: Rule[]; fee: number } = { outcomes: [], fee: 0 }
+		for (const rule of rules) {
+			if (control(rule, state, macros)) {
+				result.fee += (state.transaction.amount * rule.fee.percentage) / 100
+				result.outcomes.push(rule)
+			}
+		}
+		return result
 	}
 	export function evaluate(
 		rules: Rule[],
 		state: State,
 		macros?: Record<string, selectively.Definition>
 	): State.Evaluated {
-		const outcomes: Record<ModelRule.Other.Action, Rule[]> = { review: [], reject: [], flag: [] }
+		const outcomes: Record<ModelRule.Other.Action | ModelRule.Charge.Action, Rule[]> = {
+			review: [],
+			reject: [],
+			flag: [],
+			charge: [],
+		}
 		const { other, chargers, scorers } = rules.reduce(
 			(r: { other: ModelRule.Other[]; chargers: ModelRule.Charge[]; scorers: ModelRule.Score[] }, rule) => {
 				if (shouldUse(state.transaction.kind, rule, state.organization?.groups))
@@ -59,13 +75,6 @@ export namespace Rule {
 			{ other: [], chargers: [], scorers: [] }
 		)
 		state.transaction.risk = score(scorers, state, macros)
-		const fee = isoly.Currency.multiply(
-			state.transaction.original.currency,
-			state.transaction.amount,
-			charge(chargers, state, macros)
-		)
-		state.transaction.fee = isoly.Currency.add(state.transaction.original.currency, state.transaction.fee ?? 0, fee)
-		state.transaction.amount = isoly.Currency.add(state.transaction.original.currency, state.transaction.amount, fee)
 		const notes: Note[] = []
 		const flags: Set<string> = new Set()
 		const now = isoly.DateTime.now()
@@ -77,6 +86,18 @@ export namespace Rule {
 				rule.action == "review" && flags.add("review")
 			}
 		}
+		const charged = charge(chargers, state, macros)
+		state.transaction.fee = isoly.Currency.add(
+			state.transaction.original.currency,
+			state.transaction.fee ?? 0,
+			charged.fee
+		)
+		state.transaction.amount = isoly.Currency.add(
+			state.transaction.original.currency,
+			state.transaction.amount,
+			charged.fee
+		)
+		outcomes.charge.push(...charged.outcomes)
 		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
 		return { ...state, flags: [...flags], notes, outcomes, outcome }
 	}
