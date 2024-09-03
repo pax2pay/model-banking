@@ -18,4 +18,8 @@ export namespace Rule {
 	}
 }
 // Outside of the namespace otherwise the Rule import in Card/Card.Creatable and Organization causes a circular dependency crash
-export const type = isly.union<Rule.Other | Rule.Score, Rule.Other, Rule.Score>(Rule.Other.type, Rule.Score.type)
+export const type = isly.union<Rule.Other | Rule.Score | Rule.Charge, Rule.Other, Rule.Score, Rule.Charge>(
+	Rule.Other.type,
+	Rule.Score.type,
+	Rule.Charge.type
+)
