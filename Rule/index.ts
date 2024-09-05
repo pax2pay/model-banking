@@ -45,7 +45,7 @@ export namespace Rule {
 		const result: { outcomes: Rule[]; fee: number } = { outcomes: [], fee: 0 }
 		for (const rule of rules) {
 			if (control(rule, state, macros)) {
-				result.fee += (state.transaction.amount * rule.fee.percentage) / 100
+				result.fee += (state.transaction.amount * rule.charge.percentage) / 100
 				result.outcomes.push(rule)
 			}
 		}
