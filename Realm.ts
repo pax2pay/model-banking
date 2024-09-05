@@ -5,7 +5,7 @@ import { Supplier as modelSupplier } from "./Supplier"
 export type Realm = typeof Realm.realms[number]
 
 export namespace Realm {
-	export const realms = ["test", "testUK", "uk", "eu", "upcheck"] as const
+	export const realms = ["test", "testUK", "uk", "eea", "upcheck"] as const
 	export const type: isly.Type<Realm> = isly.string(realms)
 	export const is = type.is
 	export const flaw = type.flaw
@@ -17,20 +17,20 @@ export namespace Realm {
 		upcheck: "EUR",
 		testUK: "GBP",
 		uk: "GBP",
-		eu: "EUR",
+		eea: "EUR",
 	}
 	export const suppliers: Record<Realm, modelSupplier[]> = {
 		test: ["paxgiro", "paxgiroCredit"],
 		testUK: ["clearbank"],
 		uk: ["clearbank"],
-		eu: [],
+		eea: [],
 		upcheck: ["paxgiro"],
 	}
 	export interface Suppliers extends Record<Realm, modelSupplier[]> {
 		test: ["paxgiro", "paxgiroCredit"]
 		testUK: ["clearbank"]
 		uk: ["clearbank"]
-		eu: []
+		eea: []
 		upcheck: ["paxgiro"]
 	}
 	export type Supplier<P extends keyof Suppliers> = Pick<Suppliers, P>[P][number]
