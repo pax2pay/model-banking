@@ -36,6 +36,7 @@
 		"Fetchable",
 		"fincrime",
 		"flagly",
+		"formdata",
 		"funder",
 		"gracely",
 		"Iban",
@@ -47,6 +48,7 @@
 		"paxair",
 		"paxgiro",
 		"persistly",
+		"prettierx",
 		"rebalance",
 		"selectivly",
 		"servly",
@@ -56,6 +58,7 @@
 		"transactly",
 		"upcheck",
 		"uply",
-		"userwidgets"
+		"userwidgets",
+		"utily"
 	]
 }
