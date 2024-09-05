@@ -1,11 +1,12 @@
 import { isly } from "isly"
+import { Amounts } from "../../Amounts"
 import { Base } from "./Base"
 
 export interface Charge extends Base {
 	action: Charge.Action
-	fee: {
-		percentage: number
-		// flat?: number
+	charge: {
+		percentage?: number
+		fixed?: Amounts
 	}
 }
 export namespace Charge {
@@ -15,9 +16,9 @@ export namespace Charge {
 	}
 	export const type = Base.type.extend<Charge>({
 		action: isly.string(Action.value),
-		fee: isly.object({
-			percentage: isly.number(),
-			// flat?: number
+		charge: isly.object({
+			percentage: isly.number().optional(),
+			fixed: Amounts.type.optional(),
 		}),
 	})
 }
