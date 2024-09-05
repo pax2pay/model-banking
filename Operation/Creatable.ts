@@ -38,7 +38,7 @@ export namespace Creatable {
 	})
 	export const is = type.is
 	export const flaw = type.flaw
-	export function fromRefund(account: string, entry: Settlement.Entry.Refund.Creatable): Creatable {
+	export function fromRefund(account: string, entry: Settlement.Entry.Refund.Creatable, charge: number): Creatable {
 		// The Entry.Refund.Creatable has negative amount and fee
 		// The operation amounts should always be positive
 		const [currency, entryAmount] = entry.amount
@@ -51,7 +51,11 @@ export namespace Creatable {
 			changes: {
 				actual: {
 					type: "add",
-					amount: isoly.Currency.add(currency, operationAmount, operationFee),
+					amount: isoly.Currency.subtract(
+						currency,
+						isoly.Currency.add(currency, operationAmount, operationFee),
+						Math.abs(charge)
+					),
 					status: "pending",
 				},
 				incomingReserved: {
