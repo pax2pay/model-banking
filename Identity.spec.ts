@@ -49,7 +49,7 @@ describe("Identity", () => {
 		}
 		expect(await authenticate(roles, constraint, "test", orgCode)).toBeTruthy()
 		expect(await authenticate(roles, constraint, "testUK", orgCode)).toBeTruthy()
-		expect(await authenticate(roles, constraint, "eu", orgCode)).toBeFalsy()
+		expect(await authenticate(roles, constraint, "eea", orgCode)).toBeFalsy()
 	})
 	it("get realms one realm", async () => {
 		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`test-*`]: ["finance"] })
