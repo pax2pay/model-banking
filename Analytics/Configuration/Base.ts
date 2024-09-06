@@ -1,19 +1,17 @@
 import { filter, listener } from "cloudly-analytics-common"
+import { Event } from "../Event"
+import type { FlattenKeys } from "."
 
 export namespace Base {
-	type Selectors = 
-		| "realm"
-		| "entity.type"
-		| "entity.id"
-		| "action"
-		| "created"
-		| "isError"
+	export type Selectors = Exclude<FlattenKeys<Required<Omit<Event.Base<any>, "value">>>, "entity">
 		| "version"
 		| "source"
 	export const mapping = {
 		realm: "realm",
-		entity: "entity.type",
-		entityId: "entity.id",
+		organization: "organization",
+		account: "account",
+		entityType: "entity.type",
+		entity: "entity.id",
 		action: "action",
 		created: "created",
 		isError: { selector: "isError", transform: "boolean" },
@@ -24,11 +22,13 @@ export namespace Base {
 	export type Fields = keyof typeof mapping
 	export const schema: listener.BigQueryApi.BaseField<Fields>[] = [
 		{ name: "realm", type: "STRING" },
+		{ name: "organization", type: "STRING", mode: "NULLABLE" },
+		{ name: "account", type: "STRING", mode: "NULLABLE" },
 		{ name: "entity", type: "STRING" },
-		{ name: "entityId", type: "STRING" },
+		{ name: "entityType", type: "STRING" },
 		{ name: "action", type: "STRING" },
 		{ name: "created", type: "TIMESTAMP" },
-		{ name: "isError", type: "BOOLEAN" },
+		{ name: "isError", type: "BOOLEAN", mode: "NULLABLE" },
 		{ name: "source", type: "STRING" },
 		{ name: "version", type: "STRING" },
 	]

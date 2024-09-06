@@ -9,3 +9,6 @@ export namespace Configuration {
 	export import Operation = ConfigOperation
 	export import AuditLog = ConfigAuditLog
 }
+export type FlattenKeys<T extends Record<string, unknown>> = {
+	[K in Extract<keyof T, string>]: T[K] extends Record<string, unknown> ? K | `${K}.${Extract<keyof T[K], string>}` : K
+}[Extract<keyof T, string>]
