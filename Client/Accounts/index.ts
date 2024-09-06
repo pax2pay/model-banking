@@ -19,6 +19,9 @@ export class Accounts extends rest.Collection<gracely.Error> {
 	async create(account: Account.Creatable): Promise<Account | gracely.Error> {
 		return this.client.post<Account>("/account", account)
 	}
+	async get(account: string): Promise<Account | gracely.Error> {
+		return this.client.get<Account>(`/account/${account}`)
+	}
 	async list(options?: {
 		limit?: string
 		cursor?: string
