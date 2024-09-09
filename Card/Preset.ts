@@ -14,6 +14,7 @@ export namespace Preset {
 		"test-ta-pg-200",
 		"test-ta-mc-200",
 		"test-diners-200",
+		"test-diners-202",
 	] as const
 	export const type = isly.string<Preset>(names)
 	export const is = type.is
@@ -21,6 +22,7 @@ export namespace Preset {
 	export const presets: Record<Preset, Stack> = {
 		"p2p-mc-200": "uk-mc-tpl-marqeta",
 		"test-diners-200": "testUK-diners-dpg",
+		"test-diners-202": "testUK-diners-dpg",
 		"test-mc-200": "testUK-marqeta",
 		"test-ta-mq-200": "testUK-tpl-marqeta",
 		"test-pg-200": "test-paxgiro",
