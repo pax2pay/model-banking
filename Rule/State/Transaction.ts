@@ -3,11 +3,11 @@ import type { Address } from "../../Rail/Address"
 import { Transaction as ModelTransaction } from "../../Transaction"
 import { Rule } from "../Rule"
 
-export interface Transaction extends Omit<ModelTransaction.Creatable, "currency" | "amount"> {
+export interface Transaction extends ModelTransaction.Creatable {
 	kind: Rule.Base.Kind
 	amount: number
 	type: ModelTransaction.Types
-	fee?: number
+	charge?: number
 	risk?: number
 	original: { currency: isoly.Currency; amount: number }
 }

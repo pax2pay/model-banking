@@ -1,3 +1,4 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amount } from "../../Amount"
 import { Realm } from "../../Realm"
@@ -28,12 +29,17 @@ export namespace Charge {
 			fixed?: Amount
 		}
 	}
-	export function toBackend(rule: Charge, realm: Realm): Backend {
+	export function toBackend(rule: Charge, realm: Realm): Backend
+	export function toBackend(rule: Charge, currency: isoly.Currency): Backend
+	export function toBackend(rule: Charge, currency: Realm | isoly.Currency): Backend {
 		return {
 			...rule,
 			charge: {
 				...rule.charge,
-				fixed: typeof rule.charge.fixed == "number" ? [Realm.currency[realm], rule.charge.fixed] : rule.charge.fixed,
+				fixed:
+					typeof rule.charge.fixed == "number"
+						? [Realm.is(currency) ? Realm.currency[currency] : currency, rule.charge.fixed]
+						: rule.charge.fixed,
 			},
 		}
 	}
