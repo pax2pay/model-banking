@@ -8,7 +8,11 @@ export type Changes = Partial<Record<Balances.Balance.Entry, Change>> & Record<C
 
 export namespace Changes {
 	export namespace Entry {
-		export type Counterbalance = `${CounterbalanceOperation.Link}-${isoly.DateTime}`
+		type Settlement = string // Settlement.id
+		type Snapshot = string // 2024-09-04T05Z isoly date time truncated on hour
+		export type Counterbalance =
+			| `${Snapshot}-${CounterbalanceOperation.Link}`
+			| `${Settlement}-${"net" | "fee" | "charge"}`
 		export function split(counterbalance: Counterbalance): [CounterbalanceOperation.Link, isoly.DateTime] {
 			const split = counterbalance.split("-")
 			const [realm, supplier, account, hour] = [split[0], split[1], split[2], split.slice(3).join("-")]
