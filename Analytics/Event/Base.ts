@@ -9,5 +9,6 @@ export type Base<T> = {
 	action: string
 	created: isoly.DateTime
 	isError?: true
+	meta?: Record<string, unknown>
 	value: T
 }
