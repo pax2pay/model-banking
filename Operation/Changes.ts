@@ -5,6 +5,7 @@ import { Counterbalance as CounterbalanceOperation } from "../Counterbalance"
 import { Change } from "./Change"
 
 export type Changes = Partial<Record<Balances.Balance.Entry, Change>> & Record<Changes.Entry.Counterbalance, Change>
+export type Changes2 = Balance<Change> & Counterbalance<Change>
 
 export namespace Changes {
 	export namespace Entry {
