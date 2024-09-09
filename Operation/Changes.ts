@@ -8,9 +8,8 @@ export type Changes = Partial<Record<Balances.Balance.Entry, Change>> & Record<C
 
 export namespace Changes {
 	export namespace Entry {
-		type Type = "net" | "fee" | "charge"
-		type Settlement = string
-		type Snapshot = string
+		type Settlement = string // Settlement.id
+		type Snapshot = string // 2024-09-04T05Z isoly date time truncated on hour
 		export type Counterbalance =
 			| `${Snapshot}-${CounterbalanceOperation.Link}`
 			| `${Settlement}-${"net" | "fee" | "charge"}`
