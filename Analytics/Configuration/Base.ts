@@ -1,17 +1,14 @@
 import { filter, listener } from "cloudly-analytics-common"
 import { Event } from "../Event"
-import type { FlattenKeys } from "."
 
 export namespace Base {
-	export type Selectors = Exclude<FlattenKeys<Required<Omit<Event.Base<any>, "value">>>, "entity">
+	export type Selectors = keyof Required<Omit<Event.Base<any>, "value">>
 		| "version"
 		| "source"
 	export const mapping = {
 		realm: "realm",
-		organization: "organization",
-		account: "account",
-		entityType: "entity.type",
-		entity: "entity.id",
+		entityType: "entityType",
+		entity: "entity",
 		action: "action",
 		created: "created",
 		isError: { selector: "isError", transform: "boolean" },
@@ -22,8 +19,6 @@ export namespace Base {
 	export type Fields = keyof typeof mapping
 	export const schema: listener.BigQueryApi.BaseField<Fields>[] = [
 		{ name: "realm", type: "STRING" },
-		{ name: "organization", type: "STRING", mode: "NULLABLE" },
-		{ name: "account", type: "STRING", mode: "NULLABLE" },
 		{ name: "entity", type: "STRING" },
 		{ name: "entityType", type: "STRING" },
 		{ name: "action", type: "STRING" },

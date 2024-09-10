@@ -3,9 +3,8 @@ import { Realm } from "../../Realm"
 
 export type Base<T> = {
 	realm: Realm
-	organization?: string
-	account?: string
-	entity: { type: string; id: string }
+	entity: string
+	entityType: string
 	action: string
 	created: isoly.DateTime
 	isError?: true
