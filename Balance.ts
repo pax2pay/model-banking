@@ -1,32 +1,36 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 
-export type Balance = Partial<Record<Balance.Entry, number>> & {
-	available: number
-	reserved: Partial<Record<Balance.Reserve, number>>
-}
+export type Balance = Balance.Legacy & { available?: number; reserved?: Balance.Reserved }
 export namespace Balance {
+	export type Legacy = Partial<Record<Balance.Entry, number>>
 	export type Reserve = typeof Reserve.values[number]
 	export namespace Reserve {
-		export const values = ["in", "out", "buffer"]
+		export const values = ["in", "out", "buffer"] as const
 		export const type = isly.string<Reserve>(values)
 	}
+	export type Reserved = Partial<Record<Balance.Reserve, number>>
 	export type Entry = typeof Entry.values[number]
 	export namespace Entry {
 		export const values = ["actual", "incomingReserved", "outgoingReserved"] as const
 		export const type = isly.string<Entry>(values)
 	}
-	export const newType = isly.object<{ available: number; reserved: Record<Balance.Reserve, number> }>({
-		available: isly.number(),
-		reserved: isly.record<Record<Balance.Reserve, number>>(Balance.Reserve.type, isly.number()),
+	export const newType = isly.object<{ available?: number; reserved?: Reserved }>({
+		available: isly.number().optional(),
+		reserved: isly.record<Record<Balance.Reserve, number>>(Balance.Reserve.type, isly.number()).optional(),
 	})
 	export const type = isly.intersection(isly.record<Balance>(Entry.type, isly.number()), newType)
-	// export function add(addendee: Balance, addend: Balance, currency: isoly.Currency): Balance {
-	// 	return (Object.entries(addend) as [Entry, number][]).reduce(
-	// 		(r: Balance, [entry, amount]) => ({
-	// 			...r,
-	// 			[entry]: isoly.Currency.add(currency, addendee[entry] ?? 0, amount),
-	// 		}),
-	// 		addendee
-	// 	)
-	// }
+	export function fromLegacy(currency: isoly.Currency, balance: Balance): Balance {
+		const result: Balance = {}
+		if (typeof balance.available == "undefined") {
+			const reserved = isoly.Currency.add(currency, balance.incomingReserved ?? 0, balance.outgoingReserved ?? 0)
+			result.available = isoly.Currency.subtract(currency, balance.actual ?? 0, reserved)
+		} else
+			result.available = balance.available
+		if (typeof balance.reserved == "undefined")
+			result.reserved = { in: balance.incomingReserved, out: balance.outgoingReserved }
+		else
+			result.reserved = balance.reserved
+		return result
+	}
 }
