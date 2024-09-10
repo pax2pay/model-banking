@@ -19,8 +19,8 @@ export namespace Card {
 		used: { count: 0, amount: 0, merchants: [] },
 		reject: { count: 0 },
 	}
-	function ageFromTime(time: isoly.DateTime): Card["age"] {
-		const minutes = ~~(Date.now() - (isoly.DateTime.epoch(time, "milliseconds") / 1000) * 60)
+	export function ageFromTime(time: isoly.DateTime): Card["age"] {
+		const minutes = ~~(((Date.now() - isoly.DateTime.epoch(time, "milliseconds")) / 1000) * 60)
 		return { days: ~~(minutes / (60 * 24)), minutes }
 	}
 	export function from(card: ModelCard, statistics: Statistics = initialStatistics): Card {
