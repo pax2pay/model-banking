@@ -12,7 +12,7 @@ export namespace Balance {
 	export type Reserved = Partial<Record<Balance.Reserve, number>>
 	export type Entry = typeof Entry.values[number]
 	export namespace Entry {
-		export const values = ["actual", "incomingReserved", "outgoingReserved"] as const
+		export const values = ["actual", "incomingReserved", "outgoingReserved", "bufferReserved"] as const
 		export const type = isly.string<Entry>(values)
 	}
 	export const newType = isly.object<{ available?: number; reserved?: Reserved }>({
@@ -28,7 +28,7 @@ export namespace Balance {
 		} else
 			result.available = balance.available
 		if (typeof balance.reserved == "undefined")
-			result.reserved = { in: balance.incomingReserved, out: balance.outgoingReserved }
+			result.reserved = { in: balance.incomingReserved, out: balance.outgoingReserved, buffer: balance.bufferReserved }
 		else
 			result.reserved = balance.reserved
 		return result
