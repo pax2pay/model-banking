@@ -16,6 +16,12 @@ export namespace Balances {
 			result[currency as isoly.Currency] = Balance.fromLegacy(currency as isoly.Currency, balance)
 		return result
 	}
+	export function computeReserved(balances: Balances): Amounts {
+		const result: Amounts = {}
+		for (const [currency, balance] of Object.entries(balances))
+			result[currency as isoly.Currency] = Balance.computeReserved(currency as isoly.Currency, balance)[1]
+		return result
+	}
 	export function computeActual(balances: Balances): Amounts {
 		const result: Amounts = {}
 		for (const [currency, balance] of Object.entries(balances))

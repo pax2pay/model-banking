@@ -39,11 +39,17 @@ export namespace Balance {
 			result.reserved = balance.reserved
 		return result
 	}
+	export function computeReserved(currency: isoly.Currency, balance: Balance): Amount {
+		return [
+			currency,
+			Object.entries(balance.reserved ?? {}).reduce(
+				(result, [_, current]) => isoly.Currency.add(currency, result, current),
+				0
+			),
+		]
+	}
 	export function computeActual(currency: isoly.Currency, balance: Balance): Amount {
-		const reserved = Object.entries(balance.reserved ?? {}).reduce(
-			(result, [_, current]) => isoly.Currency.add(currency, result, current),
-			0
-		)
+		const reserved = computeReserved(currency, balance)[1]
 		return [currency, isoly.Currency.add(currency, balance.available ?? 0, reserved)]
 	}
 }
