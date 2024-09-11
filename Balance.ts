@@ -21,7 +21,12 @@ export namespace Balance {
 	})
 	export const type = isly.intersection(isly.record<Balance>(Entry.type, isly.number()), newType)
 	export function fromLegacy(currency: isoly.Currency, balance: Balance): Balance {
-		const result: Balance = {}
+		const result: Balance = {
+			actual: balance.actual,
+			incomingReserved: balance.incomingReserved,
+			outgoingReserved: balance.outgoingReserved,
+			bufferReserved: balance.bufferReserved,
+		}
 		if (typeof balance.available == "undefined") {
 			const reserved = isoly.Currency.add(currency, balance.incomingReserved ?? 0, balance.outgoingReserved ?? 0)
 			result.available = isoly.Currency.subtract(currency, balance.actual ?? 0, reserved)
