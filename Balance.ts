@@ -43,7 +43,7 @@ export namespace Balance {
 		return [
 			currency,
 			Object.entries(balance.reserved ?? {}).reduce(
-				(result, [_, current]) => isoly.Currency.add(currency, result, current),
+				(result, [_, current]) => isoly.Currency.add(currency, result, current ?? 0),
 				0
 			),
 		]
