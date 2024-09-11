@@ -7,6 +7,7 @@ import { Change } from "./Change"
 export type Changes = Partial<Record<Changes.Entry.Balance, Change>> & Record<Changes.Entry.Counterbalance, Change>
 export namespace Changes {
 	export type MaybeLegacy = Changes | Legacy
+	export const type = isly.record<Legacy>(isly.string(), Change.type)
 	export type Legacy = Partial<Record<Balances.Balance.Entry, Change>> & Record<Changes.Entry.Counterbalance, Change>
 	export namespace Legacy {
 		export const type = isly.record<Legacy>(isly.string(), Change.type)
