@@ -29,7 +29,11 @@ export namespace Balance {
 			bufferReserved: balance.bufferReserved,
 		}
 		if (typeof balance.available == "undefined") {
-			const reserved = isoly.Currency.add(currency, balance.incomingReserved ?? 0, balance.outgoingReserved ?? 0)
+			const reserved = isoly.Currency.add(
+				currency,
+				balance.incomingReserved ?? 0,
+				isoly.Currency.add(currency, balance.outgoingReserved ?? 0, balance.bufferReserved ?? 0)
+			)
 			result.available = isoly.Currency.subtract(currency, balance.actual ?? 0, reserved)
 		} else
 			result.available = balance.available
