@@ -2,9 +2,10 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amount } from "./Amount"
 
-export type Balance = Balance.Legacy & { available?: number; reserved?: Balance.Reserved }
+export type Balance = { available?: number; reserved?: Balance.Reserved }
 export namespace Balance {
 	export type Legacy = Partial<Record<Balance.Entry, number>>
+	export type MaybeLegacy = Legacy & Balance
 	export type Reserve = typeof Reserve.values[number]
 	export namespace Reserve {
 		export const values = ["in", "out", "buffer"] as const
@@ -20,9 +21,9 @@ export namespace Balance {
 		available: isly.number().optional(),
 		reserved: isly.record<Record<Balance.Reserve, number>>(Balance.Reserve.type, isly.number()).optional(),
 	})
-	export const type = isly.intersection(isly.record<Balance>(Entry.type, isly.number()), newType)
-	export function fromLegacy(currency: isoly.Currency, balance: Balance): Balance {
-		const result: Balance = {
+	export const type = isly.intersection(isly.record<MaybeLegacy>(Entry.type, isly.number()), newType)
+	export function fromLegacy(currency: isoly.Currency, balance: MaybeLegacy): MaybeLegacy {
+		const result: MaybeLegacy = {
 			actual: balance.actual,
 			incomingReserved: balance.incomingReserved,
 			outgoingReserved: balance.outgoingReserved,

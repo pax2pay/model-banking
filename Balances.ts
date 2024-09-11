@@ -3,7 +3,7 @@ import { isly } from "isly"
 import { Amounts } from "./Amounts"
 import { Balance as BalancesBalance } from "./Balance"
 
-export type Balances = Partial<Record<isoly.Currency, Balances.Balance>>
+export type Balances = Partial<Record<isoly.Currency, Balances.Balance.MaybeLegacy>>
 
 export namespace Balances {
 	export import Balance = BalancesBalance
