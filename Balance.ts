@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Amount } from "./Amount"
 
 export type Balance = Balance.Legacy & { available?: number; reserved?: Balance.Reserved }
 export namespace Balance {
@@ -37,5 +38,12 @@ export namespace Balance {
 		else
 			result.reserved = balance.reserved
 		return result
+	}
+	export function computeActual(currency: isoly.Currency, balance: Balance): Amount {
+		const reserved = Object.entries(balance.reserved ?? {}).reduce(
+			(result, [_, current]) => isoly.Currency.add(currency, result, current),
+			0
+		)
+		return [currency, isoly.Currency.add(currency, balance.available ?? 0, reserved)]
 	}
 }
