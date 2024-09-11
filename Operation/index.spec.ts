@@ -63,7 +63,7 @@ const operation2: pax2pay.Operation = {
 	account: "23Md_znq",
 	currency: "GBP",
 	changes: {
-		actual: {
+		available: {
 			type: "add",
 			amount: 1000,
 			status: "success",
