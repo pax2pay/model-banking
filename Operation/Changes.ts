@@ -20,17 +20,17 @@ export namespace Changes {
 				export const type = Balances.Balance.Entry.type
 			}
 			export type Counterbalance = `${CounterbalanceOperation.Link}-${isoly.DateTime}`
-			export function split(counterbalance: Counterbalance): [CounterbalanceOperation.Link, isoly.DateTime] {
-				const split = counterbalance.split("-")
-				const [realm, supplier, account, hour] = [split[0], split[1], split[2], split.slice(3).join("-")]
-				return [`${realm}-${supplier}-${account}`, hour]
-			}
 		}
 	}
 	export type Entry = Changes.Entry.Balance | Changes.Entry.Counterbalance
 	export namespace Entry {
 		export const type = isly.string<Entry>()
 		export type Counterbalance = `${CounterbalanceOperation.Link}-${isoly.DateTime}`
+		export function split(counterbalance: Counterbalance): [CounterbalanceOperation.Link, isoly.DateTime] {
+			const split = counterbalance.split("-")
+			const [realm, supplier, account, hour] = [split[0], split[1], split[2], split.slice(3).join("-")]
+			return [`${realm}-${supplier}-${account}`, hour]
+		}
 		export type Balance = typeof Balance.values[number]
 		export namespace Balance {
 			export const values = ["available", "incomingReserved", "outgoingReserved", "bufferReserved"] as const
