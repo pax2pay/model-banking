@@ -1,19 +1,14 @@
 import { filter, listener } from "cloudly-analytics-common"
+import { Event } from "../Event"
 
 export namespace Base {
-	type Selectors = 
-		| "realm"
-		| "entity.type"
-		| "entity.id"
-		| "action"
-		| "created"
-		| "isError"
+	export type Selectors = keyof Required<Omit<Event.Base<any>, "value">>
 		| "version"
 		| "source"
 	export const mapping = {
 		realm: "realm",
-		entity: "entity.type",
-		entityId: "entity.id",
+		entityType: "entityType",
+		entity: "entity",
 		action: "action",
 		created: "created",
 		isError: { selector: "isError", transform: "boolean" },
@@ -25,10 +20,10 @@ export namespace Base {
 	export const schema: listener.BigQueryApi.BaseField<Fields>[] = [
 		{ name: "realm", type: "STRING" },
 		{ name: "entity", type: "STRING" },
-		{ name: "entityId", type: "STRING" },
+		{ name: "entityType", type: "STRING" },
 		{ name: "action", type: "STRING" },
 		{ name: "created", type: "TIMESTAMP" },
-		{ name: "isError", type: "BOOLEAN" },
+		{ name: "isError", type: "BOOLEAN", mode: "NULLABLE" },
 		{ name: "source", type: "STRING" },
 		{ name: "version", type: "STRING" },
 	]

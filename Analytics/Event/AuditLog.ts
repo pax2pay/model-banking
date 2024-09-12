@@ -4,14 +4,15 @@ import { Realm } from "../../Realm"
 import { Base } from "./Base"
 
 export type AuditLog = Base<Audit> & {
-	entity: { type: "auditLog"; id: string }
+	entityType: "auditLog"
 	action: "created"
 }
 export namespace AuditLog {
 	export function create(value: Audit, realm: Realm, action: AuditLog["action"]): AuditLog {
 		return {
 			realm,
-			entity: { type: "auditLog", id: value.id },
+			entityType: "auditLog",
+			entity: value.id,
 			action,
 			created: isoly.DateTime.now(),
 			value,
