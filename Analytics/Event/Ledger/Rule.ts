@@ -4,7 +4,7 @@ import { Rule as modelRule } from "../../../Rule"
 import { Base } from "./Base"
 
 export interface Rule extends Base<modelRule> {
-	entityType: "rule"
+	entity: { type: "rule"; id: string }
 	action: "created" | "updated" | "removed"
 	meta: {
 		ruleType: modelRule.Kind
@@ -22,8 +22,7 @@ export namespace Rule {
 	): Rule {
 		return {
 			realm,
-			entityType: "rule",
-			entity: value.code,
+			entity: { type: "rule", id: value.code },
 			organization,
 			account,
 			action,

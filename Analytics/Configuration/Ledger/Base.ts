@@ -1,9 +1,10 @@
 import { filter, listener } from "cloudly-analytics-common"
 import { Event } from "../../Event"
+import { FlattenKeys } from ".."
 import { Base as ConfigBase } from "../Base"
 
 export namespace Base {
-	export type Selectors = keyof Required<Event.Ledger.Base<any>>
+	export type Selectors = FlattenKeys<Required<Event.Ledger.Base<any>>>
 		| "version"
 		| "source"
 	export const mapping = {

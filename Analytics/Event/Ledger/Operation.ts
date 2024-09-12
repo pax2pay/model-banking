@@ -4,7 +4,7 @@ import { Realm } from "../../../Realm"
 import { Base } from "./Base"
 
 export interface Operation extends Base<modelOperation> {
-	entityType: "operation"
+	entity: { type: "operation"; id: string }
 	action: "created"
 }
 export namespace Operation {
@@ -17,8 +17,7 @@ export namespace Operation {
 	): Operation {
 		return {
 			realm,
-			entityType: "operation",
-			entity: value.signature ?? "",
+			entity: { type: "operation", id: value.signature ?? "" },
 			organization,
 			account,
 			action,

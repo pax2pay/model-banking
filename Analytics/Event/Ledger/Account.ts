@@ -4,7 +4,7 @@ import { Realm } from "../../../Realm"
 import { Base } from "./Base"
 
 export interface Account extends Base<modelAccount> {
-	entityType: "account"
+	entity: { type: "account"; id: string }
 	action: "created" | "updated"
 	meta: { accountKey: string }
 }
@@ -12,8 +12,7 @@ export namespace Account {
 	export function create(value: modelAccount, organization: string, realm: Realm, action: Account["action"]): Account {
 		return {
 			realm,
-			entity: value.id,
-			entityType: "account",
+			entity: { type: "account", id: value.id },
 			organization,
 			action,
 			created: isoly.DateTime.now(),
