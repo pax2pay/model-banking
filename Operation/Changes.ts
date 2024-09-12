@@ -15,6 +15,10 @@ export namespace Changes {
 		export const flaw = type.flaw
 		export type Entry = Balances.Balance.Entry | Legacy.Entry.Counterbalance
 		export namespace Entry {
+			export type Balance = typeof Balances.Balance.Entry.values[number]
+			export namespace Balance {
+				export const type = Balances.Balance.Entry.type
+			}
 			export type Counterbalance = `${CounterbalanceOperation.Link}-${isoly.DateTime}`
 			export function split(counterbalance: Counterbalance): [CounterbalanceOperation.Link, isoly.DateTime] {
 				const split = counterbalance.split("-")
