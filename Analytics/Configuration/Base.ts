@@ -1,14 +1,15 @@
 import { filter, listener } from "cloudly-analytics-common"
 import { Event } from "../Event"
+import type { FlattenKeys } from ".";
 
 export namespace Base {
-	export type Selectors = keyof Required<Omit<Event.Base<any>, "value">>
+	export type Selectors = FlattenKeys<Required<Omit<Event.Base<any>, "value">>>
 		| "version"
 		| "source"
 	export const mapping = {
 		realm: "realm",
-		entityType: "entityType",
-		entity: "entity",
+		entityType: "entity.type",
+		entity: "entity.id",
 		action: "action",
 		created: "created",
 		isError: { selector: "isError", transform: "boolean" },

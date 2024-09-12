@@ -13,7 +13,6 @@ describe("Analytics transactions mapping", () => {
 		const mapper = Filter.create<filter.Mapping>({
 			type: "mapping",
 			mapping: {
-				...pax2pay.Analytics.Configuration.Base.mapping,
 				...pax2pay.Analytics.Configuration.Transaction.mapping,
 			},
 		})
@@ -22,8 +21,7 @@ describe("Analytics transactions mapping", () => {
 })
 const transaction: pax2pay.Analytics.Event.Ledger.Transaction = {
 	realm: "test",
-	entityType: "transaction",
-	entity: "zzzyRwIvXovdzVNA",
+	entity: { type: "transaction", id: "zzzyRwIvXovdzVNA" },
 	action: "created",
 	created: "2023-12-05T17:26:36.977Z",
 	value: {
