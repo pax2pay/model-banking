@@ -25,11 +25,12 @@ export namespace Changes {
 	}
 	export type Entry = Changes.Entry.Balance | Changes.Entry.Counterbalance
 	export namespace Entry {
-		export const type = isly.string<Entry>(Balance.values)
-		export type Balance = typeof Balance.values[number]
+		export const type = isly.string<Entry>()
 		export type Counterbalance = `${CounterbalanceOperation.Link}-${isoly.DateTime}`
+		export type Balance = typeof Balance.values[number]
 		export namespace Balance {
 			export const values = ["available", "incomingReserved", "outgoingReserved", "bufferReserved"] as const
+			export const type = isly.string<Balance>(values)
 		}
 	}
 }
