@@ -12,7 +12,7 @@ export namespace Balance {
 	export type Reserved = Partial<Record<Balance.Reserve, number>>
 	export const type = isly.object<Balance>({
 		available: isly.number().optional(),
-		reserved: isly.record<Record<Balance.Reserve, number>>(Balance.Reserve.type, isly.number()).optional(),
+		reserved: isly.record<Reserved>(Balance.Reserve.type, isly.number().optional()).optional(),
 	})
 	export type Legacy = Partial<Record<Legacy.Entry, number>>
 	export namespace Legacy {
