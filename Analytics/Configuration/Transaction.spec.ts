@@ -13,14 +13,13 @@ describe("Analytics transactions mapping", () => {
 		const mapper = Filter.create<filter.Mapping>({
 			type: "mapping",
 			mapping: {
-				...pax2pay.Analytics.Configuration.Base.mapping,
 				...pax2pay.Analytics.Configuration.Transaction.mapping,
 			},
 		})
 		expect(mapper.filter(transaction)).toEqual(result)
 	})
 })
-const transaction: pax2pay.Analytics.Event.Transaction = {
+const transaction: pax2pay.Analytics.Event.Ledger.Transaction = {
 	realm: "test",
 	entity: { type: "transaction", id: "zzzyRwIvXovdzVNA" },
 	action: "created",
@@ -74,21 +73,21 @@ const transaction: pax2pay.Analytics.Event.Transaction = {
 	},
 }
 const result = {
-	account: '{"type":"internal","identifier":"3Lb41MlP"}',
-	accountId: "3Lb41MlP",
+	accountAddress: '{"type":"internal","identifier":"3Lb41MlP"}',
+	account: "3Lb41MlP",
 	accountType: "internal",
 	action: "created",
-	actualBalance: 420,
-	amount: -10,
-	availableBalance: 420,
+	actualBalance: "420",
+	amount: "-10",
+	availableBalance: "420",
 	counterpart: '{"type":"internal","identifier":"IkToJ5Ep"}',
 	counterpartType: "internal",
 	created: "2023-12-05T17:26:36.977Z",
 	currency: "GBP",
 	description: "Collect fee_test-paxgiro_202333303.",
 	direction: "outbound",
-	entity: "transaction",
-	entityId: "zzzyRwIvXovdzVNA",
+	entityType: "transaction",
+	entity: "zzzyRwIvXovdzVNA",
 	flags: ["dannebrogen", "union-jack"],
 	id: "zzzyRwIvXovdzVNA",
 	notes: "[]",
@@ -100,14 +99,14 @@ const result = {
 				{
 					key: "fee_test-paxgiro_202333303",
 					value: {
-						amount: 10,
-						result: 0,
+						amount: "10",
+						result: "0",
 						status: "success",
 						type: "subtract",
 					},
 				},
 			],
-			counter: 0,
+			counter: "0",
 			created: "2023-12-05T17:26:36.977Z",
 			currency: "GBP",
 			transaction: "zzzyRwIvXovdzVNA",
@@ -118,7 +117,7 @@ const result = {
 	posted: "2023-12-05T17:26:36.977Z",
 	rail: "paxgiro",
 	realm: "test",
-	reservedBalance: 420,
+	reservedBalance: "420",
 	status: "review",
 	type: "internal",
 }

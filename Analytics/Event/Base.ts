@@ -6,5 +6,7 @@ export type Base<T> = {
 	entity: { type: string; id: string }
 	action: string
 	created: isoly.DateTime
+	isError?: true
+	meta?: Record<string, unknown>
 	value: T
 }

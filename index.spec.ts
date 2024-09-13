@@ -77,7 +77,7 @@ describe("library", () => {
 					created: "2023-03-17T12:27:08.608Z",
 					currency: "GBP",
 					changes: {
-						actual: { amount: 1, result: 6993, status: "success", type: "subtract" },
+						available: { amount: 1, result: 6993, status: "success", type: "subtract" },
 						outgoingReserved: { amount: 1, result: 0, status: "success", type: "subtract" },
 					},
 					type: "finalizeOutgoing",
@@ -150,7 +150,7 @@ describe("library", () => {
 					created: "2023-03-17T12:27:08.608Z",
 					currency: "GBP",
 					changes: {
-						actual: { amount: 1, result: 6993, status: "success", type: "subtract" },
+						available: { amount: 1, result: 6993, status: "success", type: "subtract" },
 						outgoingReserved: { amount: 1, result: 0, status: "success", type: "subtract" },
 					},
 					type: "finalizeOutgoing",

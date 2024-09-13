@@ -1,9 +1,9 @@
 import { isoly } from "isoly"
-import { Realm } from "../../Realm"
-import { Transaction as modelTransaction } from "../../Transaction"
+import { Realm } from "../../../Realm"
+import { Transaction as modelTransaction } from "../../../Transaction"
 import { Base } from "./Base"
 
-export type Transaction = Base<modelTransaction> & {
+export interface Transaction extends Base<modelTransaction> {
 	entity: { type: "transaction"; id: string }
 	action: "created" | "finalized" | "cancelled" | "failed"
 	isError?: true

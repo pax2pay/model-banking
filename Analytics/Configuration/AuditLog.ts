@@ -4,7 +4,6 @@ import { Audit } from "../../Audit"
 export namespace AuditLog {
 	type Selectors = `value.${Exclude<keyof Audit, "resource"> | `resource.${keyof Audit["resource"]}`}`
 	export const mapping = {
-		auditId: "value.id",
 		auditCreated: "value.created",
 		resourceId: "value.resource.id",
 		resourceType: "value.resource.type",
@@ -17,7 +16,6 @@ export namespace AuditLog {
 	} as const satisfies filter.Mapping.RecordWithSelector<Selectors>;
 	export type Fields = keyof typeof mapping
 	export const schema: listener.BigQueryApi.BaseField<Fields>[] = [
-		{ name: "auditId", type: "STRING" },
 		{ name: "auditCreated", type: "TIMESTAMP" },
 		{ name: "resourceId", type: "STRING" },
 		{ name: "resourceType", type: "STRING" },

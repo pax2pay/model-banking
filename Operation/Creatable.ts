@@ -49,15 +49,6 @@ export namespace Creatable {
 			currency,
 			type: "refund",
 			changes: {
-				actual: {
-					type: "add",
-					amount: isoly.Currency.subtract(
-						currency,
-						isoly.Currency.add(currency, operationAmount, operationFee),
-						Math.abs(charge)
-					),
-					status: "pending",
-				},
 				incomingReserved: {
 					type: "add",
 					amount: isoly.Currency.add(currency, operationAmount, operationFee),
