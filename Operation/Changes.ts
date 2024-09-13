@@ -12,7 +12,7 @@ export namespace Changes {
 				isoly.Currency.add(
 					currency,
 					r,
-					Balances.Balance.Entry.is(entry) || Entry.Balance.type.is(entry)
+					Balances.Balance.Entry.type.is(entry) || Entry.Balance.type.is(entry)
 						? (entry == "actual" || entry == "available" ? 1 : -1) *
 								(change.type == "subtract" ? -1 : 1) *
 								(change.amount ?? 0)
@@ -29,7 +29,7 @@ export namespace Changes {
 					r,
 					entry == "actual" ||
 						entry == "available" ||
-						(!Balances.Balance.Entry.is(entry) && !Entry.Balance.type.is(entry))
+						(!Balances.Balance.Entry.type.is(entry) && !Entry.Balance.type.is(entry))
 						? 0
 						: (change.type == "subtract" ? -1 : 1) * (change.amount ?? 0)
 				),
