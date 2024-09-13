@@ -6,7 +6,7 @@ import { Warning } from "./Warning"
 
 export interface Fragment {
 	warnings: Warning[]
-	emoney: Balance.MaybeLegacy
+	emoney: Balance.Extended
 	minted: Fragment.Coinage.Minted
 	burned: Fragment.Coinage.Burned
 	fiat: {

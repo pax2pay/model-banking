@@ -4,44 +4,51 @@ import { Amount } from "./Amount"
 
 export type Balance = { available?: number; reserved?: Balance.Reserved }
 export namespace Balance {
-	export type Legacy = Partial<Record<Balance.Entry, number>>
-	export type MaybeLegacy = Legacy & Balance
 	export type Reserve = typeof Reserve.values[number]
 	export namespace Reserve {
-		export const values = ["in", "out", "buffer"] as const
+		export const values = ["incoming", "outgoing", "buffer"] as const
 		export const type = isly.string<Reserve>(values)
 	}
 	export type Reserved = Partial<Record<Balance.Reserve, number>>
-	export type Entry = typeof Entry.values[number]
-	export namespace Entry {
-		export const values = ["actual", "incomingReserved", "outgoingReserved", "bufferReserved"] as const
-		export const type = isly.string<Entry>(values)
-	}
-	export const newType = isly.object<{ available?: number; reserved?: Reserved }>({
+	export const type = isly.object<Balance>({
 		available: isly.number().optional(),
 		reserved: isly.record<Record<Balance.Reserve, number>>(Balance.Reserve.type, isly.number()).optional(),
 	})
-	export const type = isly.intersection(isly.record<MaybeLegacy>(Entry.type, isly.number()), newType)
-	export function fromLegacy(currency: isoly.Currency, balance: MaybeLegacy): MaybeLegacy {
-		const result: MaybeLegacy = {
-			actual: balance.actual,
-			incomingReserved: balance.incomingReserved,
-			outgoingReserved: balance.outgoingReserved,
-			bufferReserved: balance.bufferReserved,
+	export type Legacy = Partial<Record<Legacy.Entry, number>>
+	export namespace Legacy {
+		export type Entry = typeof Entry.values[number]
+		export namespace Entry {
+			export const values = ["actual", "incomingReserved", "outgoingReserved", "bufferReserved"] as const
+			export const type = isly.string<Entry>(values)
 		}
-		if (typeof balance.available == "undefined") {
+		export const type = isly.record<Legacy>(Entry.type, isly.number())
+	}
+	export type MaybeLegacy = Balance | Legacy
+	export namespace MaybeLegacy {
+		export const legacyType = isly.union<MaybeLegacy>(type, Legacy.type)
+	}
+	export type Extended = Balance & Legacy
+	export const Extended = isly.intersection<Extended, Balance, Legacy>(type, Legacy.type)
+	export function update(currency: isoly.Currency, balance: MaybeLegacy): Extended {
+		const result: Extended = { ...balance }
+		if (Legacy.type.is(balance)) {
 			const reserved = isoly.Currency.add(
 				currency,
 				balance.incomingReserved ?? 0,
 				isoly.Currency.add(currency, balance.outgoingReserved ?? 0, balance.bufferReserved ?? 0)
 			)
+			result.reserved = {
+				incoming: balance.incomingReserved,
+				outgoing: balance.outgoingReserved,
+				buffer: balance.bufferReserved,
+			}
 			result.available = isoly.Currency.subtract(currency, balance.actual ?? 0, reserved)
-		} else
-			result.available = balance.available
-		if (typeof balance.reserved == "undefined")
-			result.reserved = { in: balance.incomingReserved, out: balance.outgoingReserved, buffer: balance.bufferReserved }
-		else
-			result.reserved = balance.reserved
+		} else {
+			result.actual = computeActual(currency, balance)[1]
+			result.incomingReserved = balance.reserved?.incoming
+			result.outgoingReserved = balance.reserved?.outgoing
+			result.bufferReserved = balance.reserved?.buffer
+		}
 		return result
 	}
 	export function computeReserved(currency: isoly.Currency, balance: Balance): Amount {
