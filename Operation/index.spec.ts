@@ -20,7 +20,7 @@ describe("Operation", () => {
 		}
 		const signature = await signer.sign(operation)
 		expect(signature).toBe(
-			"N4ojv_FQEsIKY6PXJEmwuNyBg5jCakysACgsi4rFmdmAgbTt3CserJ9p7bOrR6zaSvSItxrKnFoa-qnDiSv8w06GW8Arf3pYrCYU4ToywCK6Nh-ANqNXUPJpTtUJWjmZXNhTitG8RK-7cgIldtDFcEKNjce93Qw7mtu1tTt0-sd9B352SR60dcItUFr4rEahDnaiY27m8JUmJjCRznJXHA3xbbfZ6haxTKhnh7BpWgk5COXc7cYl7gQvYUo39N3XbGsOLDdW5xQK3mTYK2kDNgssErq0wp-fpUTHWIBIbWFGycERb0sxxI60UqWxWoQu85UQ4Zh-lw05BAZTersowg"
+			"lmZEZ9BoZ7njmuYahtMJwSf6a8K2MmlaRGhOHQwQ66De15PxfnAnQdiqh3z6CvpuvBWP5rFj5G_Olc3b5mJAC-RjtU9wwwQXV92TmkjG5kFBH70Pdo8vWFoguD8oev600MFKhukv-saC5s0pEbG6y4iyW1Ann3jwOHIDdBFDA_dGti2KYyxvvU2RBdupVd8yDQ37xhGUPWZ2sGaPehjvRXZEx3lkINOuQuvqVaUtIkMmq9kOiq3Q1oiq97IY_IEkjWeXSuHMuPHMxPeqcRS-Byyd9pjp9fy0G76IOMpcKGrQcLJawxb87Nxws8gW5cZJaLzFA-E4w_UFn34V1kJ5rw"
 		)
 	})
 	it("verifiy", async () => {
@@ -29,7 +29,7 @@ describe("Operation", () => {
 			previous:
 				"dOGrAgMq1r60lzW0TgCOcyixRktp1Qp9N4x5GWeisAQAazDtL6b1PwlXe8W0w9gf-kPARWRaqi7YQ67pxB7jIzJtMGDN5VL1KBdLmiRm8acUdSVPnrC0n9xh1rFpfQLE-7jCjNjCQHaExaWCZwrt2-kqCCsQgCqNg5yqYZuEjUw9q5YXceaUYjkFwuRtp97WiJYe02iucmgMlaTnsW4AxqqLdQag9_Yom5z3maSyeSkxDuAOIkYABXwV9Nef1uo18I3Qzc_DVm8fXWjPGL0uVs0FJFELDPtN9CAZpEqsbUPoknnGX71rNZ8Kpz7ioG7kEo1gI52r287jn9WUqxNtlQ",
 			signature:
-				"N4ojv_FQEsIKY6PXJEmwuNyBg5jCakysACgsi4rFmdmAgbTt3CserJ9p7bOrR6zaSvSItxrKnFoa-qnDiSv8w06GW8Arf3pYrCYU4ToywCK6Nh-ANqNXUPJpTtUJWjmZXNhTitG8RK-7cgIldtDFcEKNjce93Qw7mtu1tTt0-sd9B352SR60dcItUFr4rEahDnaiY27m8JUmJjCRznJXHA3xbbfZ6haxTKhnh7BpWgk5COXc7cYl7gQvYUo39N3XbGsOLDdW5xQK3mTYK2kDNgssErq0wp-fpUTHWIBIbWFGycERb0sxxI60UqWxWoQu85UQ4Zh-lw05BAZTersowg",
+				"lmZEZ9BoZ7njmuYahtMJwSf6a8K2MmlaRGhOHQwQ66De15PxfnAnQdiqh3z6CvpuvBWP5rFj5G_Olc3b5mJAC-RjtU9wwwQXV92TmkjG5kFBH70Pdo8vWFoguD8oev600MFKhukv-saC5s0pEbG6y4iyW1Ann3jwOHIDdBFDA_dGti2KYyxvvU2RBdupVd8yDQ37xhGUPWZ2sGaPehjvRXZEx3lkINOuQuvqVaUtIkMmq9kOiq3Q1oiq97IY_IEkjWeXSuHMuPHMxPeqcRS-Byyd9pjp9fy0G76IOMpcKGrQcLJawxb87Nxws8gW5cZJaLzFA-E4w_UFn34V1kJ5rw",
 		})
 		expect(verified).toBe(true)
 	})
@@ -41,6 +41,13 @@ describe("Operation", () => {
 			"uk-cb-safe01",
 			"2024-03-04T15Z",
 		])
+	})
+	it("sum", () => {
+		expect(pax2pay.Operation.sum([operation, operation2, operation3, operation4])).toEqual({
+			available: 0,
+			"fee_test-paxgiro_202333303": 0,
+			"internal-safe01-2024-03-04T15Z": 0,
+		})
 	})
 })
 const operation: pax2pay.Operation = {
@@ -63,7 +70,7 @@ const operation2: pax2pay.Operation = {
 	account: "23Md_znq",
 	currency: "GBP",
 	changes: {
-		actual: {
+		available: {
 			type: "add",
 			amount: 1000,
 			status: "success",
@@ -90,4 +97,32 @@ const operation3: pax2pay.Operation = {
 	transaction: "zzzyRwIvXovdzVNA",
 	counter: 0,
 	created: "2023-12-05T17:26:36.977Z",
+}
+const operation4: pax2pay.Operation = {
+	account: "23Md_znq",
+	currency: "GBP",
+	changes: {
+		"fee_test-paxgiro_202333303": {
+			type: "add",
+			amount: 10,
+			status: "success",
+			result: 0,
+		},
+		available: {
+			type: "subtract",
+			amount: 1000,
+			status: "success",
+			result: 71000,
+		},
+		"internal-safe01-2024-03-04T15Z": {
+			type: "add",
+			amount: 10,
+			status: "success",
+			result: 0,
+		},
+	},
+	type: "manual",
+	transaction: "manual",
+	counter: 71,
+	created: "2024-02-14T14:47:41.472Z",
 }
