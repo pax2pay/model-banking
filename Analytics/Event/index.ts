@@ -8,6 +8,7 @@ export type Event = (
 	| Event.Ledger.Organization
 	| Event.Ledger.Rule
 	| Event.Ledger.Account
+	| Event.Ledger.User
 	| Event.AuditLog
 ) & { version: string }
 export namespace Event {
