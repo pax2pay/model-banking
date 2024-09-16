@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Change as OperationChange } from "./Change"
 import { Changes as OperationChanges } from "./Changes"
 import { Creatable as OperationCreatable } from "./Creatable"
 import { Signer as OperationSigner } from "./Signer"
@@ -30,9 +31,9 @@ export namespace Operation {
 		return result
 	}
 	export const Signer = OperationSigner
-	export type Creatable = OperationCreatable
-	export const Creatable = OperationCreatable
+	export import Creatable = OperationCreatable
 	export import Changes = OperationChanges
+	export import Change = OperationChange
 	export const type = OperationCreatable.type.extend<Operation>({
 		transaction: isly.string(),
 		counter: isly.number(),
