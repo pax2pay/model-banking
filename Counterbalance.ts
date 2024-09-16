@@ -4,7 +4,12 @@ import { isly } from "isly"
 export type Counterbalance = {
 	minted: Partial<Record<Counterbalance.Source, number>>
 	burned: Partial<Record<Counterbalance.Sink, number>>
+	internal?: Partial<Record<string, number>>
 }
+// notes
+export const LNQ4qbRO = { minted: { blabla: 2 }, burned: { blabla: 2 }, internal: { IgBhMdr8: -2 } }
+export const IgBhMdr8 = { minted: { blabla: 2 }, burned: { blabla: 2 }, internal: { LNQ4qbRO: 2 } }
+
 export namespace Counterbalance {
 	export type Source = string
 	export const Source = isly.string()
@@ -13,6 +18,7 @@ export namespace Counterbalance {
 	export const type = isly.object<Counterbalance>({
 		minted: isly.record<Counterbalance["minted"]>(Source, isly.number()),
 		burned: isly.record<Counterbalance["burned"]>(Sink, isly.number()),
+		internal: isly.record<Required<Counterbalance>["internal"]>(isly.string(), isly.number()).optional(),
 	})
 	export type Link = Source | Sink
 	export const Link = isly.string()
