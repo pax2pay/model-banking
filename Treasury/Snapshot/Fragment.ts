@@ -1,12 +1,12 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Balances } from "../../Balances"
+import { Balance } from "../../Balance"
 import { Account } from "../Account"
 import { Warning } from "./Warning"
 
 export interface Fragment {
 	warnings: Warning[]
-	emoney: Balances.Balance
+	emoney: Balance.Extended
 	minted: Fragment.Coinage.Minted
 	burned: Fragment.Coinage.Burned
 	fiat: {
@@ -42,7 +42,7 @@ export namespace Fragment {
 	}
 	export const type = isly.object<Fragment>({
 		warnings: Warning.type.array(),
-		emoney: Balances.Balance.type,
+		emoney: Balance.type,
 		minted: Fragment.Coinage.Minted.type,
 		burned: Fragment.Coinage.Burned.type,
 		fiat: isly.object({
