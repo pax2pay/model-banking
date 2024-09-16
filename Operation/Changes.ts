@@ -7,19 +7,19 @@ import { Change } from "./Change"
 export type Changes = Partial<Record<Changes.Entry.Balance, Change>> & Record<Changes.Entry.Counterbalance, Change>
 export namespace Changes {
 	export function available(changes: Changes, currency: isoly.Currency): number {
-		return Object.entries(changes).reduce(
-			(r, [entry, change]) =>
-				isoly.Currency.add(
-					currency,
-					r,
-					AccountBalance.Legacy.Entry.type.is(entry) || Entry.Balance.type.is(entry)
-						? (entry == "actual" || entry == "available" ? 1 : -1) *
-								(change.type == "subtract" ? -1 : 1) *
-								(change.amount ?? 0)
-						: 0
-				),
-			0
-		)
+		return changes.available
+			? (changes.available.type == "subtract" ? -1 : 1) * changes.available.amount
+			: Object.entries(changes).reduce(
+					(r, [entry, change]) =>
+						isoly.Currency.add(
+							currency,
+							r,
+							Balances.Balance.Entry.is(entry)
+								? (entry == "actual" ? 1 : -1) * (change.type == "subtract" ? -1 : 1) * (change.amount ?? 0)
+								: 0
+						),
+					0
+			  )
 	}
 	export function reserved(changes: Changes, currency: isoly.Currency): number {
 		return Object.entries(changes).reduce(
