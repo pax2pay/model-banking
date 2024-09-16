@@ -12,6 +12,10 @@ export interface Operation extends OperationCreatable {
 	previous?: string
 }
 export namespace Operation {
+	// This pr changed the type https://github.com/pax2pay/worker-banking-ledger/pull/1493
+	export function available(operation: Operation, currency: isoly.Currency): number {
+		return OperationChanges.available(operation.changes, currency, operation.created <= "2024-09-13T13:26:00.001Z")
+	}
 	export function sum(operations: Operation[]): Changes.Sum {
 		const result: Changes.Sum = {}
 		for (const operation of operations) {
