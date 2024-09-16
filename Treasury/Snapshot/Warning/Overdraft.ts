@@ -1,16 +1,16 @@
 import { isly } from "isly"
-import { Balances } from "../../../Balances"
+import { Balance } from "../../../Balance"
 
 export interface Overdraft {
 	type: "overdraft"
 	account: string
-	balance: Balances.Balance
+	balance: Balance.Extended
 }
 
 export namespace Overdraft {
 	export const type = isly.object<Overdraft>({
 		type: isly.string("overdraft"),
 		account: isly.string(),
-		balance: Balances.Balance.type,
+		balance: Balance.Extended,
 	})
 }
