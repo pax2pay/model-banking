@@ -1,9 +1,11 @@
 import { filter, listener } from "cloudly-analytics-common"
 import { Audit } from "../../Audit"
+import { Base } from "./Base"
 
 export namespace AuditLog {
-	type Selectors = `value.${Exclude<keyof Audit, "resource"> | `resource.${keyof Audit["resource"]}`}`
+	type Selectors = Base.Selectors | `value.${Exclude<keyof Audit, "resource"> | `resource.${keyof Audit["resource"]}`}`
 	export const mapping = {
+		...Base.mapping,
 		auditCreated: "value.created",
 		resourceId: "value.resource.id",
 		resourceType: "value.resource.type",
@@ -16,6 +18,7 @@ export namespace AuditLog {
 	} as const satisfies filter.Mapping.RecordWithSelector<Selectors>;
 	export type Fields = keyof typeof mapping
 	export const schema: listener.BigQueryApi.BaseField<Fields>[] = [
+		...Base.schema,
 		{ name: "auditCreated", type: "TIMESTAMP" },
 		{ name: "resourceId", type: "STRING" },
 		{ name: "resourceType", type: "STRING" },
