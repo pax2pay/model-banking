@@ -14,7 +14,7 @@ export namespace Changes {
 						isoly.Currency.add(
 							currency,
 							r,
-							Balances.Balance.Entry.is(entry)
+							AccountBalance.Legacy.Entry.type.is(entry)
 								? (entry == "actual" ? 1 : -1) * (change.type == "subtract" ? -1 : 1) * (change.amount ?? 0)
 								: 0
 						),
