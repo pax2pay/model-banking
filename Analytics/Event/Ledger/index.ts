@@ -4,6 +4,7 @@ import { Operation as OperationEvent } from "./Operation"
 import { Organization as OrganizationEvent } from "./Organization"
 import { Rule as RuleEvent } from "./Rule"
 import { Transaction as TransactionEvent } from "./Transaction"
+import { User as UserEvent } from "./User"
 
 export namespace Ledger {
 	export type Base<T> = EventBase<T>
@@ -12,4 +13,5 @@ export namespace Ledger {
 	export import Organization = OrganizationEvent
 	export import Rule = RuleEvent
 	export import Operation = OperationEvent
+	export import User = UserEvent
 }
