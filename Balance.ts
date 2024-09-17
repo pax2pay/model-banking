@@ -64,4 +64,14 @@ export namespace Balance {
 		const reserved = computeReserved(currency, balance)[1]
 		return [currency, isoly.Currency.add(currency, balance.available ?? 0, reserved)]
 	}
+	export function add(addendee: Extended, addend: Extended, currency: isoly.Currency): Extended {
+		return update(currency, {
+			available: isoly.Currency.add(currency, addendee.available ?? 0, addend.available ?? 0),
+			reserved: {
+				buffer: isoly.Currency.add(currency, addendee.reserved?.buffer ?? 0, addend.reserved?.buffer ?? 0),
+				incoming: isoly.Currency.add(currency, addendee.reserved?.incoming ?? 0, addend.reserved?.incoming ?? 0),
+				outgoing: isoly.Currency.add(currency, addendee.reserved?.outgoing ?? 0, addend.reserved?.outgoing ?? 0),
+			},
+		})
+	}
 }
