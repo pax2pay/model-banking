@@ -42,6 +42,12 @@ describe("Operation", () => {
 			"2024-03-04T15Z",
 		])
 	})
+	it("split", async () => {
+		expect(pax2pay.Operation.Changes.Entry.split("test-internal-asdf-qw--2024-03-04T15Z")).toEqual([
+			"test-internal-asdf-qw-",
+			"2024-03-04T15Z",
+		])
+	})
 	it("sum", () => {
 		expect(pax2pay.Operation.sum([operation, operation2, operation3, operation4])).toEqual({
 			available: 0,
