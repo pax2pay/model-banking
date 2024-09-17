@@ -60,8 +60,8 @@ export namespace Changes {
 		export type Counterbalance = `${CounterbalanceOperation.Link}-${isoly.DateTime}`
 		export function split(counterbalance: Counterbalance): [CounterbalanceOperation.Link, isoly.DateTime] {
 			const split = counterbalance.split("-")
-			const [realm, supplier, account, hour] = [split[0], split[1], split[2], split.slice(3).join("-")]
-			return [`${realm}-${supplier}-${account}`, hour]
+			const hour = split.splice(-3, split.length - 1).join("-")
+			return [split.join("-"), hour]
 		}
 		export type Balance = typeof Balance.values[number]
 		export namespace Balance {
