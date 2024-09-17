@@ -1,5 +1,6 @@
 import { cryptly } from "cryptly"
 import { isly } from "isly"
+import { Realm } from "../../Realm"
 
 export interface Internal {
 	type: "internal"
@@ -17,4 +18,7 @@ export namespace Internal {
 	})
 	export const is = type.is
 	export const flaw = type.flaw
+	export function toLink(internal: Internal, realm: Realm): string {
+		return `${realm}-internal-${internal.identifier}`
+	}
 }
