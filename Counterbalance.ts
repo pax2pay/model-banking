@@ -6,10 +6,6 @@ export type Counterbalance = {
 	burned: Partial<Record<Counterbalance.Sink, number>>
 	internal?: Partial<Record<string, number>>
 }
-// notes
-export const LNQ4qbRO = { minted: { blabla: 2 }, burned: { blabla: 2 }, internal: { IgBhMdr8: -2 } }
-export const IgBhMdr8 = { minted: { blabla: 2 }, burned: { blabla: 2 }, internal: { LNQ4qbRO: 2 } }
-
 export namespace Counterbalance {
 	export type Source = string
 	export const Source = isly.string()
