@@ -2,7 +2,7 @@ import { isoly } from "isoly"
 import { pax2pay } from "../index"
 
 // cSpell:disable
-const transaction1: pax2pay.Transaction.Creatable = {
+const transaction1: pax2pay.Transaction.Creatable & { counterpart: pax2pay.Rail.Address } = {
 	counterpart: {
 		identifier: "bvMkSwAG",
 		type: "internal",
