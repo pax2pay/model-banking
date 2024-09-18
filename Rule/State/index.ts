@@ -37,6 +37,7 @@ export namespace State {
 		outcome: Outcome
 		flags: string[]
 		notes: ModelTransaction.Note[]
+		amount: number
 	}
 	export function from(
 		data: Data,

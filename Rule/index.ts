@@ -92,14 +92,15 @@ export namespace Rule {
 			state.transaction.fee ?? 0,
 			charged.fee
 		)
-		state.transaction.amount = isoly.Currency.add(
-			state.transaction.original.currency,
-			state.transaction.amount,
-			charged.fee
-		)
+		const resultingAmount =
+			state.transaction.kind == "authorization" ||
+			state.transaction.kind == "outbound" ||
+			state.transaction.kind == "capture"
+				? isoly.Currency.add(state.transaction.original.currency, state.transaction.original.amount, charged.fee)
+				: isoly.Currency.subtract(state.transaction.original.currency, state.transaction.original.amount, charged.fee)
 		outcomes.charge.push(...charged.outcomes)
 		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
-		return { ...state, flags: [...flags], notes, outcomes, outcome }
+		return { ...state, flags: [...flags], notes, outcomes, outcome, amount: resultingAmount }
 	}
 	export function isLegacy(rule: Rule): boolean {
 		return !ModelRule.Base.Category.type.is(rule.category)
