@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Rule } from "../Rule"
+import type { Rule } from "../Rule"
 
 export interface Note extends Note.Creatable {
 	author: string
@@ -22,7 +22,7 @@ export namespace Note {
 			text: isly.string().optional(),
 			action: isly.string(["approve", "reject"]).optional(),
 			flags: isly.string().array().optional(),
-			rule: Rule.type.optional(),
+			rule: isly.any().optional(),
 		})
 		export const is = type.is
 	}

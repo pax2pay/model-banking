@@ -2,7 +2,7 @@ import { isly } from "isly"
 import { Acquirer } from "../../Acquirer"
 import { Card as ModelCard } from "../../Card"
 import { Merchant } from "../../Merchant"
-import { Rule } from "../../Rule"
+import type { Rule } from "../../Rule"
 
 export interface Card {
 	type: "card"
