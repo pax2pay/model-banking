@@ -83,7 +83,7 @@ const charge: pax2pay.Rule.Charge = {
 	flags: [],
 	description: "Charge 1.5% fee.",
 	action: "charge",
-	fee: { percentage: 1.5 },
+	charge: { percentage: 1.5 },
 	condition: "transaction.amount > 1",
 }
 const notScore: pax2pay.Rule = {
@@ -179,9 +179,9 @@ describe("definitions", () => {
 		const fee = isoly.Currency.multiply(
 			state.transaction.original.currency,
 			state.transaction.original.amount,
-			charge.fee.percentage / 100
+			charge.charge.percentage ?? 0 / 100
 		)
-		expect(evaluated.transaction.fee).toEqual(fee)
+		expect(evaluated.transaction.charge).toEqual(fee)
 		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
 	})
 	it("two fees", () => {
@@ -190,9 +190,9 @@ describe("definitions", () => {
 		const fee = isoly.Currency.multiply(
 			state.transaction.original.currency,
 			state.transaction.original.amount,
-			(2 * charge.fee.percentage) / 100
+			(2 * (charge.charge.percentage ?? 0)) / 100
 		)
-		expect(evaluated.transaction.fee).toEqual(fee)
+		expect(evaluated.transaction.charge).toEqual(fee)
 		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
 	})
 	it("isInternal", () => {

@@ -4,11 +4,10 @@ import { Amount } from "../../Amount"
 import { Realm } from "../../Realm"
 import { Base } from "./Base"
 
-export interface Charge extends Base {
-	action: Charge.Action
+export interface Charge extends Charge.API {
 	charge: {
 		percentage?: number
-		fixed?: number | Amount
+		fixed?: Amount
 	}
 }
 export namespace Charge {
@@ -16,31 +15,34 @@ export namespace Charge {
 	export namespace Action {
 		export const value = "charge"
 	}
-	export const type = Base.type.extend<Charge>({
-		action: isly.string(Action.value),
-		charge: isly.object({
-			percentage: isly.number().optional(),
-			fixed: isly.union<number | Amount>(Amount.type, isly.number()).optional(),
-		}),
-	})
-	export interface Backend extends Charge {
+	export interface API extends Base {
+		action: Charge.Action
 		charge: {
 			percentage?: number
-			fixed?: Amount
+			fixed?: number | Amount
 		}
 	}
-	export function toBackend(rule: Charge, realm: Realm): Backend
-	export function toBackend(rule: Charge, currency: isoly.Currency): Backend
-	export function toBackend(rule: Charge, currency: Realm | isoly.Currency): Backend {
-		return {
-			...rule,
-			charge: {
-				...rule.charge,
-				fixed:
-					typeof rule.charge.fixed == "number"
-						? [Realm.is(currency) ? Realm.currency[currency] : currency, rule.charge.fixed]
-						: rule.charge.fixed,
-			},
+	export namespace API {
+		export const type = Base.type.extend<API>({
+			action: isly.string(Action.value),
+			charge: isly.object({
+				percentage: isly.number().optional(),
+				fixed: isly.union<number | Amount>(Amount.type, isly.number()).optional(),
+			}),
+		})
+		export function from(rule: API, realm: Realm): Charge
+		export function from(rule: API, currency: isoly.Currency): Charge
+		export function from(rule: API, currency: Realm | isoly.Currency): Charge {
+			return {
+				...rule,
+				charge: {
+					...rule.charge,
+					fixed:
+						typeof rule.charge.fixed == "number"
+							? [Realm.is(currency) ? Realm.currency[currency] : currency, rule.charge.fixed]
+							: rule.charge.fixed,
+				},
+			}
 		}
 	}
 }
