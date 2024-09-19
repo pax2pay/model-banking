@@ -205,7 +205,7 @@ describe("definitions", () => {
 			(chargePercent.charge.percentage ?? 0) / 100
 		)
 		expect(evaluated.transaction.original.charge).toEqual(fee)
-		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
+		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fee)
 	})
 	it("two charges - percent", () => {
 		const state = getState()
@@ -220,14 +220,14 @@ describe("definitions", () => {
 			2
 		)
 		expect(evaluated.transaction.original.charge).toEqual(fee)
-		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
+		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fee)
 	})
 	it("one charge fixed - same currency", () => {
 		const state = getState()
 		const evaluated = pax2pay.Rule.evaluate([chargeFixed], state, undefined, table)
 		const fixedChargeAmount = chargeFixed.charge.fixed ? chargeFixed.charge.fixed[1] : 0
 		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
-		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fixedChargeAmount)
+		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fixedChargeAmount)
 	})
 	it("one charge fixed - different currency", () => {
 		const state = getState()
@@ -241,7 +241,7 @@ describe("definitions", () => {
 			  ) ?? 0
 			: 0
 		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
-		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fixedChargeAmount)
+		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fixedChargeAmount)
 	})
 	it("two charge fixed, percent - different currency", () => {
 		const state = getState()
@@ -265,7 +265,7 @@ describe("definitions", () => {
 			percentCharge
 		)
 		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount + percentCharge)
-		expect(evaluated.transaction.amount).toEqual(total)
+		expect(evaluated.transaction.original.total).toEqual(total)
 	})
 	it("isInternal", () => {
 		expect(pax2pay.Rule.evaluate([rule2], getState()).outcomes).toEqual({
