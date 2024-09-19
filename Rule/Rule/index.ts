@@ -13,8 +13,15 @@ export namespace Rule {
 	export import Charge = RuleCharge
 	export import Base = RuleBase
 	export type Api = Rule.Other | Rule.Score | Rule.Charge.Api
-	export function from(rule: Rule.Api, realm: Realm): Rule {
-		return rule.action == "charge" ? Charge.Api.from(rule, realm) : rule
+	export namespace Api {
+		export const type = isly.union<Api, Rule.Other, Rule.Score, Rule.Charge.Api>(
+			Rule.Other.type,
+			Rule.Score.type,
+			Rule.Charge.Api.type
+		)
+		export function from(rule: Rule.Api, realm: Realm): Rule {
+			return rule.action == "charge" ? Charge.Api.from(rule, realm) : rule
+		}
 	}
 	export type Action = typeof Action.values[number]
 	export namespace Action {
