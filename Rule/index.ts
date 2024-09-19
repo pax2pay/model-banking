@@ -57,7 +57,7 @@ export namespace Rule {
 					const charge =
 						state.transaction.currency === rule.charge.fixed[0]
 							? rule.charge.fixed[1]
-							: Exchange.convert(state.transaction.amount, state.transaction.currency, rule.charge.fixed[0], table) ?? 0
+							: Exchange.convert(rule.charge.fixed[1], rule.charge.fixed[0], state.transaction.currency, table) ?? 0
 					result.charge = isoly.Currency.add(state.transaction.currency, result.charge, charge)
 				}
 			}
