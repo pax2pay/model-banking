@@ -9,6 +9,7 @@ import { State as RuleState } from "./State"
 export type Rule = ModelRule
 
 export namespace Rule {
+	export import Api = ModelRule.Api
 	export import Action = ModelRule.Action
 	export import Category = ModelRule.Base.Category
 	export import Kind = ModelRule.Base.Kind
