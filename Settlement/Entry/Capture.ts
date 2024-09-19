@@ -6,6 +6,8 @@ import { Fee } from "../Fee"
 
 export interface Capture extends Capture.Creatable {
 	status: "succeeded" | "failed"
+	charge?: Amount
+	account: string | "unknown"
 	reason?: string
 }
 
