@@ -9,7 +9,7 @@ export interface Transaction extends Omit<ModelTransaction.Creatable, "currency"
 	type: ModelTransaction.Types
 	fee?: number
 	risk?: number
-	original: { currency: isoly.Currency; amount: number }
+	original: { currency: isoly.Currency; amount: number; charge: number; total: number }
 }
 export namespace Transaction {
 	export function from(
