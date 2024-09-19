@@ -17,7 +17,7 @@ export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
 	amount: number
-	fee?: number
+	charge?: number
 	description: string
 	organization: string
 	accountId: string
@@ -54,7 +54,7 @@ export namespace Transaction {
 		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		amount: isly.number(),
-		fee: isly.number().optional(),
+		charge: isly.number().optional(),
 		description: isly.string(),
 		organization: isly.string(),
 		accountId: isly.string(),

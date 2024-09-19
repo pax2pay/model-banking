@@ -1,4 +1,5 @@
 import { isoly } from "isoly"
+import { Exchange } from "../Exchange"
 import { pax2pay } from "../index"
 
 // cSpell:disable
@@ -75,7 +76,7 @@ const score: pax2pay.Rule = {
 	risk: 600,
 	condition: "transaction.amount > 1",
 }
-const charge: pax2pay.Rule.Charge = {
+const chargePercent: pax2pay.Rule.Charge = {
 	code: "charge-test",
 	name: "charge test",
 	type: "authorization",
@@ -83,7 +84,29 @@ const charge: pax2pay.Rule.Charge = {
 	flags: [],
 	description: "Charge 1.5% fee.",
 	action: "charge",
-	fee: { percentage: 1.5 },
+	charge: { percentage: 1.5 },
+	condition: "transaction.amount > 1",
+}
+const chargeFixed: pax2pay.Rule.Charge = {
+	code: "charge-test",
+	name: "charge test",
+	type: "authorization",
+	category: "fincrime",
+	flags: [],
+	description: "Charge 1 GBP fee.",
+	action: "charge",
+	charge: { fixed: ["GBP", 1] },
+	condition: "transaction.amount > 1",
+}
+const chargeFixedCurrencyDiff: pax2pay.Rule.Charge = {
+	code: "charge-test",
+	name: "charge test",
+	type: "authorization",
+	category: "fincrime",
+	flags: [],
+	description: "Charge 1 SEK fee.",
+	action: "charge",
+	charge: { fixed: ["SEK", 1] },
 	condition: "transaction.amount > 1",
 }
 const notScore: pax2pay.Rule = {
@@ -173,27 +196,76 @@ describe("definitions", () => {
 		expect(evaluated.outcome).toEqual("approve")
 		expect(evaluated.outcomes.flag).toEqual([riskFlag])
 	})
-	it("one fee", () => {
+	it("one charge - percent", () => {
 		const state = getState()
-		const evaluated = pax2pay.Rule.evaluate([charge], state)
+		const evaluated = pax2pay.Rule.evaluate([chargePercent], state)
 		const fee = isoly.Currency.multiply(
 			state.transaction.original.currency,
 			state.transaction.original.amount,
-			charge.fee.percentage / 100
+			(chargePercent.charge.percentage ?? 0) / 100
 		)
-		expect(evaluated.transaction.fee).toEqual(fee)
-		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
+		expect(evaluated.transaction.original.charge).toEqual(fee)
+		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fee)
 	})
-	it("two fees", () => {
+	it("two charges - percent", () => {
 		const state = getState()
-		const evaluated = pax2pay.Rule.evaluate([charge, charge], state)
+		const evaluated = pax2pay.Rule.evaluate([chargePercent, chargePercent], state)
 		const fee = isoly.Currency.multiply(
 			state.transaction.original.currency,
-			state.transaction.original.amount,
-			(2 * charge.fee.percentage) / 100
+			isoly.Currency.multiply(
+				state.transaction.original.currency,
+				state.transaction.original.amount,
+				(chargePercent.charge.percentage ?? 0) / 100
+			),
+			2
 		)
-		expect(evaluated.transaction.fee).toEqual(fee)
-		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
+		expect(evaluated.transaction.original.charge).toEqual(fee)
+		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fee)
+	})
+	it("one charge fixed - same currency", () => {
+		const state = getState()
+		const evaluated = pax2pay.Rule.evaluate([chargeFixed], state, undefined, table)
+		const fixedChargeAmount = chargeFixed.charge.fixed ? chargeFixed.charge.fixed[1] : 0
+		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
+		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fixedChargeAmount)
+	})
+	it("one charge fixed - different currency", () => {
+		const state = getState()
+		const evaluated = pax2pay.Rule.evaluate([chargeFixedCurrencyDiff], state, undefined, table)
+		const fixedChargeAmount = chargeFixedCurrencyDiff.charge.fixed
+			? Exchange.convert(
+					chargeFixedCurrencyDiff.charge.fixed[1],
+					chargeFixedCurrencyDiff.charge.fixed[0],
+					state.transaction.currency,
+					table
+			  ) ?? 0
+			: 0
+		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
+		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fixedChargeAmount)
+	})
+	it("two charge fixed, percent - different currency", () => {
+		const state = getState()
+		const evaluated = pax2pay.Rule.evaluate([chargePercent, chargeFixedCurrencyDiff], state, undefined, table)
+		const percentCharge = isoly.Currency.multiply(
+			state.transaction.original.currency,
+			state.transaction.original.amount,
+			(chargePercent.charge.percentage ?? 0) / 100
+		)
+		const fixedChargeAmount = chargeFixedCurrencyDiff.charge.fixed
+			? Exchange.convert(
+					chargeFixedCurrencyDiff.charge.fixed[1],
+					chargeFixedCurrencyDiff.charge.fixed[0],
+					state.transaction.currency,
+					table
+			  ) ?? 0
+			: 0
+		const total = isoly.Currency.add(
+			state.transaction.currency,
+			isoly.Currency.add(state.transaction.currency, state.transaction.original.amount, fixedChargeAmount),
+			percentCharge
+		)
+		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount + percentCharge)
+		expect(evaluated.transaction.original.total).toEqual(total)
 	})
 	it("isInternal", () => {
 		expect(pax2pay.Rule.evaluate([rule2], getState()).outcomes).toEqual({
@@ -220,11 +292,19 @@ describe("definitions", () => {
 		})
 	})
 	it("many rules", () => {
-		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3, charge], getState()).outcomes).toEqual({
-			charge: [charge],
+		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3, chargePercent], getState()).outcomes).toEqual({
+			charge: [chargePercent],
 			review: [],
 			reject: [rule1, rule3],
 			flag: [rule2],
 		})
 	})
 })
+const table = {
+	GBP: {
+		SEK: 13.2933445176,
+	},
+	SEK: {
+		GBP: 0.0752256137,
+	},
+}
