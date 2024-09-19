@@ -3,10 +3,7 @@ import { pax2pay } from "../index"
 
 // cSpell:disable
 const transaction1: pax2pay.Transaction.Creatable & { counterpart: pax2pay.Rail.Address } = {
-	counterpart: {
-		identifier: "bvMkSwAG",
-		type: "internal",
-	},
+	counterpart: { identifier: "bvMkSwAG", type: "internal" },
 	currency: "GBP",
 	amount: 501,
 	description: "test transaction 14",
@@ -17,11 +14,7 @@ const account: pax2pay.Account = {
 	created: "2023-07-20T17:00.000Z",
 	rails: [],
 	balances: {
-		GBP: {
-			actual: 0,
-			incomingReserved: 0,
-			outgoingReserved: 0,
-		},
+		GBP: { actual: 0, incomingReserved: 0, outgoingReserved: 0 },
 	},
 }
 const rule1: pax2pay.Rule = {
@@ -86,6 +79,17 @@ const charge: pax2pay.Rule.Charge = {
 	fee: { percentage: 1.5 },
 	condition: "transaction.amount > 1",
 }
+const incomingCharge: pax2pay.Rule.Charge = {
+	code: "charge-test",
+	name: "charge test",
+	type: "inbound",
+	category: "fincrime",
+	flags: [],
+	description: "Charge 1.5% fee.",
+	action: "charge",
+	fee: { percentage: 1.5 },
+	condition: "transaction.amount > 1",
+}
 const notScore: pax2pay.Rule = {
 	code: "risk-score-test",
 	name: "risk score test",
@@ -117,25 +121,13 @@ const riskFlag: pax2pay.Rule = {
 	action: "flag",
 	condition: "transaction.risk > 500",
 }
-function getState(): pax2pay.Rule.State {
+function getState(kind: pax2pay.Rule.Kind = "authorization"): pax2pay.Rule.State {
 	return pax2pay.Rule.State.from(
 		{
-			countries: {
-				eea: ["AD"],
-				sanctioned: ["AD"],
-				risk: { high: ["AD"], mediumHigh: ["AD"] },
-			},
+			countries: { eea: ["AD"], sanctioned: ["AD"], risk: { high: ["AD"], mediumHigh: ["AD"] } },
 			merchant: {
 				known: [],
-				categories: {
-					payment: [],
-					crypto: [],
-					gambling: [],
-					travel: [],
-					specialist: [],
-					media: [],
-					sabre: [],
-				},
+				categories: { payment: [], crypto: [], gambling: [], travel: [], specialist: [], media: [], sabre: [] },
 			},
 		},
 		account,
@@ -147,7 +139,7 @@ function getState(): pax2pay.Rule.State {
 		},
 		{ currency: 1, merchant: { category: 1, country: 1, name: 1 } },
 		transaction1,
-		"authorization"
+		kind
 	)
 }
 describe("definitions", () => {
@@ -182,7 +174,7 @@ describe("definitions", () => {
 			charge.fee.percentage / 100
 		)
 		expect(evaluated.transaction.fee).toEqual(fee)
-		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
+		expect(evaluated.amount).toEqual(state.transaction.original.amount + fee)
 	})
 	it("two fees", () => {
 		const state = getState()
@@ -193,7 +185,18 @@ describe("definitions", () => {
 			(2 * charge.fee.percentage) / 100
 		)
 		expect(evaluated.transaction.fee).toEqual(fee)
-		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
+		expect(evaluated.amount).toEqual(state.transaction.original.amount + fee)
+	})
+	it("fee on incoming", () => {
+		const state = getState("inbound")
+		const evaluated = pax2pay.Rule.evaluate([incomingCharge], state)
+		const fee = isoly.Currency.multiply(
+			state.transaction.original.currency,
+			state.transaction.original.amount,
+			charge.fee.percentage / 100
+		)
+		expect(evaluated.transaction.fee).toEqual(fee)
+		expect(evaluated.amount).toEqual(state.transaction.original.amount - fee)
 	})
 	it("isInternal", () => {
 		expect(pax2pay.Rule.evaluate([rule2], getState()).outcomes).toEqual({
