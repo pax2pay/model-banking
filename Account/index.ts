@@ -2,6 +2,7 @@ import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Balances } from "../Balances"
+import { Counterbalances } from "../Counterbalances"
 import { Rail } from "../Rail"
 import { Rule } from "../Rule"
 import { Creatable as AccountCreatable } from "./Creatable"
@@ -10,12 +11,16 @@ export interface Account extends Account.Creatable {
 	id: cryptly.Identifier
 	created: isoly.DateTime
 	balances: Balances
+	counterbalance?: Counterbalances
 	rails: Rail.Address[]
 	counterparts?: Record<string, Rail.Address>
 	key?: string
 	rules?: Rule[]
 }
 export namespace Account {
+	export namespace Public {
+		export const values = ["id", "name", "created", "balances", "rails", "counterparts", "key", "rules"] as const
+	}
 	export const type = isly.object<Account>({
 		name: isly.string(),
 		id: isly.string(),
