@@ -102,14 +102,14 @@ export namespace Rule {
 			}
 		}
 		const charged = charge(chargers, state, macros, table)
-		state.transaction.charge = isoly.Currency.add(
+		state.transaction.original.charge = isoly.Currency.add(
 			state.transaction.original.currency,
-			state.transaction.charge ?? 0,
+			state.transaction.original.charge ?? 0,
 			charged.charge
 		)
-		state.transaction.amount = isoly.Currency.add(
+		state.transaction.original.total = isoly.Currency.add(
 			state.transaction.original.currency,
-			state.transaction.amount,
+			state.transaction.original.amount,
 			charged.charge
 		)
 		outcomes.charge.push(...charged.outcomes)

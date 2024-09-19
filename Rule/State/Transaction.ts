@@ -7,9 +7,8 @@ export interface Transaction extends ModelTransaction.Creatable {
 	kind: Rule.Base.Kind
 	amount: number
 	type: ModelTransaction.Types
-	charge?: number
 	risk?: number
-	original: { currency: isoly.Currency; amount: number }
+	original: { currency: isoly.Currency; amount: number; charge?: number; total?: number }
 }
 export namespace Transaction {
 	export function from(

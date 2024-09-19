@@ -204,7 +204,7 @@ describe("definitions", () => {
 			state.transaction.original.amount,
 			(chargePercent.charge.percentage ?? 0) / 100
 		)
-		expect(evaluated.transaction.charge).toEqual(fee)
+		expect(evaluated.transaction.original.charge).toEqual(fee)
 		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
 	})
 	it("two charges - percent", () => {
@@ -219,14 +219,14 @@ describe("definitions", () => {
 			),
 			2
 		)
-		expect(evaluated.transaction.charge).toEqual(fee)
+		expect(evaluated.transaction.original.charge).toEqual(fee)
 		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fee)
 	})
 	it("one charge fixed - same currency", () => {
 		const state = getState()
 		const evaluated = pax2pay.Rule.evaluate([chargeFixed], state, undefined, table)
 		const fixedChargeAmount = chargeFixed.charge.fixed ? chargeFixed.charge.fixed[1] : 0
-		expect(evaluated.transaction.charge).toEqual(fixedChargeAmount)
+		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
 		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fixedChargeAmount)
 	})
 	it("one charge fixed - different currency", () => {
@@ -240,7 +240,7 @@ describe("definitions", () => {
 					table
 			  ) ?? 0
 			: 0
-		expect(evaluated.transaction.charge).toEqual(fixedChargeAmount)
+		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
 		expect(evaluated.transaction.amount).toEqual(state.transaction.original.amount + fixedChargeAmount)
 	})
 	it("two charge fixed, percent - different currency", () => {
@@ -264,7 +264,7 @@ describe("definitions", () => {
 			isoly.Currency.add(state.transaction.currency, state.transaction.original.amount, fixedChargeAmount),
 			percentCharge
 		)
-		expect(evaluated.transaction.charge).toEqual(fixedChargeAmount + percentCharge)
+		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount + percentCharge)
 		expect(evaluated.transaction.amount).toEqual(total)
 	})
 	it("isInternal", () => {
