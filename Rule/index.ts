@@ -61,8 +61,8 @@ export namespace Rule {
 							: Exchange.convert(rule.charge.fixed[1], rule.charge.fixed[0], state.transaction.currency, table) ?? 0
 					result.charge = isoly.Currency.add(state.transaction.currency, result.charge, charge)
 				}
+				result.outcomes.push(rule)
 			}
-			result.outcomes.push(rule)
 		}
 		return result
 	}
