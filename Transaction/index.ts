@@ -41,6 +41,30 @@ export interface Transaction {
 	state?: Rule.State
 }
 export namespace Transaction {
+	export type Public = Pick<Transaction, typeof Public.values[number]>
+	export namespace Public {
+		export function from(transaction: Transaction): Public {
+			return values.reduce((r: Partial<Public>, value) => ({ ...r, [value]: transaction[value] }), {}) as Public
+		}
+		export const values = [
+			"counterpart",
+			"currency",
+			"amount",
+			"charge",
+			"description",
+			"organization",
+			"accountId",
+			"accountName",
+			"account",
+			"id",
+			"posted",
+			"transacted",
+			"by",
+			"balance",
+			"status",
+			"rail",
+		] as const
+	}
 	export const types = ["card", "internal", "external", "system"] as const
 	export type Types = typeof types[number]
 	export const directions = ["inbound", "outbound"] as const
