@@ -10,7 +10,7 @@ export type Operation = Card | OperationAuthorization
 export namespace Operation {
 	export function fromAuthorization(
 		authorization: Authorization,
-		status: OperationAuthorization.Status
+		status: OperationAuthorization.Event
 	): Operation | undefined {
 		return {
 			type: "authorization",
@@ -29,8 +29,8 @@ export namespace Operation {
 					created: isoly.DateTime.now(),
 			  }
 	}
-	export function fromEntryStatus(status: Exclude<Entry.Type, "unknown">): OperationAuthorization.Status {
-		const statusConverter: Record<Exclude<Entry.Type, "unknown">, OperationAuthorization.Status> = {
+	export function fromEntryStatus(status: Exclude<Entry.Type, "unknown">): OperationAuthorization.Event {
+		const statusConverter: Record<Exclude<Entry.Type, "unknown">, OperationAuthorization.Event> = {
 			capture: "captured",
 			cancel: "cancelled",
 			refund: "refunded",

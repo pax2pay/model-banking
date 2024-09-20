@@ -23,13 +23,7 @@ export interface Card {
 	preset: CardPreset
 	scheme: CardScheme
 	reference?: string
-	details: {
-		iin: string
-		last4: string
-		expiry: CardExpiry
-		holder: string
-		token?: string
-	}
+	details: { iin: string; last4: string; expiry: CardExpiry; holder: string; token?: string }
 	limit: Amount
 	spent: Amount
 	status: "active" | "cancelled"

@@ -5,8 +5,8 @@ import { Changeable } from "../Changeable"
 export interface Card {
 	type: "card"
 	status: Card.Status
-	from?: Changeable
 	created: isoly.DateTime
+	from?: Changeable
 }
 
 export namespace Card {
