@@ -1,4 +1,3 @@
-import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Rail } from "../../Rail"
@@ -8,14 +7,13 @@ import { Balance } from "../Balance"
 import { Transaction } from "../Transaction"
 import { Category as AccountCategory } from "./Category"
 import { Conditions as AccountConditions } from "./Conditions"
-import { Creatable as AccountCreatable } from "./Creatable"
 import { Fetchable as AccountFetchable } from "./Fetchable"
 import { Storable as AccountStorable } from "./Storable"
 
 export interface Account {
-	id: cryptly.Identifier
+	code: string
 	created: isoly.DateTime
-	name: string
+	label: string
 	realm: Realm
 	supplier: Supplier | "external"
 	reference: string
@@ -27,9 +25,9 @@ export interface Account {
 }
 export namespace Account {
 	export const type = isly.object<Account>({
-		id: isly.string(),
+		code: isly.string(),
 		created: isly.fromIs("Treasury.Account.Created", isoly.DateTime.is),
-		name: isly.string(),
+		label: isly.string(),
 		realm: Realm.type,
 		supplier: Supplier.type,
 		reference: isly.string(),
@@ -40,7 +38,6 @@ export namespace Account {
 		balance: isly.fromIs("Treasury.Account.balance", Balance.is),
 	})
 	export type Listable = Account & { transactions: Transaction[] }
-	export import Creatable = AccountCreatable
 	export import Storable = AccountStorable
 	export import Fetchable = AccountFetchable
 	export import Category = AccountCategory

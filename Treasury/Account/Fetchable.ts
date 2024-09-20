@@ -6,7 +6,7 @@ import { Balance } from "../Balance"
 import { Category } from "./Category"
 
 export interface Fetchable {
-	name: string
+	label: string
 	supplier: Supplier
 	reference: string
 	currencies: isoly.Currency[]
@@ -14,16 +14,15 @@ export interface Fetchable {
 	rail: Rail.Address[]
 	balance: Balance
 }
-
 export namespace Fetchable {
 	export const type = isly.object<Fetchable>({
-		name: isly.string(),
+		label: isly.string(),
 		supplier: isly.fromIs("supplier", Supplier.is),
 		reference: isly.string(),
 		currencies: isly.fromIs("Account.Fetchable.currencies", isoly.Currency.is).array(),
 		type: Category.type,
 		rail: isly.fromIs("Account.Fetchable.rail", Rail.Address.is).array(),
-		balance: isly.fromIs("Account.Fetchable.rail", Balance.is),
+		balance: Balance.type,
 	})
 	export const is = type.is
 	export const flaw = type.flaw
