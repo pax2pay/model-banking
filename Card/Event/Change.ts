@@ -2,17 +2,17 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Changeable } from "../Changeable"
 
-export interface Card {
-	type: "card"
-	status: Card.Status
+export interface Change {
+	type: "change"
 	created: isoly.DateTime
 	from?: Changeable
+	to?: Changeable
 }
 
 export namespace Card {
 	export const statuses = ["created", "changed", "cancelled"] as const
 	export type Status = typeof statuses[number]
-	export const type = isly.object<Card>({
+	export const type = isly.object<Change>({
 		type: isly.string("card"),
 		status: isly.string(statuses),
 		from: Changeable.type.optional(),

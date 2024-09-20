@@ -2,16 +2,16 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Authorization } from "../../Authorization"
 import { Entry } from "../../Settlement/Entry"
-import { Authorization as OperationAuthorization } from "./Authorization"
-import { Card } from "./Card"
+import { Authorization as EventAuthorization } from "./Authorization"
+import { Card } from "./Cancel"
 
-export type Operation = Card | OperationAuthorization
+export type Event = Card | EventAuthorization
 
 export namespace Operation {
 	export function fromAuthorization(
 		authorization: Authorization,
-		status: OperationAuthorization.Event
-	): Operation | undefined {
+		status: EventAuthorization.Outcome
+	): Event | undefined {
 		return {
 			type: "authorization",
 			id: authorization?.id ?? authorization.transaction?.id ?? "unknown",
@@ -19,7 +19,7 @@ export namespace Operation {
 			created: isoly.DateTime.now(),
 		}
 	}
-	export function fromEntry(entry: Entry): Operation | undefined {
+	export function fromEntry(entry: Entry): Event | undefined {
 		return entry.type == "unknown"
 			? undefined
 			: {
@@ -29,14 +29,14 @@ export namespace Operation {
 					created: isoly.DateTime.now(),
 			  }
 	}
-	export function fromEntryStatus(status: Exclude<Entry.Type, "unknown">): OperationAuthorization.Event {
-		const statusConverter: Record<Exclude<Entry.Type, "unknown">, OperationAuthorization.Event> = {
+	export function fromEntryStatus(status: Exclude<Entry.Type, "unknown">): EventAuthorization.Outcome {
+		const statusConverter: Record<Exclude<Entry.Type, "unknown">, EventAuthorization.Outcome> = {
 			capture: "captured",
 			cancel: "cancelled",
 			refund: "refunded",
 		}
 		return statusConverter[status]
 	}
-	export const type = isly.union(Card.type, OperationAuthorization.type)
+	export const type = isly.union(Card.type, EventAuthorization.type)
 	export const is = type.is
 }
