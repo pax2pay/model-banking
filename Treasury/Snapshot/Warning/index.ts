@@ -2,7 +2,7 @@ import { isly } from "isly"
 import { Buffer as WarningBuffer } from "./Buffer"
 import { Counterbalance as WarningCounterbalance } from "./Counterbalance"
 import { Overdraft as WarningOverdraft } from "./Overdraft"
-import { Stale as WarningUnguarded } from "./Stale"
+import { StaleFiat as WarningUnguarded } from "./StaleFiat"
 
 export type Warning = Warning.Overdraft | Warning.Unguarded | Warning.Buffer | Warning.Counterbalance
 

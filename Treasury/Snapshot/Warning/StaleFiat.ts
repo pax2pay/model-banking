@@ -4,21 +4,21 @@ import { Holidays } from "../../../Holidays"
 import { Account } from "../../Account"
 import { Transaction } from "../../Transaction"
 
-export interface Stale {
+export interface StaleFiat {
 	type: "stale fiat"
 	date: isoly.Date
 	currency: isoly.Currency
 	transaction: { id: string; created: isoly.DateTime }
 }
-export namespace Stale {
-	export const type = isly.object<Stale>({
+export namespace StaleFiat {
+	export const type = isly.object<StaleFiat>({
 		type: isly.string("stale fiat"),
 		date: isly.string(),
 		currency: isly.string(),
-		transaction: isly.object<Stale["transaction"]>({ id: isly.string(), created: isly.string() }),
+		transaction: isly.object<StaleFiat["transaction"]>({ id: isly.string(), created: isly.string() }),
 	})
-	export function create(account: Account, transactions: Transaction[]): Stale[] {
-		const result: Stale[] = []
+	export function create(account: Account, transactions: Transaction[]): StaleFiat[] {
+		const result: StaleFiat[] = []
 		for (const [currency, amount] of Object.entries(account.balance)) {
 			let oldest: { id: string; date: isoly.Date; created: isoly.DateTime } | undefined = undefined
 			let remainder = amount
