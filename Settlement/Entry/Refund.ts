@@ -9,6 +9,7 @@ import { Fee } from "../Fee"
 
 export interface Refund extends Refund.Creatable {
 	status: "succeeded" | "failed"
+	charge?: Amount
 	reason?: string
 	transaction?: Transaction
 }

@@ -6,11 +6,13 @@ export type Amount = {
 	fee: {
 		other: number
 	}
+	charge: number
 }
 export namespace Amount {
 	export const type = isly.object<Amount>({
 		net: isly.number(),
 		fee: isly.object<Amount["fee"]>({ other: isly.number() }),
+		charge: isly.number(),
 	})
 	export function add(currency: isoly.Currency, addendee: Amount, addend: Partial<Amount>): Amount {
 		const result = { ...addendee }
