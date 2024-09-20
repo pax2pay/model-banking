@@ -33,7 +33,7 @@ export namespace State {
 		export const type = isly.string<Outcome>(values)
 	}
 	export interface Evaluated extends State {
-		outcomes: Record<Rule.Other.Action, Rule[]>
+		outcomes: Record<Rule.Other.Action | "charge", Rule[]>
 		outcome: Outcome
 		flags: string[]
 		notes: ModelTransaction.Note[]
