@@ -238,10 +238,13 @@ export namespace Transaction {
 		account: { id: string; name: string; organization: string },
 		card: Rail.Address.Card,
 		operation: Operation,
-		balance: { actual: number; reserved: number; available: number }
+		balance: { actual: number; reserved: number; available: number },
+		charge?: number
 	): Transaction {
+		const incoming = Incoming.fromRefund(refund, card)
 		return {
-			...Incoming.fromRefund(refund, card),
+			...incoming,
+			amount: isoly.Currency.subtract(incoming.currency, incoming.amount, charge ?? 0),
 			type: "card",
 			direction: "inbound",
 			organization: account.organization,
