@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Rail } from "../Rail"
+import { Rail } from "../../Rail"
 
 export interface Creatable {
 	counterpart: string | Rail.Address

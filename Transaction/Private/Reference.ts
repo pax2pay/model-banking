@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { Supplier } from "../Supplier"
+import { Supplier } from "../../Supplier"
 
 export interface Reference {
 	supplier?: Supplier

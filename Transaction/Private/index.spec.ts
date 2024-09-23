@@ -1,9 +1,12 @@
-import { pax2pay } from "../index"
+import { pax2pay } from "../../index"
 
 // cSpell:disable
 describe("Transaction", () => {
-	it("is", () => {
-		expect(pax2pay.Transaction.is(transaction)).toBeTruthy()
+	it("toCsv", () => {
+		expect(pax2pay.Transaction.toCsv([transaction])).toMatchInlineSnapshot(`
+""id","created","changed","organization.code","account.id","rail.id","rail.address","counterpart.id","counterpart.address","amount","currency","status","flags.current","flags.past","reason","merchant.country"
+"zzzyRwIvXovdzVNA","2023-12-05 17:26:36.977","","paxair","3Lb41MlP","internal-3Lb41MlP","internal-3Lb41MlP","internal-IkToJ5Ep","internal-IkToJ5Ep","-10.00","GBP","review","dannebrogen union-jack","sssr","","""
+`)
 	})
 })
 const transaction: pax2pay.Transaction = {
@@ -49,7 +52,7 @@ const transaction: pax2pay.Transaction = {
 	],
 	status: "review",
 	rail: "paxgiro",
-	flags: [],
-	oldFlags: [],
+	flags: ["dannebrogen", "union-jack"],
+	oldFlags: ["sssr"],
 	notes: [],
 }
