@@ -194,6 +194,19 @@ describe("definitions", () => {
 			state.transaction.original.amount,
 			(chargePercent.charge.percentage ?? 0) / 100
 		)
+		expect(evaluated.outcomes.charge).toEqual([
+			{
+				action: "charge",
+				category: "fincrime",
+				charge: { percentage: 1.5 },
+				code: "charge-test",
+				condition: "transaction.amount > 1",
+				description: "Charge 1.5% fee.",
+				flags: [],
+				name: "charge test",
+				type: "authorization",
+			},
+		])
 		expect(evaluated.transaction.original.charge).toEqual(fee)
 		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fee)
 	})
