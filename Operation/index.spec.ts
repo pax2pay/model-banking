@@ -56,7 +56,7 @@ describe("Operation", () => {
 		})
 	})
 	it("sum counterbalances", () => {
-		expect(pax2pay.Operation.Changes.counterbalance(operation.changes, "USD")).toEqual(20)
+		expect(pax2pay.Operation.Changes.counterbalance(operation4.changes, "USD")).toEqual(20)
 	})
 })
 const operation: pax2pay.Operation = {
