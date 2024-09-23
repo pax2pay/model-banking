@@ -138,6 +138,7 @@ export namespace Transaction {
 			notes: state.notes,
 			state,
 			risk: state.transaction.risk,
+			...(state.transaction.original.charge && { charge: state.transaction.original.charge }),
 		}
 	}
 	export function empty(
@@ -216,6 +217,7 @@ export namespace Transaction {
 			state.outcome == "reject" ? ["rejected", "denied"] : state.outcome == "review" ? "review" : "processing"
 		return {
 			...transaction,
+			amount: state.transaction.original.total ?? state.transaction.original.amount,
 			type: getType(transaction.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -230,6 +232,7 @@ export namespace Transaction {
 			notes: state.notes,
 			state,
 			risk: state.transaction.risk,
+			...(state.transaction.original.charge && { charge: state.transaction.original.charge }),
 		}
 	}
 	export function fromRefund(
@@ -256,6 +259,7 @@ export namespace Transaction {
 			flags: [],
 			oldFlags: [],
 			notes: [],
+			...(state.transaction.original.charge && { charge: state.transaction.original.charge }),
 		}
 	}
 	export function isIdentifier(value: string | any): value is string {
