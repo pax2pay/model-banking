@@ -108,11 +108,6 @@ export namespace Rule {
 			state.transaction.original.charge ?? 0,
 			charged.charge
 		)
-		state.transaction.original.total = isoly.Currency.add(
-			state.transaction.original.currency,
-			state.transaction.original.amount,
-			charged.charge
-		)
 		state.transaction.original.total =
 			state.transaction.kind == "authorization" ||
 			state.transaction.kind == "outbound" ||
