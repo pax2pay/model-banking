@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Rail } from "../Rail"
-import { Settlement } from "../Settlement"
+import { Rail } from "../../Rail"
+import { Settlement } from "../../Settlement"
 import { Reference as TransactionReference } from "./Reference"
 
 export interface Incoming {

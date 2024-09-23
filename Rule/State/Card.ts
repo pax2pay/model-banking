@@ -2,7 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card as ModelCard } from "../../Card"
 import type { Rail } from "../../Rail"
-import type { Status as TransactionStatus } from "../../Transaction/Status"
+import type { Status as TransactionStatus } from "../../Transaction/Private/Status"
 
 export interface Card extends Omit<ModelCard, "limit">, Card.Statistics {
 	age: { days: number; minutes: number }

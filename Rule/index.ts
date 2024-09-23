@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { selectively } from "selectively"
 import { Exchange } from "../Exchange"
-import { Note } from "../Transaction/Note"
+import { Note } from "../Transaction/Private/Note"
 import { definitions } from "./definitions"
 import { Rule as ModelRule, type as ruleType } from "./Rule"
 import { State as RuleState } from "./State"

@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import type { Rule } from "../Rule"
+import type { Rule } from "../../Rule"
 
 export interface Note extends Note.Creatable {
 	author: string
