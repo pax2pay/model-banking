@@ -3,7 +3,7 @@ import { isly } from "isly"
 import { Amount } from "../../Amount"
 
 export interface Capture {
-	type: "clearing"
+	type: "capture"
 	created: isoly.DateTime
 	total: Amount
 	net: Amount
@@ -12,7 +12,7 @@ export interface Capture {
 }
 export namespace Capture {
 	export const type = isly.object<Capture>({
-		type: isly.string("clearing"),
+		type: isly.string("capture"),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		amount: Amount.type,
 		charge: Amount.type,
