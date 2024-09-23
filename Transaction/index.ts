@@ -119,7 +119,7 @@ export namespace Transaction {
 			: "fasterpayments"
 		return {
 			...creatable,
-			amount: -creatable.amount,
+			amount: -(state.transaction.original.total ?? state.transaction.original.amount),
 			type: getType(creatable.counterpart, account.name),
 			direction: "outbound",
 			organization: account.organization,
@@ -239,12 +239,11 @@ export namespace Transaction {
 		card: Rail.Address.Card,
 		operation: Operation,
 		balance: { actual: number; reserved: number; available: number },
-		charge?: number
+		state: Rule.State.Evaluated
 	): Transaction {
-		const incoming = Incoming.fromRefund(refund, card)
 		return {
-			...incoming,
-			amount: isoly.Currency.subtract(incoming.currency, incoming.amount, charge ?? 0),
+			...Incoming.fromRefund(refund, card),
+			amount: state.transaction.original.total ?? state.transaction.original.amount,
 			type: "card",
 			direction: "inbound",
 			organization: account.organization,
