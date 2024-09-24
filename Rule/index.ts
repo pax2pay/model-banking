@@ -108,11 +108,16 @@ export namespace Rule {
 			state.transaction.original.charge ?? 0,
 			charged.charge
 		)
-		state.transaction.original.total = isoly.Currency.add(
-			state.transaction.original.currency,
-			state.transaction.original.amount,
-			charged.charge
-		)
+		state.transaction.original.total =
+			state.transaction.kind == "authorization" ||
+			state.transaction.kind == "outbound" ||
+			state.transaction.kind == "capture"
+				? isoly.Currency.add(state.transaction.original.currency, state.transaction.original.amount, charged.charge)
+				: isoly.Currency.subtract(
+						state.transaction.original.currency,
+						state.transaction.original.amount,
+						charged.charge
+				  )
 		outcomes.charge.push(...charged.outcomes)
 		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
 		return { ...state, flags: [...flags], notes, outcomes, outcome }
