@@ -228,7 +228,7 @@ describe("definitions", () => {
 	it("one charge fixed - same currency", () => {
 		const state = getState()
 		const evaluated = pax2pay.Rule.evaluate([chargeFixed], state, undefined, table)
-		const fixedChargeAmount = chargeFixed.charge.fixed ? chargeFixed.charge.fixed[1] : 0
+		const fixedChargeAmount = chargeFixed.charge.fixed?.[1] ?? 0
 		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
 		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fixedChargeAmount)
 	})

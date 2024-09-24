@@ -38,14 +38,14 @@ describe("Operation", () => {
 	})
 	it("split", async () => {
 		expect(pax2pay.Operation.Changes.Entry.split("uk-cb-safe01-2024-03-04T15Z")).toEqual([
-			"uk-cb-safe01",
 			"2024-03-04T15Z",
+			"uk-cb-safe01",
 		])
 	})
 	it("split", async () => {
 		expect(pax2pay.Operation.Changes.Entry.split("test-internal-asdf-qw--2024-03-04T15Z")).toEqual([
-			"test-internal-asdf-qw-",
 			"2024-03-04T15Z",
+			"test-internal-asdf-qw-",
 		])
 	})
 	it("sum", () => {
