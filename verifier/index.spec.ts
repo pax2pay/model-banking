@@ -67,7 +67,7 @@ const transaction: pax2pay.Transaction.Event = {
 			account: "WzauRHBO",
 			currency: "USD",
 			changes: {
-				outgoingReserved: {
+				"reserved-outgoing": {
 					type: "add",
 					amount: 1,
 					status: "pending",

@@ -66,7 +66,7 @@ describe("library", () => {
 					created: "2023-03-17T12:26:10.575Z",
 					currency: "GBP",
 					changes: {
-						outgoingReserved: { amount: 1, result: 1, status: "success", type: "add" },
+						"reserved-outgoing": { amount: 1, result: 1, status: "success", type: "add" },
 					},
 					type: "outgoing",
 					counter: 1,
@@ -78,7 +78,7 @@ describe("library", () => {
 					currency: "GBP",
 					changes: {
 						available: { amount: 1, result: 6993, status: "success", type: "subtract" },
-						outgoingReserved: { amount: 1, result: 0, status: "success", type: "subtract" },
+						"reserved-outgoing": { amount: 1, result: 0, status: "success", type: "subtract" },
 					},
 					type: "finalizeOutgoing",
 					counter: 2,
@@ -139,7 +139,7 @@ describe("library", () => {
 					created: "2023-03-17T12:26:10.575Z",
 					currency: "GBP",
 					changes: {
-						outgoingReserved: { amount: 1, result: 1, status: "success", type: "add" },
+						"reserved-outgoing": { amount: 1, result: 1, status: "success", type: "add" },
 					},
 					type: "outgoing",
 					counter: 1,
@@ -151,7 +151,7 @@ describe("library", () => {
 					currency: "GBP",
 					changes: {
 						available: { amount: 1, result: 6993, status: "success", type: "subtract" },
-						outgoingReserved: { amount: 1, result: 0, status: "success", type: "subtract" },
+						"reserved-outgoing": { amount: 1, result: 0, status: "success", type: "subtract" },
 					},
 					type: "finalizeOutgoing",
 					counter: 2,

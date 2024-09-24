@@ -141,6 +141,33 @@ export namespace Transaction {
 			...(state.transaction.original.charge && { charge: state.transaction.original.charge }),
 		}
 	}
+	export function system(
+		creatable: Creatable & { counterpart: Rail.Address },
+		operations: Operation[],
+		account: { id: string; name: string; organization: string; address: Rail.Address },
+		balance: { actual: number; reserved: number; available: number },
+		by: string | undefined
+	): Transaction {
+		return {
+			...creatable,
+			type: getType(creatable.counterpart, account.name),
+			direction: "inbound",
+			organization: account.organization,
+			accountId: account.id,
+			accountName: account.name,
+			account: account.address,
+			id: Identifier.generate(),
+			posted: isoly.DateTime.now(),
+			by,
+			balance,
+			operations,
+			status: "review",
+			rail: "internal",
+			flags: [],
+			oldFlags: [],
+			notes: [],
+		}
+	}
 	export function empty(
 		creatable: Creatable & { counterpart: Rail.Address },
 		account: { id: string; name: string; organization: string; address: Rail.Address },
