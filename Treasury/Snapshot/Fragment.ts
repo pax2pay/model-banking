@@ -44,8 +44,9 @@ export namespace Fragment {
 		export function toCounterbalance(minted: Coinage, burned: Coinage): Counterbalance {
 			const result: Counterbalance = {}
 			for (const [code, change] of Object.entries(minted)) {
-				result[code] = { total: change.amount, account: change.account }
+				result[code] = { total: change.amount, account: { asdf: { amount: 5 } } }
 			}
+			return result
 		}
 	}
 
@@ -53,6 +54,20 @@ export namespace Fragment {
 		if ("counterbalance" in fragment) {
 			return fragment
 		} else {
+			const result: Fragment = {
+				counterbalance: {},
+				emoney: {},
+				fiat: {
+					safe: 0,
+					unsafe: 0,
+					total: 0,
+					other: 0,
+					buffer: 0,
+					accounts: [],
+				},
+				warnings: [],
+			}
+			return result
 		}
 	}
 	export type Counterbalance = Record<string, { total: number; account: Record<string, { amount: number }> }>
