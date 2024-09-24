@@ -55,6 +55,9 @@ describe("Operation", () => {
 			"internal-safe01-2024-03-04T15Z": 0,
 		})
 	})
+	it("sum counterbalances", () => {
+		expect(pax2pay.Operation.Changes.counterbalance(operation4.changes, "USD")).toEqual(20)
+	})
 })
 const operation: pax2pay.Operation = {
 	account: "3Lb41MlP",
