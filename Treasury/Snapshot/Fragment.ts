@@ -18,7 +18,43 @@ export interface Fragment {
 	}
 }
 export namespace Fragment {
-	export type Legacy = Override<Fragment, "counterbalance">
+	export const type = isly.object<Fragment>({
+		warnings: Warning.type.array(),
+		emoney: Balance.Extended,
+		counterbalance: Counterbalance.type,
+		fiat: isly.object({
+			safe: isly.number(),
+			unsafe: isly.number(),
+			total: isly.number(),
+			other: isly.number(),
+			buffer: isly.number(),
+			accounts: Account.type.array(),
+		}),
+	})
+	export type Legacy = Omit<Fragment, "counterbalance"> & { minted: Legacy.Coinage; burned: Legacy.Coinage }
+	export namespace Legacy {
+		export type LedgerAccount = string
+		export type Change = { account: Record<LedgerAccount, number>; amount: number }
+		export const change = isly.object<Change>({
+			account: isly.record(isly.string(), isly.number()),
+			amount: isly.number(),
+		})
+		export type Coinage = Record<string, Change>
+		export const type = isly.record<Coinage>(isly.string(), change)
+		export function toCounterbalance(minted: Coinage, burned: Coinage): Counterbalance {
+			const result: Counterbalance = {}
+			for (const [code, change] of Object.entries(minted)) {
+				result[code] = { total: change.amount, account: change.account }
+			}
+		}
+	}
+
+	export function fromLegacy(fragment: Fragment | Legacy): Fragment {
+		if ("counterbalance" in fragment) {
+			return fragment
+		} else {
+		}
+	}
 	export type Counterbalance = Record<string, { total: number; account: Record<string, { amount: number }> }>
 	export namespace Counterbalance {
 		export const type = isly.record<Counterbalance>(
@@ -44,19 +80,6 @@ export namespace Fragment {
 			return true
 		}
 	}
-	export const type = isly.object<Fragment>({
-		warnings: Warning.type.array(),
-		emoney: Balance.Extended,
-		counterbalance: Counterbalance.type,
-		fiat: isly.object({
-			safe: isly.number(),
-			unsafe: isly.number(),
-			total: isly.number(),
-			other: isly.number(),
-			buffer: isly.number(),
-			accounts: Account.type.array(),
-		}),
-	})
 	export function validate(currency: isoly.Currency, fragment: Fragment): boolean {
 		const validCounterbalance = Counterbalance.validate(currency, fragment.counterbalance)
 		const issuable = fragment.fiat.total
