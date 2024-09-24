@@ -76,6 +76,18 @@ export namespace Changes {
 	export namespace Entry {
 		export const type = isly.string<Entry>()
 		export type Counterbalance = `${isoly.DateTime}-${CounterbalanceOperation.Link}`
+		export function getBalanceType(key: string): string {
+			let result = ""
+			if (key.includes("net") || key.includes("fee") || key.includes("charge"))
+				result = "collecting"
+			else if (key.toLowerCase().includes("reserved") || key === "available")
+				result = "balance"
+			else if (key.includes("internal"))
+				result = "equalizing"
+			else
+				result = "fiat"
+			return result
+		}
 		export function split(counterbalance: Counterbalance): [isoly.DateTime, CounterbalanceOperation.Link] {
 			const split = counterbalance.split("-")
 			const hour = split.slice(0, 3).join("-")
