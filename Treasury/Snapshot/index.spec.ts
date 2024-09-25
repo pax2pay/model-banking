@@ -7,57 +7,43 @@ describe("Treasury.Snapshot", () => {
 	it("is", () => {
 		expect(pax2pay.Treasury.Snapshot.type.is(snapshot)).toBeTruthy()
 	})
-	it("coinage sum", () => {
-		pax2pay.Treasury.Snapshot.Fragment.Coinage.sum("USD", {
-			one: { account: { asdf: 4 }, amount: 4 },
-			two: { account: { qwer: 5, zxcv: 7 }, amount: 13 },
-		})
-		expect(
-			pax2pay.Treasury.Snapshot.Fragment.Coinage.sum("USD", {
-				one: { account: { asdf: 4 }, amount: 4 },
-				two: { account: { qwer: 5, zxcv: 7 }, amount: 13 },
-			})
-		).toEqual(17)
+	it("sum fragment counterbalance accounts", () => {
+		const accounts: pax2pay.Treasury.Snapshot.Fragment.Counterbalance[string]["account"] = {
+			id1: { amount: 5 },
+			id2: { amount: 5 },
+			id3: { amount: -5 },
+		}
+		expect(pax2pay.Treasury.Snapshot.Fragment.Counterbalance.sum("USD", accounts)).toEqual(5)
+	})
+	it("sum validate counterbalance", () => {
+		const counterbalance: pax2pay.Treasury.Snapshot.Fragment.Counterbalance = {
+			"safe-01": {
+				total: 5,
+				account: { id1: { amount: 5 }, id2: { amount: 5 }, id3: { amount: -5 } },
+			},
+		}
+		expect(pax2pay.Treasury.Snapshot.Fragment.Counterbalance.validate("USD", counterbalance)).toEqual(true)
 	})
 	it("validate fragment", () => {
 		const fragment: pax2pay.Treasury.Snapshot.Fragment = {
 			warnings: [],
-			fiat: {
-				safe: 23846.03,
-				unsafe: 0,
-				total: 23846.03,
-				other: 0,
-				buffer: 0,
-				accounts: [],
-			},
+			fiat: { safe: 23846.03, unsafe: 0, total: 23846.03, other: 0, buffer: 0, accounts: [] },
 			emoney: { actual: 23846.03 },
-			burned: {
-				"uk-cb-safe01": {
-					account: {
-						"23Md_znq": 870.73,
-					},
-					amount: 870.73,
-				},
+			counterbalance: {
+				"safe-01": { total: 5, account: { id1: { amount: 5 } } },
+				"credit-01": { total: -5, account: { id2: { amount: -5 } } },
 			},
-			minted: {},
 		}
 		expect(pax2pay.Treasury.Snapshot.Fragment.validate("GBP", fragment)).toEqual(true)
 	})
 })
 const fragment: pax2pay.Treasury.Snapshot.Fragment = {
 	emoney: { actual: 2 },
-	burned: { "paxgiro-safe01": { account: { account1: 1, account2: 2 }, amount: 3 } },
-	minted: { "paxgiro-safe01": { account: { account1: 3, account2: 4 }, amount: 7 } },
-	fiat: {
-		safe: 1,
-		unsafe: 1,
-		total: 1,
-		other: 1,
-		buffer: 1,
-		accounts: [],
+	counterbalance: {
+		"safe-01": { total: 5, account: { id1: { amount: 5 } } },
+		"credit-01": { total: -5, account: { id2: { amount: -5 } } },
 	},
+	fiat: { safe: 1, unsafe: 1, total: 1, other: 1, buffer: 1, accounts: [] },
 	warnings: [],
 }
-const snapshot: pax2pay.Treasury.Snapshot = {
-	GBP: fragment,
-}
+const snapshot: pax2pay.Treasury.Snapshot = { GBP: fragment }
