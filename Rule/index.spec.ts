@@ -4,10 +4,7 @@ import { pax2pay } from "../index"
 
 // cSpell:disable
 const transaction1: pax2pay.Transaction.Creatable & { counterpart: pax2pay.Rail.Address } = {
-	counterpart: {
-		identifier: "bvMkSwAG",
-		type: "internal",
-	},
+	counterpart: { identifier: "bvMkSwAG", type: "internal" },
 	currency: "GBP",
 	amount: 501,
 	description: "test transaction 14",
@@ -17,13 +14,7 @@ const account: pax2pay.Account = {
 	id: "aaaaaa",
 	created: "2023-07-20T17:00.000Z",
 	rails: [],
-	balances: {
-		GBP: {
-			actual: 0,
-			incomingReserved: 0,
-			outgoingReserved: 0,
-		},
-	},
+	balances: { GBP: { actual: 0, incomingReserved: 0, outgoingReserved: 0 } },
 }
 const rule1: pax2pay.Rule = {
 	code: "abc",
@@ -98,6 +89,17 @@ const chargeFixed: pax2pay.Rule.Charge = {
 	charge: { fixed: ["GBP", 1] },
 	condition: "transaction.amount > 1",
 }
+const incomingCharge: pax2pay.Rule.Charge = {
+	code: "charge-test",
+	name: "charge test",
+	type: "inbound",
+	category: "fincrime",
+	flags: [],
+	description: "Charge 1 GBP incoming fee.",
+	action: "charge",
+	charge: { fixed: ["GBP", 1] },
+	condition: "transaction.amount > 1",
+}
 const chargeFixedCurrencyDiff: pax2pay.Rule.Charge = {
 	code: "charge-test",
 	name: "charge test",
@@ -140,25 +142,13 @@ const riskFlag: pax2pay.Rule = {
 	action: "flag",
 	condition: "transaction.risk > 500",
 }
-function getState(): pax2pay.Rule.State {
+function getState(kind: pax2pay.Rule.Kind = "authorization"): pax2pay.Rule.State {
 	return pax2pay.Rule.State.from(
 		{
-			countries: {
-				eea: ["AD"],
-				sanctioned: ["AD"],
-				risk: { high: ["AD"], mediumHigh: ["AD"] },
-			},
+			countries: { eea: ["AD"], sanctioned: ["AD"], risk: { high: ["AD"], mediumHigh: ["AD"] } },
 			merchant: {
 				known: [],
-				categories: {
-					payment: [],
-					crypto: [],
-					gambling: [],
-					travel: [],
-					specialist: [],
-					media: [],
-					sabre: [],
-				},
+				categories: { payment: [], crypto: [], gambling: [], travel: [], specialist: [], media: [], sabre: [] },
 			},
 		},
 		account,
@@ -170,7 +160,7 @@ function getState(): pax2pay.Rule.State {
 		},
 		{ currency: 1, merchant: { category: 1, country: 1, name: 1 } },
 		transaction1,
-		"authorization"
+		kind
 	)
 }
 describe("definitions", () => {
@@ -238,7 +228,7 @@ describe("definitions", () => {
 	it("one charge fixed - same currency", () => {
 		const state = getState()
 		const evaluated = pax2pay.Rule.evaluate([chargeFixed], state, undefined, table)
-		const fixedChargeAmount = chargeFixed.charge.fixed ? chargeFixed.charge.fixed[1] : 0
+		const fixedChargeAmount = chargeFixed.charge.fixed?.[1] ?? 0
 		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
 		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fixedChargeAmount)
 	})
@@ -279,6 +269,13 @@ describe("definitions", () => {
 		)
 		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount + percentCharge)
 		expect(evaluated.transaction.original.total).toEqual(total)
+	})
+	it("one incoming charge fixed", () => {
+		const state = getState("inbound")
+		const evaluated = pax2pay.Rule.evaluate([incomingCharge], state, undefined, table)
+		const fixedChargeAmount = incomingCharge.charge.fixed ? incomingCharge.charge.fixed[1] : 0
+		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
+		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount - fixedChargeAmount)
 	})
 	it("isInternal", () => {
 		expect(pax2pay.Rule.evaluate([rule2], getState()).outcomes).toEqual({
