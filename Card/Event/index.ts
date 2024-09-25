@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Authorization } from "../../Authorization"
-import { Entry } from "../../Settlement/Entry"
+import type { Authorization as ModelAuthorization } from "../../Authorization"
+import type { Entry } from "../../Settlement/Entry"
 import { Authorization as EventAuthorization } from "./Authorization"
 import { Cancel as EventCancel } from "./Cancel"
 import { Change as EventChange } from "./Change"
@@ -16,34 +16,30 @@ export namespace Event {
 	export import Change = EventChange
 	export import Authorization = EventAuthorization
 	export import Clearing = EventClearing
-	export const type = isly.union<Event>(Create.type, Cancel.type, Change.type, Authorization.type, Clearing.type)
-	export function fromAuthorization(
-		authorization: Authorization,
-		status: EventAuthorization.Outcome
-	): Event | undefined {
+	export const type = isly.union<Event>(Create.type, Cancel.type, Change.type, Event.Authorization.type, Clearing.type)
+	export function fromAuthorization(authorization: ModelAuthorization): Event {
 		return {
 			type: "authorization",
-			id: authorization?.id ?? authorization.transaction?.id ?? "unknown",
-			status,
-			created: isoly.DateTime.now(),
+			id: authorization.id,
+			outcome: authorization.status != "approved" ? "rejected" : "created",
+			created: authorization.created,
+			reason: authorization.status == "approved" ? undefined : authorization.status,
+			amount: authorization.amount, // FIXME: we need the total transaction amount on auth
 		}
 	}
 	export function fromEntry(entry: Entry): Event | undefined {
-		return entry.type == "unknown"
+		return entry.type == "unknown" || entry.type == "cancel"
 			? undefined
 			: {
-					type: "authorization",
-					id: (entry.type != "refund" ? entry.authorization?.id : entry.transaction?.id) ?? "unknown",
-					status: Event.fromEntryStatus(entry.type),
+					type: entry.type,
 					created: isoly.DateTime.now(),
+					net: entry.amount,
+					fee: [entry.amount[0], entry.fee.other[entry.amount[0]] ?? 0],
+					total: [
+						entry.amount[0],
+						isoly.Currency.add(entry.amount[0], entry.amount[1], entry.fee.other[entry.amount[0]] ?? 0), // FIXME: this computation should probably be done in entry
+					],
+					// FIXME:	charge: entry.charge,
 			  }
-	}
-	export function fromEntryStatus(status: Exclude<Entry.Type, "unknown">): EventAuthorization.Outcome {
-		const statusConverter: Record<Exclude<Entry.Type, "unknown">, EventAuthorization.Outcome> = {
-			capture: "captured",
-			cancel: "cancelled",
-			refund: "refunded",
-		}
-		return statusConverter[status]
 	}
 }
