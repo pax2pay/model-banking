@@ -3,11 +3,20 @@ import { isly } from "isly"
 import { Authorization } from "../../Authorization"
 import { Entry } from "../../Settlement/Entry"
 import { Authorization as EventAuthorization } from "./Authorization"
-import { Card } from "./Cancel"
+import { Cancel as EventCancel } from "./Cancel"
+import { Change as EventChange } from "./Change"
+import { Clearing as EventClearing } from "./Clearing"
+import { Create as EventCreate } from "./Create"
 
-export type Event = Card | EventAuthorization
+export type Event = Event.Create | Event.Cancel | Event.Change | Event.Authorization | Event.Clearing
 
-export namespace Operation {
+export namespace Event {
+	export import Create = EventCreate
+	export import Cancel = EventCancel
+	export import Change = EventChange
+	export import Authorization = EventAuthorization
+	export import Clearing = EventClearing
+	export const type = isly.union<Event>(Create.type, Cancel.type, Change.type, Authorization.type, Clearing.type)
 	export function fromAuthorization(
 		authorization: Authorization,
 		status: EventAuthorization.Outcome
@@ -25,7 +34,7 @@ export namespace Operation {
 			: {
 					type: "authorization",
 					id: (entry.type != "refund" ? entry.authorization?.id : entry.transaction?.id) ?? "unknown",
-					status: Operation.fromEntryStatus(entry.type),
+					status: Event.fromEntryStatus(entry.type),
 					created: isoly.DateTime.now(),
 			  }
 	}
@@ -37,6 +46,4 @@ export namespace Operation {
 		}
 		return statusConverter[status]
 	}
-	export const type = isly.union(Card.type, EventAuthorization.type)
-	export const is = type.is
 }

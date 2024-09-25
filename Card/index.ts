@@ -6,7 +6,7 @@ import { Report } from "../Report"
 import { Rule, type as ruleType } from "../Rule/Rule"
 import { Changeable as CardChangeable } from "./Changeable"
 import { Creatable as CardCreatable } from "./Creatable"
-import { Event as CardOperation } from "./Event"
+import { Event as CardEvent } from "./Event"
 import { Expiry as CardExpiry } from "./Expiry"
 import { Meta as CardMeta } from "./Meta"
 import { Preset as CardPreset } from "./Preset"
@@ -27,7 +27,7 @@ export interface Card {
 	limit: Amount
 	spent: Amount
 	status: "active" | "cancelled"
-	history: CardOperation[]
+	history: CardEvent[]
 	rules: Rule[]
 	meta?: CardMeta
 }
@@ -52,7 +52,7 @@ export namespace Card {
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		status: isly.union(isly.string("active"), isly.string("cancelled")),
-		history: isly.array(CardOperation.type),
+		history: isly.union(CardEvent.type, isly.any()).array(),
 		rules: ruleType.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 	})
@@ -62,13 +62,18 @@ export namespace Card {
 	export import Meta = CardMeta
 	export import Expiry = CardExpiry
 	export import Changeable = CardChangeable
-	export import Operation = CardOperation
+	export import Event = CardEvent
 	export import Scheme = CardScheme
 	export import Stack = CardStack
 	const csvMap: Record<string, (card: Card) => string | number | undefined> = {
 		id: card => card.id,
 		created: card => readableDate(card.created),
-		cancelled: card => readableDate(card.history.find(o => o.type == "card" && o.status == "cancelled")?.created),
+		cancelled: card =>
+			readableDate(
+				card.history.find(
+					o => o.type == "create" || ((o as any).type == "card" && "status" in o && o.status == "cancelled") // as any for legacy reasons
+				)?.created
+			),
 		"organization.code": card => card.organization,
 		realm: card => card.realm,
 		account: card => card.account,
@@ -82,8 +87,18 @@ export namespace Card {
 		expiry: card => readableDate(Expiry.toDateTime(card.details.expiry)),
 		iin: card => card.details.iin,
 		holder: card => card.details.holder,
-		"authorization.count": card => card.history.filter(o => o.type == "authorization" && o.status == "created").length,
-		"capture.count": card => card.history.filter(o => o.type == "authorization" && o.status == "captured").length,
+		"authorization.count": card =>
+			card.history.filter(
+				o =>
+					(o.type == "authorization" && "status" in o && o.status == "created") || // for legacy reasons
+					(o.type == "authorization" && o.outcome == "created")
+			).length,
+		"capture.count": card =>
+			card.history.filter(
+				o =>
+					(o.type == "authorization" && "status" in o && o.status == "created") || // for legacy reasons
+					o.type == "capture"
+			).length,
 	}
 	function readableDate(date: isoly.DateTime | undefined): string | undefined {
 		return date && date.slice(0, 10) + " " + (date.endsWith("Z") ? date.slice(11, -1) : date.slice(11))
