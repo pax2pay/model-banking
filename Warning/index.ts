@@ -1,15 +1,9 @@
-import { isly } from "isly"
+import { Base as WarningBase } from "./Base"
+// import { Snapshot as WarningSnapshot } from "./Snapshot"
 
-export interface Warning {
-	type: string
-	entity: string
-	value?: number
-}
+// export type Warning = Warning.Snapshot //| Settlement
 
 export namespace Warning {
-	export const type = isly.object<Warning>({
-		type: isly.string(),
-		entity: isly.string(),
-		value: isly.number().optional(),
-	})
+	// export import Snapshot = WarningSnapshot
+	export import Base = WarningBase
 }
