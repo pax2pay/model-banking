@@ -23,7 +23,7 @@ export namespace MissingBuffer {
 			if (typeof minimum != "undefined" && minimum > amount)
 				result.push({
 					type: "missing-buffer",
-					resource: account.id,
+					resource: account.code,
 					currency: currency as isoly.Currency,
 					minimum,
 					balance: amount,
