@@ -56,13 +56,6 @@ export namespace Settlement {
 				;(result.warnings ??= []).push(Warning.UnknownEntry.create(entry, settlement.id))
 			}
 		}
-		Object.entries(result.totals).forEach(
-			([currency, total]) =>
-				(total.outcome?.net ?? 0) < 0 &&
-				(result.warnings ??= []).push(
-					Warning.NegativeAmount.create(settlement.id, total.outcome!.net, currency as isoly.Currency)
-				)
-		)
 		return result
 	}
 	type OldTotal = { amount: Amounts; fee: Fee }
