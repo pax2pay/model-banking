@@ -1,5 +1,8 @@
+import { selectively } from "selectively"
 import { isly } from "isly"
 import { Base } from "./Base"
+import { control } from "./control"
+import type { State } from "./State"
 
 export interface Score extends Base {
 	action: Score.Action
@@ -18,4 +21,14 @@ export namespace Score {
 		category: isly.string("fincrime"),
 		risk: Risk,
 	})
+	export function evaluate(
+		rules: Score[],
+		state: State,
+		macros?: Record<string, selectively.Definition>
+	): number | undefined {
+		return rules.reduce(
+			(r: number | undefined, rule) => (control(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : r),
+			undefined
+		)
+	}
 }

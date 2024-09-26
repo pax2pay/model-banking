@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Amount } from "../../Amount"
-import { Realm } from "../../Realm"
+import { Amount } from "../Amount"
+import { Realm } from "../Realm"
 import { Base } from "./Base"
 
 export interface Reserve extends Base {

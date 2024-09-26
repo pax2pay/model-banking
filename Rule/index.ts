@@ -1,129 +1,95 @@
-import { isoly } from "isoly"
 import { selectively } from "selectively"
+import { isly } from "isly"
 import { Exchange } from "../Exchange"
-import { Note } from "../Transaction/Note"
-import { definitions } from "./definitions"
-import { Rule as ModelRule, type as ruleType } from "./Rule"
+import { Realm } from "../Realm"
+import { Base as RuleBase } from "./Base"
+import { Charge as RuleCharge } from "./Charge"
+import { control as ruleControl } from "./control"
+import { Other as RuleOther } from "./Other"
+import { Reserve as RuleReserve } from "./Reserve"
+import { Score as RuleScore } from "./Score"
 import { State as RuleState } from "./State"
+import { type as ruleType } from "./type"
 
-export type Rule = ModelRule
-
+export type Rule = Rule.Other | Rule.Score | Rule.Charge | Rule.Reserve
 export namespace Rule {
-	export import Api = ModelRule.Api
-	export import Action = ModelRule.Action
-	export import Category = ModelRule.Base.Category
-	export import Kind = ModelRule.Base.Kind
-	export import Other = ModelRule.Other
-	export import Score = ModelRule.Score
-	export import Charge = ModelRule.Charge
+	export import Other = RuleOther
+	export import Score = RuleScore
+	export import Charge = RuleCharge
 	export import State = RuleState
-	export const type = ruleType
-	export const is = ruleType.is
-	export const flaw = ruleType.flaw
-	function shouldUse(kind: Rule.Kind, rule: Rule, groups: string[] | undefined): boolean {
-		return (
-			kind == rule.type &&
-			(!rule.groups || rule.groups.some(ruleGroup => groups?.some(organizationGroup => organizationGroup == ruleGroup)))
+	export import Reserve = RuleReserve
+	export import Base = RuleBase
+	export import Kind = Base.Kind
+	export import Category = Base.Category
+	export const control = ruleControl
+	export type Api = Rule.Other | Rule.Score | Rule.Charge.Api
+	export namespace Api {
+		export const type = isly.union<Api, Rule.Other, Rule.Score, Rule.Charge.Api>(
+			Rule.Other.type,
+			Rule.Score.type,
+			Rule.Charge.Api.type
 		)
-	}
-	function control(rule: ModelRule, state: State, macros?: Record<string, selectively.Definition>): boolean {
-		return selectively.resolve({ ...macros, ...definitions }, selectively.parse(rule.condition)).is(state)
-	}
-	function score(
-		rules: ModelRule.Score[],
-		state: State,
-		macros?: Record<string, selectively.Definition>
-	): number | undefined {
-		return rules.reduce(
-			(r: number | undefined, rule) => (control(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : r),
-			undefined
-		)
-	}
-	function charge(
-		rules: ModelRule.Charge[],
-		state: State,
-		macros?: Record<string, selectively.Definition>,
-		table: Exchange.Rates = {}
-	): { outcomes: Rule[]; charge: number } {
-		const result: { outcomes: Rule[]; charge: number } = { outcomes: [], charge: 0 }
-		for (const rule of rules) {
-			if (control(rule, state, macros)) {
-				if (rule.charge.percentage)
-					result.charge = isoly.Currency.add(
-						state.transaction.currency,
-						result.charge,
-						isoly.Currency.multiply(state.transaction.currency, state.transaction.amount, rule.charge.percentage / 100)
-					)
-				if (rule.charge.fixed) {
-					const charge =
-						state.transaction.currency === rule.charge.fixed[0]
-							? rule.charge.fixed[1]
-							: Exchange.convert(rule.charge.fixed[1], rule.charge.fixed[0], state.transaction.currency, table) ?? 0
-					result.charge = isoly.Currency.add(state.transaction.currency, result.charge, charge)
-				}
-				result.outcomes.push(rule)
-			}
+		export function from(rule: Rule.Api, realm: Realm): Rule {
+			return rule.action == "charge" ? Charge.Api.from(rule, realm) : rule
 		}
-		return result
 	}
+	export type Action = typeof Action.values[number]
+	export namespace Action {
+		export const values = [
+			...Other.Action.values,
+			Score.Action.value,
+			Charge.Action.value,
+			Reserve.Action.value,
+		] as const
+		export const type = isly.string<Action>(values)
+	}
+	export const type = ruleType
 	export function evaluate(
 		rules: Rule[],
-		state: State,
+		state: RuleState,
 		macros?: Record<string, selectively.Definition>,
 		table: Exchange.Rates = {}
-	): State.Evaluated {
-		const outcomes: Record<ModelRule.Other.Action | ModelRule.Charge.Action, Rule[]> = {
+	): RuleState.Evaluated {
+		const outcomes: Record<Rule.Other.Action | Rule.Charge.Action, Rule[]> = {
 			review: [],
 			reject: [],
 			flag: [],
 			charge: [],
 		}
-		const { other, chargers, scorers } = rules.reduce(
-			(r: { other: ModelRule.Other[]; chargers: ModelRule.Charge[]; scorers: ModelRule.Score[] }, rule) => {
-				if (shouldUse(state.transaction.kind, rule, state.organization?.groups))
+		const { other, chargers, scorers } = sort(rules, state)
+		state.transaction.risk = Score.evaluate(scorers, state, macros)
+		const evaluated = Other.evaluate(other, state, macros)
+		outcomes.flag.push(...evaluated.outcomes.flag)
+		outcomes.review.push(...evaluated.outcomes.review)
+		outcomes.reject.push(...evaluated.outcomes.reject)
+		const charged = Charge.evaluate(chargers, state, macros, table)
+		outcomes.charge.push(...charged.outcomes)
+		state.transaction.original.charge = charged.charge
+		state.transaction.original.total = charged.total
+		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
+		return { ...state, flags: [...evaluated.flags], notes: evaluated.notes, outcomes, outcome }
+	}
+	function sort(
+		rules: Rule[],
+		state: State
+	): { other: Rule.Other[]; chargers: Rule.Charge[]; scorers: Rule.Score[]; reservers: Rule.Reserve[] } {
+		return rules.reduce(
+			(r: ReturnType<typeof sort>, rule) => {
+				if (Base.Kind.is(state.transaction.kind, rule, state.organization?.groups))
 					rule.action == "score"
 						? r.scorers.push(rule)
 						: rule.action == "charge"
 						? r.chargers.push(rule)
+						: rule.action == "reserve"
+						? r.reservers.push(rule)
 						: r.other.push(rule)
 				return r
 			},
-			{ other: [], chargers: [], scorers: [] }
+			{ other: [], chargers: [], scorers: [], reservers: [] }
 		)
-		state.transaction.risk = score(scorers, state, macros)
-		const notes: Note[] = []
-		const flags: Set<string> = new Set()
-		const now = isoly.DateTime.now()
-		for (const rule of other) {
-			if (control(rule, state, macros)) {
-				outcomes[rule.action].push(rule)
-				notes.push({ author: "automatic", created: now, text: rule.name, rule })
-				rule.flags.forEach(f => flags.add(f))
-				rule.action == "review" && flags.add("review")
-			}
-		}
-		const charged = charge(chargers, state, macros, table)
-		state.transaction.original.charge = isoly.Currency.add(
-			state.transaction.original.currency,
-			state.transaction.original.charge ?? 0,
-			charged.charge
-		)
-		state.transaction.original.total =
-			state.transaction.kind == "authorization" ||
-			state.transaction.kind == "outbound" ||
-			state.transaction.kind == "capture"
-				? isoly.Currency.add(state.transaction.original.currency, state.transaction.original.amount, charged.charge)
-				: isoly.Currency.subtract(
-						state.transaction.original.currency,
-						state.transaction.original.amount,
-						charged.charge
-				  )
-		outcomes.charge.push(...charged.outcomes)
-		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
-		return { ...state, flags: [...flags], notes, outcomes, outcome }
 	}
 	export function isLegacy(rule: Rule): boolean {
-		return !ModelRule.Base.Category.type.is(rule.category)
+		return !Rule.Base.Category.type.is(rule.category)
 	}
 	export function fromLegacy(rule: Rule): Rule {
 		return isLegacy(rule) ? { ...rule, category: "fincrime" } : rule

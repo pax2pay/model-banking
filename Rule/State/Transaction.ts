@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import type { Address } from "../../Rail/Address"
 import { Transaction as ModelTransaction } from "../../Transaction"
-import { Rule } from "../Rule"
+import type { Rule } from "../index"
 
 export interface Transaction extends ModelTransaction.Creatable {
 	kind: Rule.Base.Kind
