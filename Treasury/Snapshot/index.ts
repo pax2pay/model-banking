@@ -1,10 +1,10 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Warning as SnapshotWarning } from "../../Warning"
 import { Emoney as SnapshotEmoney } from "./Emoney"
 import { Fiat as SnapshotFiat } from "./Fiat"
 import { Fragment as SnapshotFragment } from "./Fragment"
 import { funding as snapshotFunding } from "./funding"
-import { Warning as SnapshotWarning } from "./Warning"
 
 export type Snapshot = Partial<Record<isoly.Currency, Snapshot.Fragment>>
 

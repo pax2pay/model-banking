@@ -4,14 +4,14 @@ import { Treasury } from "../../Treasury"
 import { Base } from "../Base"
 
 export interface MissingBuffer extends Base {
-	type: "missing buffer"
+	type: "missing-buffer"
 	currency: isoly.Currency
 	minimum: number
 	balance: number
 }
 export namespace MissingBuffer {
 	export const type = Base.type.extend<MissingBuffer>({
-		type: isly.string("missing buffer"),
+		type: isly.string("missing-buffer"),
 		currency: isly.string(),
 		minimum: isly.number(),
 		balance: isly.number(),
@@ -22,12 +22,12 @@ export namespace MissingBuffer {
 			const minimum = account.conditions?.minimum?.[currency as isoly.Currency]
 			if (typeof minimum != "undefined" && minimum > amount)
 				result.push({
-					type: "missing buffer",
+					type: "missing-buffer",
 					resource: account.id,
 					currency: currency as isoly.Currency,
 					minimum,
 					balance: amount,
-					date: isoly.DateTime.now(),
+					date: isoly.Date.now(),
 				})
 		}
 		return result
