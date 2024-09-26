@@ -34,19 +34,19 @@ export namespace Charge {
 				fixed: isly.union<number | Amount>(Amount.type, isly.number()).optional(),
 			}),
 		})
-		export function from(rule: Api, realm: Realm): Charge
-		export function from(rule: Api, currency: isoly.Currency): Charge
-		export function from(rule: Api, currency: Realm | isoly.Currency): Charge {
-			return {
-				...rule,
-				charge: {
-					...rule.charge,
-					fixed:
-						typeof rule.charge.fixed == "number"
-							? [Realm.is(currency) ? Realm.currency[currency] : currency, rule.charge.fixed]
-							: rule.charge.fixed,
-				},
-			}
+	}
+	export function fromApi(rule: Api, realm: Realm): Charge
+	export function fromApi(rule: Api, currency: isoly.Currency): Charge
+	export function fromApi(rule: Api, currency: Realm | isoly.Currency): Charge {
+		return {
+			...rule,
+			charge: {
+				...rule.charge,
+				fixed:
+					typeof rule.charge.fixed == "number"
+						? [Realm.is(currency) ? Realm.currency[currency] : currency, rule.charge.fixed]
+						: rule.charge.fixed,
+			},
 		}
 	}
 	export function evaluate(
@@ -54,11 +54,10 @@ export namespace Charge {
 		state: State,
 		macros?: Record<string, selectively.Definition>,
 		table: Exchange.Rates = {}
-	): { outcomes: Charge[]; charge: number; total: number } {
+	): { outcomes: Charge[]; charge: number } {
 		const result: ReturnType<typeof evaluate> = {
 			outcomes: [],
 			charge: state.transaction.original.charge ?? 0,
-			total: 0,
 		}
 		for (const rule of rules) {
 			if (control(rule, state, macros)) {
@@ -78,12 +77,13 @@ export namespace Charge {
 				result.outcomes.push(rule)
 			}
 		}
-		result.total =
-			state.transaction.kind == "authorization" ||
+		return result
+	}
+	export function apply(charge: number, state: State): number {
+		return state.transaction.kind == "authorization" ||
 			state.transaction.kind == "outbound" ||
 			state.transaction.kind == "capture"
-				? isoly.Currency.add(state.transaction.original.currency, state.transaction.original.amount, result.charge)
-				: isoly.Currency.subtract(state.transaction.original.currency, state.transaction.original.amount, result.charge)
-		return result
+			? isoly.Currency.add(state.transaction.original.currency, state.transaction.original.amount, charge)
+			: isoly.Currency.subtract(state.transaction.original.currency, state.transaction.original.amount, charge)
 	}
 }

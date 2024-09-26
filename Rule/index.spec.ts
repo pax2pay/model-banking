@@ -168,6 +168,8 @@ describe("definitions", () => {
 		expect(pax2pay.Rule.evaluate([rule1], getState()).outcomes).toEqual({
 			charge: [],
 			flag: [],
+			reserve: [],
+			score: [],
 			reject: [rule1],
 			review: [],
 		})
@@ -281,6 +283,8 @@ describe("definitions", () => {
 		expect(pax2pay.Rule.evaluate([rule2], getState()).outcomes).toEqual({
 			charge: [],
 			review: [],
+			score: [],
+			reserve: [],
 			reject: [],
 			flag: [rule2],
 		})
@@ -289,6 +293,8 @@ describe("definitions", () => {
 		expect(pax2pay.Rule.evaluate([rule3], getState()).outcomes).toEqual({
 			charge: [],
 			review: [],
+			score: [],
+			reserve: [],
 			reject: [rule3],
 			flag: [],
 		})
@@ -297,6 +303,8 @@ describe("definitions", () => {
 		expect(pax2pay.Rule.evaluate([rule4], getState()).outcomes).toEqual({
 			charge: [],
 			review: [],
+			score: [],
+			reserve: [],
 			reject: [rule4],
 			flag: [],
 		})
@@ -305,6 +313,8 @@ describe("definitions", () => {
 		expect(pax2pay.Rule.evaluate([rule1, rule2, rule3, chargePercent], getState()).outcomes).toEqual({
 			charge: [chargePercent],
 			review: [],
+			score: [],
+			reserve: [],
 			reject: [rule1, rule3],
 			flag: [rule2],
 		})

@@ -25,10 +25,17 @@ export namespace Score {
 		rules: Score[],
 		state: State,
 		macros?: Record<string, selectively.Definition>
-	): number | undefined {
-		return rules.reduce(
-			(r: number | undefined, rule) => (control(rule, state, macros) ? (r ?? 100) * (rule.risk / 100) : r),
-			undefined
-		)
+	): {
+		outcomes: Score[]
+		risk?: number | undefined
+	} {
+		const result: ReturnType<typeof evaluate> = { outcomes: [] }
+		for (const rule of rules) {
+			if (control(rule, state, macros)) {
+				result.risk = (result.risk ?? 100) * (rule.risk / 100)
+				result.outcomes.push(rule)
+			}
+		}
+		return result
 	}
 }

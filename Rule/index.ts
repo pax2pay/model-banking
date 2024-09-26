@@ -22,16 +22,21 @@ export namespace Rule {
 	export import Kind = Base.Kind
 	export import Category = Base.Category
 	export const control = ruleControl
-	export type Api = Rule.Other | Rule.Score | Rule.Charge.Api
+	export type Api = Rule.Other | Rule.Score | Rule.Charge.Api | Rule.Reserve.Api
 	export namespace Api {
-		export const type = isly.union<Api, Rule.Other, Rule.Score, Rule.Charge.Api>(
+		export const type = isly.union<Api, Rule.Other, Rule.Score, Rule.Charge.Api, Rule.Reserve.Api>(
 			Rule.Other.type,
 			Rule.Score.type,
-			Rule.Charge.Api.type
+			Rule.Charge.Api.type,
+			Rule.Reserve.Api.type
 		)
-		export function from(rule: Rule.Api, realm: Realm): Rule {
-			return rule.action == "charge" ? Charge.Api.from(rule, realm) : rule
-		}
+	}
+	export function fromApi(rule: Rule.Api, realm: Realm): Rule {
+		return rule.action == "charge"
+			? Charge.fromApi(rule, realm)
+			: rule.action == "reserve"
+			? Reserve.fromApi(rule, realm)
+			: rule
 	}
 	export type Action = typeof Action.values[number]
 	export namespace Action {
@@ -50,14 +55,18 @@ export namespace Rule {
 		macros?: Record<string, selectively.Definition>,
 		table: Exchange.Rates = {}
 	): RuleState.Evaluated {
-		const outcomes: Record<Rule.Other.Action | Rule.Charge.Action, Rule[]> = {
+		const outcomes: Record<Rule.Action, Rule[]> = {
 			review: [],
 			reject: [],
 			flag: [],
 			charge: [],
+			score: [],
+			reserve: [],
 		}
-		const { other, chargers, scorers } = sort(rules, state)
-		state.transaction.risk = Score.evaluate(scorers, state, macros)
+		const { other, chargers, scorers, reservers } = sort(rules, state)
+		const scored = Score.evaluate(scorers, state, macros)
+		outcomes.score.push(...scored.outcomes)
+		state.transaction.risk = scored.risk
 		const evaluated = Other.evaluate(other, state, macros)
 		outcomes.flag.push(...evaluated.outcomes.flag)
 		outcomes.review.push(...evaluated.outcomes.review)
@@ -65,7 +74,10 @@ export namespace Rule {
 		const charged = Charge.evaluate(chargers, state, macros, table)
 		outcomes.charge.push(...charged.outcomes)
 		state.transaction.original.charge = charged.charge
-		state.transaction.original.total = charged.total
+		const reserved = Reserve.evaluate(reservers, state, macros, table)
+		outcomes.reserve.push(...reserved.outcomes)
+		state.transaction.original.total = Charge.apply(charged.charge, state)
+		state.transaction.original.total = Reserve.apply(charged.charge, state)
 		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
 		return { ...state, flags: [...evaluated.flags], notes: evaluated.notes, outcomes, outcome }
 	}
