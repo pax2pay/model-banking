@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { Supplier } from "../../Supplier"
+import { Warning } from "../../Warning"
 import { Balance } from "../Balance"
-import { Warning } from "./Warning"
 
 export interface Fiat {
 	supplier: Supplier | "total"
