@@ -6,14 +6,12 @@ import { Base } from "../Base"
 
 export interface StaleFiat extends Base {
 	type: "stale fiat"
-	date: isoly.Date
 	currency: isoly.Currency
 	transaction: { id: string; created: isoly.DateTime }
 }
 export namespace StaleFiat {
 	export const type = Base.type.extend<StaleFiat>({
 		type: isly.string("stale fiat"),
-		date: isly.string(),
 		currency: isly.string(),
 		transaction: isly.object<StaleFiat["transaction"]>({ id: isly.string(), created: isly.string() }),
 	})

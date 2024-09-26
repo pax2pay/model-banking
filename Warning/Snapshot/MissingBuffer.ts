@@ -27,6 +27,7 @@ export namespace MissingBuffer {
 					currency: currency as isoly.Currency,
 					minimum,
 					balance: amount,
+					date: isoly.DateTime.now(),
 				})
 		}
 		return result
