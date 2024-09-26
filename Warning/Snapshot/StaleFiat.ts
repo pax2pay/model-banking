@@ -1,24 +1,22 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Holidays } from "../../../Holidays"
-import { Account } from "../../Account"
-import { Transaction } from "../../Transaction"
+import { Holidays } from "../../Holidays"
+import { Treasury } from "../../Treasury"
+import { Base } from "../Base"
 
-export interface Unguarded {
-	type: "unguarded"
-	date: isoly.Date
+export interface StaleFiat extends Base {
+	type: "stale-fiat"
 	currency: isoly.Currency
 	transaction: { id: string; created: isoly.DateTime }
 }
-export namespace Unguarded {
-	export const type = isly.object<Unguarded>({
-		type: isly.string("unguarded"),
-		date: isly.string(),
+export namespace StaleFiat {
+	export const type = Base.type.extend<StaleFiat>({
+		type: isly.string("stale-fiat"),
 		currency: isly.string(),
-		transaction: isly.object<Unguarded["transaction"]>({ id: isly.string(), created: isly.string() }),
+		transaction: isly.object<StaleFiat["transaction"]>({ id: isly.string(), created: isly.string() }),
 	})
-	export function create(account: Account, transactions: Transaction[]): Unguarded[] {
-		const result: Unguarded[] = []
+	export function create(account: Treasury.Account, transactions: Treasury.Transaction[]): StaleFiat[] {
+		const result: StaleFiat[] = []
 		for (const [currency, amount] of Object.entries(account.balance)) {
 			let oldest: { id: string; date: isoly.Date; created: isoly.DateTime } | undefined = undefined
 			let remainder = amount
@@ -35,10 +33,11 @@ export namespace Unguarded {
 			}
 			if (oldest && isoly.Date.now() > isoly.Date.nextBusinessDay(oldest.date, 3, Holidays.dates["England"]))
 				result.push({
-					type: "unguarded",
+					type: "stale-fiat",
 					currency: currency as isoly.Currency,
 					date: oldest.date,
 					transaction: { id: oldest.id, created: oldest.created },
+					resource: oldest.id,
 				})
 		}
 		return result
