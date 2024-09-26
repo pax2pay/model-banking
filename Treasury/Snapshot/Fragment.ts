@@ -1,8 +1,8 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Balance } from "../../Balance"
+import { Warning } from "../../Warning"
 import { Account } from "../Account"
-import { Warning } from "./Warning"
 
 export interface Fragment {
 	warnings: Warning[]
