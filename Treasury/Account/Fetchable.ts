@@ -21,9 +21,7 @@ export namespace Fetchable {
 		reference: isly.string(),
 		currencies: isly.fromIs("Account.Fetchable.currencies", isoly.Currency.is).array(),
 		type: Category.type,
-		rail: isly.fromIs("Account.Fetchable.rail", Rail.Address.is).array(),
+		rail: Rail.Address.type.array(),
 		balance: Balance.type,
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

@@ -35,7 +35,7 @@ export namespace Account {
 		type: AccountCategory.type,
 		conditions: AccountConditions.type,
 		rail: Rail.Address.type.array(),
-		balance: isly.fromIs("Treasury.Account.balance", Balance.is),
+		balance: Balance.type,
 	})
 	export type Listable = Account & { transactions: Transaction[] }
 	export import Storable = AccountStorable

@@ -24,6 +24,4 @@ export namespace Storable {
 		reference: isly.string(),
 		conditions: Conditions.type.optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }
