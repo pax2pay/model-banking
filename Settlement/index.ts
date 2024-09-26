@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amounts } from "../Amounts"
+import { Settlement as SettlementWarning } from "../Warning/Settlement"
 import { Amount as SettlementAmount } from "./Amount"
 import { Batch as SettlementBatch } from "./Batch"
 import { Creatable as SettlementCreatable } from "./Creatable"
@@ -17,6 +18,7 @@ export interface Settlement extends Settlement.Creatable {
 	created: isoly.DateTime
 	status: Status
 	entries: Settlement.Entry.Summary
+	warnings?: Settlement.Warning[]
 }
 export namespace Settlement {
 	export import Identifier = SettlementIdentifier
@@ -27,6 +29,7 @@ export namespace Settlement {
 	export import Creatable = SettlementCreatable
 	export import Entry = SettlementEntry
 	export import Batch = SettlementBatch
+	export import Warning = SettlementWarning
 	export function from(id: Settlement.Identifier, creatable: Settlement.Creatable, by: string): Settlement {
 		return {
 			id,
@@ -48,6 +51,9 @@ export namespace Settlement {
 				case "failed":
 					result.entries.failed ? result.entries.failed.count++ : (result.entries.failed = { count: 1 })
 					break
+			}
+			if (entry.type == "unknown") {
+				;(result.warnings ??= []).push(Warning.UnknownEntry.create(entry, settlement.id))
 			}
 		}
 		return result
@@ -99,6 +105,7 @@ export namespace Settlement {
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		status: Status.type,
 		entries: Settlement.Entry.Summary.type,
+		warnings: Settlement.Warning.type.array().optional(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
