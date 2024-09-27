@@ -65,22 +65,31 @@ export namespace Reserve {
 	): { outcomes: Reserve[]; reserve: number } {
 		const result: ReturnType<typeof evaluate> = {
 			outcomes: [],
-			reserve: state.transaction.original.amount,
+			reserve: 0,
 		}
 		for (const rule of rules) {
 			if (control(rule, state, macros)) {
 				if (rule.reserve.percentage)
 					result.reserve = isoly.Currency.add(
-						state.transaction.currency,
+						state.transaction.original.currency,
 						result.reserve,
-						isoly.Currency.multiply(state.transaction.currency, state.transaction.amount, rule.reserve.percentage / 100)
+						isoly.Currency.multiply(
+							state.transaction.original.currency,
+							state.transaction.original.amount,
+							rule.reserve.percentage / 100
+						)
 					)
 				if (rule.reserve.fixed) {
 					const reserve =
-						state.transaction.currency === rule.reserve.fixed[0]
+						state.transaction.original.currency === rule.reserve.fixed[0]
 							? rule.reserve.fixed[1]
-							: Exchange.convert(rule.reserve.fixed[1], rule.reserve.fixed[0], state.transaction.currency, table) ?? 0
-					result.reserve = isoly.Currency.add(state.transaction.currency, result.reserve, reserve)
+							: Exchange.convert(
+									rule.reserve.fixed[1],
+									rule.reserve.fixed[0],
+									state.transaction.original.currency,
+									table
+							  ) ?? 0
+					result.reserve = isoly.Currency.add(state.transaction.original.currency, result.reserve, reserve)
 				}
 				result.outcomes.push(rule)
 			}
@@ -91,7 +100,7 @@ export namespace Reserve {
 		return state.transaction.kind == "authorization" ||
 			state.transaction.kind == "outbound" ||
 			state.transaction.kind == "capture"
-			? isoly.Currency.add(state.transaction.original.currency, state.transaction.original.amount, reserve)
-			: isoly.Currency.subtract(state.transaction.original.currency, state.transaction.original.amount, reserve)
+			? isoly.Currency.add(state.transaction.original.currency, state.transaction.original.total, reserve)
+			: isoly.Currency.subtract(state.transaction.original.currency, state.transaction.original.total, reserve)
 	}
 }

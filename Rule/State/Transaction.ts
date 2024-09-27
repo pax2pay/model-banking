@@ -8,7 +8,13 @@ export interface Transaction extends ModelTransaction.Creatable {
 	amount: number
 	type: ModelTransaction.Types
 	risk?: number
-	original: { currency: isoly.Currency; amount: number; charge?: number; total?: number }
+	original: {
+		currency: isoly.Currency
+		total: number
+		amount: number
+		charge?: { current: number; total: number }
+		reserve?: number
+	}
 }
 export namespace Transaction {
 	export function from(
@@ -21,7 +27,11 @@ export namespace Transaction {
 			kind,
 			amount: Math.abs(transaction.amount),
 			type: ModelTransaction.getType(transaction.counterpart, accountName),
-			original: { currency: transaction.currency, amount: Math.abs(transaction.amount) },
+			original: {
+				currency: transaction.currency,
+				amount: Math.abs(transaction.amount),
+				total: Math.abs(transaction.amount),
+			},
 		}
 	}
 }

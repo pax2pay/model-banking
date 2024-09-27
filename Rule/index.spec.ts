@@ -209,7 +209,7 @@ describe("definitions", () => {
 				type: "authorization",
 			},
 		])
-		expect(evaluated.transaction.original.charge).toEqual(fee)
+		expect(evaluated.transaction.original.charge?.total).toEqual(fee)
 		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fee)
 	})
 	it("two charges - percent", () => {
@@ -224,14 +224,14 @@ describe("definitions", () => {
 			),
 			2
 		)
-		expect(evaluated.transaction.original.charge).toEqual(fee)
+		expect(evaluated.transaction.original.charge?.total).toEqual(fee)
 		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fee)
 	})
 	it("one charge fixed - same currency", () => {
 		const state = getState()
 		const evaluated = pax2pay.Rule.evaluate([chargeFixed], state, undefined, table)
 		const fixedChargeAmount = chargeFixed.charge.fixed?.[1] ?? 0
-		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
+		expect(evaluated.transaction.original.charge?.total).toEqual(fixedChargeAmount)
 		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fixedChargeAmount)
 	})
 	it("one charge fixed - different currency", () => {
@@ -245,7 +245,7 @@ describe("definitions", () => {
 					table
 			  ) ?? 0
 			: 0
-		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
+		expect(evaluated.transaction.original.charge?.total).toEqual(fixedChargeAmount)
 		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount + fixedChargeAmount)
 	})
 	it("two charge fixed, percent - different currency", () => {
@@ -269,14 +269,14 @@ describe("definitions", () => {
 			isoly.Currency.add(state.transaction.currency, state.transaction.original.amount, fixedChargeAmount),
 			percentCharge
 		)
-		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount + percentCharge)
+		expect(evaluated.transaction.original.charge?.total).toEqual(fixedChargeAmount + percentCharge)
 		expect(evaluated.transaction.original.total).toEqual(total)
 	})
 	it("one incoming charge fixed", () => {
 		const state = getState("inbound")
 		const evaluated = pax2pay.Rule.evaluate([incomingCharge], state, undefined, table)
 		const fixedChargeAmount = incomingCharge.charge.fixed ? incomingCharge.charge.fixed[1] : 0
-		expect(evaluated.transaction.original.charge).toEqual(fixedChargeAmount)
+		expect(evaluated.transaction.original.charge?.total).toEqual(fixedChargeAmount)
 		expect(evaluated.transaction.original.total).toEqual(state.transaction.original.amount - fixedChargeAmount)
 	})
 	it("isInternal", () => {

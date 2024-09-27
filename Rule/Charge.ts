@@ -54,36 +54,50 @@ export namespace Charge {
 		state: State,
 		macros?: Record<string, selectively.Definition>,
 		table: Exchange.Rates = {}
-	): { outcomes: Charge[]; charge: number } {
+	): { outcomes: Charge[]; charge: Required<State["transaction"]["original"]>["charge"] } {
 		const result: ReturnType<typeof evaluate> = {
 			outcomes: [],
-			charge: state.transaction.original.charge ?? 0,
+			charge: { current: 0, total: state.transaction.original.charge?.total ?? 0 },
 		}
 		for (const rule of rules) {
 			if (control(rule, state, macros)) {
 				if (rule.charge.percentage)
-					result.charge = isoly.Currency.add(
-						state.transaction.currency,
-						result.charge,
-						isoly.Currency.multiply(state.transaction.currency, state.transaction.amount, rule.charge.percentage / 100)
+					result.charge.current = isoly.Currency.add(
+						state.transaction.original.currency,
+						result.charge.current,
+						isoly.Currency.multiply(
+							state.transaction.original.currency,
+							state.transaction.original.amount,
+							rule.charge.percentage / 100
+						)
 					)
 				if (rule.charge.fixed) {
 					const charge =
-						state.transaction.currency === rule.charge.fixed[0]
+						state.transaction.original.currency === rule.charge.fixed[0]
 							? rule.charge.fixed[1]
-							: Exchange.convert(rule.charge.fixed[1], rule.charge.fixed[0], state.transaction.currency, table) ?? 0
-					result.charge = isoly.Currency.add(state.transaction.currency, result.charge, charge)
+							: Exchange.convert(
+									rule.charge.fixed[1],
+									rule.charge.fixed[0],
+									state.transaction.original.currency,
+									table
+							  ) ?? 0
+					result.charge.current = isoly.Currency.add(state.transaction.original.currency, result.charge.current, charge)
 				}
 				result.outcomes.push(rule)
 			}
 		}
+		result.charge.total = isoly.Currency.add(
+			state.transaction.original.currency,
+			result.charge.current,
+			result.charge.total
+		)
 		return result
 	}
-	export function apply(charge: number, state: State): number {
+	export function apply(charge: { current: number; total: number }, state: State): number {
 		return state.transaction.kind == "authorization" ||
 			state.transaction.kind == "outbound" ||
 			state.transaction.kind == "capture"
-			? isoly.Currency.add(state.transaction.original.currency, state.transaction.original.amount, charge)
-			: isoly.Currency.subtract(state.transaction.original.currency, state.transaction.original.amount, charge)
+			? isoly.Currency.add(state.transaction.original.currency, state.transaction.original.total, charge.current)
+			: isoly.Currency.subtract(state.transaction.original.currency, state.transaction.original.total, charge.current)
 	}
 }
