@@ -30,12 +30,16 @@ export namespace Score {
 		risk?: number | undefined
 	} {
 		const result: ReturnType<typeof evaluate> = { outcomes: [] }
-		for (const rule of rules) {
-			if (control(rule, state, macros)) {
-				result.risk = (result.risk ?? 100) * (rule.risk / 100)
-				result.outcomes.push(rule)
+		if (
+			state.transaction.stage == "initiate" &&
+			["card", "external", "internal"].some(type => type == state.transaction.type)
+		)
+			for (const rule of rules) {
+				if (control(rule, state, macros)) {
+					result.risk = (result.risk ?? 100) * (rule.risk / 100)
+					result.outcomes.push(rule)
+				}
 			}
-		}
 		return result
 	}
 }

@@ -59,33 +59,38 @@ export namespace Charge {
 			outcomes: [],
 			charge: { current: 0, total: state.transaction.original.charge?.total ?? 0 },
 		}
-		for (const rule of rules) {
-			if (control(rule, state, macros)) {
-				if (rule.charge.percentage)
-					result.charge.current = isoly.Currency.add(
-						state.transaction.original.currency,
-						result.charge.current,
-						isoly.Currency.multiply(
+		if (state.transaction.stage == "finalize" && ["card", "external"].some(type => type == state.transaction.type))
+			for (const rule of rules) {
+				if (control(rule, state, macros)) {
+					if (rule.charge.percentage)
+						result.charge.current = isoly.Currency.add(
 							state.transaction.original.currency,
-							state.transaction.original.amount,
-							rule.charge.percentage / 100
+							result.charge.current,
+							isoly.Currency.multiply(
+								state.transaction.original.currency,
+								state.transaction.original.amount,
+								rule.charge.percentage / 100
+							)
 						)
-					)
-				if (rule.charge.fixed) {
-					const charge =
-						state.transaction.original.currency === rule.charge.fixed[0]
-							? rule.charge.fixed[1]
-							: Exchange.convert(
-									rule.charge.fixed[1],
-									rule.charge.fixed[0],
-									state.transaction.original.currency,
-									table
-							  ) ?? 0
-					result.charge.current = isoly.Currency.add(state.transaction.original.currency, result.charge.current, charge)
+					if (rule.charge.fixed) {
+						const charge =
+							state.transaction.original.currency === rule.charge.fixed[0]
+								? rule.charge.fixed[1]
+								: Exchange.convert(
+										rule.charge.fixed[1],
+										rule.charge.fixed[0],
+										state.transaction.original.currency,
+										table
+								  ) ?? 0
+						result.charge.current = isoly.Currency.add(
+							state.transaction.original.currency,
+							result.charge.current,
+							charge
+						)
+					}
+					result.outcomes.push(rule)
 				}
-				result.outcomes.push(rule)
 			}
-		}
 		result.charge.total = isoly.Currency.add(
 			state.transaction.original.currency,
 			result.charge.current,

@@ -31,15 +31,18 @@ export namespace Other {
 			notes: [],
 			flags: new Set<string>(),
 		}
-
-		for (const rule of rules) {
-			if (control(rule, state, macros)) {
-				result.outcomes[rule.action].push(rule)
-				result.notes.push({ author: "automatic", created: now, text: rule.name, rule })
-				rule.flags.forEach(f => result.flags.add(f))
-				rule.action == "review" && result.flags.add("review")
+		if (
+			state.transaction.stage == "initiate" &&
+			["card", "external", "internal"].some(type => type == state.transaction.type)
+		)
+			for (const rule of rules) {
+				if (control(rule, state, macros)) {
+					result.outcomes[rule.action].push(rule)
+					result.notes.push({ author: "automatic", created: now, text: rule.name, rule })
+					rule.flags.forEach(f => result.flags.add(f))
+					rule.action == "review" && result.flags.add("review")
+				}
 			}
-		}
 		return result
 	}
 }

@@ -67,33 +67,34 @@ export namespace Reserve {
 			outcomes: [],
 			reserve: 0,
 		}
-		for (const rule of rules) {
-			if (control(rule, state, macros)) {
-				if (rule.reserve.percentage)
-					result.reserve = isoly.Currency.add(
-						state.transaction.original.currency,
-						result.reserve,
-						isoly.Currency.multiply(
+		if (state.transaction.stage == "initiate" && ["card", "external"].some(type => type == state.transaction.type))
+			for (const rule of rules) {
+				if (control(rule, state, macros)) {
+					if (rule.reserve.percentage)
+						result.reserve = isoly.Currency.add(
 							state.transaction.original.currency,
-							state.transaction.original.amount,
-							rule.reserve.percentage / 100
+							result.reserve,
+							isoly.Currency.multiply(
+								state.transaction.original.currency,
+								state.transaction.original.amount,
+								rule.reserve.percentage / 100
+							)
 						)
-					)
-				if (rule.reserve.fixed) {
-					const reserve =
-						state.transaction.original.currency === rule.reserve.fixed[0]
-							? rule.reserve.fixed[1]
-							: Exchange.convert(
-									rule.reserve.fixed[1],
-									rule.reserve.fixed[0],
-									state.transaction.original.currency,
-									table
-							  ) ?? 0
-					result.reserve = isoly.Currency.add(state.transaction.original.currency, result.reserve, reserve)
+					if (rule.reserve.fixed) {
+						const reserve =
+							state.transaction.original.currency === rule.reserve.fixed[0]
+								? rule.reserve.fixed[1]
+								: Exchange.convert(
+										rule.reserve.fixed[1],
+										rule.reserve.fixed[0],
+										state.transaction.original.currency,
+										table
+								  ) ?? 0
+						result.reserve = isoly.Currency.add(state.transaction.original.currency, result.reserve, reserve)
+					}
+					result.outcomes.push(rule)
 				}
-				result.outcomes.push(rule)
 			}
-		}
 		return result
 	}
 	export function apply(reserve: number, state: State): number {

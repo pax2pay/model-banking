@@ -71,14 +71,14 @@ export namespace Rule {
 		outcomes.flag.push(...evaluated.outcomes.flag)
 		outcomes.review.push(...evaluated.outcomes.review)
 		outcomes.reject.push(...evaluated.outcomes.reject)
-		const charged = Charge.evaluate(chargers, state, macros, table)
-		outcomes.charge.push(...charged.outcomes)
-		state.transaction.original.charge = charged.charge
-		state.transaction.original.total = Charge.apply(charged.charge, state)
 		const reserved = Reserve.evaluate(reservers, state, macros, table)
 		outcomes.reserve.push(...reserved.outcomes)
 		state.transaction.original.reserve = reserved.reserve
 		state.transaction.original.total = Reserve.apply(reserved.reserve, state)
+		const charged = Charge.evaluate(chargers, state, macros, table)
+		outcomes.charge.push(...charged.outcomes)
+		state.transaction.original.charge = charged.charge
+		state.transaction.original.total = Charge.apply(charged.charge, state)
 		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
 		return { ...state, flags: [...evaluated.flags], notes: evaluated.notes, outcomes, outcome }
 	}
