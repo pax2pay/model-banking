@@ -67,7 +67,11 @@ export namespace Reserve {
 			outcomes: [],
 			reserve: 0,
 		}
-		if (state.transaction.stage == "initiate" && ["card", "external"].some(type => type == state.transaction.type))
+		if (
+			state.transaction.stage == "initiate" &&
+			["authorization", "outbound"].some(kind => kind == state.transaction.kind) &&
+			["card", "external"].some(type => type == state.transaction.type)
+		)
 			for (const rule of rules) {
 				if (control(rule, state, macros)) {
 					if (rule.reserve.percentage)
