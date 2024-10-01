@@ -73,7 +73,7 @@ export namespace Card {
 		created: card => readableDate(card.created),
 		cancelled: card => {
 			if (card.events) {
-				return readableDate(card.events.find(o => o.type == "cancel")?.created)
+				return readableDate(card.events.find(o => o.type == "cancel")?.at)
 			} else {
 				// for legacy reasons
 				return readableDate(

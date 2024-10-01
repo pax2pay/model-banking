@@ -6,7 +6,7 @@ export interface Authorization {
 	type: "authorization"
 	id: string
 	outcome: Authorization.Outcome
-	created: isoly.DateTime
+	at: isoly.DateTime
 	amount: Amount
 	reason?: string
 }
@@ -17,7 +17,7 @@ export namespace Authorization {
 		type: isly.string("authorization"),
 		id: isly.string(),
 		outcome: isly.string(outcomes),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		at: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		amount: Amount.type,
 		reason: isly.string().optional(),
 	})

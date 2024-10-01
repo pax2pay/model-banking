@@ -4,13 +4,13 @@ import { Amount } from "../../Amount"
 
 export interface Create {
 	type: "create"
-	created: isoly.DateTime
+	at: isoly.DateTime
 	limit: Amount
 }
 export namespace Create {
 	export const type = isly.object<Create>({
 		type: isly.string("create"),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		at: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		limit: Amount.type,
 	})
 }

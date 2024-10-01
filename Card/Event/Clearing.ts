@@ -4,7 +4,7 @@ import { Amount } from "../../Amount"
 
 export interface Clearing {
 	type: Clearing.Type
-	created: isoly.DateTime
+	at: isoly.DateTime
 	total: Amount
 	net: Amount
 	fee: Amount
@@ -15,7 +15,7 @@ export namespace Clearing {
 	export type Type = typeof types[number]
 	export const type = isly.object<Clearing>({
 		type: isly.string<Type>(types),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		at: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		total: Amount.type,
 		net: Amount.type,
 		fee: Amount.type,

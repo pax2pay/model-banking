@@ -4,14 +4,14 @@ import { Changeable } from "../Changeable"
 
 export interface Change {
 	type: "change"
-	created: isoly.DateTime
+	at: isoly.DateTime
 	from: Changeable
 	to: Changeable
 }
 export namespace Change {
 	export const type = isly.object<Change>({
 		type: isly.string("change"),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		at: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		from: Changeable.type,
 		to: Changeable.type,
 	})

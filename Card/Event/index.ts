@@ -22,7 +22,7 @@ export namespace Event {
 			type: "authorization",
 			id: authorization.id,
 			outcome: authorization.status != "approved" ? "rejected" : "created",
-			created: authorization.created,
+			at: authorization.created,
 			reason: authorization.status == "approved" ? undefined : authorization.status,
 			amount: authorization.amount, // FIXME: we need the total transaction amount on auth
 		}
@@ -32,7 +32,7 @@ export namespace Event {
 			? undefined
 			: {
 					type: entry.type,
-					created: isoly.DateTime.now(),
+					at: isoly.DateTime.now(),
 					net: entry.amount,
 					fee: [entry.amount[0], entry.fee.other[entry.amount[0]] ?? 0],
 					total: [
