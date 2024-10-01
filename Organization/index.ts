@@ -1,6 +1,7 @@
 import { isly } from "isly"
 import { Realm } from "../Realm"
-import { Rule, type as ruleType } from "../Rule/Rule"
+import { Rule } from "../Rule"
+import { type as ruleType } from "../Rule/type"
 import { Changeable as OrganizationChangeable } from "./Changeable"
 import { Contact as OrganizationContact } from "./Contact"
 
