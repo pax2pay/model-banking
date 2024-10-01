@@ -1,14 +1,14 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Amount } from "../../Amount"
 
 export interface Clearing {
 	type: Clearing.Type
 	at: isoly.DateTime
-	total: Amount
-	net: Amount
-	fee: Amount
-	charge?: Amount
+	currency: isoly.Currency
+	total: number
+	net: number
+	fee: number
+	charge?: number
 }
 export namespace Clearing {
 	export const types = ["capture", "refund"] as const
@@ -16,9 +16,10 @@ export namespace Clearing {
 	export const type = isly.object<Clearing>({
 		type: isly.string<Type>(types),
 		at: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
-		total: Amount.type,
-		net: Amount.type,
-		fee: Amount.type,
-		charge: Amount.type.optional(),
+		currency: isly.string(),
+		total: isly.number(),
+		net: isly.number(),
+		fee: isly.number(),
+		charge: isly.number().optional(),
 	})
 }

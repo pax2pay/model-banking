@@ -33,12 +33,10 @@ export namespace Event {
 			: {
 					type: entry.type,
 					at: isoly.DateTime.now(),
-					net: entry.amount,
-					fee: [entry.amount[0], entry.fee.other[entry.amount[0]] ?? 0],
-					total: [
-						entry.amount[0],
-						isoly.Currency.add(entry.amount[0], entry.amount[1], entry.fee.other[entry.amount[0]] ?? 0), // FIXME: this computation should probably be done in entry
-					],
+					currency: entry.amount[0],
+					net: entry.amount[1],
+					fee: entry.fee.other[entry.amount[0]] ?? 0,
+					total: isoly.Currency.add(entry.amount[0], entry.amount[1], entry.fee.other[entry.amount[0]] ?? 0), // FIXME: this computation should probably be done in entry
 					// FIXME:	charge: entry.charge,
 			  }
 	}
