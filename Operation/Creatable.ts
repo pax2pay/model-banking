@@ -77,7 +77,7 @@ export namespace Creatable {
 					},
 					available: {
 						type: "subtract" as const,
-						amount: charge,
+						amount: Math.abs(charge),
 						status: "pending" as const,
 					},
 				}),

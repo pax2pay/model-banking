@@ -138,7 +138,7 @@ export namespace Transaction {
 			notes: state.notes,
 			state,
 			risk: state.transaction.risk,
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge }),
+			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function system(
@@ -259,7 +259,7 @@ export namespace Transaction {
 			notes: state.notes,
 			state,
 			risk: state.transaction.risk,
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge }),
+			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function fromRefund(
@@ -286,7 +286,7 @@ export namespace Transaction {
 			flags: [],
 			oldFlags: [],
 			notes: [],
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge }),
+			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function isIdentifier(value: string | any): value is string {

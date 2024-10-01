@@ -2,7 +2,7 @@ import { isly } from "isly"
 import { Account as ModelAccount } from "../../Account"
 import type { Address } from "../../Rail/Address"
 import type { Transaction as ModelTransaction } from "../../Transaction"
-import { Rule } from "../Rule"
+import type { Rule } from "../index"
 import { Account as StateAccount } from "./Account"
 import { Authorization as StateAuthorization } from "./Authorization"
 import { Card as StateCard } from "./Card"
@@ -45,6 +45,7 @@ export namespace State {
 		days: Account.Days,
 		transaction: ModelTransaction.Creatable & { counterpart: Address },
 		kind: Rule.Base.Kind,
+		stage: "finalize" | "initiate",
 		authorization?: Authorization,
 		card?: Card,
 		organization?: Organization
@@ -52,7 +53,7 @@ export namespace State {
 		return {
 			data,
 			account: Account.from(account, transactions, days),
-			transaction: Transaction.from(account.name, transaction, kind),
+			transaction: Transaction.from(account.name, transaction, kind, stage),
 			authorization,
 			card,
 			organization,
