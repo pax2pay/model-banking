@@ -119,7 +119,7 @@ export namespace Transaction {
 			: "fasterpayments"
 		return {
 			...creatable,
-			amount: -creatable.amount,
+			amount: -(state.transaction.original.total ?? state.transaction.original.amount),
 			type: getType(creatable.counterpart, account.name),
 			direction: "outbound",
 			organization: account.organization,
@@ -138,6 +138,34 @@ export namespace Transaction {
 			notes: state.notes,
 			state,
 			risk: state.transaction.risk,
+			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
+		}
+	}
+	export function system(
+		creatable: Creatable & { counterpart: Rail.Address },
+		operations: Operation[],
+		account: { id: string; name: string; organization: string; address: Rail.Address },
+		balance: { actual: number; reserved: number; available: number },
+		by: string | undefined
+	): Transaction {
+		return {
+			...creatable,
+			type: getType(creatable.counterpart, account.name),
+			direction: "inbound",
+			organization: account.organization,
+			accountId: account.id,
+			accountName: account.name,
+			account: account.address,
+			id: Identifier.generate(),
+			posted: isoly.DateTime.now(),
+			by,
+			balance,
+			operations,
+			status: "review",
+			rail: "internal",
+			flags: [],
+			oldFlags: [],
+			notes: [],
 		}
 	}
 	export function empty(
@@ -216,6 +244,7 @@ export namespace Transaction {
 			state.outcome == "reject" ? ["rejected", "denied"] : state.outcome == "review" ? "review" : "processing"
 		return {
 			...transaction,
+			amount: state.transaction.original.total ?? state.transaction.original.amount,
 			type: getType(transaction.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -230,6 +259,7 @@ export namespace Transaction {
 			notes: state.notes,
 			state,
 			risk: state.transaction.risk,
+			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function fromRefund(
@@ -238,10 +268,12 @@ export namespace Transaction {
 		account: { id: string; name: string; organization: string },
 		card: Rail.Address.Card,
 		operation: Operation,
-		balance: { actual: number; reserved: number; available: number }
+		balance: { actual: number; reserved: number; available: number },
+		state: Rule.State.Evaluated
 	): Transaction {
 		return {
 			...Incoming.fromRefund(refund, card),
+			amount: state.transaction.original.total ?? state.transaction.original.amount,
 			type: "card",
 			direction: "inbound",
 			organization: account.organization,
@@ -254,6 +286,7 @@ export namespace Transaction {
 			flags: [],
 			oldFlags: [],
 			notes: [],
+			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function isIdentifier(value: string | any): value is string {

@@ -15,6 +15,13 @@ export namespace Base {
 	export namespace Kind {
 		export const values = ["authorization", "outbound", "inbound", "capture", "refund"] as const
 		export const type = isly.string<Kind>(values)
+		export function is(kind: Kind, rule: Base, groups: string[] | undefined): boolean {
+			return (
+				kind == rule.type &&
+				(!rule.groups ||
+					rule.groups.some(ruleGroup => groups?.some(organizationGroup => organizationGroup == ruleGroup)))
+			)
+		}
 	}
 	export type Category = typeof Category.values[number]
 	export namespace Category {
