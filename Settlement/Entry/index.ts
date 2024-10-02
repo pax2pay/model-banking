@@ -11,43 +11,29 @@ import { Unknown as EntryUnknown } from "./Unknown"
 export type Entry = Entry.Cancel | Entry.Capture | Entry.Refund | Entry.Unknown
 
 export namespace Entry {
-	export type Cancel = EntryCancel
-	export const Cancel = EntryCancel
-	export namespace Cancel {
-		export type Creatable = EntryCancel.Creatable
-	}
-	export type Capture = EntryCapture
-	export const Capture = EntryCapture
-	export namespace Capture {
-		export type Creatable = EntryCapture.Creatable
-	}
-	export type Refund = EntryRefund
-	export const Refund = EntryRefund
-	export namespace Refund {
-		export type Creatable = EntryRefund.Creatable
-	}
-	export type Unknown = EntryUnknown
-	export const Unknown = EntryUnknown
-	export namespace Unknown {
-		export type Creatable = EntryUnknown.Creatable
-	}
+	export import Cancel = EntryCancel
+	export import Capture = EntryCapture
+	export import Refund = EntryRefund
+	export import Unknown = EntryUnknown
+	export import Summary = EntrySummary
+	export import Creatable = EntryCreatable
 	export type Type = "unknown" | "refund" | "capture" | "cancel"
-	export type Summary = EntrySummary
-	export const Summary = EntrySummary
-	export type Creatable = EntryCreatable
-	export const Creatable = EntryCreatable
 	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
-		let result: Entry
+		let result: Entry & { account?: string }
 		if (!Transaction.is(transaction) || transaction.status != "finalized")
 			result = {
 				status: "failed",
 				reason: reason(creatable, transaction),
 				...creatable,
+				account:
+					typeof transaction == "object" && "accountName" in transaction && transaction.accountName
+						? transaction.accountName
+						: "unknown",
 			}
 		else {
 			switch (creatable.type) {
 				case "capture":
-					result = Capture.from(creatable)
+					result = Capture.from(creatable, transaction.accountName ?? "unknown")
 					break
 				case "refund":
 					result = Refund.from(creatable, transaction)
@@ -78,6 +64,4 @@ export namespace Entry {
 		Entry.Refund.type,
 		Entry.Unknown.type
 	)
-	export const is = type.is
-	export const flaw = type.flaw
 }

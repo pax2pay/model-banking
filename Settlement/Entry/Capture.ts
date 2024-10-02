@@ -10,11 +10,11 @@ export interface Capture extends Capture.Creatable {
 	account: string | "unknown"
 	reason?: string
 }
-
 export namespace Capture {
-	export function from(creatable: Creatable): Capture {
+	export function from(creatable: Creatable, account: string): Capture {
 		return {
 			status: "succeeded",
+			account,
 			...creatable,
 		}
 	}
@@ -24,7 +24,8 @@ export namespace Capture {
 		reference: string // card transaction
 		batch: Batch
 		fee: Fee
-		amount: Amount
+		amount: Amount // deprecated; prefer net
+		net?: Amount
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -33,15 +34,14 @@ export namespace Capture {
 			reference: isly.string(),
 			fee: Fee.type,
 			amount: Amount.type,
+			net: Amount.type.optional(),
 			batch: Batch.type,
 		})
-		export const is = type.is
-		export const flaw = type.flaw
 	}
 	export const type = Creatable.type.extend<Capture>({
 		status: isly.string(["succeeded", "failed"]),
+		account: isly.string(),
+		charge: Amount.type.optional(),
 		reason: isly.string().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

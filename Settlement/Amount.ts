@@ -20,4 +20,7 @@ export namespace Amount {
 		result.fee.other = isoly.Currency.add(currency, result.fee.other, addend.fee?.other ?? 0)
 		return result
 	}
+	export function create(): Amount {
+		return { net: 0, charge: 0, fee: { other: 0 } }
+	}
 }

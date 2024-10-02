@@ -14,6 +14,7 @@ export namespace Totals {
 					net: entry.amount[1],
 					// TODO: other currencies in fees
 					fee: { other: entry.fee.other[entry.amount[0]] ?? 0 },
+					charge: entry.charge?.[1] ?? 0,
 				},
 			})
 		}

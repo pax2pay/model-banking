@@ -13,7 +13,6 @@ export interface Refund extends Refund.Creatable {
 	reason?: string
 	transaction?: Transaction
 }
-
 export namespace Refund {
 	export interface Creatable {
 		type: "refund"
@@ -24,7 +23,8 @@ export namespace Refund {
 		reference: string
 		batch: Batch
 		fee: Fee
-		amount: Amount
+		amount: Amount // deprecated; prefer net
+		net?: Amount
 	}
 	export function from(refund: Refund.Creatable, transaction: Transaction): Refund {
 		return { ...refund, status: "succeeded", transaction }
@@ -40,15 +40,13 @@ export namespace Refund {
 			fee: Fee.type,
 			amount: Amount.type,
 			batch: Batch.type,
+			net: Amount.type,
 		})
-		export const is = type.is
-		export const flaw = type.flaw
 	}
 	export const type = Creatable.type.extend<Refund>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 		transaction: Transaction.type.optional(),
+		charge: Amount.type.optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

@@ -72,6 +72,7 @@ export namespace Settlement {
 			const totalToAmount: (currency: isoly.Currency, total?: OldTotal) => Amount = (currency, oldTotal) => ({
 				net: oldTotal?.amount[currency] ?? 0,
 				fee: { other: oldTotal?.fee.other[currency] ?? 0 },
+				charge: 0,
 			})
 			const { expected, collected, outcome, settled, ...partialSettlement } = settlement
 			const currencies = Array.from(

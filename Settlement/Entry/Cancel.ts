@@ -16,7 +16,8 @@ export namespace Cancel {
 		reference: string
 		batch: Batch
 		fee?: Fee
-		amount?: Amount
+		amount?: Amount // deprecated; prefer net
+		net?: Amount
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -25,15 +26,12 @@ export namespace Cancel {
 			reference: isly.string(),
 			fee: Fee.type.optional(),
 			amount: Amount.type.optional(),
+			net: Amount.type.optional(),
 			batch: Batch.type,
 		})
-		export const is = type.is
-		export const flaw = type.flaw
 	}
 	export const type = Creatable.type.extend<Cancel>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

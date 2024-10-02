@@ -21,42 +21,14 @@ describe("Settlement", () => {
 			id: "zzzyRknSygIiGVju",
 			status: { collected: "done", settled: "done" },
 			by: "automatic",
-			outcome: {
-				amount: {
-					GBP: 1.22,
-				},
-				fee: {
-					other: {
-						GBP: 0.02,
-					},
-				},
-			},
+			outcome: { amount: { GBP: 1.22 }, fee: { other: { GBP: 0.02 } } },
 			batch: "202401004",
 			processor: "uk-mc-tpl-marqeta",
 			created: "2024-01-10T11:29:02.267Z",
-			entries: {
-				count: 1,
-			},
-			expected: {
-				amount: {},
-				fee: {
-					other: {},
-				},
-			},
-			collected: {
-				amount: {
-					GBP: 1.22,
-				},
-				fee: {
-					other: {
-						GBP: 0.02,
-					},
-				},
-			},
-			settled: {
-				paid: { GBP: 1.22 },
-				transactions: [],
-			},
+			entries: { count: 1 },
+			expected: { amount: {}, fee: { other: {} } },
+			collected: { amount: { GBP: 1.22 }, fee: { other: { GBP: 0.02 } } },
+			settled: { paid: { GBP: 1.22 }, transactions: [] },
 		})
 		expect(pax2pay.Settlement.is(transformed)).toBeTruthy()
 		expect(transformed).toEqual({
@@ -69,9 +41,9 @@ describe("Settlement", () => {
 			status: { collected: "done", settled: "done" },
 			totals: {
 				GBP: {
-					collected: { fee: { other: 0.02 }, net: 1.22, transactions: { fee: "", net: "", charge: "" } },
-					expected: { fee: { other: 0 }, net: 0 },
-					outcome: { fee: { other: 0.02 }, net: 1.22 },
+					collected: { charge: 0, fee: { other: 0.02 }, net: 1.22, transactions: { fee: "", net: "", charge: "" } },
+					expected: { charge: 0, fee: { other: 0 }, net: 0 },
+					outcome: { charge: 0, fee: { other: 0.02 }, net: 1.22 },
 					settled: { net: 1.22, transactions: [] },
 				},
 			},
@@ -80,57 +52,20 @@ describe("Settlement", () => {
 	it("from legacy 3", () => {
 		const transformed = pax2pay.Settlement.fromLegacy({
 			id: "zzzyRT4oypE6qZlS",
-			status: {
-				collected: "done",
-				settled: "done",
-			},
+			status: { collected: "done", settled: "done" },
 			by: "automatic",
-			outcome: {
-				amount: {
-					GBP: 596.82,
-				},
-				fee: {
-					other: {
-						GBP: 12.18,
-					},
-				},
-			},
+			outcome: { amount: { GBP: 596.82 }, fee: { other: { GBP: 12.18 } } },
 			batch: "202406806",
 			processor: "uk-mc-tpl-marqeta",
 			created: "2024-03-08T14:50:10.988Z",
-			entries: {
-				count: 1,
-			},
-			expected: {
-				amount: {
-					GBP: 596.82,
-				},
-				fee: {
-					other: {
-						GBP: 12.18,
-					},
-				},
-			},
+			entries: { count: 1 },
+			expected: { amount: { GBP: 596.82 }, fee: { other: { GBP: 12.18 } } },
 			references: [
 				"T140-00000033400-2024-03-08-T1408871006805.ASCII.T140.20240308124132.txt.pgp",
 				"T140-00000033400-2024-03-08-T1408871006806.ASCII.T140.20240308151957.txt.pgp",
 			],
-			collected: {
-				amount: {
-					GBP: 596.82,
-				},
-				fee: {
-					other: {
-						GBP: 12.18,
-					},
-				},
-			},
-			settled: {
-				paid: {
-					GBP: 596.82,
-				},
-				transactions: ["zzzyRT31VQM8hZaC"],
-			},
+			collected: { amount: { GBP: 596.82 }, fee: { other: { GBP: 12.18 } } },
+			settled: { paid: { GBP: 596.82 }, transactions: ["zzzyRT31VQM8hZaC"] },
 		})
 		expect(pax2pay.Settlement.is(transformed)).toBeTruthy()
 		expect(transformed).toEqual({
@@ -147,25 +82,19 @@ describe("Settlement", () => {
 			status: { collected: "done", settled: "done" },
 			totals: {
 				GBP: {
-					collected: { fee: { other: 12.18 }, net: 596.82, transactions: { fee: "", net: "", charge: "" } },
-					expected: { fee: { other: 12.18 }, net: 596.82 },
-					outcome: { fee: { other: 12.18 }, net: 596.82 },
+					collected: { charge: 0, fee: { other: 12.18 }, net: 596.82, transactions: { fee: "", net: "", charge: "" } },
+					expected: { charge: 0, fee: { other: 12.18 }, net: 596.82 },
+					outcome: { charge: 0, fee: { other: 12.18 }, net: 596.82 },
 					settled: { net: 596.82, transactions: ["zzzyRT31VQM8hZaC"] },
 				},
 			},
 		})
 	})
 })
-
 const authorization1: pax2pay.Authorization = {
 	status: "approved",
 	id: "ahgt3817",
-	card: {
-		id: "string",
-		token: "string",
-		iin: "12341234",
-		last4: "1234",
-	},
+	card: { id: "string", token: "string", iin: "12341234", last4: "1234" },
 	created: "2023-08-07T09:25:11.296Z",
 	amount: ["GBP", 200],
 	merchant: {
@@ -177,11 +106,7 @@ const authorization1: pax2pay.Authorization = {
 		zip: "12345",
 		country: "KP",
 	},
-	acquirer: {
-		id: "2345erty",
-		number: "1351858913568",
-		country: "GB",
-	},
+	acquirer: { id: "2345erty", number: "1351858913568", country: "GB" },
 	account: "1234",
 	reference: "ahgt3817",
 	description: "golf trip",
@@ -189,12 +114,7 @@ const authorization1: pax2pay.Authorization = {
 const authorization2: pax2pay.Authorization = {
 	status: "other",
 	id: "ahgt3817",
-	card: {
-		id: "string",
-		token: "string",
-		iin: "12341234",
-		last4: "1234",
-	},
+	card: { id: "string", token: "string", iin: "12341234", last4: "1234" },
 	created: "2023-08-07T09:25:11.296Z",
 	amount: ["GBP", 250],
 	merchant: {
@@ -206,11 +126,7 @@ const authorization2: pax2pay.Authorization = {
 		zip: "12345",
 		country: "KP",
 	},
-	acquirer: {
-		id: "2345erty",
-		number: "1351858913568",
-		country: "GB",
-	},
+	acquirer: { id: "2345erty", number: "1351858913568", country: "GB" },
 	account: "1234",
 	reference: "ahgt3817",
 	description: "golf trip",
@@ -224,6 +140,9 @@ const entries: pax2pay.Settlement.Entry[] = [
 		batch: "202327301",
 		fee: { other: { [authorization1.amount[0]]: authorization1.amount[1] * 0.01 } },
 		amount: authorization1.amount,
+		net: authorization1.amount,
+		charge: [authorization1.amount[0], 5],
+		account: "aaaa",
 	},
 	{
 		status: "succeeded",
@@ -233,6 +152,9 @@ const entries: pax2pay.Settlement.Entry[] = [
 		batch: "202327301",
 		fee: { other: { [authorization2.amount[0]]: authorization2.amount[1] * 0.01 } },
 		amount: authorization2.amount,
+		net: authorization2.amount,
+		charge: [authorization1.amount[0], 4],
+		account: "aaaaa",
 	},
 ]
 const oldSettlement: pax2pay.Settlement.OldSettlement = {
@@ -242,14 +164,8 @@ const oldSettlement: pax2pay.Settlement.OldSettlement = {
 	batch: "202327301",
 	processor: "test-paxgiro",
 	status: { collected: "pending", settled: "pending" },
-	expected: {
-		amount: { GBP: 1350 },
-		fee: { other: { GBP: 13.5 } },
-	},
-	outcome: {
-		amount: { GBP: 900 },
-		fee: { other: { GBP: 9 } },
-	},
+	expected: { amount: { GBP: 1350 }, fee: { other: { GBP: 13.5 } } },
+	outcome: { amount: { GBP: 900 }, fee: { other: { GBP: 9 } } },
 	entries: { count: entries.length },
 }
 const settlement: pax2pay.Settlement = {
@@ -259,13 +175,6 @@ const settlement: pax2pay.Settlement = {
 	batch: "202327301",
 	processor: "test-paxgiro",
 	status: { collected: "pending", settled: "pending" },
-	totals: {
-		GBP: {
-			expected: {
-				net: 450,
-				fee: { other: 4.5 },
-			},
-		},
-	},
+	totals: { GBP: { expected: { net: 450, fee: { other: 4.5 }, charge: 0 } } },
 	entries: { count: 0 },
 }

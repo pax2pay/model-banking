@@ -29,7 +29,7 @@ export namespace Total {
 		settled: Settled.optional(),
 	})
 	export function create(): Total {
-		return { expected: { net: 0, fee: { other: 0 } } }
+		return { expected: Amount.create() }
 	}
 	export function verify(total: Total, type: "outcome" | "settled"): boolean {
 		let result: boolean
@@ -47,7 +47,7 @@ export namespace Total {
 		const result: Total = { ...addendee }
 		addend.expected && (result.expected = Amount.add(currency, result.expected, addend.expected))
 		if (result.outcome || addend.outcome)
-			result.outcome = Amount.add(currency, result.outcome ?? { net: 0, fee: { other: 0 } }, addend.outcome ?? {})
+			result.outcome = Amount.add(currency, result.outcome ?? Amount.create(), addend.outcome ?? {})
 		if (result.collected || addend.collected)
 			result.collected = {
 				transactions: {
