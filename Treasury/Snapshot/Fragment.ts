@@ -5,7 +5,7 @@ import { Warning } from "../../Warning"
 import { Account } from "../Account"
 
 export interface Fragment {
-	warnings: Warning[]
+	warnings: Warning.Snapshot[]
 	emoney: Balance.Extended
 	counterbalance: Fragment.Counterbalance
 	fiat: {
@@ -50,7 +50,7 @@ export namespace Fragment {
 		return validCounterbalance && issuable == actual
 	}
 	export const type = isly.object<Fragment>({
-		warnings: Warning.type.array(),
+		warnings: Warning.Snapshot.type.array(),
 		emoney: Balance.Extended,
 		counterbalance: Counterbalance.type,
 		fiat: isly.object({

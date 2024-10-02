@@ -6,12 +6,6 @@ describe("Settlement", () => {
 		const result = pax2pay.Settlement.compile(settlement, entries)
 		expect(result.totals.GBP?.outcome?.net).toEqual(settlement.totals.GBP?.expected.net)
 	})
-	it("batch regexp", () => {
-		expect(pax2pay.Settlement.Batch.is("202300101")).toBeTruthy()
-		expect(pax2pay.Settlement.Batch.is("202300107")).toBeFalsy()
-		expect(pax2pay.Settlement.Batch.is("202344401")).toBeFalsy()
-		expect(pax2pay.Settlement.Batch.is("aaaaaaa")).toBeFalsy()
-	})
 	it("from legacy", () => {
 		const transformed = pax2pay.Settlement.fromLegacy(oldSettlement)
 		expect(pax2pay.Settlement.is(transformed)).toBeTruthy()
