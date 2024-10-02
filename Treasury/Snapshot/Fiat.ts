@@ -9,5 +9,5 @@ export interface Fiat {
 	timestamp: isoly.DateTime
 	type: "safeguarded" | "unsafe" | "other" | "buffer"
 	balances: Balance
-	warnings?: Warning[]
+	warnings?: Warning.Snapshot[]
 }
