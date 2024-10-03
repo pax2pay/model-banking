@@ -24,7 +24,7 @@ export namespace Capture {
 		reference: string // card transaction
 		batch: Batch
 		fee: Fee
-		amount: Amount // deprecated; prefer net
+		amount?: Amount // deprecated; prefer net
 		net?: Amount
 	}
 	export namespace Creatable {
@@ -33,7 +33,7 @@ export namespace Capture {
 			authorization: Authorization.type,
 			reference: isly.string(),
 			fee: Fee.type,
-			amount: Amount.type,
+			amount: Amount.type.optional(),
 			net: Amount.type.optional(),
 			batch: Batch.type,
 		})

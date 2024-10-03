@@ -6,7 +6,6 @@ export interface Unknown extends Unknown.Creatable {
 	status: "succeeded" | "failed"
 	reason?: string
 }
-
 export namespace Unknown {
 	export interface Creatable {
 		type: "unknown"
