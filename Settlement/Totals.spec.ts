@@ -9,20 +9,19 @@ describe("Settlement.Totals", () => {
 	it("add", () => {
 		expect(pax2pay.Settlement.Totals.add(totals, totals2)).toEqual({
 			USD: {
-				expected: { fee: { other: 20 }, net: 10 },
-				outcome: { fee: { other: 20 }, net: 7782 },
+				expected: { charge: 3, fee: { other: 20 }, net: 10 },
+				outcome: { charge: 3, fee: { other: 20 }, net: 7782 },
 			},
 		})
 	})
 	it("add several currencies", () => {
 		expect(pax2pay.Settlement.Totals.add(totals2, totals3)).toEqual({
 			BOV: {
-				expected: { fee: { other: 10 }, net: 5, charge: 2 },
-				outcome: { fee: { other: 10 }, net: 7777 },
-				charge: 0,
+				expected: { fee: { other: 10 }, net: 5, charge: 0 },
+				outcome: { fee: { other: 10 }, net: 7777, charge: 0 },
 			},
 			USD: {
-				expected: { fee: { other: 20 }, net: 10, charge: 5 },
+				expected: { fee: { other: 20 }, net: 10, charge: 1 },
 				outcome: { fee: { other: 20 }, net: 7782, charge: 1 },
 			},
 		})
