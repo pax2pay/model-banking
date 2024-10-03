@@ -23,8 +23,7 @@ export namespace Refund {
 		reference: string
 		batch: Batch
 		fee: Fee
-		amount?: Amount // deprecated; prefer net
-		net?: Amount
+		amount: Amount
 	}
 	export function from(refund: Refund.Creatable, transaction: Transaction): Refund {
 		return { ...refund, status: "succeeded", transaction }
@@ -38,8 +37,7 @@ export namespace Refund {
 			acquirer: Acquirer.type,
 			reference: isly.string(),
 			fee: Fee.type,
-			amount: Amount.type.optional(),
-			net: Amount.type.optional(),
+			amount: Amount.type,
 			batch: Batch.type,
 		})
 	}
