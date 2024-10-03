@@ -16,7 +16,17 @@ import { Status as TransactionStatus } from "./Status"
 export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
-	amount: number
+	amount: {
+		original: number
+		reserve: number
+		charge: number
+		total: number
+	}
+	reserve?: {
+		extra: number
+		original: number
+	}
+	extraReserve?: number
 	charge?: number
 	description: string
 	organization: string
