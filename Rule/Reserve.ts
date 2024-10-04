@@ -4,10 +4,10 @@ import { isly } from "isly"
 import { Amount } from "../Amount"
 import { Exchange } from "../Exchange"
 import { Realm } from "../Realm"
+import type { Note } from "../Transaction/Note"
 import { Base } from "./Base"
 import { control } from "./control"
 import type { State } from "./State"
-
 export interface Reserve extends Reserve.Api {
 	reserve: {
 		percentage?: number
@@ -62,11 +62,13 @@ export namespace Reserve {
 		state: State,
 		macros?: Record<string, selectively.Definition>,
 		table: Exchange.Rates = {}
-	): { outcomes: Reserve[]; reserve: number } {
+	): { outcomes: Reserve[]; notes: Note[]; reserve: number } {
 		const result: ReturnType<typeof evaluate> = {
 			outcomes: [],
+			notes: [],
 			reserve: 0,
 		}
+		const now = isoly.DateTime.now()
 		if (
 			state.transaction.stage == "initiate" &&
 			["authorization", "outbound"].some(kind => kind == state.transaction.kind) &&
@@ -97,6 +99,7 @@ export namespace Reserve {
 						result.reserve = isoly.Currency.add(state.transaction.original.currency, result.reserve, reserve)
 					}
 					result.outcomes.push(rule)
+					result.notes.push({ author: "automatic", created: now, text: rule.name, rule })
 				}
 			}
 		return result
