@@ -5,12 +5,12 @@ import { Base } from "../Base"
 export interface Counterbalance extends Base {
 	type: "counterbalance"
 	currency: isoly.Currency
-	counterbalance: string[]
+	counterbalance: string
 }
 export namespace Counterbalance {
 	export const type = Base.type.extend<Counterbalance>({
 		type: isly.string("counterbalance"),
 		currency: isly.string(),
-		counterbalance: isly.string().array(),
+		counterbalance: isly.string(),
 	})
 }
