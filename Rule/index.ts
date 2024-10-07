@@ -80,7 +80,13 @@ export namespace Rule {
 		state.transaction.original.charge = charged.charge
 		state.transaction.original.total = Charge.apply(charged.charge, state)
 		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
-		return { ...state, flags: [...evaluated.flags], notes: evaluated.notes, outcomes, outcome }
+		return {
+			...state,
+			flags: [...evaluated.flags],
+			notes: [...scored.notes, ...evaluated.notes, ...reserved.notes, ...charged.notes],
+			outcomes,
+			outcome,
+		}
 	}
 	function sort(
 		rules: Rule[],

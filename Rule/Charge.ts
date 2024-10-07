@@ -4,6 +4,7 @@ import { isly } from "isly"
 import { Amount } from "../Amount"
 import { Exchange } from "../Exchange"
 import { Realm } from "../Realm"
+import type { Note } from "../Transaction/Note"
 import { Base } from "./Base"
 import { control } from "./control"
 import type { State } from "./State"
@@ -54,11 +55,13 @@ export namespace Charge {
 		state: State,
 		macros?: Record<string, selectively.Definition>,
 		table: Exchange.Rates = {}
-	): { outcomes: Charge[]; charge: Required<State["transaction"]["original"]>["charge"] } {
+	): { outcomes: Charge[]; notes: Note[]; charge: Required<State["transaction"]["original"]>["charge"] } {
 		const result: ReturnType<typeof evaluate> = {
 			outcomes: [],
+			notes: [],
 			charge: { current: 0, total: state.transaction.original.charge?.total ?? 0 },
 		}
+		const now = isoly.DateTime.now()
 		if (state.transaction.stage == "finalize" && ["card", "external"].some(type => type == state.transaction.type))
 			for (const rule of rules) {
 				if (control(rule, state, macros)) {
@@ -89,6 +92,7 @@ export namespace Charge {
 						)
 					}
 					result.outcomes.push(rule)
+					result.notes.push({ author: "automatic", created: now, text: rule.name, rule })
 				}
 			}
 		result.charge.total = isoly.Currency.add(
