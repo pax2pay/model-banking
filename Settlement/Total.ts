@@ -32,11 +32,14 @@ export namespace Total {
 	export function create(): Total {
 		return { expected: Amount.create() }
 	}
-	export function verify(total: Total, type: "outcome" | "settled"): boolean {
+	export function verify(total: Total, type: "outcome" | "collected" | "settled"): boolean {
 		let result: boolean
 		switch (type) {
 			case "outcome":
 				result = total.outcome?.net == total.expected.net && total.outcome.fee.other == total.expected.fee.other
+				break
+			case "collected":
+				result = total.collected?.transactions ? !Object.values(total.collected.transactions).some(v => !v) : false
 				break
 			case "settled":
 				result = total.settled?.net == total.expected.net

@@ -5,6 +5,9 @@ describe("Settlement.Totals", () => {
 		expect(pax2pay.Settlement.Totals.verify(totals, "outcome")).toEqual(true)
 		expect(pax2pay.Settlement.Totals.verify(totals2, "outcome")).toEqual(false)
 		expect(pax2pay.Settlement.Totals.verify(totals3, "outcome")).toEqual(false)
+		expect(pax2pay.Settlement.Totals.verify(totals4, "collected")).toEqual(true)
+		expect(pax2pay.Settlement.Totals.verify(totals, "collected")).toEqual(false)
+		expect(pax2pay.Settlement.Totals.verify(totals5, "collected")).toEqual(false)
 	})
 	it("add", () => {
 		expect(pax2pay.Settlement.Totals.add(totals, totals2)).toEqual({
@@ -63,4 +66,16 @@ const totals2: pax2pay.Settlement.Totals = {
 const totals3: pax2pay.Settlement.Totals = {
 	USD: { expected: { net: 5, charge: 1, fee: { other: 10 } }, outcome: { net: 5, charge: 1, fee: { other: 10 } } },
 	BOV: { expected: { net: 5, charge: 2, fee: { other: 10 } }, outcome: { net: 7777, charge: 2, fee: { other: 10 } } },
+}
+const totals4: pax2pay.Settlement.Totals = {
+	USD: {
+		expected: { net: 5, charge: 1, fee: { other: 10 } },
+		collected: { transactions: { charge: "aaa", fee: "bbbb", net: "cccc" } },
+	},
+}
+const totals5: pax2pay.Settlement.Totals = {
+	USD: {
+		expected: { net: 5, charge: 1, fee: { other: 10 } },
+		collected: { transactions: { charge: "aaa", fee: "", net: "cccc" } },
+	},
 }
