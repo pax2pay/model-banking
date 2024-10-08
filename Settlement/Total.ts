@@ -5,14 +5,15 @@ import { Amount } from "./Amount"
 export interface Total {
 	expected: Amount
 	outcome?: Amount
-	collected?: { transactions: { net: string; fee: string; charge: string } }
+	collected?: { transactions: Record<Total.Collection.Type, string> }
 	settled?: Total.Settled
 }
 export namespace Total {
-	export type Settled = {
-		net: number
-		transactions: string[]
+	export namespace Collection {
+		export const types = ["net", "fee", "charge"] as const
+		export type Type = typeof types[number]
 	}
+	export type Settled = { net: number; transactions: string[] }
 	export const Settled = isly.object<Settled>({ net: isly.number(), transactions: isly.string().array() })
 	export const type = isly.object<Total>({
 		expected: Amount.type,
