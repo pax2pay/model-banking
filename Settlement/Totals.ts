@@ -14,12 +14,13 @@ export namespace Totals {
 					net: entry.amount[1],
 					// TODO: other currencies in fees
 					fee: { other: entry.fee.other[entry.amount[0]] ?? 0 },
+					charge: entry.charge?.[1] ?? 0,
 				},
 			})
 		}
 		return result
 	}
-	export function verify(totals: Totals, type: "outcome" | "settled"): boolean {
+	export function verify(totals: Totals, type: "outcome" | "collected" | "settled"): boolean {
 		return Object.values(totals).every(t => Total.verify(t, type))
 	}
 	export function add(addendee: Totals, addends: Partial<Record<isoly.Currency, Partial<Total>>>): Totals {

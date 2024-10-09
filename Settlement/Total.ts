@@ -5,14 +5,15 @@ import { Amount } from "./Amount"
 export interface Total {
 	expected: Amount
 	outcome?: Amount
-	collected?: { transactions: { net: string; fee: string; charge: string } }
+	collected?: { transactions: Record<Total.Collection.Type, string> }
 	settled?: Total.Settled
 }
 export namespace Total {
-	export type Settled = {
-		net: number
-		transactions: string[]
+	export namespace Collection {
+		export const types = ["net", "fee", "charge"] as const
+		export type Type = typeof types[number]
 	}
+	export type Settled = { net: number; transactions: string[] }
 	export const Settled = isly.object<Settled>({ net: isly.number(), transactions: isly.string().array() })
 	export const type = isly.object<Total>({
 		expected: Amount.type,
@@ -29,13 +30,16 @@ export namespace Total {
 		settled: Settled.optional(),
 	})
 	export function create(): Total {
-		return { expected: { net: 0, fee: { other: 0 } } }
+		return { expected: Amount.create() }
 	}
-	export function verify(total: Total, type: "outcome" | "settled"): boolean {
+	export function verify(total: Total, type: "outcome" | "collected" | "settled"): boolean {
 		let result: boolean
 		switch (type) {
 			case "outcome":
 				result = total.outcome?.net == total.expected.net && total.outcome.fee.other == total.expected.fee.other
+				break
+			case "collected":
+				result = total.collected?.transactions ? !Object.values(total.collected.transactions).some(v => !v) : false
 				break
 			case "settled":
 				result = total.settled?.net == total.expected.net
@@ -47,7 +51,7 @@ export namespace Total {
 		const result: Total = { ...addendee }
 		addend.expected && (result.expected = Amount.add(currency, result.expected, addend.expected))
 		if (result.outcome || addend.outcome)
-			result.outcome = Amount.add(currency, result.outcome ?? { net: 0, fee: { other: 0 } }, addend.outcome ?? {})
+			result.outcome = Amount.add(currency, result.outcome ?? Amount.create(), addend.outcome ?? {})
 		if (result.collected || addend.collected)
 			result.collected = {
 				transactions: {

@@ -8,7 +8,6 @@ export interface Cancel extends Cancel.Creatable {
 	status: "succeeded" | "failed"
 	reason?: string
 }
-
 export namespace Cancel {
 	export interface Creatable {
 		type: "cancel"
@@ -16,7 +15,7 @@ export namespace Cancel {
 		reference: string
 		batch: Batch
 		fee?: Fee
-		amount?: Amount
+		amount: Amount
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -24,16 +23,12 @@ export namespace Cancel {
 			authorization: Authorization.type.optional(),
 			reference: isly.string(),
 			fee: Fee.type.optional(),
-			amount: Amount.type.optional(),
+			amount: Amount.type,
 			batch: Batch.type,
 		})
-		export const is = type.is
-		export const flaw = type.flaw
 	}
 	export const type = Creatable.type.extend<Cancel>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }
