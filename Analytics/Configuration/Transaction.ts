@@ -11,7 +11,7 @@ export namespace Transaction {
 		counterpart: { selector: "value.counterpart", transform: "stringify" },
 		counterpartCode: "value.counterpart.code",
 		currency: "value.currency",
-		amount: { selector: "value.amount", transform: "string" },
+		amount: { selector: "value.amount.total", transform: "string" },
 		description: "value.description",
 		organization: "value.organization",
 		account: "value.accountId",

@@ -47,7 +47,7 @@ describe("library", () => {
 		const transaction: pax2pay.Transaction = {
 			account: { type: "internal", identifier: "6gpfb4Bf" },
 			accountId: "6gpfb4Bf",
-			amount: -1,
+			amount: { original: -1, reserved: 0, charge: 0, total: -1 }, //
 			balance: {
 				actual: 420,
 				reserved: 420,
@@ -105,7 +105,7 @@ describe("library", () => {
 				holder: "Janne",
 			},
 			accountId: "6gpfb4Bf",
-			amount: -1,
+			amount: { original: -1, reserved: 0, charge: 0, total: -1 }, //
 			balance: {
 				actual: 420,
 				reserved: 420,

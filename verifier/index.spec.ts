@@ -36,7 +36,7 @@ const transaction: pax2pay.Transaction.Event = {
 		reserved: 420,
 		available: 420,
 	},
-	amount: -1,
+	amount: { original: -1, reserved: 0, charge: 0, total: -1 }, //
 	currency: "USD",
 	description: "string",
 	counterpart: {
