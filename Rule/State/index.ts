@@ -43,7 +43,7 @@ export namespace State {
 		account: ModelAccount,
 		transactions: Account.Transactions,
 		days: Account.Days,
-		transaction: ModelTransaction.Creatable & { counterpart: Address },
+		transaction: (ModelTransaction.Creatable & { counterpart: Address }) | ModelTransaction,
 		kind: Rule.Base.Kind,
 		stage: "finalize" | "initiate",
 		authorization?: Authorization,
