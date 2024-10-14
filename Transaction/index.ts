@@ -153,6 +153,15 @@ export namespace Transaction {
 			total: sign * state.transaction.original.total,
 		}
 	}
+	export function changeAmount(
+		amount: Transaction["amount"],
+		change: number,
+		type: Exclude<keyof Transaction["amount"], "total">
+	): Transaction["amount"] {
+		amount[type] += change
+		amount.total += change
+		return amount
+	}
 	export function fromCreatable(
 		creatable: Creatable & { counterpart: Rail.Address },
 		id: string,
