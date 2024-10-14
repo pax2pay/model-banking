@@ -142,7 +142,7 @@ export namespace Transaction {
 			return (({ state, ...event }) => event)(transaction)
 		}
 	}
-	function amountFromState(state: Rule.State.Evaluated): Transaction["amount"] {
+	export function amountFromState(state: Rule.State.Evaluated): Transaction["amount"] {
 		const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
 			? -1
 			: 1
