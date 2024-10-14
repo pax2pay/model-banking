@@ -20,7 +20,7 @@ export interface Transaction extends ModelTransaction.Creatable {
 export namespace Transaction {
 	export function from(
 		accountName: string,
-		transaction: (ModelTransaction.Creatable & { counterpart: Address }) | ModelTransaction | ModelTransaction.Legacy,
+		transaction: (ModelTransaction.Creatable & { counterpart: Address }) | ModelTransaction,
 		kind: Rule.Base.Kind,
 		stage: "finalize" | "initiate"
 	): Transaction {

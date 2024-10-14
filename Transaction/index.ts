@@ -16,12 +16,7 @@ import { Status as TransactionStatus } from "./Status"
 export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
-	amount: {
-		original: number
-		reserved: number
-		charge: number
-		total: number
-	}
+	amount: Transaction.Amount
 	charge?: number
 	description: string
 	organization: string
@@ -46,6 +41,23 @@ export interface Transaction {
 	state?: Rule.State
 }
 export namespace Transaction {
+	export type Amount = {
+		original: number
+		reserved: number
+		charge: number
+		total: number
+	}
+	export namespace Amount {
+		export const type = isly.object<Amount>({
+			original: isly.number(),
+			reserved: isly.number(),
+			charge: isly.number(),
+			total: isly.number(),
+		})
+		export const is = type.is
+		export const flaw = type.flaw
+		export const get = type.get
+	}
 	export const types = ["card", "internal", "external", "system"] as const
 	export type Types = typeof types[number]
 	export const directions = ["inbound", "outbound"] as const
@@ -58,12 +70,7 @@ export namespace Transaction {
 	export const type = isly.object<Transaction>({
 		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
-		amount: isly.object<Transaction["amount"]>({
-			original: isly.number(),
-			reserved: isly.number(),
-			charge: isly.number(),
-			total: isly.number(),
-		}),
+		amount: Amount.type,
 		charge: isly.number().optional(),
 		description: isly.string(),
 		organization: isly.string(),
@@ -142,22 +149,18 @@ export namespace Transaction {
 			return (({ state, ...event }) => event)(transaction)
 		}
 	}
-	export function amountFromState(state: Rule.State.Evaluated): Transaction["amount"] {
+	export function amountFromState(state: Rule.State.Evaluated): Amount {
 		const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
 			? -1
 			: 1
 		return {
 			original: sign * state.transaction.original.amount,
-			reserved: -1 * (state.transaction.original.reserve ?? 0),
-			charge: -1 * (state.transaction.original.charge?.total ?? 0),
+			reserved: sign * (state.transaction.original.reserve ?? 0),
+			charge: sign * (state.transaction.original.charge?.total ?? 0),
 			total: sign * state.transaction.original.total,
 		}
 	}
-	export function changeAmount(
-		amount: Transaction["amount"],
-		change: number,
-		type: Exclude<keyof Transaction["amount"], "total">
-	): Transaction["amount"] {
+	export function changeAmount(amount: Amount, change: number, type: Exclude<keyof Amount, "total">): Amount {
 		amount[type] += change
 		amount.total += change
 		return amount
