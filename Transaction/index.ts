@@ -54,9 +54,31 @@ export namespace Transaction {
 			charge: isly.number(),
 			total: isly.number(),
 		})
-		export const is = type.is
-		export const flaw = type.flaw
-		export const get = type.get
+		export function fromState(state: Rule.State.Evaluated): Amount {
+			const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
+				? -1
+				: 1
+			return {
+				original: sign * state.transaction.original.amount,
+				reserved: sign * (state.transaction.original.reserve ?? 0),
+				charge: sign * (state.transaction.original.charge?.total ?? 0),
+				total: sign * state.transaction.original.total,
+			}
+		}
+		export function fromOperations(operations: Operation[]): Amount {
+			const changes = Operation.sum(operations)
+			return {
+				original: changes.available ?? 0,
+				reserved: changes["reserved-buffer"] ?? 0,
+				charge: 0, //TODO
+				total: (changes.available ?? 0) + (changes["reserved-buffer"] ?? 0),
+			}
+		}
+		export function change(amount: Amount, change: number, type: Exclude<keyof Amount, "total">): Amount {
+			amount[type] += change
+			amount.total += change
+			return amount
+		}
 	}
 	export const types = ["card", "internal", "external", "system"] as const
 	export type Types = typeof types[number]
@@ -106,15 +128,6 @@ export namespace Transaction {
 	}
 	export namespace Legacy {
 		export const type = Transaction.type.omit<"amount">(["amount"]).extend<Legacy>({ amount: isly.number() })
-		export type Event = Omit<Legacy, "state">
-		export namespace Event {
-			export const type = Legacy.type.omit(["state"])
-			export const is = type.is
-			export const get = type.get
-			export function from(transaction: Legacy): Event {
-				return (({ state, ...event }) => event)(transaction)
-			}
-		}
 	}
 	export function fromLegacy(transaction: Transaction | Legacy): Transaction {
 		return {
@@ -149,22 +162,6 @@ export namespace Transaction {
 			return (({ state, ...event }) => event)(transaction)
 		}
 	}
-	export function amountFromState(state: Rule.State.Evaluated): Amount {
-		const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
-			? -1
-			: 1
-		return {
-			original: sign * state.transaction.original.amount,
-			reserved: sign * (state.transaction.original.reserve ?? 0),
-			charge: sign * (state.transaction.original.charge?.total ?? 0),
-			total: sign * state.transaction.original.total,
-		}
-	}
-	export function changeAmount(amount: Amount, change: number, type: Exclude<keyof Amount, "total">): Amount {
-		amount[type] += change
-		amount.total += change
-		return amount
-	}
 	export function fromCreatable(
 		creatable: Creatable & { counterpart: Rail.Address },
 		id: string,
@@ -191,7 +188,7 @@ export namespace Transaction {
 			: "fasterpayments"
 		return {
 			...creatable,
-			amount: amountFromState(state),
+			amount: Amount.fromState(state),
 			type: getType(creatable.counterpart, account.name),
 			direction: "outbound",
 			organization: account.organization,
@@ -322,7 +319,7 @@ export namespace Transaction {
 			state.outcome == "reject" ? ["rejected", "denied"] : state.outcome == "review" ? "review" : "processing"
 		return {
 			...transaction,
-			amount: amountFromState(state),
+			amount: Amount.fromState(state),
 			type: getType(transaction.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -351,7 +348,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...Incoming.fromRefund(refund, card),
-			amount: amountFromState(state),
+			amount: Amount.fromState(state),
 			type: "card",
 			direction: "inbound",
 			organization: account.organization,
