@@ -65,19 +65,32 @@ export namespace Transaction {
 				total: sign * state.transaction.original.total,
 			}
 		}
-		export function fromOperations(operations: Operation[], state?: Rule.State.Evaluated): Amount {
+		export function fromOperations(
+			currency: isoly.Currency,
+			operations: Operation[],
+			state?: Rule.State.Evaluated
+		): Amount {
 			const evaluated = state && fromState(state)
 			const changes = Operation.sum(operations)
 			return {
 				original: changes.available ?? 0,
 				reserved: changes["reserved-buffer"] ?? 0,
 				charge: evaluated?.charge ?? 0,
-				total: (changes.available ?? 0) + (changes["reserved-buffer"] ?? 0),
+				total: isoly.Currency.add(
+					currency,
+					isoly.Currency.add(currency, changes.available ?? 0, changes["reserved-buffer"] ?? 0),
+					evaluated?.charge ?? 0
+				),
 			}
 		}
-		export function change(amount: Amount, change: number, type: Exclude<keyof Amount, "total">): Amount {
-			amount[type] += change
-			amount.total += change
+		export function change(
+			currency: isoly.Currency,
+			amount: Amount,
+			change: number,
+			type: Exclude<keyof Amount, "total">
+		): Amount {
+			amount[type] = isoly.Currency.add(currency, amount[type], change)
+			amount.total = isoly.Currency.add(currency, amount.total, change)
 			return amount
 		}
 	}
@@ -137,7 +150,8 @@ export namespace Transaction {
 				? {
 						amount: {
 							original:
-								transaction.state?.transaction.original.amount ?? transaction.amount - (transaction.charge ?? 0),
+								transaction.state?.transaction.original.amount ??
+								isoly.Currency.subtract(transaction.currency, transaction.amount, transaction.charge ?? 0),
 							charge: transaction.state?.transaction.original.charge?.total ?? transaction.charge ?? 0,
 							reserved: transaction.state?.transaction.original.reserve ?? 0,
 							total: transaction.state?.transaction.original.total ?? transaction.amount,
