@@ -54,7 +54,7 @@ export namespace Transaction {
 			charge: isly.number(),
 			total: isly.number(),
 		})
-		export function fromState(state: Rule.State.Evaluated): Amount {
+		export function fromState(state: Rule.State): Amount {
 			const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
 				? -1
 				: 1
@@ -65,21 +65,17 @@ export namespace Transaction {
 				total: sign * state.transaction.original.total,
 			}
 		}
-		export function fromOperations(
-			currency: isoly.Currency,
-			operations: Operation[],
-			state?: Rule.State.Evaluated
-		): Amount {
-			const evaluated = state && fromState(state)
+		export function fromOperations(currency: isoly.Currency, operations: Operation[], state?: Rule.State): Amount {
+			const stateAmount = state && fromState(state)
 			const changes = Operation.sum(operations)
 			return {
 				original: changes.available ?? 0,
 				reserved: changes["reserved-buffer"] ?? 0,
-				charge: evaluated?.charge ?? 0,
+				charge: stateAmount?.charge ?? 0,
 				total: isoly.Currency.add(
 					currency,
 					isoly.Currency.add(currency, changes.available ?? 0, changes["reserved-buffer"] ?? 0),
-					evaluated?.charge ?? 0
+					stateAmount?.charge ?? 0
 				),
 			}
 		}
