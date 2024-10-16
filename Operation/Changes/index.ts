@@ -1,9 +1,12 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Balance as AccountBalance } from "../Balance"
-import { Counterbalance as CounterbalanceOperation } from "../Counterbalance"
-import type { Settlement } from "../Settlement"
-import { Change } from "./Change"
+import { Balance as AccountBalance } from "../../Balance"
+import { Counterbalance as CounterbalanceOperation } from "../../Counterbalance"
+import { Change } from "../Change"
+import { incoming as changesIncoming } from "./incoming"
+import { outgoing as changesOutgoing } from "./outgoing"
+import { refund as changesRefund } from "./refund"
+import { sum as changesSum } from "./sum"
 
 export type Changes = Partial<Record<Changes.Entry.Balance, Change>> & Record<Changes.Entry.Counterbalance, Change>
 export namespace Changes {
@@ -102,38 +105,8 @@ export namespace Changes {
 			export const type = isly.string<Balance>(values)
 		}
 	}
-	export function fromCapture(
-		settlement: string | undefined, // FIXME: remove | undefined when we're sure we send the id
-		amounts: { net: number; fee: number; charge?: number }
-	): Changes {
-		return {
-			[`${settlement}-net`]: { type: "add" as const, amount: amounts.net, status: "pending" as const },
-			[`${settlement}-fee`]: { type: "add" as const, amount: amounts.fee, status: "pending" as const },
-			...(amounts.charge && {
-				[`${settlement}-charge`]: { type: "add" as const, amount: amounts.charge, status: "pending" as const },
-			}),
-		}
-	}
-	export function fromRefund(
-		settlement: string | undefined, // FIXME: remove | undefined when we're sure we send the id
-		refund: Settlement.Entry.Refund.Creatable,
-		charge: number | undefined,
-		sum: Sum
-	): Changes {
-		const currency = refund.amount[0]
-		const fee = Math.abs(refund.fee.other[currency] ?? 0)
-		const net = Math.abs(refund.amount[1])
-		const available = isoly.Currency.subtract(currency, isoly.Currency.add(currency, fee, net), charge ?? 0)
-		return {
-			available: { type: available > 0 ? "add" : "subtract", amount: Math.abs(available), status: "pending" },
-			["reserved-incoming"]: {
-				type: "subtract",
-				amount: sum["reserved-incoming"] ?? 0,
-				status: "pending",
-			},
-			...(charge && {
-				[`${settlement}-charge`]: { type: "add" as const, amount: charge, status: "pending" as const },
-			}),
-		}
-	}
+	export const outgoing = changesOutgoing
+	export const incoming = changesIncoming
+	export const refund = changesRefund
+	export const sum = changesSum
 }
