@@ -105,7 +105,7 @@ describe("library", () => {
 				holder: "Janne",
 			},
 			accountId: "6gpfb4Bf",
-			amount: { original: -1, reserved: 0, charge: 0, total: -1 }, //
+			amount: { original: -1, reserved: 0, charge: 0, total: -1 },
 			balance: {
 				actual: 420,
 				reserved: 420,
