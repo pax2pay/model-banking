@@ -3,7 +3,9 @@ import type { Address } from "../../Rail/Address"
 import { Transaction as ModelTransaction } from "../../Transaction"
 import type { Rule } from "../index"
 
-export interface Transaction extends ModelTransaction.Creatable {
+export interface Transaction
+	extends ModelTransaction.Creatable,
+		Partial<Omit<ModelTransaction, keyof ModelTransaction.Creatable>> {
 	kind: Rule.Base.Kind
 	stage: "finalize" | "initiate"
 	amount: number

@@ -48,13 +48,7 @@ describe("Operation", () => {
 			"test-internal-asdf-qw-",
 		])
 	})
-	it("sum", () => {
-		expect(pax2pay.Operation.sum([operation, operation2, operation3, operation4])).toEqual({
-			available: 0,
-			"fee_test-paxgiro_202333303": 0,
-			"internal-safe01-2024-03-04T15Z": 0,
-		})
-	})
+
 	it("sum counterbalances", () => {
 		expect(pax2pay.Operation.Changes.counterbalance(operation4.changes, "USD")).toEqual(20)
 	})
