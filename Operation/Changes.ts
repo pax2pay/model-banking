@@ -121,8 +121,8 @@ export namespace Changes {
 		sum: Sum
 	): Changes {
 		const currency = refund.amount[0]
-		const fee = refund.fee.other[currency] ?? 0
-		const net = refund.amount[1]
+		const fee = Math.abs(refund.fee.other[currency] ?? 0)
+		const net = Math.abs(refund.amount[1])
 		const available = isoly.Currency.subtract(currency, isoly.Currency.add(currency, fee, net), charge ?? 0)
 		return {
 			available: { type: available > 0 ? "add" : "subtract", amount: Math.abs(available), status: "pending" },
@@ -131,8 +131,6 @@ export namespace Changes {
 				amount: sum["reserved-incoming"] ?? 0,
 				status: "pending",
 			},
-			[`${settlement}-net`]: { type: "subtract" as const, amount: net, status: "pending" as const },
-			[`${settlement}-fee`]: { type: "subtract" as const, amount: fee, status: "pending" as const },
 			...(charge && {
 				[`${settlement}-charge`]: { type: "add" as const, amount: charge, status: "pending" as const },
 			}),
