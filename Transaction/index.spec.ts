@@ -10,7 +10,7 @@ describe("Transaction", () => {
 	})
 })
 const transaction: pax2pay.Transaction = {
-	amount: -10,
+	amount: { original: -10, reserved: 0, charge: 0, total: -10 },
 	counterpart: {
 		type: "internal",
 		identifier: "IkToJ5Ep",

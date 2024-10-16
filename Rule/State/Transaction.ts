@@ -30,7 +30,8 @@ export namespace Transaction {
 						transaction.state?.transaction.original.amount ?? transaction.amount,
 						isoly.Currency.subtract(
 							transaction.currency,
-							transaction.state?.transaction.original.total ?? transaction.amount,
+							transaction.state?.transaction.original.total ??
+								(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.total),
 							stage === "finalize" ? transaction.state?.transaction.original.reserve ?? 0 : 0
 						),
 				  ]
@@ -39,12 +40,12 @@ export namespace Transaction {
 			...transaction,
 			stage,
 			kind,
-			amount: Math.abs(amount),
+			amount: Math.abs(typeof amount == "number" ? amount : amount.total),
 			type: ModelTransaction.getType(transaction.counterpart, accountName),
 			original: {
 				currency: transaction.currency,
-				amount: Math.abs(amount),
-				total: Math.abs(total),
+				amount: Math.abs(typeof amount == "number" ? amount : amount.original),
+				total: Math.abs(typeof total == "number" ? total : total.total),
 			},
 		}
 	}

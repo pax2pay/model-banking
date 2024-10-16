@@ -25,7 +25,7 @@ const transaction: pax2pay.Analytics.Event.Ledger.Transaction = {
 	action: "created",
 	created: "2023-12-05T17:26:36.977Z",
 	value: {
-		amount: -10,
+		amount: { original: -10, charge: 0, reserved: 0, total: -10 },
 		counterpart: {
 			type: "internal",
 			identifier: "IkToJ5Ep",

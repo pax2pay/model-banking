@@ -16,7 +16,7 @@ import { Status as TransactionStatus } from "./Status"
 export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
-	amount: number
+	amount: Transaction.Amount
 	charge?: number
 	description: string
 	organization: string
@@ -41,6 +41,55 @@ export interface Transaction {
 	state?: Rule.State
 }
 export namespace Transaction {
+	export type Amount = {
+		original: number
+		reserved: number
+		charge: number
+		total: number
+	}
+	export namespace Amount {
+		export const type = isly.object<Amount>({
+			original: isly.number(),
+			reserved: isly.number(),
+			charge: isly.number(),
+			total: isly.number(),
+		})
+		export function fromState(state: Rule.State): Amount {
+			const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
+				? -1
+				: 1
+			return {
+				original: sign * state.transaction.original.amount,
+				reserved: sign * (state.transaction.original.reserve ?? 0),
+				charge: sign * (state.transaction.original.charge?.total ?? 0),
+				total: sign * state.transaction.original.total,
+			}
+		}
+		export function fromOperations(currency: isoly.Currency, operations: Operation[], state?: Rule.State): Amount {
+			const stateAmount = state && fromState(state)
+			const changes = Operation.sum(operations)
+			return {
+				original: changes.available ?? 0,
+				reserved: changes["reserved-buffer"] ?? 0,
+				charge: stateAmount?.charge ?? 0,
+				total: isoly.Currency.add(
+					currency,
+					isoly.Currency.add(currency, changes.available ?? 0, changes["reserved-buffer"] ?? 0),
+					stateAmount?.charge ?? 0
+				),
+			}
+		}
+		export function change(
+			currency: isoly.Currency,
+			amount: Amount,
+			change: number,
+			type: Exclude<keyof Amount, "total">
+		): Amount {
+			amount[type] = isoly.Currency.add(currency, amount[type], change)
+			amount.total = isoly.Currency.add(currency, amount.total, change)
+			return amount
+		}
+	}
 	export const types = ["card", "internal", "external", "system"] as const
 	export type Types = typeof types[number]
 	export const directions = ["inbound", "outbound"] as const
@@ -53,7 +102,7 @@ export namespace Transaction {
 	export const type = isly.object<Transaction>({
 		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
-		amount: isly.number(),
+		amount: Amount.type,
 		charge: isly.number().optional(),
 		description: isly.string(),
 		organization: isly.string(),
@@ -84,6 +133,37 @@ export namespace Transaction {
 	export const is = type.is
 	export const flaw = type.flaw
 	export const get = type.get
+	export interface Legacy extends Omit<Transaction, "amount"> {
+		amount: number
+	}
+	export namespace Legacy {
+		export const type = Transaction.type.omit<"amount">(["amount"]).extend<Legacy>({ amount: isly.number() })
+	}
+	export function fromLegacy(transaction: Transaction | Legacy): Transaction {
+		return {
+			...transaction,
+			...(typeof transaction.amount == "number"
+				? {
+						amount: {
+							original:
+								transaction.state?.transaction.original.amount ??
+								isoly.Currency.subtract(transaction.currency, transaction.amount, transaction.charge ?? 0),
+							charge: transaction.state?.transaction.original.charge?.total ?? transaction.charge ?? 0,
+							reserved: transaction.state?.transaction.original.reserve ?? 0,
+							total: transaction.state?.transaction.original.total ?? transaction.amount,
+						},
+				  }
+				: { amount: transaction.amount }),
+		}
+	}
+	export function toLegacy(transaction: Transaction | Legacy): Legacy {
+		return {
+			...transaction,
+			...(typeof transaction.amount == "number"
+				? { amount: transaction.amount }
+				: { amount: transaction.amount.total }),
+		}
+	}
 	export type Event = Omit<Transaction, "state">
 	export namespace Event {
 		export const type = Transaction.type.omit(["state"])
@@ -119,7 +199,7 @@ export namespace Transaction {
 			: "fasterpayments"
 		return {
 			...creatable,
-			amount: -(state.transaction.original.total ?? state.transaction.original.amount),
+			amount: Amount.fromState(state),
 			type: getType(creatable.counterpart, account.name),
 			direction: "outbound",
 			organization: account.organization,
@@ -150,6 +230,12 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...creatable,
+			amount: {
+				original: creatable.amount,
+				reserved: 0,
+				charge: 0,
+				total: creatable.amount,
+			},
 			type: getType(creatable.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -176,7 +262,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...creatable,
-			amount: 0,
+			amount: { original: 0, reserved: 0, charge: 0, total: 0 },
 			type: getType(creatable.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -212,7 +298,7 @@ export namespace Transaction {
 				name: account.name,
 				organization: account.organization,
 			},
-			amount: 0,
+			amount: { original: 0, reserved: 0, charge: 0, total: 0 },
 			type: "internal",
 			direction: "inbound",
 			organization: account.organization,
@@ -244,7 +330,7 @@ export namespace Transaction {
 			state.outcome == "reject" ? ["rejected", "denied"] : state.outcome == "review" ? "review" : "processing"
 		return {
 			...transaction,
-			amount: state.transaction.original.total ?? state.transaction.original.amount,
+			amount: Amount.fromState(state),
 			type: getType(transaction.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -273,7 +359,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...Incoming.fromRefund(refund, card),
-			amount: state.transaction.original.total ?? state.transaction.original.amount,
+			amount: Amount.fromState(state),
 			type: "card",
 			direction: "inbound",
 			organization: account.organization,
@@ -320,24 +406,27 @@ export namespace Transaction {
 		return result
 	}
 
-	const csvMap: Record<string, (transaction: Transaction) => string | number | undefined> = {
-		id: (transaction: Transaction) => transaction.id,
-		created: (transaction: Transaction) => readableDate(transaction.posted),
-		changed: (transaction: Transaction) => readableDate(transaction.transacted),
-		"organization.code": (transaction: Transaction) => transaction.organization,
-		"account.id": (transaction: Transaction) => transaction.accountId,
-		"rail.id": (transaction: Transaction) => railAddressId(transaction.account),
-		"rail.address": (transaction: Transaction) => railAddress(transaction.account),
-		"counterpart.id": (transaction: Transaction) => railAddressId(transaction.counterpart),
-		"counterpart.address": (transaction: Transaction) => railAddress(transaction.counterpart),
-		amount: (transaction: Transaction) =>
-			transaction.amount.toFixed(isoly.Currency.decimalDigits(transaction.currency)),
-		currency: (transaction: Transaction) => transaction.currency,
-		status: (transaction: Transaction) =>
+	const csvMap: Record<string, (transaction: Transaction | Transaction.Legacy) => string | number | undefined> = {
+		id: (transaction: Transaction | Transaction.Legacy) => transaction.id,
+		created: (transaction: Transaction | Transaction.Legacy) => readableDate(transaction.posted),
+		changed: (transaction: Transaction | Transaction.Legacy) => readableDate(transaction.transacted),
+		"organization.code": (transaction: Transaction | Transaction.Legacy) => transaction.organization,
+		"account.id": (transaction: Transaction | Transaction.Legacy) => transaction.accountId,
+		"rail.id": (transaction: Transaction | Transaction.Legacy) => railAddressId(transaction.account),
+		"rail.address": (transaction: Transaction | Transaction.Legacy) => railAddress(transaction.account),
+		"counterpart.id": (transaction: Transaction | Transaction.Legacy) => railAddressId(transaction.counterpart),
+		"counterpart.address": (transaction: Transaction | Transaction.Legacy) => railAddress(transaction.counterpart),
+		amount: (transaction: Transaction | Transaction.Legacy) =>
+			(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.total).toFixed(
+				isoly.Currency.decimalDigits(transaction.currency)
+			),
+		currency: (transaction: Transaction | Transaction.Legacy) => transaction.currency,
+		status: (transaction: Transaction | Transaction.Legacy) =>
 			typeof transaction.status == "string" ? transaction.status : transaction.status[0],
-		"flags.current": (transaction: Transaction) => transaction.flags.join(" "),
-		"flags.past": (transaction: Transaction) => transaction.oldFlags.join(" "),
-		reason: (transaction: Transaction) => (typeof transaction.status == "string" ? undefined : transaction.status[1]),
+		"flags.current": (transaction: Transaction | Transaction.Legacy) => transaction.flags.join(" "),
+		"flags.past": (transaction: Transaction | Transaction.Legacy) => transaction.oldFlags.join(" "),
+		reason: (transaction: Transaction | Transaction.Legacy) =>
+			typeof transaction.status == "string" ? undefined : transaction.status[1],
 		"merchant.country": transaction =>
 			"merchant" in transaction.counterpart ? transaction.counterpart.merchant.country : undefined,
 	}
@@ -358,7 +447,7 @@ export namespace Transaction {
 			? address.merchant.id
 			: address.id
 	}
-	export function toCsv(transactions: Transaction[]): string {
+	export function toCsv(transactions: (Transaction | Transaction.Legacy)[]): string {
 		return Report.toCsv(
 			Object.keys(csvMap),
 			transactions.map(transaction =>
