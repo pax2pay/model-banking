@@ -1,8 +1,12 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { buffer as operationBuffer } from "./buffer"
+import { cancel as operationCancel } from "./cancel"
 import { Change as OperationChange } from "./Change"
 import { Changes as OperationChanges } from "./Changes"
+import { collect as operationCollect } from "./collect"
 import { Creatable as OperationCreatable } from "./Creatable"
+import { fund as operationFund } from "./fund"
 import { incoming as operationIncoming } from "./incoming"
 import { outgoing as operationOutgoing } from "./outgoing"
 import { refund as operationRefund } from "./refund"
@@ -33,8 +37,12 @@ export namespace Operation {
 	})
 	export const is = type.is
 	export const flaw = type.flaw
-	export const outgoing = operationOutgoing
+	export const buffer = operationBuffer
+	export const cancel = operationCancel
+	export const collect = operationCollect
+	export const fund = operationFund
 	export const incoming = operationIncoming
+	export const outgoing = operationOutgoing
 	export const refund = operationRefund
 	export const sum = Changes.sum
 }

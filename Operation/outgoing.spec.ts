@@ -2,7 +2,7 @@ import { pax2pay } from "../index"
 import { data } from "./data"
 
 describe("Outgoing Operations", () => {
-	it("should create an open operation", () => {
+	it("should create an initiate operation", () => {
 		const operation: pax2pay.Operation = pax2pay.Operation.outgoing.initiate(data.transaction.card.id, data.state.card)
 		delete (operation as any).created
 		expect(operation).toEqual({
@@ -28,7 +28,7 @@ describe("Outgoing Operations", () => {
 			account: "WzauRHBO",
 			changes: {
 				"reserved-outgoing": { amount: 161, status: "pending", type: "subtract" },
-				"test-counterbalance": { amount: 161, status: "pending", type: "add" },
+				[data.counterbalance]: { amount: 161, status: "pending", type: "add" },
 			},
 			counter: 0,
 			currency: "GBP",
