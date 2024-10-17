@@ -32,4 +32,7 @@ export class Settlements {
 	async listFailedEntries(settlement: string): Promise<Settlement.Entry[] | gracely.Error> {
 		return this.client.get<Settlement.Entry[]>(`/settlement/${settlement}/entry/failed`)
 	}
+	async addPayoutTransactions(settlement: string, transactions: string[]): Promise<Settlement | gracely.Error> {
+		return this.client.patch<Settlement>(`/settlement/${settlement}/settled`, transactions)
+	}
 }
