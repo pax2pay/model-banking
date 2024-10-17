@@ -15,7 +15,7 @@ jobs:
       - name: "Setup Node"
         uses: "actions/setup-node@v3"
         with:
-          node-version: current
+          node-version: 18.20.4
           cache: 'npm'
       - uses: actions/cache@v3
         with:
@@ -27,7 +27,7 @@ jobs:
         run: npm run build
       - name: Publish
         run: |
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc  
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
           npm publish --access public
         shell: bash
         env:
