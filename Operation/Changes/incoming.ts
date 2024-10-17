@@ -5,7 +5,7 @@ import type { Changes } from "./index"
 import { sum } from "./sum"
 
 export namespace incoming {
-	export function initiate(state: Rule.State.Evaluated, counterpart: string): Changes {
+	export function initiate(counterpart: string, state: Rule.State.Evaluated): Changes {
 		return {
 			["reserved-incoming"]: {
 				type: "add" as const,
@@ -19,20 +19,20 @@ export namespace incoming {
 			},
 		}
 	}
-	export function finalize(state: Rule.State.Evaluated, transaction: Transaction): Changes {
+	export function finalize(transaction: Transaction, state?: Rule.State.Evaluated): Changes {
 		const summed = sum(transaction.operations)
 		return {
 			available: {
 				type: "add",
 				amount: isoly.Currency.subtract(
-					state.transaction.original.currency,
-					state.transaction.original.amount,
-					state.transaction.original.charge?.current ?? 0
+					transaction.currency,
+					transaction.amount.original,
+					state?.transaction.original.charge?.current ?? 0
 				),
 				status: "pending",
 			},
 			["reserved-incoming"]: { type: "subtract", amount: summed["reserved-incoming"] ?? 0, status: "pending" },
-			...(state.transaction.original.charge?.current && {
+			...(state?.transaction.original.charge?.current && {
 				[`${isoly.DateTime.truncate(isoly.DateTime.now(), "hours")}-charge`]: {
 					type: "add" as const,
 					amount: state.transaction.original.charge?.current ?? 0,
@@ -41,11 +41,11 @@ export namespace incoming {
 			}),
 		}
 	}
-	export function collect(state: Rule.State.Evaluated, counterpart: string): Changes {
+	export function collect(transaction: Transaction.Creatable, counterbalance: string): Changes {
 		return {
-			available: { amount: state.transaction.original.total, type: "add" as const, status: "pending" as const },
-			[`${counterpart}`]: {
-				amount: state.transaction.original.total,
+			available: { amount: transaction.amount, type: "add" as const, status: "pending" as const },
+			[`${counterbalance}`]: {
+				amount: transaction.amount,
 				type: "subtract" as const,
 				status: "pending" as const,
 			},

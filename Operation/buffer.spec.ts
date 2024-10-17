@@ -3,7 +3,12 @@ import { data } from "./data"
 
 describe("buffer", () => {
 	it("should create a buffer operation", () => {
-		const operation: pax2pay.Operation = pax2pay.Operation.buffer(data.transaction.card, data.state.incoming)
+		const operation: pax2pay.Operation = pax2pay.Operation.buffer(
+			data.transaction.incoming.id,
+			data.transaction.incoming.currency,
+			data.transaction.incoming.amount.total,
+			"wIJxbBFE"
+		)
 		delete (operation as any).created
 		expect(operation).toEqual({
 			account: "wIJxbBFE",
@@ -13,7 +18,7 @@ describe("buffer", () => {
 			},
 			counter: 0,
 			currency: "GBP",
-			transaction: "zzzyQLlMrZb-UCsk",
+			transaction: "zzzyQLf41hMGiz10",
 			type: "adjustBuffer",
 		})
 	})

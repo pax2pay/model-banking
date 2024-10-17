@@ -45,4 +45,7 @@ export namespace Operation {
 	export const outgoing = operationOutgoing
 	export const refund = operationRefund
 	export const sum = Changes.sum
+	export function fromCreatable(transaction: string, creatable: Creatable): Operation {
+		return { ...creatable, transaction, counter: 0, created: isoly.DateTime.now() }
+	}
 }

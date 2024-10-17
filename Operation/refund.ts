@@ -13,7 +13,7 @@ export namespace refund {
 		settlement: string
 	): Operation {
 		return {
-			...create(transaction, "refund", state),
+			...create(transaction, state.transaction.original.currency, state.account.id, "refund"),
 			changes: Changes.refund.initiate(refund, settlement),
 		}
 	}
@@ -24,7 +24,7 @@ export namespace refund {
 		settlement: string
 	): Operation {
 		return {
-			...create(transaction.id, "refund", state),
+			...create(transaction.id, state.transaction.original.currency, state.account.id, "refund"),
 			changes: Changes.refund.finalize(state, transaction, refund, settlement),
 		}
 	}

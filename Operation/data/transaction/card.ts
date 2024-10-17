@@ -1,4 +1,5 @@
 import { Transaction } from "../../../Transaction"
+
 export const card: Transaction = {
 	amount: {
 		original: 161,
