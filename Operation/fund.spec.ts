@@ -6,7 +6,8 @@ describe("fund", () => {
 	it("should create a fund operation", () => {
 		const operation: pax2pay.Operation = pax2pay.Operation.fund(
 			data.transaction.incoming.id,
-			data.state.incoming,
+			data.transaction.creatable,
+			"wIJxbBFE",
 			"example-reference"
 		)
 		delete (operation as any).created

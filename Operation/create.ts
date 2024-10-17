@@ -1,18 +1,18 @@
 import { isoly } from "isoly"
-import { Rule } from "../Rule"
 import { Creatable } from "./Creatable"
 import type { Operation } from "./index"
 
 export function create(
 	transaction: string,
-	type: Creatable.Type,
-	state: Rule.State.Evaluated
+	currency: isoly.Currency,
+	account: string,
+	type: Creatable.Type
 ): Omit<Operation, "changes"> {
 	return {
 		transaction,
 		type,
-		currency: state.transaction.original.currency,
-		account: state.account.id,
+		currency,
+		account,
 		counter: 0,
 		created: isoly.DateTime.now(),
 	}

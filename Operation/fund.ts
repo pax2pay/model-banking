@@ -1,11 +1,16 @@
-import type { Rule } from "../Rule"
+import type { Transaction } from "../Transaction"
 import { Changes } from "./Changes"
 import { create } from "./create"
 import type { Operation } from "./index"
 
-export function fund(transaction: string, state: Rule.State.Evaluated, reference: string): Operation {
+export function fund(
+	transaction: string,
+	creatable: Transaction.Creatable,
+	account: string,
+	reference: string
+): Operation {
 	return {
-		...create(transaction, "fund", state),
-		changes: Changes.outgoing.fund(state, reference),
+		...create(transaction, creatable.currency, account, "fund"),
+		changes: Changes.outgoing.fund(creatable, reference),
 	}
 }

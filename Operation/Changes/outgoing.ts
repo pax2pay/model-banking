@@ -122,12 +122,12 @@ export namespace outgoing {
 			}),
 		}
 	}
-	export function fund(state: Rule.State.Evaluated, reference: string): Changes {
+	export function fund(transaction: Transaction.Creatable, reference: string): Changes {
 		return {
-			available: { type: "add", amount: state.transaction.original.amount, status: "pending" },
+			available: { type: "add", amount: transaction.amount, status: "pending" },
 			[`${reference}-${isoly.DateTime.truncate(isoly.DateTime.now(), "hours")}`]: {
 				type: "subtract" as const,
-				amount: state.transaction.original.amount,
+				amount: transaction.amount,
 				status: "pending" as const,
 			},
 		}

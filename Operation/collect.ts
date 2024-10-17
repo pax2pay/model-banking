@@ -1,11 +1,16 @@
-import type { Rule } from "../Rule"
+import type { Transaction } from "../Transaction"
 import { Changes } from "./Changes"
 import { create } from "./create"
 import type { Operation } from "./index"
 
-export function collect(transaction: string, state: Rule.State.Evaluated, counterpart: string): Operation {
+export function collect(
+	transaction: string,
+	creatable: Transaction.Creatable,
+	account: string,
+	counterbalance: string
+): Operation {
 	return {
-		...create(transaction, "collect", state),
-		changes: Changes.incoming.collect(state, counterpart),
+		...create(transaction, creatable.currency, account, "collect"),
+		changes: Changes.incoming.collect(creatable, counterbalance),
 	}
 }

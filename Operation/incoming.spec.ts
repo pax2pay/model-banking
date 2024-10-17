@@ -28,6 +28,7 @@ describe("Incoming", () => {
 	it("should create a finalize operation", () => {
 		const operation: pax2pay.Operation = pax2pay.Operation.incoming.finalize(
 			data.transaction.incoming,
+			"wIJxbBFE",
 			data.state.incoming
 		)
 		delete (operation as any).created

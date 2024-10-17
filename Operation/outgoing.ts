@@ -8,13 +8,18 @@ import type { Operation } from "./index"
 export namespace outgoing {
 	export function initiate(transaction: string, state: Rule.State.Evaluated): Operation {
 		return {
-			...create(transaction, state.transaction.kind == "authorization" ? "authorization" : "outgoing", state),
+			...create(
+				transaction,
+				state.transaction.original.currency,
+				state.account.id,
+				state.transaction.kind == "authorization" ? "authorization" : "outgoing"
+			),
 			changes: Changes.outgoing.initiate(state),
 		}
 	}
 	export function finalize(transaction: Transaction, state: Rule.State.Evaluated, counterbalance: string): Operation {
 		return {
-			...create(transaction.id, "finalizeOutgoing", state),
+			...create(transaction.id, transaction.currency, state.account.id, "finalizeOutgoing"),
 			changes: Changes.outgoing.finalize(state, transaction, counterbalance),
 		}
 	}
@@ -25,7 +30,7 @@ export namespace outgoing {
 		settlement: string
 	): Operation {
 		return {
-			...create(transaction.id, "capture", state),
+			...create(transaction.id, transaction.currency, state.account.id, "capture"),
 			changes: Changes.outgoing.capture(state, transaction, capture, settlement),
 		}
 	}
