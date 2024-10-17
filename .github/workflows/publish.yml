@@ -1,9 +1,8 @@
 name: "Publish"
 
 on:
-  push:
-    tags:
-      - "release-*"
+  pull_request:
+
 jobs:
   publish:
     name: "Publish"
@@ -15,7 +14,7 @@ jobs:
       - name: "Setup Node"
         uses: "actions/setup-node@v3"
         with:
-          node-version: current
+          node-version: 18.20.4
           cache: 'npm'
       - uses: actions/cache@v3
         with:
@@ -27,8 +26,9 @@ jobs:
         run: npm run build
       - name: Publish
         run: |
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc  
-          npm publish --access public
+          node -v && echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+          npm publish --dry-run
         shell: bash
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
