@@ -9,7 +9,7 @@ export namespace data {
 	export const sum: pax2pay.Operation.Changes.Sum = {
 		/* mock sum */
 	} as pax2pay.Operation.Changes.Sum
-	export const counterbalance = "test-counterbalance"
+	export const counterbalance = "test-pxg-credit01-2024-10-16T06Z"
 	export const settlement = "test-settlement"
 	export const charge = 100
 	export const state = dataState

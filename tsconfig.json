@@ -12,6 +12,8 @@
 		]
 	},
 	"files": [
-		"index.ts"
+		"index.ts",
+		"./Operation/fund.ts",
+		"./Operation/collect.ts"
 	]
 }

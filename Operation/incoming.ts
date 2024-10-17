@@ -14,16 +14,4 @@ export namespace incoming {
 			changes: Changes.incoming.finalize(state, transaction),
 		}
 	}
-	export function collect(transaction: string, state: Rule.State.Evaluated, counterpart: string): Operation {
-		return {
-			...create(transaction, "collect", state),
-			changes: Changes.incoming.collect(state, counterpart),
-		}
-	}
-	export function fund(transaction: string, state: Rule.State.Evaluated, reference: string): Operation {
-		return {
-			...create(transaction, "fund", state),
-			changes: Changes.outgoing.fund(state, reference),
-		}
-	}
 }

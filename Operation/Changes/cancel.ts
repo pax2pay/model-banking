@@ -1,8 +1,11 @@
+import { Transaction } from "../../Transaction"
 import type { Changes } from "./index"
+import { sum } from "./sum"
 
-export function cancel(sum: Changes.Sum): Changes {
+export function cancel(transaction: Transaction): Changes {
+	const summed = sum(transaction.operations)
 	return (
-		Object.entries(sum).reduce(
+		Object.entries(summed).reduce(
 			(changes, [balance, amount]) => ({
 				...changes,
 				[balance]: {

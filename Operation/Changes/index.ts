@@ -3,6 +3,8 @@ import { isly } from "isly"
 import { Balance as AccountBalance } from "../../Balance"
 import { Counterbalance as CounterbalanceOperation } from "../../Counterbalance"
 import { Change } from "../Change"
+import { buffer as changesBuffer } from "./buffer"
+import { cancel as changesCancel } from "./cancel"
 import { incoming as changesIncoming } from "./incoming"
 import { outgoing as changesOutgoing } from "./outgoing"
 import { refund as changesRefund } from "./refund"
@@ -105,6 +107,8 @@ export namespace Changes {
 			export const type = isly.string<Balance>(values)
 		}
 	}
+	export const buffer = changesBuffer
+	export const cancel = changesCancel
 	export const outgoing = changesOutgoing
 	export const incoming = changesIncoming
 	export const refund = changesRefund
