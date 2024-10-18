@@ -65,17 +65,26 @@ export namespace Transaction {
 				total: sign * state.transaction.original.total,
 			}
 		}
-		export function fromOperations(currency: isoly.Currency, operations: Operation[], state?: Rule.State): Amount {
+		export function fromOperations(
+			transaction: Transaction | Transaction.Creatable,
+			operations: Operation[],
+			state?: Rule.State
+		): Amount {
 			const stateAmount = state && fromState(state)
 			const changes = Operation.sum(operations)
+			const reserved = isoly.Currency.add(
+				transaction.currency,
+				changes["reserved-incoming"] ?? 0,
+				changes["reserved-outgoing"] ?? 0
+			)
 			return {
-				original: changes.available ?? 0,
-				reserved: changes["reserved-buffer"] ?? 0,
+				original: typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
+				reserved,
 				charge: stateAmount?.charge ?? 0,
 				total: isoly.Currency.add(
-					currency,
-					isoly.Currency.add(currency, changes.available ?? 0, changes["reserved-buffer"] ?? 0),
-					stateAmount?.charge ?? 0
+					transaction.currency,
+					stateAmount?.charge ?? 0,
+					isoly.Currency.add(transaction.currency, changes.available ?? 0, reserved)
 				),
 			}
 		}
