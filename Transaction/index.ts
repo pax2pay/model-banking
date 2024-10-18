@@ -81,11 +81,7 @@ export namespace Transaction {
 				original: typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
 				reserved,
 				charge: stateAmount?.charge ?? 0,
-				total: isoly.Currency.add(
-					transaction.currency,
-					stateAmount?.charge ?? 0,
-					isoly.Currency.add(transaction.currency, changes.available ?? 0, reserved)
-				),
+				total: changes.available ?? reserved ?? 0,
 			}
 		}
 		export function change(
