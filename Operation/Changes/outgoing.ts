@@ -11,7 +11,7 @@ export namespace outgoing {
 			["reserved-outgoing"]: { type: "add", amount: state.transaction.original.total, status: "pending" },
 			available: {
 				type: "subtract",
-				amount: state.transaction.original.total ?? state.transaction.original.total,
+				amount: state.transaction.original.total,
 				status: "pending",
 			},
 		}
