@@ -3,7 +3,7 @@ import { isly } from "isly"
 
 export type History = {
 	timestamp: isoly.DateTime
-	property: "status" | "rails" | "counterparts" | "rules" | "created" | "updated"
+	property: History.Property
 	to?: any
 }
 
