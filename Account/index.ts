@@ -20,10 +20,10 @@ export interface Account extends Account.Creatable {
 	history: History[]
 }
 export namespace Account {
-	export type Legacy = Omit<Account, "status">
-	export function fromLegacy(maybeLegacy: Legacy | Account, newStatus?: Status): Account {
+	export type Legacy = Omit<Account, "status" | "history">
+	export function fromLegacy(maybeLegacy: Legacy | Account, newStatus?: Status, newHistory?: History[]): Account {
 		const status = newStatus ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" })
-		const history = maybeLegacy.history ? maybeLegacy.history : []
+		const history = newHistory ?? ( "history" in maybeLegacy ? maybeLegacy.history : [])
 		return { ...maybeLegacy, status, history }
 	}
 	export const type = isly.object<Account>({
