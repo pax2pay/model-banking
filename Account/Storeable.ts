@@ -5,15 +5,15 @@ import { Organization } from "../Organization"
 import { Realm } from "../Realm"
 import { Creatable } from "./Creatable"
 
-export namespace Account {
-	export interface Storable {
-		realm: Realm
-		organization: string
-		name: string
-		id: cryptly.Identifier
-		created: isoly.DateTime
-	}
-	export function fromCreatable(account: Creatable, organization: Organization): Account.Storable {
+export interface Storable {
+	realm: Realm
+	organization: string
+	name: string
+	id: cryptly.Identifier
+	created: isoly.DateTime
+}
+export namespace Storable {
+	export function fromCreatable(account: Creatable, organization: Organization): Storable {
 		return {
 			...account,
 			realm: organization.realm,
@@ -22,15 +22,13 @@ export namespace Account {
 			created: isoly.DateTime.now(),
 		}
 	}
-	export namespace Storable {
-		export const type = isly.object<Account.Storable>({
-			realm: Realm.type,
-			organization: isly.string(),
-			name: isly.string(),
-			id: isly.string(),
-			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
-		})
-		export const is = type.is
-		export const flaw = type.flaw
-	}
+	export const type = isly.object<Storable>({
+		realm: Realm.type,
+		organization: isly.string(),
+		name: isly.string(),
+		id: isly.string(),
+		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+	})
+	export const is = type.is
+	export const flaw = type.flaw
 }
