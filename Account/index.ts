@@ -23,7 +23,7 @@ export namespace Account {
 	export type Legacy = Omit<Account, "status" | "history">
 	export function fromLegacy(maybeLegacy: Legacy | Account, newStatus?: Status, newHistory?: History[]): Account {
 		const status = newStatus ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" })
-		const history = newHistory ?? ( "history" in maybeLegacy ? maybeLegacy.history : [])
+		const history = newHistory ?? ("history" in maybeLegacy ? maybeLegacy.history : [])
 		return { ...maybeLegacy, status, history }
 	}
 	export const type = isly.object<Account>({

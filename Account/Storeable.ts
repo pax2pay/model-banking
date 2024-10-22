@@ -1,8 +1,8 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Realm } from "../Realm"
 import { Organization } from "../Organization"
+import { Realm } from "../Realm"
 import { Creatable } from "./Creatable"
 
 export namespace Account {
@@ -13,10 +13,7 @@ export namespace Account {
 		id: cryptly.Identifier
 		created: isoly.DateTime
 	}
-	export function fromCreatable(
-		account: Creatable,
-		organization: Organization
-	): Account.Storable {
+	export function fromCreatable(account: Creatable, organization: Organization): Account.Storable {
 		return {
 			...account,
 			realm: organization.realm,
