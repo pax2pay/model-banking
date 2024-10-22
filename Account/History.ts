@@ -3,14 +3,14 @@ import { isly } from "isly"
 
 export type History = {
 	timestamp: isoly.DateTime
-	property: "status" | "rails" | "counterparts" | "rules" | "created"
+	property: "status" | "rails" | "counterparts" | "rules" | "created" | "updated"
 	to?: any
 }
 
 export namespace History {
 	export type Property = typeof Property.values[number]
 	export namespace Property {
-		export const values = ["status", "rails", "counterparts", "rules", "created"] as const
+		export const values = ["status", "rails", "counterparts", "rules", "created", "updated"] as const
 		export const type = isly.string<Property>(values)
 	}
 	export const type = isly.object<History>({
