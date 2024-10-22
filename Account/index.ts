@@ -6,7 +6,7 @@ import { Rail } from "../Rail"
 import { Rule } from "../Rule"
 import { Creatable as AccountCreatable } from "./Creatable"
 import { History as AccountHistory } from "./History"
-import { Status } from "./Status"
+import { Status as AccountStatus } from "./Status"
 
 export interface Account extends Account.Creatable {
 	id: cryptly.Identifier
@@ -16,7 +16,7 @@ export interface Account extends Account.Creatable {
 	counterparts?: Record<string, Rail.Address>
 	key?: string
 	rules?: Rule[]
-	status: Status
+	status: AccountStatus
 }
 export namespace Account {
 	export type Legacy = Omit<Account, "status">
@@ -41,4 +41,5 @@ export namespace Account {
 	}
 	export import Creatable = AccountCreatable
 	export import History = AccountHistory
+	export import Status = AccountStatus
 }
