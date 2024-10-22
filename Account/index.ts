@@ -6,6 +6,7 @@ import { Rail } from "../Rail"
 import { Rule } from "../Rule"
 import { Creatable as AccountCreatable } from "./Creatable"
 import { Status } from "./Status"
+import { History } from "./History"
 
 export interface Account extends Account.Creatable {
 	id: cryptly.Identifier
@@ -16,11 +17,14 @@ export interface Account extends Account.Creatable {
 	key?: string
 	rules?: Rule[]
 	status: Status
+	history: History[]
 }
 export namespace Account {
 	export type Legacy = Omit<Account, "status">
-	export function fromLegacy(maybeLegacy: Legacy | Account, status?: Status): Account {
-		return { ...maybeLegacy, status: status ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" }) }
+	export function fromLegacy(maybeLegacy: Legacy | Account, newStatus?: Status): Account {
+		const status = newStatus ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" })
+		const history = maybeLegacy.history ? maybeLegacy.history : [] 
+		return { ...maybeLegacy, status , history }
 	}
 	export const type = isly.object<Account>({
 		name: isly.string(),
@@ -32,6 +36,7 @@ export namespace Account {
 		key: isly.string().optional(),
 		rules: Rule.type.array().optional(),
 		status: Status.type,
+		history: History.type.array()
 	})
 	export const is = type.is
 	export const flaw = type.flaw
