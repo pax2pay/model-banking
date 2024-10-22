@@ -1,10 +1,10 @@
-import { isly } from "isly"
 import { isoly } from "isoly"
+import { isly } from "isly"
 
 export type History = {
-	 timestamp: isoly.DateTime,
-    property: "status" | "rails"
-    to: string
+	timestamp: isoly.DateTime
+	property: "status" | "rails"
+	to: string
 }
 
 export namespace History {
@@ -15,7 +15,7 @@ export namespace History {
 	export const type = isly.object<History>({
 		timestamp: isly.string<Property>(Property.values),
 		property: isly.string(),
-		to: isly.string()
+		to: isly.string(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw

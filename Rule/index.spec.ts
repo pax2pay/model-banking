@@ -16,7 +16,7 @@ const account: pax2pay.Account = {
 	rails: [],
 	balances: { GBP: { actual: 0, incomingReserved: 0, outgoingReserved: 0 } },
 	status: { mode: "active" },
-	history: []
+	history: [],
 }
 const rule1: pax2pay.Rule = {
 	code: "abc",
