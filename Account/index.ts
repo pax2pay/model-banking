@@ -17,18 +17,11 @@ export interface Account extends Account.Creatable {
 	key?: string
 	rules?: Rule[]
 	status: AccountStatus
-	history: AccountHistory[]
 }
 export namespace Account {
 	export type Legacy = Omit<Account, "status" | "history">
-	export function fromLegacy(
-		maybeLegacy: Legacy | Account,
-		newStatus?: AccountStatus,
-		newHistory?: AccountHistory[]
-	): Account {
-		const status = newStatus ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" })
-		const history = newHistory ?? ("history" in maybeLegacy ? maybeLegacy.history : [])
-		return { ...maybeLegacy, status, history }
+	export function fromLegacy(maybeLegacy: Legacy | Account, status?: AccountStatus): Account {
+		return { ...maybeLegacy, status: status ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" }) }
 	}
 	export const type = isly.object<Account>({
 		name: isly.string(),
@@ -40,7 +33,6 @@ export namespace Account {
 		key: isly.string().optional(),
 		rules: Rule.type.array().optional(),
 		status: AccountStatus.type,
-		history: AccountHistory.type.array(),
 	})
 	export const is = type.is
 	export const flaw = type.flaw
