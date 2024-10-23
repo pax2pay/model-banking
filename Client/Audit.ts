@@ -11,9 +11,9 @@ export class Audit {
 			limit?: number
 			cursor?: string
 		} & Partial<isoly.DateRange>
-	): Promise<AuditLog[] | gracely.Error> {
+	): Promise<(AuditLog[] & { cursor?: string | undefined }) | gracely.Error> {
 		const queries = options && http.Search.stringify(options)
-		return this.client.get<AuditLog[]>(
+		return this.client.get<AuditLog[] & { cursor?: string | undefined }>(
 			`/audit${options?.resource ? "/" + options?.resource : ""}${queries ? "?" + queries : ""}`
 		)
 	}
