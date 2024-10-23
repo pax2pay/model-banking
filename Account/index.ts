@@ -32,7 +32,7 @@ export namespace Account {
 		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.type).optional(),
 		key: isly.string().optional(),
 		rules: Rule.type.array().optional(),
-		status: Status.type,
+		status: AccountStatus.type,
 	})
 	export const is = type.is
 	export const flaw = type.flaw
