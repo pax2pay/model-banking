@@ -13,6 +13,7 @@ const account: pax2pay.Account = {
 	name: "A name",
 	id: "aaaaaa",
 	created: "2023-07-20T17:00.000Z",
+	status: { mode: "active" },
 	rails: [],
 	balances: { GBP: { actual: 0, incomingReserved: 0, outgoingReserved: 0 } },
 }
