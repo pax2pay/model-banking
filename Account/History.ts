@@ -18,7 +18,7 @@ export namespace History {
 			"created",
 			"updated",
 			"buffer",
-			"listener",
+			"listeners",
 		] as const
 		export const type = isly.string<Property>(values)
 	}
