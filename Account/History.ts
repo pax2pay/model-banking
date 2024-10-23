@@ -10,7 +10,16 @@ export type History = {
 export namespace History {
 	export type Property = typeof Property.values[number]
 	export namespace Property {
-		export const values = ["status", "rails", "counterparts", "rules", "created", "updated", "buffer"] as const
+		export const values = [
+			"status",
+			"rails",
+			"counterparts",
+			"rules",
+			"created",
+			"updated",
+			"buffer",
+			"listener",
+		] as const
 		export const type = isly.string<Property>(values)
 	}
 	export const type = isly.object<History>({
