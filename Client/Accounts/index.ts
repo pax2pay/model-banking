@@ -4,6 +4,7 @@ import * as rest from "cloudly-rest"
 import { Account } from "../../Account"
 import { Buffer } from "./Buffer"
 import { Counterparts } from "./Counterparts"
+import { History } from "./History"
 import { Rails } from "./Rails"
 import { Rules } from "./Rules"
 import { Status } from "./Status"
@@ -14,6 +15,7 @@ export class Accounts extends rest.Collection<gracely.Error> {
 	readonly rules = new Rules(this.client)
 	readonly status = new Status(this.client)
 	readonly counterparts = new Counterparts(this.client)
+	readonly history = new History(this.client)
 
 	constructor(client: http.Client) {
 		super(client)
