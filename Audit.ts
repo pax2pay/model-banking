@@ -18,6 +18,24 @@ export namespace Audit {
 			| "create-entry"
 			| "replace-entry"
 		marqeta: "gateway-create" | "gateway-update" | "hook-register" | "hook-update" | "product-create" | "user-create"
+		account:
+			| "buffer"
+			| "counterpart-remove"
+			| "counterpart-replace"
+			| "listener-create"
+			| "listener-remove"
+			| "rail-create"
+			| "rail-remove"
+			| "rail-replace"
+			| "rule-create"
+			| "rule-remove"
+			| "rule-replace"
+			| "create"
+			| "operation"
+			| "remove"
+			| "update"
+		label: "create" | "remove" | "replace"
+		transaction: "operation" | "cancel" | "system" | "update"
 	}
 	export type Resource = typeof Resource.values[number]
 	export namespace Resource {
