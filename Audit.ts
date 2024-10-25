@@ -48,7 +48,7 @@ export namespace Audit {
 			| "remove"
 			| "update"
 		route: "create"
-		clearbank: "assessmentFailed" | "validationFailed" | "validationFailed"
+		clearbank: "assessmentFailed" | "validationFailed"
 	}
 	export type Resource = typeof Resource.values[number]
 	export namespace Resource {
