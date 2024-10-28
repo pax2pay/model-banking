@@ -1,4 +1,5 @@
 import { gracely } from "gracely"
+import { isoly } from "isoly"
 import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Card } from "../Card"
@@ -38,5 +39,15 @@ export class Cards extends rest.Collection<gracely.Error> {
 	}
 	async update(id: string, card: Card.Changeable): Promise<Card | gracely.Error> {
 		return this.client.patch<Card>(`/card/${id}`, card)
+	}
+	async statistics(
+		scheme: Card.Scheme,
+		range: isoly.DateRange,
+		options?: { limit: number; cursor?: string }
+	): Promise<{ new: number; old: number; withTransaction: number; cursor?: string } | gracely.Error> {
+		const queries = options && http.Search.stringify({ ...options, ...range })
+		return this.client.get<{ new: number; old: number; withTransaction: number; cursor?: string }>(
+			`/card/statistics/${scheme}?${queries}`
+		)
 	}
 }
