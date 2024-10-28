@@ -6,14 +6,10 @@ import { Audit as AuditLog } from "../Audit"
 export class Audit {
 	constructor(private readonly client: http.Client) {}
 	async list(
-		options?: {
-			resource?: AuditLog.Resource
-			limit?: number
-			cursor?: string
-		} & Partial<isoly.DateRange>
-	): Promise<(AuditLog[] & { cursor?: string | undefined }) | gracely.Error> {
+		options?: { resource?: AuditLog.Resource; limit?: number; cursor?: string } & Partial<isoly.DateRange>
+	): Promise<(AuditLog[] & { cursor?: string }) | gracely.Error> {
 		const queries = options && http.Search.stringify(options)
-		return this.client.get<AuditLog[] & { cursor?: string | undefined }>(
+		return this.client.get<AuditLog[] & { cursor?: string }>(
 			`/audit${options?.resource ? "/" + options?.resource : ""}${queries ? "?" + queries : ""}`
 		)
 	}
