@@ -45,9 +45,17 @@ export class Cards extends rest.Collection<gracely.Error> {
 		range: isoly.DateRange,
 		options?: { limit: number; cursor?: string }
 	): Promise<{ new: number; old: number; withTransaction: number; cursor?: string } | gracely.Error> {
-		const queries = options && http.Search.stringify({ ...options, start: range.start, end: range.end })
+		//const queries = options && http.Search.stringify({ ...options, start: range.start, end: range.end })
+		const search =
+			range?.start && range?.end
+				? `?start=${range?.start}&end=${range?.end}`
+				: range?.start
+				? `?start=${range?.start}`
+				: range?.end
+				? `?end=${range?.end}`
+				: ""
 		return this.client.get<{ new: number; old: number; withTransaction: number; cursor?: string }>(
-			`/card/statistics/${scheme}?${queries}`
+			`/card/statistics/${scheme}${search}`
 		)
 	}
 }
