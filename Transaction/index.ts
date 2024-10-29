@@ -11,6 +11,7 @@ import { Creatable as TransactionCreatable } from "./Creatable"
 import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
 import { Reference as TransactionReference } from "./Reference"
+import { Statistics as TransactionStatistics } from "./Statistics"
 import { Status as TransactionStatus } from "./Status"
 
 export interface Transaction {
@@ -104,6 +105,7 @@ export namespace Transaction {
 	export import Reference = TransactionReference
 	export import Note = TransactionNote
 	export import Status = TransactionStatus
+	export import Statistics = TransactionStatistics
 	export const type = isly.object<Transaction>({
 		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
