@@ -3,28 +3,29 @@ import { isly } from "isly"
 import { Transaction } from "."
 
 export type Statistics = Record<
-	"capture" | "refund",
-	{
-		domestic: {
+	Statistics.TransactionType,
+	Record<
+		Statistics.Region,
+		{
 			count: number
 			amount: number
 		}
-		intraRegion: {
-			count: number
-			amount: number
-		}
-		extraRegion: {
-			count: number
-			amount: number
-		}
-	}
+	>
 >
 
 export namespace Statistics {
+	export type TransactionType = typeof TransactionType.values[number]
+	export namespace TransactionType {
+		export const values = ["capture", "refund"] as const
+	}
+	export type Region = typeof Region.values[number]
+	export namespace Region {
+		export const values = ["domestic", "intraRegion", "extraRegion"] as const
+	}
 	export const type = isly.record<Statistics>(
-		isly.string(["capture", "refund"]),
+		isly.string<TransactionType>(TransactionType.values),
 		isly.record(
-			isly.string(["domestic", "intraRegion", "extraRegion"]),
+			isly.string<Region>(Region.values),
 			isly.object({
 				count: isly.number(),
 				amount: isly.number(),
@@ -49,5 +50,22 @@ export namespace Statistics {
 			statistics[state.transaction.kind][region].amount += state.transaction.amount
 		}
 		return statistics
+	}
+	export function combine(accumulation: Statistics, incoming: Statistics): Statistics {
+		Object.entries(incoming).forEach(([kind, statistic]: [TransactionType, Statistics[TransactionType]]) =>
+			Object.entries(statistic).forEach(
+				([region, { count, amount }]: [
+					Region,
+					{
+						count: number
+						amount: number
+					}
+				]) => {
+					accumulation[kind][region].count += count
+					accumulation[kind][region].amount += amount
+				}
+			)
+		)
+		return accumulation
 	}
 }
