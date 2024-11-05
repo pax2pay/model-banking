@@ -11,6 +11,7 @@ export namespace Stack {
 		"testUK-marqeta",
 		"testUK-tpl-marqeta",
 		"testUK-diners-dpg",
+		"uk-diners-dpg",
 		"uk-mc-tpl-marqeta",
 	] as const
 	export const type = isly.string(stacks)
@@ -66,6 +67,7 @@ export namespace Stack {
 			"testUK-tpl-marqeta": "w",
 			"testUK-diners-dpg": "u",
 			"uk-mc-tpl-marqeta": "a",
+			"uk-diners-dpg": "b",
 		}
 		export function from(stack: Stack): Stack.Character {
 			return table[stack]
