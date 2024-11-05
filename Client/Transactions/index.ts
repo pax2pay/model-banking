@@ -2,6 +2,8 @@ import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
+import { Card } from "../../Card"
+import { Supplier } from "../../Supplier"
 import { Transaction } from "../../Transaction"
 import { Notes } from "./Notes"
 
@@ -40,5 +42,12 @@ export class Transactions extends rest.Collection<gracely.Error> {
 				? `/account/${account}/transaction/${transaction}?detailed=true`
 				: `/transaction/${transaction}?detailed=true`
 		)
+	}
+	async statistics(
+		range: isoly.DateRange,
+		queries?: { cursor?: string; scheme?: Card.Scheme; supplier?: Supplier }
+	): Promise<Transaction.Statistics | gracely.Error> {
+		const query = "?" + http.Search.stringify({ ...queries, ...range })
+		return this.client.get<Transaction.Statistics>(`/transaction/statistics${query}`)
 	}
 }
