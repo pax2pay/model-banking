@@ -31,6 +31,7 @@ describe("Transaction Statistics", () => {
 				intraRegion: { count: 0, amount: 0 },
 				extraRegion: { count: 1, amount: 10 },
 			},
+			cursor: "cursor",
 		}
 		const expected: pax2pay.Transaction.Statistics = {
 			capture: {

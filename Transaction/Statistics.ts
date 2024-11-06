@@ -58,19 +58,20 @@ export namespace Statistics {
 		return statistics
 	}
 	export function combine(accumulation: Statistics, incoming: Statistics): Statistics {
-		Object.entries(incoming).forEach(([kind, statistic]: [TransactionType, Statistics[TransactionType]]) =>
-			Object.entries(statistic).forEach(
-				([region, { count, amount }]: [
-					Region,
-					{
-						count: number
-						amount: number
+		Object.entries((({ cursor, ...rest }) => rest)(incoming)).forEach(
+			([kind, statistic]: [TransactionType, Statistics[TransactionType]]) =>
+				Object.entries(statistic).forEach(
+					([region, { count, amount }]: [
+						Region,
+						{
+							count: number
+							amount: number
+						}
+					]) => {
+						accumulation[kind][region].count += count
+						accumulation[kind][region].amount += amount
 					}
-				]) => {
-					accumulation[kind][region].count += count
-					accumulation[kind][region].amount += amount
-				}
-			)
+				)
 		)
 		return accumulation
 	}
