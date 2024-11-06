@@ -2,16 +2,11 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Transaction } from "."
 
-export type Statistics = Record<
-	Statistics.TransactionType,
-	Record<
-		Statistics.Region,
-		{
-			count: number
-			amount: number
-		}
-	>
->
+export interface Statistics {
+	capture: Statistics.Regional
+	refund: Statistics.Regional
+	cursor?: string
+}
 
 export namespace Statistics {
 	export type TransactionType = typeof TransactionType.values[number]
@@ -22,16 +17,27 @@ export namespace Statistics {
 	export namespace Region {
 		export const values = ["domestic", "intraRegion", "extraRegion"] as const
 	}
-	export const type = isly.record<Statistics>(
-		isly.string<TransactionType>(TransactionType.values),
-		isly.record(
+	export type Regional = Record<
+		Statistics.Region,
+		{
+			count: number
+			amount: number
+		}
+	>
+	export namespace Regional {
+		export const type = isly.record(
 			isly.string<Region>(Region.values),
 			isly.object({
 				count: isly.number(),
 				amount: isly.number(),
 			})
 		)
-	)
+	}
+	export const type = isly.object<Statistics>({
+		capture: Regional.type,
+		refund: Regional.type,
+		cursor: isly.string().optional(),
+	})
 	export function append(
 		statistics: Statistics,
 		transaction: Transaction,
