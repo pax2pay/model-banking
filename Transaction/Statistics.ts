@@ -13,6 +13,10 @@ export namespace Statistics {
 	export namespace TransactionType {
 		export const values = ["capture", "refund"] as const
 	}
+	export type Region = typeof Region.values[number]
+	export namespace Region {
+		export const values = ["domestic", "intraRegion", "extraRegion"] as const
+	}
 	export type Regional = Record<
 		Statistics.Region,
 		{
@@ -28,10 +32,6 @@ export namespace Statistics {
 				amount: isly.number(),
 			})
 		)
-	}
-	export type Region = typeof Region.values[number]
-	export namespace Region {
-		export const values = ["domestic", "intraRegion", "extraRegion"] as const
 	}
 	export const type = isly.object<Statistics>({
 		capture: Regional.type,
