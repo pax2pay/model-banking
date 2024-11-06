@@ -181,7 +181,7 @@ export namespace Transaction {
 		}
 	}
 	export function fromCreatable(
-		creatable: Creatable & { counterpart: Rail.Address },
+		creatable: Creatable.Resolved,
 		id: string,
 		state: Rule.State.Evaluated,
 		account: { id: string; name: string; organization: string; address: Rail.Address },
@@ -229,7 +229,7 @@ export namespace Transaction {
 		}
 	}
 	export function system(
-		creatable: Creatable & { counterpart: Rail.Address },
+		creatable: Creatable.Resolved,
 		operations: Operation[],
 		account: { id: string; name: string; organization: string; address: Rail.Address },
 		balance: { actual: number; reserved: number; available: number },
@@ -262,7 +262,7 @@ export namespace Transaction {
 		}
 	}
 	export function empty(
-		creatable: Creatable & { counterpart: Rail.Address },
+		creatable: Creatable.Resolved,
 		account: { id: string; name: string; organization: string; address: Rail.Address },
 		balance: { actual: number; reserved: number; available: number },
 		by: string | undefined

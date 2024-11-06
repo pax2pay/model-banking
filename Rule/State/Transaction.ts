@@ -1,5 +1,4 @@
 import { isoly } from "isoly"
-import type { Address } from "../../Rail/Address"
 import { Transaction as ModelTransaction } from "../../Transaction"
 import type { Rule } from "../index"
 
@@ -20,7 +19,7 @@ export interface Transaction extends ModelTransaction.Creatable {
 export namespace Transaction {
 	export function from(
 		accountName: string,
-		transaction: (ModelTransaction.Creatable & { counterpart: Address }) | ModelTransaction,
+		transaction: ModelTransaction.Creatable.Resolved | ModelTransaction,
 		kind: Rule.Base.Kind,
 		stage: "finalize" | "initiate"
 	): Transaction {

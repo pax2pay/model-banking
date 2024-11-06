@@ -3,7 +3,7 @@ import { Exchange } from "../Exchange"
 import { pax2pay } from "../index"
 
 // cSpell:disable
-const transaction1: pax2pay.Transaction.Creatable & { counterpart: pax2pay.Rail.Address } = {
+const transaction1: pax2pay.Transaction.Creatable.Resolved = {
 	counterpart: { identifier: "bvMkSwAG", type: "paxgiro" },
 	currency: "GBP",
 	amount: 501,
