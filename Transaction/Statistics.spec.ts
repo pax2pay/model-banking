@@ -45,7 +45,7 @@ describe("Transaction Statistics", () => {
 				extraRegion: { count: 1, amount: 10 },
 			},
 		}
-		const result = pax2pay.Transaction.Statistics.combine(statistics, toCombine)
+		const result = pax2pay.Transaction.Statistics.combine(statistics, toCombine, "SEK")
 		expect(result).toEqual(expected)
 	})
 	it("should append a transaction to statistics", () => {
@@ -61,7 +61,7 @@ describe("Transaction Statistics", () => {
 				transaction: { kind: "authorization", amount: 100 },
 			},
 		} as unknown as pax2pay.Transaction
-		expect(pax2pay.Transaction.Statistics.append(statistics, transactionToCount, ["SE"], ["NO"])).toEqual({
+		expect(pax2pay.Transaction.Statistics.append(statistics, transactionToCount, ["SE"], ["NO"], "SEK")).toEqual({
 			capture: {
 				domestic: { count: 2, amount: 199 },
 				intraRegion: { count: 0, amount: 0 },
@@ -73,6 +73,8 @@ describe("Transaction Statistics", () => {
 				extraRegion: { count: 0, amount: 0 },
 			},
 		})
-		expect(pax2pay.Transaction.Statistics.append(statistics, transactionToNotCount, ["SE"], ["NO"])).toEqual(statistics)
+		expect(pax2pay.Transaction.Statistics.append(statistics, transactionToNotCount, ["SE"], ["NO"], "SEK")).toEqual(
+			statistics
+		)
 	})
 })
