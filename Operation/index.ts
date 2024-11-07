@@ -1,8 +1,15 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { buffer as operationBuffer } from "./buffer"
+import { cancel as operationCancel } from "./cancel"
 import { Change as OperationChange } from "./Change"
 import { Changes as OperationChanges } from "./Changes"
+import { collect as operationCollect } from "./collect"
 import { Creatable as OperationCreatable } from "./Creatable"
+import { fund as operationFund } from "./fund"
+import { incoming as operationIncoming } from "./incoming"
+import { outgoing as operationOutgoing } from "./outgoing"
+import { refund as operationRefund } from "./refund"
 import { Signer as OperationSigner } from "./Signer"
 
 export interface Operation extends OperationCreatable {
@@ -17,19 +24,6 @@ export namespace Operation {
 	export function available(operation: Operation, currency: isoly.Currency): number {
 		return OperationChanges.available(operation.changes, currency, operation.created <= "2024-09-13T13:26:00.001Z")
 	}
-	export function sum(operations: Operation[]): Changes.Sum {
-		const result: Changes.Sum = {}
-		for (const operation of operations) {
-			Object.entries(operation.changes).forEach(([entry, change]) => {
-				result[entry as Changes.Entry.Balance] = isoly.Currency[change.type](
-					operation.currency,
-					result[entry as Changes.Entry.Balance] ?? 0,
-					change.amount
-				)
-			})
-		}
-		return result
-	}
 	export const Signer = OperationSigner
 	export import Creatable = OperationCreatable
 	export import Changes = OperationChanges
@@ -43,6 +37,14 @@ export namespace Operation {
 	})
 	export const is = type.is
 	export const flaw = type.flaw
+	export const buffer = operationBuffer
+	export const cancel = operationCancel
+	export const collect = operationCollect
+	export const fund = operationFund
+	export const incoming = operationIncoming
+	export const outgoing = operationOutgoing
+	export const refund = operationRefund
+	export const sum = Changes.sum
 	export function fromCreatable(transaction: string, creatable: Creatable): Operation {
 		return { ...creatable, transaction, counter: 0, created: isoly.DateTime.now() }
 	}
