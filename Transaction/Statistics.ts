@@ -42,7 +42,8 @@ export namespace Statistics {
 		statistics: Statistics,
 		transaction: Transaction,
 		domestic: isoly.CountryCode.Alpha2[],
-		intraRegion: isoly.CountryCode.Alpha2[]
+		intraRegion: isoly.CountryCode.Alpha2[],
+		currency: isoly.Currency
 	): Statistics {
 		const state = transaction.state
 		const authorization = state?.authorization
@@ -53,24 +54,29 @@ export namespace Statistics {
 				? "intraRegion"
 				: "extraRegion"
 			statistics[state.transaction.kind][region].count++
-			statistics[state.transaction.kind][region].amount += state.transaction.amount
+			statistics[state.transaction.kind][region].amount = isoly.Currency.add(
+				currency,
+				statistics[state.transaction.kind][region].amount,
+				state.transaction.amount
+			)
 		}
 		return statistics
 	}
-	export function combine(accumulation: Statistics, incoming: Statistics): Statistics {
-		Object.entries(incoming).forEach(([kind, statistic]: [TransactionType, Statistics[TransactionType]]) =>
-			Object.entries(statistic).forEach(
-				([region, { count, amount }]: [
-					Region,
-					{
-						count: number
-						amount: number
+	export function combine(accumulation: Statistics, incoming: Statistics, currency: isoly.Currency): Statistics {
+		Object.entries((({ cursor, ...rest }) => rest)(incoming)).forEach(
+			([kind, statistic]: [TransactionType, Statistics[TransactionType]]) =>
+				Object.entries(statistic).forEach(
+					([region, { count, amount }]: [
+						Region,
+						{
+							count: number
+							amount: number
+						}
+					]) => {
+						accumulation[kind][region].count += count
+						accumulation[kind][region].amount = isoly.Currency.add(currency, accumulation[kind][region].amount, amount)
 					}
-				]) => {
-					accumulation[kind][region].count += count
-					accumulation[kind][region].amount += amount
-				}
-			)
+				)
 		)
 		return accumulation
 	}
