@@ -19,7 +19,7 @@ export namespace Operation {
 	}
 	export function sum(operations: Operation[]): Changes.Sum {
 		const result: Changes.Sum = {}
-		for (const operation of operations) {
+		for (const operation of operations)
 			Object.entries(operation.changes).forEach(([entry, change]) => {
 				result[entry as Changes.Entry.Balance] = isoly.Currency[change.type](
 					operation.currency,
@@ -27,7 +27,6 @@ export namespace Operation {
 					change.amount
 				)
 			})
-		}
 		return result
 	}
 	export const Signer = OperationSigner

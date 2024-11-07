@@ -78,9 +78,8 @@ export namespace Fragment {
 			minted?: Record<string, { amount: number }>
 		): Record<string, { amount: number }> {
 			const result: Record<string, { amount: number }> = { ...(minted ?? {}) }
-			for (const [id, account] of Object.entries(burned)) {
+			for (const [id, account] of Object.entries(burned))
 				result[id] = { amount: isoly.Currency.subtract(currency, result[id]?.amount ?? 0, account.amount) }
-			}
 			return result
 		}
 		function accountToNew(account: Record<LedgerAccount, number>): Record<string, { amount: number }> {
@@ -90,23 +89,21 @@ export namespace Fragment {
 		}
 		export function toCounterbalance(currency: isoly.Currency, minted: Coinage, burned: Coinage): Counterbalance {
 			const result: Counterbalance = {}
-			for (const [code, change] of Object.entries(minted)) {
+			for (const [code, change] of Object.entries(minted))
 				result[code] = { total: change.amount, account: accountToNew(change.account) }
-			}
-			for (const [code, change] of Object.entries(burned)) {
+			for (const [code, change] of Object.entries(burned))
 				result[code] = {
 					total: isoly.Currency.subtract(currency, result[code]?.total ?? 0, change.amount),
 					account: mergeAccounts(currency, accountToNew(change.account), result[code]?.account),
 				}
-			}
 			return result
 		}
 	}
 	export function fromLegacy(currency: isoly.Currency, fragment: Fragment | Legacy): Fragment {
 		let result: Fragment
-		if ("counterbalance" in fragment) {
+		if ("counterbalance" in fragment)
 			result = fragment
-		} else {
+		else {
 			const counterbalance = Legacy.toCounterbalance(currency, fragment.minted, fragment.burned)
 			const result: Fragment = { ...fragment, counterbalance }
 			"burned" in result && delete result.burned

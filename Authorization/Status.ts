@@ -10,14 +10,14 @@ export namespace Status {
 	export namespace Failed {
 		export function from(error: gracely.Error | Transaction.Status.Reason): Failed {
 			let result: Status
-			if (gracely.Error.is(error)) {
+			if (gracely.Error.is(error))
 				if (error.error?.includes("Card with id"))
 					result = "card not found"
 				else if (error.error?.includes("Failed to reach account"))
 					result = "account not found"
 				else
 					result = "other"
-			} else
+			else
 				result = error
 			return result
 		}

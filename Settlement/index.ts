@@ -94,9 +94,8 @@ export namespace Settlement {
 				return total
 			}, {} as Totals)
 			result = { ...partialSettlement, totals }
-		} else {
+		} else
 			result = settlement
-		}
 		return result
 	}
 	export const type = SettlementCreatable.type.extend<Settlement>({

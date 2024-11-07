@@ -44,7 +44,7 @@ export namespace Entry {
 				reason: reason(creatable, transaction),
 				...creatable,
 			}
-		else {
+		else
 			switch (creatable.type) {
 				case "capture":
 					result = Capture.from(creatable)
@@ -56,7 +56,6 @@ export namespace Entry {
 					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet." }
 					break
 			}
-		}
 		return result
 	}
 	function reason(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): string {

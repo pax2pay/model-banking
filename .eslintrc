@@ -41,6 +41,10 @@
 		"no-case-declarations": "off",
 		"no-inner-declarations": "off",
 		"sort-imports": "off",
+		"curly": [
+			"warn",
+			"multi"
+		],
 		"simple-import-sort/imports": [
 			"error",
 			{

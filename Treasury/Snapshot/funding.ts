@@ -26,9 +26,8 @@ export namespace funding {
 					cursor: Cursor.fromTransaction(settlement),
 					amount: Math.abs(settlement.amount),
 				}
-			else {
+			else
 				cursor.amount += Math.abs(settlement.amount)
-			}
 			return cursors
 		}
 		export function updateCursors(funding: Transaction, cursors: Cursors): Cursors {
@@ -46,9 +45,8 @@ export namespace funding {
 		}
 	}
 	export function settle(transactions: Transaction[], amountsUpdated: Cursors): Cursors {
-		for (let i = transactions.length - 1; i >= 0; i--) {
+		for (let i = transactions.length - 1; i >= 0; i--)
 			Cursors.updateCursors(transactions[i], amountsUpdated)
-		}
 		return amountsUpdated
 	}
 	export function isStale(cursor: Cursor, bankingDays?: number, holidays?: isoly.Date[]): boolean {
