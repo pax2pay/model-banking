@@ -38,13 +38,12 @@ export namespace Score {
 			state.transaction.stage == "initiate" &&
 			["card", "external", "internal"].some(type => type == state.transaction.type)
 		)
-			for (const rule of rules) {
+			for (const rule of rules)
 				if (control(rule, state, macros)) {
 					result.risk = (result.risk ?? 100) * (rule.risk / 100)
 					result.outcomes.push(rule)
 					result.notes.push({ author: "automatic", created: now, text: rule.name, rule })
 				}
-			}
 		return result
 	}
 }

@@ -74,7 +74,7 @@ export namespace Reserve {
 			["authorization", "outbound"].some(kind => kind == state.transaction.kind) &&
 			["card", "external"].some(type => type == state.transaction.type)
 		)
-			for (const rule of rules) {
+			for (const rule of rules)
 				if (control(rule, state, macros)) {
 					if (rule.reserve.percentage)
 						result.reserve = isoly.Currency.add(
@@ -101,7 +101,6 @@ export namespace Reserve {
 					result.outcomes.push(rule)
 					result.notes.push({ author: "automatic", created: now, text: rule.name, rule })
 				}
-			}
 		return result
 	}
 	export function apply(reserve: number, state: State): number {

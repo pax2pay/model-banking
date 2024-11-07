@@ -388,7 +388,7 @@ export namespace Transaction {
 	export function flag(transaction: Transaction, flags: string[] | undefined): void {
 		const current = new Set<string>(transaction.flags)
 		const old = new Set<string>(transaction.oldFlags)
-		for (const flag of flags ?? []) {
+		for (const flag of flags ?? [])
 			if (!flag.startsWith("-")) {
 				old.delete(flag)
 				current.add(flag)
@@ -396,7 +396,6 @@ export namespace Transaction {
 				current.delete(flag.substring(1))
 				old.add(flag.substring(1))
 			}
-		}
 		transaction.flags = Array.from(current)
 		transaction.oldFlags = Array.from(old)
 	}

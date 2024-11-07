@@ -20,7 +20,7 @@ export namespace StaleFiat {
 		for (const [currency, amount] of Object.entries(account.balance)) {
 			let oldest: { id: string; date: isoly.Date; created: isoly.DateTime } | undefined = undefined
 			let remainder = amount
-			for (const transaction of transactions) {
+			for (const transaction of transactions)
 				if (transaction.amount > 0 && transaction.currency == currency && remainder > 0) {
 					remainder = isoly.Currency.subtract(currency, remainder, transaction.amount)
 					oldest = {
@@ -30,7 +30,6 @@ export namespace StaleFiat {
 					}
 				} else if (remainder < 0)
 					break
-			}
 			if (oldest && isoly.Date.now() > isoly.Date.nextBusinessDay(oldest.date, 3, Holidays.dates["England"]))
 				result.push({
 					type: "stale-fiat",
