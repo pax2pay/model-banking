@@ -1,6 +1,5 @@
 import { isly } from "isly"
 import { Account as ModelAccount } from "../../Account"
-import type { Address } from "../../Rail/Address"
 import type { Transaction as ModelTransaction } from "../../Transaction"
 import type { Rule } from "../index"
 import { Account as StateAccount } from "./Account"
@@ -43,7 +42,7 @@ export namespace State {
 		account: ModelAccount,
 		transactions: Account.Transactions,
 		days: Account.Days,
-		transaction: (ModelTransaction.Creatable & { counterpart: Address }) | ModelTransaction,
+		transaction: ModelTransaction.Creatable.Resolved | ModelTransaction,
 		kind: Rule.Base.Kind,
 		stage: "finalize" | "initiate",
 		authorization?: Authorization,
