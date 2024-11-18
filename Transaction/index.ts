@@ -465,4 +465,8 @@ export namespace Transaction {
 			","
 		)
 	}
+	export type CardTransaction = Transaction & {
+		account: Extract<Transaction["account"], Rail.Address.Card>
+		counterpart: Extract<Transaction["counterpart"], Rail.Address.Card.Counterpart>
+	}
 }

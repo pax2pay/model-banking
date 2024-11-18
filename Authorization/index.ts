@@ -6,7 +6,6 @@ import { Acquirer } from "../Acquirer"
 import { Amount } from "../Amount"
 import { Identifier } from "../Identifier"
 import { Merchant } from "../Merchant"
-import { Rail } from "../Rail"
 import { Transaction } from "../Transaction"
 import { Creatable as AuthorizationCreatable } from "./Creatable"
 import { Exchange as AuthorizationExchange } from "./Exchange"
@@ -68,9 +67,7 @@ export namespace Authorization {
 	})
 	export function fromCreatable(
 		creatable: Creatable,
-		transaction:
-			| (Transaction & { account: Rail.Address.Card; counterpart: Rail.Address.Card.Counterpart })
-			| gracely.Error
+		transaction: Transaction.CardTransaction | gracely.Error
 	): Authorization {
 		const partial: Pick<
 			Authorization,
@@ -99,7 +96,7 @@ export namespace Authorization {
 				...partial,
 				card: { iin: transaction.account.iin, last4: transaction.account.last4, id: creatable.card },
 			}
-		else {
+		else
 			result = {
 				id: transaction.id,
 				status: "approved",
@@ -108,7 +105,6 @@ export namespace Authorization {
 				account: transaction.accountId,
 				transaction: { id: transaction.id, posted: transaction.posted, description: transaction.description },
 			}
-		}
 		return result
 	}
 }
