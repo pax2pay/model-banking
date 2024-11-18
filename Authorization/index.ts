@@ -4,9 +4,9 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Acquirer } from "../Acquirer"
 import { Amount } from "../Amount"
-import { Card } from "../Card"
 import { Identifier } from "../Identifier"
 import { Merchant } from "../Merchant"
+import { Rail } from "../Rail"
 import { Transaction } from "../Transaction"
 import { Creatable as AuthorizationCreatable } from "./Creatable"
 import { Exchange as AuthorizationExchange } from "./Exchange"
@@ -68,8 +68,9 @@ export namespace Authorization {
 	})
 	export function fromCreatable(
 		creatable: Creatable,
-		card: Card | gracely.Error,
-		transaction: Transaction | gracely.Error
+		transaction:
+			| (Transaction & { account: Rail.Address.Card; counterpart: Rail.Address.Card.Counterpart })
+			| gracely.Error
 	): Authorization {
 		const partial: Pick<
 			Authorization,
@@ -84,36 +85,30 @@ export namespace Authorization {
 			exchange: creatable.exchange,
 		}
 		let result: Authorization
-		if (gracely.Error.is(card))
-			result = {
-				id: Identifier.generate(),
-				status: Status.Failed.from(card),
-				...partial,
-				card: { id: creatable.card },
-			}
-		else if (gracely.Error.is(transaction))
+		if (gracely.Error.is(transaction))
 			result = {
 				id: Identifier.generate(),
 				status: Status.Failed.from(transaction),
 				...partial,
-				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
+				card: { id: creatable.card },
 			}
 		else if (!Transaction.Status.Success.is(transaction.status))
 			result = {
 				id: transaction.id,
 				status: Status.Failed.from(transaction.status[1]),
 				...partial,
-				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
+				card: { iin: transaction.account.iin, last4: transaction.account.last4, id: creatable.card },
 			}
-		else
+		else {
 			result = {
 				id: transaction.id,
 				status: "approved",
 				...partial,
-				card: { id: card.id, iin: card.details.iin, last4: card.details.last4, token: card.details.token },
-				account: card.account,
+				card: { iin: transaction.account.iin, last4: transaction.account.last4, id: creatable.card },
+				account: transaction.accountId,
 				transaction: { id: transaction.id, posted: transaction.posted, description: transaction.description },
 			}
+		}
 		return result
 	}
 }
