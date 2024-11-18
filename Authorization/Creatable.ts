@@ -7,6 +7,7 @@ import { Exchange } from "./Exchange"
 
 export interface Creatable {
 	card: string
+	account?: string
 	amount: Amount
 	exchange?: Exchange
 	merchant: Merchant
@@ -17,6 +18,7 @@ export interface Creatable {
 export namespace Creatable {
 	export const type = isly.object<Creatable>({
 		card: isly.string(),
+		account: isly.string().optional(),
 		amount: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		exchange: Exchange.type.optional(),
 		merchant: Merchant.type,
