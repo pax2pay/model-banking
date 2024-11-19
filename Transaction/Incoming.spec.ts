@@ -3,7 +3,7 @@ import { pax2pay } from "../index"
 // cSpell:disable
 describe("Transaction", () => {
 	it("is", () => {
-		expect(pax2pay.Transaction.is(transaction)).toBeTruthy()
+		expect(pax2pay.Transaction.type.is(transaction)).toBeTruthy()
 	})
 })
 const transaction: pax2pay.Transaction = {

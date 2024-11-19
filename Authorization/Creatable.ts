@@ -26,6 +26,4 @@ export namespace Creatable {
 		reference: isly.string(),
 		description: isly.string(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

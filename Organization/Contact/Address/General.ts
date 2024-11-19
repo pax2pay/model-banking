@@ -19,6 +19,4 @@ export namespace Default {
 		street: isly.string(),
 		zipCode: isly.string(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

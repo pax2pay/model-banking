@@ -19,6 +19,4 @@ export namespace Amounts {
 		)
 	}
 	export const type = isly.record<Amounts>(isly.string(isoly.Currency.types), isly.number())
-	export const is = type.is
-	export const flaw = type.flaw
 }

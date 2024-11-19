@@ -19,8 +19,6 @@ export namespace Preset {
 		"test-diners-202",
 	] as const
 	export const type = isly.string<Preset>(names)
-	export const is = type.is
-	export const flaw = type.flaw
 	export const presets: Record<Preset, Stack> = {
 		"p2p-mc-200": "uk-mc-tpl-marqeta",
 		"p2p-diners-175": "uk-diners-dpg",

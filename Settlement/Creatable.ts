@@ -17,6 +17,4 @@ export namespace Creatable {
 		references: isly.string().array().optional(),
 		batch: Batch.type,
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

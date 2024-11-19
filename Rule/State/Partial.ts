@@ -9,6 +9,4 @@ export interface Partial {
 
 export namespace Partial {
 	export const type = isly.object<Partial>({ card: Card.type, authorization: Authorization.type })
-	export const is = type.is
-	export const flaw = type.flaw
 }

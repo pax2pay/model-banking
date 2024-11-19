@@ -17,5 +17,4 @@ export namespace Iban {
 		institution: isly.string().optional(),
 		transactor: isly.string().optional(),
 	})
-	export const is = type.is
 }

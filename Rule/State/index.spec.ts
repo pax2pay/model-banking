@@ -30,6 +30,6 @@ describe("State", () => {
 			reference: "ahgt3817",
 			description: "An upcheck test authorization, to succeed",
 		}
-		expect(pax2pay.Rule.State.Authorization.is(authorization)).toEqual(true)
+		expect(pax2pay.Rule.State.Authorization.type.is(authorization)).toEqual(true)
 	})
 })

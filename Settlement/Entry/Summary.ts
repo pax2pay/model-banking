@@ -16,6 +16,4 @@ export namespace Summary {
 			})
 			.optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

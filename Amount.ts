@@ -9,6 +9,4 @@ export namespace Amount {
 		return !amount ? {} : Object.fromEntries<number>([amount])
 	}
 	export const type = isly.tuple<Amount>(isly.string(isoly.Currency.types), isly.number())
-	export const is = type.is
-	export const flaw = type.flaw
 }

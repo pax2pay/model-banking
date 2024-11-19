@@ -6,8 +6,6 @@ export type Result = { account: string; balance: number }
 
 export namespace Balance {
 	export const type = Amounts.type
-	export const is = Amounts.is
-	export const flaw = Amounts.flaw
 }
 export namespace Result {
 	export function is(value: Result | any): value is Result {

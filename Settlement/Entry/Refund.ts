@@ -42,14 +42,10 @@ export namespace Refund {
 			amount: Amount.type,
 			batch: Batch.type,
 		})
-		export const is = type.is
-		export const flaw = type.flaw
 	}
 	export const type = Creatable.type.extend<Refund>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 		transaction: Transaction.type.optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

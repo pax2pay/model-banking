@@ -35,5 +35,4 @@ export namespace Creatable {
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 		key: isly.string().optional(),
 	})
-	export const is = type.is
 }

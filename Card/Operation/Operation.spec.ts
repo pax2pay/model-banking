@@ -8,6 +8,6 @@ describe("Card.Operation", () => {
 		created: "2023-12-13T12:11:00.000Z",
 	}
 	it("authorization", () => {
-		expect(pax2pay.Card.Operation.is(operation)).toBeTruthy()
+		expect(pax2pay.Card.Operation.type.is(operation)).toBeTruthy()
 	})
 })

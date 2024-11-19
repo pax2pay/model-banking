@@ -16,7 +16,4 @@ export namespace Creatable {
 		amount: isly.number(),
 		description: isly.string(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
-	export const get = type.get
 }

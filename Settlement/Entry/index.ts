@@ -38,7 +38,7 @@ export namespace Entry {
 	export const Creatable = EntryCreatable
 	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
 		let result: Entry
-		if (!Transaction.is(transaction) || transaction.status != "finalized")
+		if (!Transaction.type.is(transaction) || transaction.status != "finalized")
 			result = {
 				status: "failed",
 				reason: reason(creatable, transaction),
@@ -77,6 +77,4 @@ export namespace Entry {
 		Entry.Refund.type,
 		Entry.Unknown.type
 	)
-	export const is = type.is
-	export const flaw = type.flaw
 }

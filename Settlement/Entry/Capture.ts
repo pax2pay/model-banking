@@ -30,13 +30,9 @@ export namespace Capture {
 			amount: Amount.type,
 			batch: Batch.type,
 		})
-		export const is = type.is
-		export const flaw = type.flaw
 	}
 	export const type = Creatable.type.extend<Capture>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }
