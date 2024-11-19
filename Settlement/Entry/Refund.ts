@@ -17,6 +17,7 @@ export namespace Refund {
 	export interface Creatable {
 		type: "refund"
 		card: string
+		account?: string // Only defined when using the new card id + account id card references
 		authorization: Pick<Authorization, "approvalCode">
 		merchant: Merchant
 		acquirer: Acquirer
@@ -32,6 +33,7 @@ export namespace Refund {
 		export const type = isly.object<Creatable>({
 			type: isly.string("refund"),
 			card: isly.string(),
+			account: isly.string().optional(),
 			authorization: isly.object({ approvalCode: isly.string() }),
 			merchant: Merchant.type,
 			acquirer: Acquirer.type,
