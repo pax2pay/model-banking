@@ -19,6 +19,4 @@ export namespace Identifier {
 		return isoly.DateTime.create(Number(new BigUint64Array(decoded.slice(decoded.length - 8).buffer)), "milliseconds")
 	}
 	export const type = isly.fromIs("Identifier", cryptly.Identifier.is)
-	export const is = type.is
-	export const flaw = type.flaw
 }

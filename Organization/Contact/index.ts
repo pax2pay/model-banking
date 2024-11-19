@@ -33,5 +33,4 @@ export namespace Contact {
 			code: isly.fromIs("CallingCode", isoly.CallingCode.is),
 		}),
 	})
-	export const is = type.is
 }

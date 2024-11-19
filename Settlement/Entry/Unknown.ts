@@ -21,8 +21,6 @@ export namespace Unknown {
 			data: isly.record(isly.string(), isly.any()),
 			batch: Batch.type,
 		})
-		export const is = Unknown.is
-		export const flaw = Unknown.flaw
 	}
 	export function from(creatable: Creatable): Unknown {
 		return { ...creatable, status: "failed" }
@@ -31,6 +29,4 @@ export namespace Unknown {
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

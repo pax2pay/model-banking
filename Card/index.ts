@@ -63,7 +63,6 @@ export namespace Card {
 		rules: ruleType.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 	})
-	export const is = type.is
 	export import Creatable = CardCreatable
 	export import Preset = CardPreset
 	export import Meta = CardMeta

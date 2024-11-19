@@ -38,5 +38,4 @@ export namespace Operation {
 		return statusConverter[status]
 	}
 	export const type = isly.union(Card.type, OperationAuthorization.type)
-	export const is = type.is
 }

@@ -34,8 +34,6 @@ export namespace Account {
 		rules: Rule.type.array().optional(),
 		status: AccountStatus.type,
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
 		return cryptly.Identifier.is(value, 8)
 	}

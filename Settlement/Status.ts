@@ -12,6 +12,4 @@ export namespace Status {
 		collected: isly.string(values),
 		settled: isly.string(values),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

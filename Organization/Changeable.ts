@@ -11,6 +11,4 @@ export namespace Changeable {
 		name: isly.string().optional(),
 		contact: Contact.type.optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

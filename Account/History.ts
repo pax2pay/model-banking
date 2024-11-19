@@ -27,6 +27,4 @@ export namespace History {
 		property: Property.type,
 		to: isly.any().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

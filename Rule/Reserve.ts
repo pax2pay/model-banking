@@ -52,7 +52,7 @@ export namespace Reserve {
 				...rule.reserve,
 				fixed:
 					typeof rule.reserve.fixed == "number"
-						? [Realm.is(currency) ? Realm.currency[currency] : currency, rule.reserve.fixed]
+						? [Realm.type.is(currency) ? Realm.currency[currency] : currency, rule.reserve.fixed]
 						: rule.reserve.fixed,
 			},
 		}

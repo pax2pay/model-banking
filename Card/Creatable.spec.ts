@@ -27,13 +27,13 @@ const Creatable: pax2pay.Card.Creatable = {
 describe("Card.Creatable", () => {
 	describe.each(Object.keys(Creatable).filter(e => !optional.includes(e)))("is()", remove => {
 		test(`is falsy since ${remove} is undefined`, () => {
-			expect(pax2pay.Card.Creatable.is({ ...Creatable, [remove]: undefined })).toBeFalsy()
+			expect(pax2pay.Card.Creatable.type.is({ ...Creatable, [remove]: undefined })).toBeFalsy()
 		})
 	})
 	describe.each(["", ...optional])("is()", remove => {
 		test(`is truthy even though ${remove} is undefined`, () => {
 			delete Creatable[remove as keyof typeof Creatable]
-			expect(pax2pay.Card.Creatable.is({ ...Creatable, [remove]: undefined })).toBeTruthy()
+			expect(pax2pay.Card.Creatable.type.is({ ...Creatable, [remove]: undefined })).toBeTruthy()
 		})
 	})
 })

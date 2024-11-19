@@ -31,7 +31,7 @@ export namespace Roles {
 					(r, role) =>
 						userwidgets.User.Permissions.merge(r, {
 							[key]:
-								organizationCode == "*" && Realm.is(role)
+								organizationCode == "*" && Realm.type.is(role)
 									? Realm.definitions[role]
 									: Organization.definitions[role as Organization.Role],
 						}),
@@ -45,7 +45,6 @@ export namespace Roles {
 		export type Role = typeof roles[number]
 		export const roles = ["admin", "fincrime-readonly", "fincrime", "finance", "operations", "support"] as const
 		export const type = isly.string(roles)
-		export const is = type.is
 		export const definitions: Record<Role, Permissions.Realm | true> = {
 			admin: true,
 			"fincrime-readonly": {

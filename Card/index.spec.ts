@@ -40,13 +40,13 @@ const Card: pax2pay.Card = {
 describe("Card", () => {
 	describe.each(Object.keys(Card).filter(e => !optional.includes(e)))("is()", remove => {
 		test(`is falsy since ${remove} is undefined`, () => {
-			expect(pax2pay.Card.is({ ...Card, [remove]: undefined })).toBeFalsy()
+			expect(pax2pay.Card.type.is({ ...Card, [remove]: undefined })).toBeFalsy()
 		})
 	})
 	describe.each(["", ...optional])("is()", remove => {
 		test(`is truthy even though ${remove} is undefined`, () => {
 			delete Card[remove as keyof typeof Card]
-			expect(pax2pay.Card.is({ ...Card, [remove]: undefined })).toBeTruthy()
+			expect(pax2pay.Card.type.is({ ...Card, [remove]: undefined })).toBeTruthy()
 		})
 	})
 })

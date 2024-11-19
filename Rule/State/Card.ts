@@ -61,6 +61,4 @@ export namespace Card {
 		used: isly.object<Card["used"]>({ amount: isly.number(), count: isly.number(), merchants: isly.string().array() }),
 		reject: isly.object<Card["reject"]>({ count: isly.number() }),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

@@ -22,8 +22,6 @@ export namespace Organization {
 		contact: OrganizationContact.type.optional(),
 		groups: isly.string().array().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 	export type Changeable = OrganizationChangeable
 	export const Changeable = OrganizationChangeable
 	export type Contact = OrganizationContact

@@ -7,8 +7,6 @@ export type Realm = typeof Realm.realms[number]
 export namespace Realm {
 	export const realms = ["test", "testUK", "uk", "eea", "upcheck"] as const
 	export const type: isly.Type<Realm> = isly.string(realms)
-	export const is = type.is
-	export const flaw = type.flaw
 	export function toString(): string {
 		return realms.toString().replaceAll(",", ", ") + "."
 	}

@@ -18,5 +18,4 @@ export namespace Authorization {
 		reason: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
-	export const is = type.is
 }

@@ -8,7 +8,7 @@ describe("Settlement", () => {
 	})
 	it("from legacy", () => {
 		const transformed = pax2pay.Settlement.fromLegacy(oldSettlement)
-		expect(pax2pay.Settlement.is(transformed)).toBeTruthy()
+		expect(pax2pay.Settlement.type.is(transformed)).toBeTruthy()
 		expect(transformed.totals.GBP?.outcome?.net).toEqual(oldSettlement.outcome.amount.GBP)
 		expect(transformed.totals.GBP?.outcome?.fee.other).toEqual(oldSettlement.outcome.fee.other.GBP)
 		expect("expected" in transformed.totals.GBP!).toBeTruthy()
@@ -58,7 +58,7 @@ describe("Settlement", () => {
 				transactions: [],
 			},
 		})
-		expect(pax2pay.Settlement.is(transformed)).toBeTruthy()
+		expect(pax2pay.Settlement.type.is(transformed)).toBeTruthy()
 		expect(transformed).toEqual({
 			batch: "202401004",
 			by: "automatic",
@@ -132,7 +132,7 @@ describe("Settlement", () => {
 				transactions: ["zzzyRT31VQM8hZaC"],
 			},
 		})
-		expect(pax2pay.Settlement.is(transformed)).toBeTruthy()
+		expect(pax2pay.Settlement.type.is(transformed)).toBeTruthy()
 		expect(transformed).toEqual({
 			batch: "202406806",
 			by: "automatic",

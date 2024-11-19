@@ -25,8 +25,7 @@ export namespace Incoming {
 		rail: Rail.type.optional(),
 		reference: TransactionReference.type.optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
+
 	export function fromRefund(entry: Settlement.Entry.Refund.Creatable, card: Rail.Address.Card): Incoming {
 		const [currency, amount] = entry.amount
 		return {

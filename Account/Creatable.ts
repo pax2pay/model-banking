@@ -6,6 +6,4 @@ export interface Creatable {
 
 export namespace Creatable {
 	export const type = isly.object<Creatable>({ name: isly.string() })
-	export const is = type.is
-	export const flaw = type.flaw
 }

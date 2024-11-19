@@ -15,8 +15,6 @@ export namespace Stack {
 		"uk-mc-tpl-marqeta",
 	] as const
 	export const type = isly.string(stacks)
-	export const is = type.is
-	export const flaw = type.flaw
 	export function toRealm(stack: Stack): Realm {
 		return stack.split("-")[0] as Realm
 	}

@@ -17,7 +17,7 @@ export interface Fetchable {
 export namespace Fetchable {
 	export const type = isly.object<Fetchable>({
 		label: isly.string(),
-		supplier: isly.fromIs("supplier", Supplier.is),
+		supplier: Supplier.type,
 		reference: isly.string(),
 		currencies: isly.fromIs("Account.Fetchable.currencies", isoly.Currency.is).array(),
 		type: Category.type,

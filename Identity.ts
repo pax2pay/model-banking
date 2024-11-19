@@ -48,7 +48,8 @@ export class Identity {
 		): value is
 			| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
 			| undefined =>
-			(requires?.organization ? !!identity?.organization : true) && (requires?.realm ? Realm.is(identity?.realm) : true)
+			(requires?.organization ? !!identity?.organization : true) &&
+			(requires?.realm ? Realm.type.is(identity?.realm) : true)
 		return (identity?.check(constraint) && requirement(identity) && identity) || undefined
 	}
 	static async verify(

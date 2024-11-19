@@ -24,11 +24,9 @@ export namespace Note {
 			flags: isly.string().array().optional(),
 			rule: isly.any().optional(),
 		})
-		export const is = type.is
 	}
 	export const type = Creatable.type.extend<Note>({
 		author: isly.string(),
 		created: isly.string(),
 	})
-	export const is = type.is
 }
