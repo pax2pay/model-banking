@@ -107,7 +107,7 @@ export namespace Transaction {
 	export import Status = TransactionStatus
 	export import Statistics = TransactionStatistics
 	export const type = isly.object<Transaction>({
-		counterpart: isly.fromIs("Rail.Address", Rail.Address.is),
+		counterpart: isly.fromIs("Rail.Address", Rail.Address.type.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		amount: Amount.type,
 		charge: isly.number().optional(),
@@ -137,9 +137,7 @@ export namespace Transaction {
 		risk: isly.number().optional(),
 		state: isly.any().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
-	export const get = type.get
+
 	export interface Legacy extends Omit<Transaction, "amount"> {
 		amount: number
 	}
@@ -174,8 +172,7 @@ export namespace Transaction {
 	export type Event = Omit<Transaction, "state">
 	export namespace Event {
 		export const type = Transaction.type.omit(["state"])
-		export const is = type.is
-		export const get = type.get
+
 		export function from(transaction: Transaction): Event {
 			return (({ state, ...event }) => event)(transaction)
 		}

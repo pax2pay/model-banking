@@ -57,8 +57,6 @@ export namespace Changes {
 		Record<Changes.Entry.Counterbalance, Change>
 	export namespace Legacy {
 		export const type = isly.record<Legacy>(isly.string(), Change.type)
-		export const is = type.is
-		export const flaw = type.flaw
 		export type Entry = AccountBalance.Legacy.Entry | Legacy.Entry.Counterbalance
 		export namespace Entry {
 			export function split(counterbalance: Counterbalance): [isoly.DateTime, CounterbalanceOperation.Link] {

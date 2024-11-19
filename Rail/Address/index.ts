@@ -98,7 +98,7 @@ export namespace Address {
 		AddressPaxGiro.type,
 		AddressScan.type
 	)
-	export const is = type.is
+
 	export import PaxGiro = AddressPaxGiro
 	export import Iban = AddressIban
 	export import Scan = AddressScan

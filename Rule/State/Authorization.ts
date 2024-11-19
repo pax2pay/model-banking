@@ -47,6 +47,4 @@ export namespace Authorization {
 			isly.object<{ reference: string }>({ reference: isly.string() })
 		),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

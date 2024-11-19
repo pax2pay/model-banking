@@ -22,6 +22,4 @@ export namespace Merchant {
 		state: isly.string().optional(),
 		country: isly.string(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

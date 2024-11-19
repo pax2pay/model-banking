@@ -36,8 +36,7 @@ export namespace Card {
 		expiry: ModelCard.Expiry.type,
 		holder: isly.string(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
+
 	export function from(card: ModelCard | Rule.State.Card): Card {
 		return {
 			type: "card",

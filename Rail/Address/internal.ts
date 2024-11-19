@@ -17,8 +17,7 @@ export namespace Internal {
 		identifier: isly.union(isly.fromIs("Identifier", cryptly.Identifier.is), Operation.Changes.Entry.type),
 		organization: isly.string().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
+
 	export function toLink(internal: Internal, realm: Realm): string {
 		return `${realm}-internal-${internal.identifier}`
 	}

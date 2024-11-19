@@ -19,5 +19,4 @@ export namespace Scan {
 		account: isly.string(),
 		holder: isly.string(),
 	})
-	export const is = type.is
 }

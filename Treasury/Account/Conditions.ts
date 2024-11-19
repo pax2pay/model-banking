@@ -6,5 +6,4 @@ export interface Conditions {
 }
 export namespace Conditions {
 	export const type = isly.object<Conditions>({ minimum: Amounts.type.optional() })
-	export const is = type.is
 }

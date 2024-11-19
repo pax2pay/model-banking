@@ -7,8 +7,6 @@ export namespace Exchange {
 		isly.fromIs("Currency", isoly.Currency.is),
 		isly.record(isly.fromIs("Currency", isoly.Currency.is), isly.number())
 	)
-	export const is = type.is
-	export const flaw = type.flaw
 	export function convert(
 		amount: number,
 		from: isoly.Currency,

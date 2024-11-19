@@ -45,7 +45,7 @@ export namespace Charge {
 				...rule.charge,
 				fixed:
 					typeof rule.charge.fixed == "number"
-						? [Realm.is(currency) ? Realm.currency[currency] : currency, rule.charge.fixed]
+						? [Realm.type.is(currency) ? Realm.currency[currency] : currency, rule.charge.fixed]
 						: rule.charge.fixed,
 			},
 		}

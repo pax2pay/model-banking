@@ -10,10 +10,9 @@ export interface Reference {
 
 export namespace Reference {
 	export const type = isly.object<Reference>({
-		supplier: isly.fromIs("Supplier", Supplier.is).optional(),
+		supplier: Supplier.type.optional(),
 		reference: isly.string().optional(),
 		returnId: isly.string().optional(),
 		endToEndId: isly.string().optional(),
 	})
-	export const is = type.is
 }

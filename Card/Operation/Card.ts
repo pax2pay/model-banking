@@ -18,5 +18,4 @@ export namespace Card {
 		from: Changeable.type.optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
-	export const is = type.is
 }

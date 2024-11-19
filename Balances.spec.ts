@@ -6,7 +6,7 @@ describe("Balances", () => {
 			AED: { actual: 110 },
 			USD: { outgoingReserved: 100, incomingReserved: 100, actual: 200 },
 		}
-		expect(pax2pay.Balances.is(balances)).toEqual(true)
+		expect(pax2pay.Balances.type.is(balances)).toEqual(true)
 	})
 	it("Balances.update", () => {
 		const legacy: pax2pay.Balances = {

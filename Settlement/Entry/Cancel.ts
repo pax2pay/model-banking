@@ -27,13 +27,9 @@ export namespace Cancel {
 			amount: Amount.type.optional(),
 			batch: Batch.type,
 		})
-		export const is = type.is
-		export const flaw = type.flaw
 	}
 	export const type = Creatable.type.extend<Cancel>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

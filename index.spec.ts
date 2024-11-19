@@ -6,7 +6,7 @@ import { pax2pay } from "./index"
 describe("library", () => {
 	it("scan from iban", () => {
 		expect(
-			pax2pay.Rail.Address.Scan.is(
+			pax2pay.Rail.Address.Scan.type.is(
 				pax2pay.Rail.Address.Scan.fromIban({ type: "iban", iban: "GB19CLRB04081800000011", holder: "ACME" })
 			)
 		).toEqual(true)
@@ -38,7 +38,7 @@ describe("library", () => {
 		expect(true).toEqual(true)
 	})
 	it("incoming is", () => {
-		expect(pax2pay.Transaction.Incoming.is(body)).toBeTruthy()
+		expect(pax2pay.Transaction.Incoming.type.is(body)).toBeTruthy()
 	})
 	it("DateTime is", () => {
 		expect(isoly.DateTime.is("2023-05-17T07:24:16.72Z")).toBeFalsy()
@@ -91,7 +91,7 @@ describe("library", () => {
 			rail: "internal",
 			transacted: "2023-03-17T12:27:08.624Z",
 		}
-		expect(pax2pay.Transaction.is(transaction)).toBeTruthy()
+		expect(pax2pay.Transaction.type.is(transaction)).toBeTruthy()
 	})
 	it("card transaction is", () => {
 		const transaction: pax2pay.Transaction = {
@@ -164,6 +164,6 @@ describe("library", () => {
 			rail: "mastercard",
 			transacted: "2023-03-17T12:27:08.624Z",
 		}
-		expect(pax2pay.Transaction.is(transaction)).toBeTruthy()
+		expect(pax2pay.Transaction.type.is(transaction)).toBeTruthy()
 	})
 })

@@ -68,7 +68,7 @@ export namespace Settlement {
 	export type MaybeOld = Settlement | OldSettlement
 	export function fromLegacy(settlement: MaybeOld): Settlement {
 		let result: Settlement
-		if (!is(settlement)) {
+		if (!type.is(settlement)) {
 			const totalToAmount: (currency: isoly.Currency, total?: OldTotal) => Amount = (currency, oldTotal) => ({
 				net: oldTotal?.amount[currency] ?? 0,
 				fee: { other: oldTotal?.fee.other[currency] ?? 0 },
@@ -106,6 +106,4 @@ export namespace Settlement {
 		entries: Settlement.Entry.Summary.type,
 		warnings: Settlement.Warning.type.array().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

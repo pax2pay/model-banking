@@ -17,6 +17,4 @@ export namespace Status {
 		mode: isly.string<Mode>(Mode.values),
 		reason: isly.string().optional(),
 	})
-	export const is = type.is
-	export const flaw = type.flaw
 }

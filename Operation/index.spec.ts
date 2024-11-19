@@ -10,7 +10,7 @@ const signer = pax2pay.Operation.Signer.open(keys)
 
 describe("Operation", () => {
 	it("is", () => {
-		expect(pax2pay.Operation.is(operation)).toBeTruthy()
+		expect(pax2pay.Operation.type.is(operation)).toBeTruthy()
 	})
 	it("sign", async () => {
 		const operation = {
@@ -34,7 +34,7 @@ describe("Operation", () => {
 		expect(verified).toBe(true)
 	})
 	it("changes is", async () => {
-		expect(pax2pay.Operation.is(operation3)).toBe(true)
+		expect(pax2pay.Operation.type.is(operation3)).toBe(true)
 	})
 	it("split", async () => {
 		expect(pax2pay.Operation.Changes.Entry.split("uk-cb-safe01-2024-03-04T15Z")).toEqual([

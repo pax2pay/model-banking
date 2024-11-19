@@ -2,15 +2,15 @@ import { pax2pay } from "../../index"
 
 describe("Organization.Contact", () => {
 	it("is to succeed", () => {
-		expect(pax2pay.Organization.Contact.is(contact)).toBeTruthy()
+		expect(pax2pay.Organization.Contact.type.is(contact)).toBeTruthy()
 	})
 	it("wrong phone number", () => {
 		const mistyped = { ...contact, phone: { ...contact.phone, number: "12m45667" } }
-		expect(pax2pay.Organization.Contact.is(mistyped)).toBeFalsy()
+		expect(pax2pay.Organization.Contact.type.is(mistyped)).toBeFalsy()
 	})
 	it("wrong email", () => {
 		const mistyped = { ...contact, email: "this.is.not.an.email" }
-		expect(pax2pay.Organization.Contact.is(mistyped)).toBeFalsy()
+		expect(pax2pay.Organization.Contact.type.is(mistyped)).toBeFalsy()
 	})
 })
 
