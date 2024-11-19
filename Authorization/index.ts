@@ -87,6 +87,7 @@ export namespace Authorization {
 				id: Identifier.generate(),
 				status: Status.Failed.from(transaction),
 				...partial,
+				account: creatable.account,
 				card: { id: creatable.card },
 			}
 		else if (!Transaction.Status.Success.is(transaction.status))
@@ -94,6 +95,7 @@ export namespace Authorization {
 				id: transaction.id,
 				status: Status.Failed.from(transaction.status[1]),
 				...partial,
+				account: transaction.accountId,
 				card: { iin: transaction.account.iin, last4: transaction.account.last4, id: creatable.card },
 			}
 		else
