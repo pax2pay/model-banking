@@ -90,7 +90,6 @@ describe("Reworking incoming logs to processable logs", () => {
 		expect(log).toMatchInlineSnapshot(`[]`)
 	})
 })
-
 const eventsWithoutEntries = [
 	{
 		scriptName: "worker-banking-card",
