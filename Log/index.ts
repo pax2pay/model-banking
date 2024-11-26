@@ -34,7 +34,6 @@ export namespace Log {
 				? isoly.DateTime.create(event.eventTimestamp, "milliseconds")
 				: isoly.DateTime.now()
 			const message = Log.Message.fromEventLogs(event.logs)
-			console.log(result)
 			if (message) {
 				const log: Log = {
 					id: Identifier.generate(),
@@ -45,10 +44,8 @@ export namespace Log {
 				}
 				message.resource && (log.resource = message.resource)
 				event.scriptName && (log.script = event.scriptName)
-
-				// if (event.logs[0].message[1]?.[0].event.request)
-				// 	log.entries.push(getLocations(event.logs[0].message[1]?.[0].event.request))
-
+				if (event.event && "request" in event.event && event.event.request)
+					log.entries.push(Log.Message.Entry.getLocationEntry(event.event.request))
 				result.push(log)
 			}
 		}
@@ -58,10 +55,8 @@ export namespace Log {
 		collection: string,
 		realm: string | undefined,
 		resource?: string,
-		requireEntries?: boolean,
-		request?: any
+		requireEntries?: boolean
 	): void {
-		console.log(request)
 		const configuration = { collection, realm, resource, requireEntries }
 		if (Log.Message.Configuration.type.is(configuration))
 			console.log(configuration)
@@ -75,5 +70,4 @@ export namespace Log {
 	export function exception(message: string, data?: any, resource?: string): void {
 		console.error(Log.Entry.Message.to(message, data, resource))
 	}
-	
 }

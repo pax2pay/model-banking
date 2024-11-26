@@ -20,8 +20,6 @@ export namespace Message {
 					resource: configuration.resource,
 					entries: [],
 			  }
-			: traces[0].message[0] === "Events"
-			? locationLog(traces[0].message[1]?.[0].event)
 			: undefined
 
 		if (result)
@@ -31,26 +29,10 @@ export namespace Message {
 				logFragment?.resource && (result.resource ??= logFragment.resource)
 				logFragment?.entry && result.entries.push(logFragment.entry)
 			}
+
 		return (configuration?.requireEntries && result?.entries && result.entries.length > 0) ||
 			!configuration?.requireEntries
 			? result
 			: undefined
-	}
-	function locationLog(request: any): Pick<Log, "realm" | "collection" | "resource" | "entries"> {
-		return {
-			collection: "locations",
-			realm: request.headers.realm,
-			entries: [
-				{
-					message: "Locations",
-					data: {
-						"cf-connecting-ip": request.headers["cf-connecting-ip"],
-						"cf-ipcountry": request.headers["cf-ipcountry"],
-						colo: request.cf.colo,
-						country: request.cf.colo,
-					},
-				},
-			],
-		}
 	}
 }
