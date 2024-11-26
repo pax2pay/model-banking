@@ -44,6 +44,8 @@ export namespace Log {
 				}
 				message.resource && (log.resource = message.resource)
 				event.scriptName && (log.script = event.scriptName)
+				if (event.event && "request" in event.event)
+					log.entries.push(Log.Message.Entry.getLocationEntry(event.event.request))
 				result.push(log)
 			}
 		}
