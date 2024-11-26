@@ -31,7 +31,7 @@ export namespace Entry {
 				"cf-connecting-ip": request.headers["cf-connecting-ip"],
 				"cf-ipcountry": request.headers["cf-ipcountry"],
 				datacenter: request.cf.colo,
-				country: request.cf.colo,
+				country: request.cf.country,
 			},
 		}
 	}
