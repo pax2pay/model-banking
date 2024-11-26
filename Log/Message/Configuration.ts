@@ -7,6 +7,7 @@ export interface Configuration {
 	collection: string
 	resource?: string
 	requireEntries?: boolean
+	request?: any
 }
 export namespace Configuration {
 	export const type = isly.object<Configuration>({
@@ -14,6 +15,7 @@ export namespace Configuration {
 		collection: isly.string(),
 		resource: isly.string().optional(),
 		requireEntries: isly.boolean().optional(),
+		request: isly.any().optional(),
 	})
 	export function fromTraceLog(trace: TraceLog | undefined): Configuration | undefined {
 		return trace && Configuration.type.is(trace.message[0])

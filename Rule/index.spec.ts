@@ -154,6 +154,16 @@ const riskFlag: pax2pay.Rule = {
 	action: "flag",
 	condition: "transaction.risk > 500",
 }
+const allOutbound: pax2pay.Rule = {
+	code: "all-outbound",
+	name: "All outbound",
+	type: "outbound",
+	category: "fincrime",
+	flags: [],
+	description: "default on all ouTbound",
+	action: "review",
+	condition: "transaction.direction == 'outbound'",
+}
 function getState(
 	type: "internal" | "external" | "card",
 	stage: "initiate" | "finalize",
@@ -368,6 +378,16 @@ describe("definitions", () => {
 			score: [],
 			reserve: [],
 			reject: [rule1, rule3],
+			flag: [],
+		})
+	})
+	it("all oputbound", () => {
+		expect(pax2pay.Rule.evaluate([allOutbound], getState("card", "initiate", "outbound")).outcomes).toEqual({
+			charge: [],
+			review: [allOutbound],
+			score: [],
+			reserve: [],
+			reject: [],
 			flag: [],
 		})
 	})
