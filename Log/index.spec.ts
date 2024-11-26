@@ -71,7 +71,7 @@ describe("Reworking incoming logs to processable logs", () => {
         "data": {
           "cf-connecting-ip": "83.233.243.146",
           "cf-ipcountry": "SE",
-          "country": "CPH",
+          "country": "SE",
           "datacenter": "CPH",
         },
         "message": "Locations",
