@@ -8,10 +8,7 @@ import { Card } from "./Card"
 export type Operation = Card | OperationAuthorization
 
 export namespace Operation {
-	export function fromAuthorization(
-		authorization: Authorization,
-		status: OperationAuthorization.Status
-	): Operation | undefined {
+	export function fromAuthorization(authorization: Authorization, status: OperationAuthorization.Status): Operation {
 		return {
 			type: "authorization",
 			id: authorization?.id ?? authorization.transaction?.id ?? "unknown",
