@@ -71,7 +71,7 @@ export namespace Authorization {
 	): Authorization {
 		const partial: Pick<
 			Authorization,
-			"created" | "amount" | "merchant" | "acquirer" | "reference" | "description" | "exchange"
+			"created" | "amount" | "merchant" | "acquirer" | "reference" | "description" | "exchange" | "approvalCode"
 		> = {
 			created: isoly.DateTime.now(),
 			amount: creatable.amount,
@@ -80,6 +80,7 @@ export namespace Authorization {
 			reference: creatable.reference,
 			description: creatable.description,
 			exchange: creatable.exchange,
+			approvalCode: creatable.approvalCode,
 		}
 		let result: Authorization
 		if (gracely.Error.is(transaction))

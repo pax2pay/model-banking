@@ -14,6 +14,7 @@ export interface Creatable {
 	acquirer: Acquirer
 	reference: string
 	description: string
+	approvalCode?: string
 }
 export namespace Creatable {
 	export const type = isly.object<Creatable>({
@@ -25,5 +26,6 @@ export namespace Creatable {
 		acquirer: Acquirer.type,
 		reference: isly.string(),
 		description: isly.string(),
+		approvalCode: isly.string().optional(),
 	})
 }
