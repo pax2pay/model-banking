@@ -13,4 +13,13 @@ export namespace Locations {
 		datacenter: isly.string().optional(),
 		country: isly.string().optional(),
 	})
+	export function getLocations(request: any): Locations | undefined {
+		const locations = {
+			cfConnectionIp: request.headers.get("cf-connecting-ip"),
+			cfIpCountry: request.headers.get("cf-ipcountry"),
+			datacenter: request.cf?.colo,
+			country: request.cf?.country,
+		}
+		return type.is(locations) ? locations : undefined
+	}
 }
