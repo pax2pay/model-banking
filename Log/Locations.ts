@@ -15,10 +15,10 @@ export namespace Locations {
 	})
 	export function getLocations(request: any): Locations | undefined {
 		const locations = {
-			"cf-connecting-ip": request.headers.get("cf-connecting-ip"),
-			"cf-ipcountry": request.headers.get("cf-ipcountry"),
-			datacenter: request.cf?.colo,
-			country: request.cf?.country,
+			"cf-connecting-ip": request.headers.get("cf-connecting-ip") ?? undefined,
+			"cf-ipcountry": request.headers.get("cf-ipcountry") ?? undefined,
+			datacenter: request.cf?.colo ?? undefined,
+			country: request.cf?.country ?? undefined,
 		}
 		return locations
 	}
