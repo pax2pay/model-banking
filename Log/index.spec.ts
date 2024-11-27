@@ -30,6 +30,15 @@ describe("Reworking incoming logs to processable logs", () => {
       },
       {
         "data": {
+          "cf-connecting-ip": "345345",
+          "cf-ipcountry": "SE",
+          "country": "SE",
+          "datacenter": "CPH",
+        },
+        "message": "Locations",
+      },
+      {
+        "data": {
           "account": "6AEY3VzL",
           "created": "2024-11-26T08:19:10.998Z",
           "details": {
@@ -66,15 +75,6 @@ describe("Reworking incoming logs to processable logs", () => {
           "status": "active",
         },
         "message": "Card Create Result",
-      },
-      {
-        "data": {
-          "cf-connecting-ip": "83.233.243.146",
-          "cf-ipcountry": "SE",
-          "country": "SE",
-          "datacenter": "CPH",
-        },
-        "message": "Locations",
       },
     ],
     "id": "${log[0].id}",
@@ -139,6 +139,21 @@ const events = [
 							},
 							limit: ["GBP", 15],
 							preset: "test-ta-pg-200",
+						},
+					},
+				],
+				level: "log",
+				timestamp: 1732609148028,
+			},
+			{
+				message: [
+					{
+						message: "Locations",
+						data: {
+							"cf-connecting-ip": "345345",
+							"cf-ipcountry": "SE",
+							datacenter: "CPH",
+							country: "SE",
 						},
 					},
 				],

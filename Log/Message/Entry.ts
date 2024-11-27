@@ -24,15 +24,4 @@ export namespace Entry {
 			  }
 			: undefined
 	}
-	export function getLocationEntry(request: any): Entry {
-		return {
-			message: "Locations",
-			data: {
-				"cf-connecting-ip": request.headers["cf-connecting-ip"],
-				"cf-ipcountry": request.headers["cf-ipcountry"],
-				datacenter: request.cf.colo,
-				country: request.cf.country,
-			},
-		}
-	}
 }
