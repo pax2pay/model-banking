@@ -20,6 +20,6 @@ export namespace Locations {
 			datacenter: request.cf?.colo,
 			country: request.cf?.country,
 		}
-		return type.is(locations) ? locations : undefined
+		return locations
 	}
 }
