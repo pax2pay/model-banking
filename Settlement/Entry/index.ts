@@ -62,9 +62,7 @@ export namespace Entry {
 		const result = []
 		!creatable.authorization && result.push("Missing authorization.")
 		if (gracely.Error.is(transaction))
-			result.push(
-				`gracely error: ${transaction.status}, ${transaction.type}, ${transaction.header}, ${transaction.body}`
-			)
+			result.push(`gracely error: ${JSON.stringify(transaction)}`)
 		else if (typeof transaction != "string")
 			result.push(`Transaction ${transaction.id} on account ${transaction.accountId} unable to be finalized.`)
 		else
