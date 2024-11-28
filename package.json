@@ -77,7 +77,7 @@
 		"cloudly-analytics-common": "^0.3.33",
 		"cloudly-http": "^0.1.7",
 		"cloudly-rest": "^0.1.4",
-		"cloudly-storage": "^0.10.15",
+		"cloudly-storage": "^0.10.16",
 		"cryptly": "^4.0.6",
 		"gracely": "^2.0.8",
 		"isly": "0.1.20",
