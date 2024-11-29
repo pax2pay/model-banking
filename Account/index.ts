@@ -23,8 +23,7 @@ export namespace Account {
 	export function fromLegacy(maybeLegacy: Legacy | Account, status?: Account.Status): Account {
 		return { ...maybeLegacy, status: status ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" }) }
 	}
-	export const type = isly.object<Account>({
-		name: isly.string(),
+	export const type = Creatable.type.extend<Account>({
 		id: isly.string(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		balances: Balances.type,
