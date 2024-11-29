@@ -19,6 +19,9 @@ export interface Account extends Account.Creatable {
 	status: Account.Status
 }
 export namespace Account {
+	export import Creatable = AccountCreatable
+	export import Status = AccountStatus
+	export import History = AccountHistory
 	export type Legacy = Omit<Account, "status">
 	export function fromLegacy(maybeLegacy: Legacy | Account, status?: Account.Status): Account {
 		return { ...maybeLegacy, status: status ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" }) }
@@ -36,7 +39,4 @@ export namespace Account {
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
 		return cryptly.Identifier.is(value, 8)
 	}
-	export import Creatable = AccountCreatable
-	export import Status = AccountStatus
-	export import History = AccountHistory
 }

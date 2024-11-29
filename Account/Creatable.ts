@@ -16,6 +16,5 @@ export namespace Creatable {
 		// All location hints: ["wnam", "enam", "sam", "weur", "eeur", "apac", "oc", "afr", "me"]
 		export const type = isly.string(values)
 	}
-
 	export const type = isly.object<Creatable>({ name: isly.string(), location: Location.type.optional() })
 }
