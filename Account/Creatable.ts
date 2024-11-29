@@ -9,9 +9,9 @@ export interface Creatable {
 export namespace Creatable {
 	export type Location = typeof Location.values[number]
 	export namespace Location {
-		export const values = ["east-north-america", "west-europe"] as const
+		export const values = ["north-east-america", "west-europe"] as const
 		export function toCloudflare(value: Location): DurableObjectLocationHint {
-			return value == "east-north-america" ? "enam" : "weur"
+			return value == "north-east-america" ? "enam" : "weur"
 		}
 		// All location hints: ["wnam", "enam", "sam", "weur", "eeur", "apac", "oc", "afr", "me"]
 		export const type = isly.string(values)
