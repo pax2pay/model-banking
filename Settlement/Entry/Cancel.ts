@@ -15,7 +15,7 @@ export namespace Cancel {
 		type: "cancel"
 		authorization?: Authorization
 		reference?: Batch
-		settlement: SettlementIdentifier | string
+		settlement: SettlementIdentifier
 		fee?: Fee
 		amount?: Amount
 	}
@@ -26,7 +26,7 @@ export namespace Cancel {
 			reference: Batch.type.optional(),
 			fee: Fee.type.optional(),
 			amount: Amount.type.optional(),
-			settlement: isly.union(SettlementIdentifier.type, isly.string()),
+			settlement: SettlementIdentifier.type,
 		})
 	}
 	export const type = Creatable.type.extend<Cancel>({

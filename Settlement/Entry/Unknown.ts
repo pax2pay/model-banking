@@ -12,14 +12,14 @@ export namespace Unknown {
 		type: "unknown"
 		authorization?: Authorization
 		data: Record<string, any>
-		batch: Batch
+		reference?: Batch
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
 			type: isly.string("unknown"),
 			authorization: Authorization.type.optional(),
 			data: isly.record(isly.string(), isly.any()),
-			batch: Batch.type,
+			reference: Batch.type.optional(),
 		})
 	}
 	export function from(creatable: Creatable): Unknown {

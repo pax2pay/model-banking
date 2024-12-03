@@ -18,7 +18,7 @@ export namespace Capture {
 		account?: string // Only defined when using the new card id + account id card references
 		authorization: Authorization
 		reference?: Batch
-		settlement: SettlementIdentifier | string // string is deprecated and there for legacy reasons
+		settlement: SettlementIdentifier
 		fee: Fee
 		amount: Amount
 	}
@@ -30,7 +30,7 @@ export namespace Capture {
 			reference: Batch.type.optional(),
 			fee: Fee.type,
 			amount: Amount.type,
-			settlement: isly.union(SettlementIdentifier.type, isly.string()),
+			settlement: SettlementIdentifier.type,
 		})
 	}
 	export const type = Creatable.type.extend<Capture>({
