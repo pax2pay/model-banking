@@ -6,6 +6,7 @@ import { Merchant } from "../../Merchant"
 import { Transaction } from "../../Transaction"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
+import { Identifier as SettlementIdentifier } from "../Identifier"
 
 export interface Refund extends Refund.Creatable {
 	status: "succeeded" | "failed"
@@ -21,8 +22,8 @@ export namespace Refund {
 		authorization: Pick<Authorization, "approvalCode">
 		merchant: Merchant
 		acquirer: Acquirer
-		reference: string
-		batch: Batch
+		reference?: Batch
+		settlement: SettlementIdentifier | string // string is deprecated and there for legacy reasons
 		fee: Fee
 		amount: Amount
 	}
@@ -37,10 +38,10 @@ export namespace Refund {
 			authorization: isly.object({ approvalCode: isly.string() }),
 			merchant: Merchant.type,
 			acquirer: Acquirer.type,
-			reference: isly.string(),
+			reference: Batch.type.optional(),
 			fee: Fee.type,
 			amount: Amount.type,
-			batch: Batch.type,
+			settlement: isly.union(SettlementIdentifier.type, isly.string()),
 		})
 	}
 	export const type = Creatable.type.extend<Refund>({

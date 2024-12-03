@@ -3,6 +3,7 @@ import { Amount } from "../../Amount"
 import { Authorization } from "../../Authorization"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
+import { Identifier as SettlementIdentifier } from "../Identifier"
 
 export interface Capture extends Capture.Creatable {
 	status: "succeeded" | "failed"
@@ -16,8 +17,8 @@ export namespace Capture {
 		type: "capture"
 		account?: string // Only defined when using the new card id + account id card references
 		authorization: Authorization
-		reference: string // card transaction
-		batch: Batch
+		reference?: Batch
+		settlement: SettlementIdentifier | string // string is deprecated and there for legacy reasons
 		fee: Fee
 		amount: Amount
 	}
@@ -26,10 +27,10 @@ export namespace Capture {
 			type: isly.string("capture"),
 			account: isly.string().optional(),
 			authorization: Authorization.type,
-			reference: isly.string(),
+			reference: Batch.type.optional(),
 			fee: Fee.type,
 			amount: Amount.type,
-			batch: Batch.type,
+			settlement: isly.union(SettlementIdentifier.type, isly.string()),
 		})
 	}
 	export const type = Creatable.type.extend<Capture>({
