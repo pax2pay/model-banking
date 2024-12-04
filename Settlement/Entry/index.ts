@@ -1,6 +1,5 @@
 import { gracely } from "gracely"
 import { isly } from "isly"
-import { Identifier as SettlementIdentifier } from "../../Settlement/Identifier"
 import { Transaction } from "../../Transaction"
 import { Cancel as EntryCancel } from "./Cancel"
 import { Capture as EntryCapture } from "./Capture"
@@ -37,29 +36,24 @@ export namespace Entry {
 	export const Summary = EntrySummary
 	export type Creatable = EntryCreatable
 	export const Creatable = EntryCreatable
-	export function from(
-		creatable: Entry.Creatable,
-		transaction: Transaction | gracely.Error | string,
-		settlement: SettlementIdentifier
-	): Entry {
+	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
 		let result: Entry
 		if (!Transaction.type.is(transaction) || transaction.status != "finalized")
 			result = {
 				status: "failed",
 				reason: reason(creatable, transaction),
 				...creatable,
-				settlement,
 			}
 		else
 			switch (creatable.type) {
 				case "capture":
-					result = Capture.from(creatable, settlement)
+					result = Capture.from(creatable)
 					break
 				case "refund":
-					result = Refund.from(creatable, transaction, settlement)
+					result = Refund.from(creatable, transaction)
 					break
 				default:
-					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet.", settlement }
+					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet." }
 					break
 			}
 		return result

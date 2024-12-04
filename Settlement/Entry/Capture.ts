@@ -9,11 +9,11 @@ import { Fee } from "../Fee"
 export interface Capture extends Capture.Creatable {
 	status: "succeeded" | "failed"
 	reason?: string
-	settlement?: SettlementIdentifier
+	created?: isoly.DateTime
 }
 export namespace Capture {
-	export function from(creatable: Creatable, settlement?: SettlementIdentifier): Capture {
-		return { settlement, status: "succeeded", ...creatable }
+	export function from(creatable: Creatable): Capture {
+		return { status: "succeeded", ...creatable, created: isoly.DateTime.now() }
 	}
 	export interface Creatable {
 		type: "capture"
@@ -23,7 +23,7 @@ export namespace Capture {
 		batch: Batch
 		fee: Fee
 		amount: Amount
-		created?: isoly.DateTime
+		settlement?: SettlementIdentifier
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -34,12 +34,12 @@ export namespace Capture {
 			fee: Fee.type,
 			amount: Amount.type,
 			batch: Batch.type,
-			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+			settlement: isly.string().optional(),
 		})
 	}
 	export const type = Creatable.type.extend<Capture>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
-		settlement: isly.string().optional(),
+		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is).optional(),
 	})
 }

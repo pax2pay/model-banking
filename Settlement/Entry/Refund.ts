@@ -13,7 +13,6 @@ export interface Refund extends Refund.Creatable {
 	status: "succeeded" | "failed"
 	reason?: string
 	transaction?: Transaction
-	settlement?: SettlementIdentifier
 }
 
 export namespace Refund {
@@ -29,9 +28,10 @@ export namespace Refund {
 		fee: Fee
 		amount: Amount
 		created: isoly.DateTime
+		settlement?: SettlementIdentifier
 	}
-	export function from(refund: Refund.Creatable, transaction: Transaction, settlement?: SettlementIdentifier): Refund {
-		return { ...refund, status: "succeeded", transaction, settlement }
+	export function from(refund: Refund.Creatable, transaction: Transaction): Refund {
+		return { ...refund, status: "succeeded", transaction }
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -46,12 +46,12 @@ export namespace Refund {
 			amount: Amount.type,
 			batch: Batch.type,
 			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+			settlement: SettlementIdentifier.type.optional(),
 		})
 	}
 	export const type = Creatable.type.extend<Refund>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 		transaction: Transaction.type.optional(),
-		settlement: SettlementIdentifier.type.optional(),
 	})
 }
