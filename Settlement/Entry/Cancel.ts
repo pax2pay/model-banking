@@ -8,6 +8,7 @@ import { Fee } from "../Fee"
 export interface Cancel extends Cancel.Creatable {
 	status: "succeeded" | "failed"
 	reason?: string
+	created?: isoly.DateTime
 }
 
 export namespace Cancel {
@@ -18,7 +19,6 @@ export namespace Cancel {
 		batch: Batch
 		fee?: Fee
 		amount?: Amount
-		created: isoly.DateTime
 		settlement?: SettlementIdentifier
 	}
 	export namespace Creatable {
@@ -29,12 +29,13 @@ export namespace Cancel {
 			fee: Fee.type.optional(),
 			amount: Amount.type.optional(),
 			batch: Batch.type,
-			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+
 			settlement: SettlementIdentifier.type.optional(),
 		})
 	}
 	export const type = Creatable.type.extend<Cancel>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
+		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
 }

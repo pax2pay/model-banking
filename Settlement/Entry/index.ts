@@ -1,4 +1,5 @@
 import { gracely } from "gracely"
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Transaction } from "../../Transaction"
 import { Cancel as EntryCancel } from "./Cancel"
@@ -38,11 +39,13 @@ export namespace Entry {
 	export const Creatable = EntryCreatable
 	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
 		let result: Entry
+		const created = isoly.DateTime.now()
 		if (!Transaction.type.is(transaction) || transaction.status != "finalized")
 			result = {
 				status: "failed",
 				reason: reason(creatable, transaction),
 				...creatable,
+				created,
 			}
 		else
 			switch (creatable.type) {
@@ -53,7 +56,12 @@ export namespace Entry {
 					result = Refund.from(creatable, transaction)
 					break
 				default:
-					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet." }
+					result = {
+						...creatable,
+						status: "failed",
+						reason: "Entry type not implemented yet.",
+						created,
+					}
 					break
 			}
 		return result

@@ -7,6 +7,7 @@ import { Batch } from "../Batch"
 export interface Unknown extends Unknown.Creatable {
 	status: "succeeded" | "failed"
 	reason?: string
+	created?: isoly.DateTime
 }
 
 export namespace Unknown {
@@ -15,7 +16,6 @@ export namespace Unknown {
 		authorization?: Authorization
 		data: Record<string, any>
 		batch: Batch
-		created: isoly.DateTime
 		settlement?: SettlementIdentifier | undefined
 	}
 	export namespace Creatable {
@@ -24,7 +24,6 @@ export namespace Unknown {
 			authorization: Authorization.type.optional(),
 			data: isly.record(isly.string(), isly.any()),
 			batch: Batch.type,
-			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 			settlement: SettlementIdentifier.type.optional(),
 		})
 	}
@@ -34,5 +33,6 @@ export namespace Unknown {
 	export const type = Creatable.type.extend<Unknown>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
+		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is).optional(),
 	})
 }
