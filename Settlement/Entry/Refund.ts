@@ -1,17 +1,19 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Acquirer } from "../../Acquirer"
 import { Amount } from "../../Amount"
 import { Authorization } from "../../Authorization"
 import { Merchant } from "../../Merchant"
+import { Identifier as SettlementIdentifier } from "../../Settlement/Identifier"
 import { Transaction } from "../../Transaction"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
-import { Identifier as SettlementIdentifier } from "../Identifier"
 
 export interface Refund extends Refund.Creatable {
 	status: "succeeded" | "failed"
 	reason?: string
 	transaction?: Transaction
+	settlement?: SettlementIdentifier
 }
 
 export namespace Refund {
@@ -22,13 +24,14 @@ export namespace Refund {
 		authorization: Pick<Authorization, "approvalCode">
 		merchant: Merchant
 		acquirer: Acquirer
-		reference?: Batch
-		settlement: SettlementIdentifier
+		reference: string
+		batch: Batch
 		fee: Fee
 		amount: Amount
+		created: isoly.DateTime
 	}
-	export function from(refund: Refund.Creatable, transaction: Transaction): Refund {
-		return { ...refund, status: "succeeded", transaction }
+	export function from(refund: Refund.Creatable, transaction: Transaction, settlement?: SettlementIdentifier): Refund {
+		return { ...refund, status: "succeeded", transaction, settlement }
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -38,15 +41,17 @@ export namespace Refund {
 			authorization: isly.object({ approvalCode: isly.string() }),
 			merchant: Merchant.type,
 			acquirer: Acquirer.type,
-			reference: Batch.type.optional(),
+			reference: isly.string(),
 			fee: Fee.type,
 			amount: Amount.type,
-			settlement: SettlementIdentifier.type,
+			batch: Batch.type,
+			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		})
 	}
 	export const type = Creatable.type.extend<Refund>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 		transaction: Transaction.type.optional(),
+		settlement: SettlementIdentifier.type.optional(),
 	})
 }
