@@ -40,7 +40,7 @@ export namespace Entry {
 	export function from(
 		creatable: Entry.Creatable,
 		transaction: Transaction | gracely.Error | string,
-		settlement?: SettlementIdentifier
+		settlement: SettlementIdentifier
 	): Entry {
 		let result: Entry
 		if (!Transaction.type.is(transaction) || transaction.status != "finalized")
@@ -59,7 +59,7 @@ export namespace Entry {
 					result = Refund.from(creatable, transaction, settlement)
 					break
 				default:
-					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet." }
+					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet.", settlement }
 					break
 			}
 		return result
