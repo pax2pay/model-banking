@@ -5,10 +5,11 @@ import { Authorization } from "../../Authorization"
 import { Identifier as SettlementIdentifier } from "../../Settlement/Identifier"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
-export interface Cancel extends Cancel.Creatable {
+export interface Cancel extends Omit<Cancel.Creatable, "settlement"> {
 	status: "succeeded" | "failed"
 	reason?: string
 	created?: isoly.DateTime
+	settlement?: SettlementIdentifier
 }
 
 export namespace Cancel {
@@ -19,7 +20,7 @@ export namespace Cancel {
 		batch: Batch
 		fee?: Fee
 		amount?: Amount
-		settlement?: SettlementIdentifier
+		settlement: SettlementIdentifier
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -29,13 +30,13 @@ export namespace Cancel {
 			fee: Fee.type.optional(),
 			amount: Amount.type.optional(),
 			batch: Batch.type,
-
-			settlement: SettlementIdentifier.type.optional(),
+			settlement: SettlementIdentifier.type,
 		})
 	}
-	export const type = Creatable.type.extend<Cancel>({
+	export const type = Creatable.type.omit(["settlement"]).extend<Cancel>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		settlement: SettlementIdentifier.type.optional(),
 	})
 }

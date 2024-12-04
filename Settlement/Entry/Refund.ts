@@ -9,11 +9,12 @@ import { Transaction } from "../../Transaction"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
 
-export interface Refund extends Refund.Creatable {
+export interface Refund extends Omit<Refund.Creatable, "settlement"> {
 	status: "succeeded" | "failed"
 	reason?: string
 	transaction?: Transaction
 	created?: isoly.DateTime
+	settlement?: SettlementIdentifier
 }
 
 export namespace Refund {
@@ -28,7 +29,7 @@ export namespace Refund {
 		batch: Batch
 		fee: Fee
 		amount: Amount
-		settlement?: SettlementIdentifier
+		settlement: SettlementIdentifier
 	}
 	export function from(refund: Refund.Creatable, transaction: Transaction): Refund {
 		return { ...refund, status: "succeeded", transaction, created: isoly.DateTime.now() }
@@ -45,13 +46,14 @@ export namespace Refund {
 			fee: Fee.type,
 			amount: Amount.type,
 			batch: Batch.type,
-			settlement: SettlementIdentifier.type.optional(),
+			settlement: SettlementIdentifier.type,
 		})
 	}
-	export const type = Creatable.type.extend<Refund>({
+	export const type = Creatable.type.omit(["settlement"]).extend<Refund>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 		transaction: Transaction.type.optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is).optional(),
+		settlement: SettlementIdentifier.type.optional(),
 	})
 }
