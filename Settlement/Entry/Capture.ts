@@ -1,16 +1,20 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amount } from "../../Amount"
 import { Authorization } from "../../Authorization"
+import { Identifier as SettlementIdentifier } from "../../Settlement/Identifier"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
 
-export interface Capture extends Capture.Creatable {
+export interface Capture extends Omit<Capture.Creatable, "settlement"> {
 	status: "succeeded" | "failed"
 	reason?: string
+	created?: isoly.DateTime
+	settlement?: SettlementIdentifier
 }
 export namespace Capture {
 	export function from(creatable: Creatable): Capture {
-		return { status: "succeeded", ...creatable }
+		return { status: "succeeded", ...creatable, created: isoly.DateTime.now() }
 	}
 	export interface Creatable {
 		type: "capture"
@@ -20,6 +24,7 @@ export namespace Capture {
 		batch: Batch
 		fee: Fee
 		amount: Amount
+		settlement: SettlementIdentifier
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
@@ -30,10 +35,13 @@ export namespace Capture {
 			fee: Fee.type,
 			amount: Amount.type,
 			batch: Batch.type,
+			settlement: SettlementIdentifier.type,
 		})
 	}
-	export const type = Creatable.type.extend<Capture>({
+	export const type = Creatable.type.omit(["settlement"]).extend<Capture>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
+		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is).optional(),
+		settlement: SettlementIdentifier.type.optional(),
 	})
 }
