@@ -9,6 +9,7 @@ export interface Base {
 	condition: string
 	flags: string[]
 	groups?: string[]
+	presets?: string[]
 }
 export namespace Base {
 	export type Kind = typeof Kind.values[number]
@@ -37,5 +38,6 @@ export namespace Base {
 		condition: isly.string(),
 		flags: isly.string().array(),
 		groups: isly.string().array().optional(),
+		presets: isly.string().array().optional(),
 	})
 }
