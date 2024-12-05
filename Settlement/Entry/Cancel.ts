@@ -5,6 +5,7 @@ import { Authorization } from "../../Authorization"
 import { Identifier as SettlementIdentifier } from "../../Settlement/Identifier"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
+
 export interface Cancel extends Omit<Cancel.Creatable, "settlement"> {
 	status: "succeeded" | "failed"
 	reason?: string
