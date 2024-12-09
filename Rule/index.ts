@@ -94,7 +94,7 @@ export namespace Rule {
 	): { other: Rule.Other[]; chargers: Rule.Charge[]; scorers: Rule.Score[]; reservers: Rule.Reserve[] } {
 		return rules.reduce(
 			(r: ReturnType<typeof sort>, rule) => {
-				if (Base.Kind.is(state.transaction.kind, rule, state.organization?.groups))
+				if (Base.Kind.is(state.transaction.kind, rule, state.organization?.groups, state.card?.preset))
 					rule.action == "score"
 						? r.scorers.push(rule)
 						: rule.action == "charge"

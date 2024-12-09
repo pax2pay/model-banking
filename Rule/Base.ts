@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { Preset } from "../Card/Preset"
 
 export interface Base {
 	code: string
@@ -9,18 +10,18 @@ export interface Base {
 	condition: string
 	flags: string[]
 	groups?: string[]
+	presets?: Preset[]
 }
 export namespace Base {
 	export type Kind = typeof Kind.values[number]
 	export namespace Kind {
 		export const values = ["authorization", "outbound", "inbound", "capture", "refund"] as const
 		export const type = isly.string<Kind>(values)
-		export function is(kind: Kind, rule: Base, groups: string[] | undefined): boolean {
-			return (
-				kind == rule.type &&
-				(!rule.groups ||
-					rule.groups.some(ruleGroup => groups?.some(organizationGroup => organizationGroup == ruleGroup)))
-			)
+		export function is(kind: Kind, rule: Base, groups: string[] | undefined, preset: Preset | undefined): boolean {
+			const applyRuleForGroup =
+				!rule.groups || rule.groups.some(ruleGroup => groups?.some(organizationGroup => organizationGroup == ruleGroup))
+			const applyRuleForPreset = !rule.presets || rule.presets.some(rulePreset => preset == rulePreset)
+			return kind == rule.type && applyRuleForGroup && applyRuleForPreset
 		}
 	}
 	export type Category = typeof Category.values[number]
@@ -37,5 +38,6 @@ export namespace Base {
 		condition: isly.string(),
 		flags: isly.string().array(),
 		groups: isly.string().array().optional(),
+		presets: Preset.type.array().optional(),
 	})
 }
