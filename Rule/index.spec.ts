@@ -17,6 +17,51 @@ const account: pax2pay.Account = {
 	rails: [],
 	balances: { GBP: { actual: 0, incomingReserved: 0, outgoingReserved: 0 } },
 }
+const organization: pax2pay.Rule.State.Organization = {
+	name: "p2p",
+	realm: "uk",
+	rules: [],
+	code: "example",
+	groups: ["example"],
+}
+const card: pax2pay.Rule.State.Card = {
+	id: "example",
+	created: "2024-12-02",
+	realm: "test",
+	organization: "p2p",
+	account: account.id,
+	preset: "p2p-mc-200",
+	scheme: "mastercard",
+	details: {
+		iin: "example",
+		last4: "example",
+		expiry: [25, 12],
+		holder: "example",
+		token: "example",
+	},
+	limit: 200,
+	spent: ["GBP", 0],
+	status: "active",
+	history: [],
+	rules: [
+		{
+			code: "abc",
+			name: "example",
+			type: "authorization",
+			category: "product",
+			condition: "",
+			action: "flag",
+			flags: ["example"],
+			description: "flag transactions with example if they exist",
+		},
+	],
+	meta: { a: "example1", b: [{ c: 2 }] },
+	age: pax2pay.Rule.State.Card.ageFromTime("2024-12-01T23:59:59.000Z"),
+	original: { currency: "GBP", limit: 200 },
+	used: { count: 1, amount: 0, merchants: [] },
+	reject: { count: 0 },
+}
+
 const rule1: pax2pay.Rule = {
 	code: "abc",
 	name: "amount limit",
@@ -154,6 +199,28 @@ const riskFlag: pax2pay.Rule = {
 	action: "flag",
 	condition: "transaction.risk > 500",
 }
+const groupRule: pax2pay.Rule = {
+	code: "group-rule",
+	name: "group rule",
+	type: "authorization",
+	category: "fincrime",
+	flags: [],
+	description: "reject if aldready has been used",
+	action: "reject",
+	condition: "transaction.amount>10",
+	groups: ["example"],
+}
+const presetRule: pax2pay.Rule = {
+	code: "preset-rule",
+	name: "preset rule",
+	type: "authorization",
+	category: "fincrime",
+	flags: [],
+	description: "reject if aldready has been used",
+	action: "reject",
+	condition: "card.used.count>0",
+	presets: ["p2p-mc-200"],
+}
 function getState(
 	type: "internal" | "external" | "card",
 	stage: "initiate" | "finalize",
@@ -197,7 +264,10 @@ function getState(
 					: { type: "internal", identifier: "abcd1234" },
 		},
 		kind,
-		stage
+		stage,
+		undefined,
+		card,
+		organization
 	)
 }
 describe("definitions", () => {
@@ -368,6 +438,28 @@ describe("definitions", () => {
 			score: [],
 			reserve: [],
 			reject: [rule1, rule3],
+			flag: [],
+		})
+	})
+	it("group rule", () => {
+		const ev = pax2pay.Rule.evaluate([groupRule], getState("card", "initiate", "authorization"))
+		expect(ev.outcomes).toEqual({
+			charge: [],
+			review: [],
+			score: [],
+			reserve: [],
+			reject: [groupRule],
+			flag: [],
+		})
+	})
+	it("preset rule", () => {
+		const evaluated = pax2pay.Rule.evaluate([presetRule], getState("card", "initiate", "authorization"))
+		expect(evaluated.outcomes).toEqual({
+			charge: [],
+			review: [],
+			score: [],
+			reserve: [],
+			reject: [presetRule],
 			flag: [],
 		})
 	})
