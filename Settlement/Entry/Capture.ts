@@ -18,9 +18,9 @@ export namespace Capture {
 	}
 	export interface Creatable {
 		type: "capture"
-		account?: string // Only defined when using the new card id + account id card references
-		authorization: Authorization
-		reference: string // card transaction
+		account?: string // Only defined when using the new card id + account id card references - will be deprecated
+		authorization: Authorization // Replace with CardTransaction
+		reference: string // card transaction - will be deprecated
 		batch: Batch
 		fee: Fee
 		amount: Amount

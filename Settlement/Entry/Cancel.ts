@@ -16,8 +16,8 @@ export interface Cancel extends Omit<Cancel.Creatable, "settlement"> {
 export namespace Cancel {
 	export interface Creatable {
 		type: "cancel"
-		authorization?: Authorization
-		reference?: string
+		authorization?: Authorization // CardTransaction
+		reference?: string // will be deprecated
 		batch: Batch
 		fee?: Fee
 		amount?: Amount
