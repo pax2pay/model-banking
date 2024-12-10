@@ -8,6 +8,7 @@ import { Report } from "../Report"
 import type { Rule } from "../Rule"
 import { Settlement } from "../Settlement"
 import { Creatable as TransactionCreatable } from "./Creatable"
+import { Exchange as TransactionExchange } from "./Exchange"
 import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
 import { Reference as TransactionReference } from "./Reference"
@@ -40,6 +41,8 @@ export interface Transaction {
 	notes: Transaction.Note[]
 	risk?: number
 	state?: Rule.State
+	exchange?: Transaction.Exchange
+	authorization?: Transaction.Creatable.Card.Authorization
 }
 export namespace Transaction {
 	export type Amount = {
@@ -101,6 +104,7 @@ export namespace Transaction {
 	export const directions = ["inbound", "outbound"] as const
 	export type Direction = typeof directions[number]
 	export import Creatable = TransactionCreatable
+	export import Exchange = TransactionExchange
 	export import Incoming = TransactionIncoming
 	export import Reference = TransactionReference
 	export import Note = TransactionNote
@@ -136,6 +140,8 @@ export namespace Transaction {
 		notes: Note.type.array(),
 		risk: isly.number().optional(),
 		state: isly.any().optional(),
+		exchange: Exchange.type.optional(),
+		authorization: Transaction.Creatable.Card.Authorization.type.optional(),
 	})
 
 	export interface Legacy extends Omit<Transaction, "amount"> {
@@ -185,7 +191,25 @@ export namespace Transaction {
 		balance: { actual: number; reserved: number; available: number },
 		operation: Operation | Status.Reason,
 		by: string | undefined
-	): Transaction {
+	): Transaction
+	export function fromCreatable(
+		creatable: Creatable.Card,
+		id: string,
+		state: Rule.State.Evaluated,
+		account: { id: string; name: string; organization: string; address: Rail.Address },
+		balance: { actual: number; reserved: number; available: number },
+		operation: Operation | Status.Reason,
+		by: string | undefined
+	): Transaction.CardTransaction
+	export function fromCreatable(
+		creatable: Creatable.Resolved | Creatable.Card,
+		id: string,
+		state: Rule.State.Evaluated,
+		account: { id: string; name: string; organization: string; address: Rail.Address },
+		balance: { actual: number; reserved: number; available: number },
+		operation: Operation | Status.Reason,
+		by: string | undefined
+	): Transaction | Transaction.CardTransaction {
 		const status: Status =
 			typeof operation == "string"
 				? ["rejected", operation]
@@ -223,6 +247,7 @@ export namespace Transaction {
 			state,
 			risk: state.transaction.risk,
 			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
+			...("authorization" in creatable && { authorization: creatable.authorization }),
 		}
 	}
 	export function system(
@@ -470,5 +495,6 @@ export namespace Transaction {
 	export type CardTransaction = Transaction & {
 		account: Extract<Transaction["account"], Rail.Address.Card>
 		counterpart: Extract<Transaction["counterpart"], Rail.Address.Card.Counterpart>
+		authorization: Transaction.Creatable.Card.Authorization
 	}
 }

@@ -14,7 +14,7 @@ export interface Unknown extends Omit<Unknown.Creatable, "settlement"> {
 export namespace Unknown {
 	export interface Creatable {
 		type: "unknown"
-		authorization?: Authorization
+		authorization?: Authorization // CardTransaction
 		data: Record<string, any>
 		batch: Batch
 		settlement: SettlementIdentifier
