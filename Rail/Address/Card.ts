@@ -3,6 +3,7 @@ import { Acquirer } from "../../Acquirer"
 import { Card as ModelCard } from "../../Card"
 import { Merchant } from "../../Merchant"
 import type { Rule } from "../../Rule"
+import { Exchange } from "../../Transaction/Exchange"
 
 export interface Card {
 	type: "card"
@@ -17,12 +18,20 @@ interface CardCounterpart {
 	type: "card"
 	merchant: Merchant
 	acquirer: Acquirer
+	card?: string
+	reference?: string
+	approvalCode?: string
+	exchange?: Exchange
 }
 namespace CardCounterpart {
 	export const type = isly.object<CardCounterpart>({
 		type: isly.string("card"),
 		acquirer: Acquirer.type,
 		merchant: Merchant.type,
+		card: isly.string().optional(),
+		reference: isly.string().optional(),
+		approvalCode: isly.string().optional(),
+		exchange: Exchange.type.optional(),
 	})
 }
 export namespace Card {
