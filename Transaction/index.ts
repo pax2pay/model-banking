@@ -42,7 +42,6 @@ export interface Transaction {
 	risk?: number
 	state?: Rule.State
 	exchange?: Transaction.Exchange
-	authorization?: Transaction.Creatable.Card.Authorization
 }
 export namespace Transaction {
 	export type Amount = {
@@ -141,7 +140,6 @@ export namespace Transaction {
 		risk: isly.number().optional(),
 		state: isly.any().optional(),
 		exchange: Exchange.type.optional(),
-		authorization: Transaction.Creatable.Card.Authorization.type.optional(),
 	})
 
 	export interface Legacy extends Omit<Transaction, "amount"> {
@@ -247,7 +245,6 @@ export namespace Transaction {
 			state,
 			risk: state.transaction.risk,
 			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
-			...("authorization" in creatable && { authorization: creatable.authorization }),
 		}
 	}
 	export function system(
@@ -495,6 +492,5 @@ export namespace Transaction {
 	export type CardTransaction = Transaction & {
 		account: Extract<Transaction["account"], Rail.Address.Card>
 		counterpart: Extract<Transaction["counterpart"], Rail.Address.Card.Counterpart>
-		authorization: Transaction.Creatable.Card.Authorization
 	}
 }
