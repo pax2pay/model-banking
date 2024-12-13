@@ -86,7 +86,7 @@ export namespace Authorization {
 		if (gracely.Error.is(transaction))
 			result = {
 				id: Identifier.generate(),
-				status: Status.Failed.from(transaction),
+				status: Status.Failed.from(transaction), // Also needed in new card.authorize?
 				...partial,
 				account: creatable.account,
 				card: { id: creatable.card },
