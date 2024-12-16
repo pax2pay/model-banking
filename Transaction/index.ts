@@ -32,7 +32,7 @@ export interface Transaction {
 	transacted?: isoly.DateTime
 	by?: string
 	balance: { actual: number; reserved: number; available: number }
-	operations: Operation[]
+	operations?: Operation[]
 	status: Transaction.Status
 	rail?: Rail
 	flags: string[]
@@ -128,7 +128,7 @@ export namespace Transaction {
 			available: isly.number(),
 			reserved: isly.number(),
 		}),
-		operations: Operation.type.array(),
+		operations: Operation.type.array().optional(),
 		status: Status.type,
 		rail: Rail.type.optional(),
 		flags: isly.string().array(),
@@ -183,17 +183,16 @@ export namespace Transaction {
 		state: Rule.State.Evaluated,
 		account: { id: string; name: string; organization: string; address: Rail.Address },
 		balance: { actual: number; reserved: number; available: number },
-		operation: Operation | Status.Reason,
-		by: string | undefined
+		by: string | undefined,
+		reason?: Status.Reason
 	): Transaction {
-		const status: Status =
-			typeof operation == "string"
-				? ["rejected", operation]
-				: state.outcome == "reject"
-				? ["rejected", "denied"]
-				: state.outcome == "review"
-				? "review"
-				: "processing"
+		const status: Status = reason
+			? ["rejected", reason]
+			: state.outcome == "reject"
+			? ["rejected", "denied"]
+			: state.outcome == "review"
+			? "review"
+			: "processing"
 		const rail: Rail = state.card
 			? state.card.scheme
 			: account.address.type == "internal"
@@ -214,7 +213,6 @@ export namespace Transaction {
 			posted: isoly.DateTime.now(),
 			by,
 			balance,
-			operations: typeof operation == "string" ? [] : [operation],
 			status,
 			rail,
 			flags: state.flags,
@@ -227,7 +225,6 @@ export namespace Transaction {
 	}
 	export function system(
 		creatable: Creatable.Resolved,
-		operations: Operation[],
 		account: { id: string; name: string; organization: string; address: Rail.Address },
 		balance: { actual: number; reserved: number; available: number },
 		by: string | undefined
@@ -250,7 +247,6 @@ export namespace Transaction {
 			posted: isoly.DateTime.now(),
 			by,
 			balance,
-			operations,
 			status: "review",
 			rail: "internal",
 			flags: [],
@@ -277,7 +273,6 @@ export namespace Transaction {
 			posted: isoly.DateTime.now(),
 			by,
 			balance,
-			operations: [],
 			status: "review",
 			rail: "internal",
 			flags: [],
@@ -290,7 +285,6 @@ export namespace Transaction {
 		account: { id: string; name: string; organization: string; address: Rail.Address },
 		currency: isoly.Currency,
 		balance: { actual: number; reserved: number; available: number },
-		operation: Operation,
 		by: string | undefined
 	): Transaction {
 		return {
@@ -313,7 +307,6 @@ export namespace Transaction {
 			transacted: isoly.DateTime.now(),
 			by,
 			balance,
-			operations: [operation],
 			status: "finalized",
 			rail: "internal",
 			flags: [],
@@ -327,8 +320,7 @@ export namespace Transaction {
 		id: string,
 		state: Rule.State.Evaluated,
 		account: { id: string; name: string; organization: string },
-		balance: { actual: number; reserved: number; available: number },
-		operation: Operation | undefined
+		balance: { actual: number; reserved: number; available: number }
 	): Transaction {
 		const status: Transaction.Status =
 			state.outcome == "reject" ? ["rejected", "denied"] : state.outcome == "review" ? "review" : "processing"
@@ -342,7 +334,6 @@ export namespace Transaction {
 			accountName: account.name,
 			balance,
 			id,
-			operations: !operation ? [] : [operation],
 			status,
 			flags: state.flags,
 			oldFlags: [],
@@ -357,7 +348,6 @@ export namespace Transaction {
 		id: string,
 		account: { id: string; name: string; organization: string },
 		card: Rail.Address.Card,
-		operation: Operation,
 		balance: { actual: number; reserved: number; available: number },
 		state: Rule.State.Evaluated
 	): Transaction {
@@ -371,7 +361,6 @@ export namespace Transaction {
 			accountName: account.name,
 			balance,
 			id,
-			operations: [operation],
 			status: "review",
 			flags: [],
 			oldFlags: [],
