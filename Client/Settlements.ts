@@ -1,5 +1,6 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
+import { Card } from "../Card"
 import { Settlement } from "../Settlement"
 
 export class Settlements {
@@ -34,5 +35,8 @@ export class Settlements {
 	}
 	async addPayoutTransactions(settlement: string, transactions: string[]): Promise<Settlement | gracely.Error> {
 		return this.client.patch<Settlement>(`/settlement/${settlement}/settled`, transactions)
+	}
+	async downloadFile(stack: Card.Stack, reference: string): Promise<string | gracely.Error> {
+		return this.client.get<string>(`/processor/${stack}/file/${reference}`)
 	}
 }
