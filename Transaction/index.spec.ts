@@ -32,24 +32,6 @@ const transaction: pax2pay.Transaction = {
 		reserved: 420,
 		available: 420,
 	},
-	operations: [
-		{
-			account: "3Lb41MlP",
-			currency: "GBP",
-			type: "collect",
-			changes: {
-				"fee_test-paxgiro_202333303": {
-					type: "subtract",
-					amount: 10,
-					status: "success",
-					result: 0,
-				},
-			},
-			transaction: "zzzyRwIvXovdzVNA",
-			counter: 0,
-			created: "2023-12-05T17:26:36.977Z",
-		},
-	],
 	status: "review",
 	rail: "paxgiro",
 	flags: ["dannebrogen", "union-jack"],

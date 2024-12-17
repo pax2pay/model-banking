@@ -47,24 +47,6 @@ const transaction: pax2pay.Analytics.Event.Ledger.Transaction = {
 			reserved: 420,
 			available: 420,
 		},
-		operations: [
-			{
-				account: "3Lb41MlP",
-				currency: "GBP",
-				type: "collect",
-				changes: {
-					"fee_test-paxgiro_202333303": {
-						type: "subtract",
-						amount: 10,
-						status: "success",
-						result: 0,
-					},
-				},
-				transaction: "zzzyRwIvXovdzVNA",
-				counter: 0,
-				created: "2023-12-05T17:26:36.977Z",
-			},
-		],
 		status: "review",
 		rail: "paxgiro",
 		flags: ["dannebrogen", "union-jack"],
@@ -92,27 +74,6 @@ const result = {
 	id: "zzzyRwIvXovdzVNA",
 	notes: "[]",
 	oldFlags: ["sssr"],
-	operations: [
-		{
-			account: "3Lb41MlP",
-			changes: [
-				{
-					key: "fee_test-paxgiro_202333303",
-					value: {
-						amount: "10",
-						result: "0",
-						status: "success",
-						type: "subtract",
-					},
-				},
-			],
-			counter: "0",
-			created: "2023-12-05T17:26:36.977Z",
-			currency: "GBP",
-			transaction: "zzzyRwIvXovdzVNA",
-			type: "collect",
-		},
-	],
 	organization: "paxair",
 	posted: "2023-12-05T17:26:36.977Z",
 	rail: "paxgiro",

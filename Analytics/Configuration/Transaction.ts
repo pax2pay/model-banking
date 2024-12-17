@@ -32,34 +32,6 @@ export namespace Transaction {
 		actualBalance: { selector: "value.balance.actual", transform: "string" },
 		reservedBalance: { selector: "value.balance.reserved", transform: "string" },
 		availableBalance: { selector: "value.balance.available", transform: "string" },
-		operations: { selector: "value.operations[*]", transform: {
-			account: "account",
-			currency: "currency",
-			changes: { 
-				selector: "changes", 
-				transform: [
-					"array",
-					{
-						key: "key",
-						value: {
-							selector: "value",
-							transform: {
-								type: "type",
-								amount: { selector: "amount", transform: "string" },
-								status: "status",
-								result: { selector: "result", transform: "string" }
-							}
-						}
-					}
-				]
-			},
-			type: "type",
-			transaction: "transaction",
-			counter: { selector: "counter", transform: "string" },
-			created: "created",
-			signature: "signature",
-			previous: "previous",
-		}},
 		status: "value.status",
 		rail: "value.rail",
 		flags: "value.flags",
@@ -97,26 +69,6 @@ export namespace Transaction {
 		{ name: "actualBalance", type: "NUMERIC" },
 		{ name: "reservedBalance", type: "NUMERIC" },
 		{ name: "availableBalance", type: "NUMERIC" },
-		{ name: "operations", type: "RECORD", mode: "REPEATED", fields: [
-				{ name: "account", type: "STRING" },
-				{ name: "currency", type: "STRING" },
-				{ name: "changes", type: "RECORD", mode: "REPEATED", fields: [
-					{ name: "key", type: "STRING" },
-					{ name: "value", type: "RECORD", fields: [
-						{ name: "type", type: "STRING" },
-						{ name: "amount", type: "NUMERIC" },
-						{ name: "status", type: "STRING" },
-						{ name: "result", type: "NUMERIC", mode: "NULLABLE" },
-					]}
-				] },
-				{ name: "type", type: "STRING" },
-				{ name: "transaction", type: "STRING" },
-				{ name: "counter", type: "NUMERIC" },
-				{ name: "created", type: "TIMESTAMP" },
-				{ name: "signature", type: "STRING" },
-				{ name: "previous", type: "STRING" },
-			]
-		},
 		{ name: "status", type: "STRING" },
 		{ name: "rail", type: "STRING", mode: "NULLABLE" },
 		{ name: "flags", type: "STRING", mode: "REPEATED" },
