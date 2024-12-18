@@ -12,8 +12,8 @@ export class Transactions extends rest.Collection<gracely.Error> {
 	constructor(client: http.Client) {
 		super(client)
 	}
-	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
-		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
+	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction.Api | gracely.Error> {
+		return this.client.post<Transaction.Api>(`/account/${account}/transaction`, transaction)
 	}
 	async list(options?: {
 		account?: string
@@ -21,7 +21,7 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		cursor?: string
 		query?: "created" | "changed" | "review"
 		dateRange?: isoly.DateRange
-	}): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
+	}): Promise<(Transaction.Api[] & { cursor?: string | undefined }) | gracely.Error> {
 		const query = Object.entries({
 			...(options?.cursor ? { cursor: options.cursor } : {}),
 			...(!options?.query ? {} : options?.query == "review" ? { status: "review" } : { order: options?.query }),
@@ -31,13 +31,13 @@ export class Transactions extends rest.Collection<gracely.Error> {
 			.map(([k, v]) => `${k}=${v}`)
 			.join("&")
 		const path = options?.account ? `/account/${options.account}/transaction` : `/transaction`
-		return await this.client.get<Transaction[] & { cursor?: string | undefined }>(
+		return await this.client.get<Transaction.Api[] & { cursor?: string | undefined }>(
 			path + (query && "?" + query),
 			options?.limit ? { limit: options?.limit.toString() } : {}
 		)
 	}
-	async fetch(transaction: string, account?: string): Promise<Transaction | gracely.Error> {
-		return this.client.get<Transaction>(
+	async fetch(transaction: string, account?: string): Promise<Transaction.Api | gracely.Error> {
+		return this.client.get<Transaction.Api>(
 			account
 				? `/account/${account}/transaction/${transaction}?detailed=true`
 				: `/transaction/${transaction}?detailed=true`

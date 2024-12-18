@@ -12,8 +12,8 @@ export class Notes extends rest.Collection<gracely.Error> {
 		account: string,
 		transaction: string,
 		note: Transaction.Note.Creatable
-	): Promise<Transaction | gracely.Error> {
-		return this.client.post<Transaction>(`/transaction/${transaction}/note`, note, {
+	): Promise<Transaction.Api | gracely.Error> {
+		return this.client.post<Transaction.Api>(`/transaction/${transaction}/note`, note, {
 			organization,
 			account,
 		})

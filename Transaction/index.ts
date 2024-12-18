@@ -137,12 +137,17 @@ export namespace Transaction {
 		risk: isly.number().optional(),
 		state: isly.any().optional(),
 	})
-
-	export interface Legacy extends Omit<Transaction, "amount"> {
+	export interface Api extends Transaction {
+		operations: Operation[]
+	}
+	export namespace Api {
+		export const type = Transaction.type.omit(["operations"]).extend<Api>({ operations: Operation.type.array() })
+	}
+	export interface Legacy extends Omit<Transaction.Api, "amount"> {
 		amount: number
 	}
 	export namespace Legacy {
-		export const type = Transaction.type.omit<"amount">(["amount"]).extend<Legacy>({ amount: isly.number() })
+		export const type = Transaction.Api.type.omit<"amount">(["amount"]).extend<Legacy>({ amount: isly.number() })
 	}
 	export function fromLegacy(transaction: Transaction | Legacy): Transaction {
 		return {
@@ -161,7 +166,7 @@ export namespace Transaction {
 				: { amount: transaction.amount }),
 		}
 	}
-	export function toLegacy(transaction: Transaction | Legacy): Legacy {
+	export function toLegacy(transaction: Transaction.Api | Legacy): Legacy {
 		return {
 			...transaction,
 			...(typeof transaction.amount == "number"
@@ -169,11 +174,11 @@ export namespace Transaction {
 				: { amount: transaction.amount.total }),
 		}
 	}
-	export type Event = Omit<Transaction, "state">
+	export type Event = Omit<Transaction.Api, "state">
 	export namespace Event {
-		export const type = Transaction.type.omit(["state"])
+		export const type = Transaction.Api.type.omit(["state"])
 
-		export function from(transaction: Transaction): Event {
+		export function from(transaction: Transaction.Api): Event {
 			return (({ state, ...event }) => event)(transaction)
 		}
 	}
