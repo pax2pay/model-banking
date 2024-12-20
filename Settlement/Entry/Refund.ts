@@ -12,7 +12,7 @@ import { Fee } from "../Fee"
 export interface Refund extends Omit<Refund.Creatable, "settlement"> {
 	status: "succeeded" | "failed"
 	reason?: string
-	transaction?: Transaction
+	transaction?: string
 	created?: isoly.DateTime
 	settlement?: SettlementIdentifier
 }
@@ -20,9 +20,9 @@ export interface Refund extends Omit<Refund.Creatable, "settlement"> {
 export namespace Refund {
 	export interface Creatable {
 		type: "refund"
-		card: string
 		account?: string // Only defined when using the new card id + account id card references
 		authorization: Pick<Authorization, "approvalCode">
+		card: string
 		merchant: Merchant
 		acquirer: Acquirer
 		reference: string
@@ -32,14 +32,14 @@ export namespace Refund {
 		settlement: SettlementIdentifier
 	}
 	export function from(refund: Refund.Creatable, transaction: Transaction): Refund {
-		return { ...refund, status: "succeeded", transaction, created: isoly.DateTime.now() }
+		return { ...refund, status: "succeeded", transaction: transaction.id, created: isoly.DateTime.now() }
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
 			type: isly.string("refund"),
-			card: isly.string(),
 			account: isly.string().optional(),
 			authorization: isly.object({ approvalCode: isly.string() }),
+			card: isly.string(),
 			merchant: Merchant.type,
 			acquirer: Acquirer.type,
 			reference: isly.string(),
@@ -52,7 +52,7 @@ export namespace Refund {
 	export const type = Creatable.type.omit(["settlement"]).extend<Refund>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
-		transaction: Transaction.type.optional(),
+		transaction: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is).optional(),
 		settlement: SettlementIdentifier.type.optional(),
 	})

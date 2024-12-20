@@ -9,6 +9,7 @@ import { Fee } from "../Fee"
 export interface Cancel extends Omit<Cancel.Creatable, "settlement"> {
 	status: "succeeded" | "failed"
 	reason?: string
+	transaction?: string
 	created?: isoly.DateTime
 	settlement?: SettlementIdentifier
 }
@@ -37,6 +38,7 @@ export namespace Cancel {
 	export const type = Creatable.type.omit(["settlement"]).extend<Cancel>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
+		transaction: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		settlement: SettlementIdentifier.type.optional(),
 	})
