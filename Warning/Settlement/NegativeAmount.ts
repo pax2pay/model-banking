@@ -21,7 +21,8 @@ export namespace NegativeAmount {
 	})
 	export function create(resource: Identifier, totals: Totals): NegativeAmount[] {
 		const warnings: NegativeAmount[] = []
-		Object.entries(totals).forEach(
+		const entries = Object.entries(totals) as [isoly.Currency, Total][]
+		entries.forEach(
 			([currency, total]: [isoly.Currency, Total]) =>
 				(total.outcome?.net ?? 0) < 0 &&
 				warnings.push({

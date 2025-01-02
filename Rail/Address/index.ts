@@ -27,16 +27,15 @@ export namespace Address {
 	export const values = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
 	export type Type = typeof values[number]
 	export function compare(addresses: [Address, Address]): boolean {
-		return Object.entries(addresses[0]).every(
-			([key, value]: [keyof Address, Address[keyof Address]]) => value == addresses[1][key]
-		)
+		const entries = Object.entries(addresses[0]) as [keyof Address, Address[keyof Address]][]
+		return entries.every(([key, value]: [keyof Address, Address[keyof Address]]) => value == addresses[1][key])
 	}
 	export function parse(value: string): Address | undefined {
 		let result: Address | undefined
 		const splitted = value.split("-")
 		switch (splitted[0]) {
 			case "pxg":
-				result = splitted.length == 2 ? { type: "paxgiro", identifier: splitted[1] } : undefined
+				result = splitted.length == 2 ? { type: "paxgiro", identifier: splitted[1]! } : undefined
 				break
 		}
 		return result

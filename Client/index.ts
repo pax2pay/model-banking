@@ -17,52 +17,65 @@ import { Transactions } from "./Transactions"
 import { Treasury } from "./Treasury"
 import { Version } from "./Version"
 
-export class Client extends rest.Client<gracely.Error> {
+export class Client {
 	realm?: string
 	organization?: string
-	readonly accounts = new Accounts(this.client)
-	readonly cards = new Cards(this.client)
-	readonly operations = new Operations(this.client)
-	readonly exchanges = new Exchanges(this.client)
-	readonly organizations = new Organizations(this.client)
-	readonly reports = new Reports(this.client)
-	readonly audits = new Audit(this.client)
-	readonly logs = new Logs(this.client)
-	readonly rules = new Rules(this.client)
-	readonly settlements = new Settlements(this.client)
-	readonly transactions = new Transactions(this.client)
-	readonly treasury = new Treasury(this.client)
-	readonly flags = new Labels(this.client, "flag")
-	readonly groups = new Labels(this.client, "group")
+	readonly accounts: Accounts
+	readonly cards: Cards
+	readonly operations: Operations
+	readonly exchanges: Exchanges
+	readonly organizations: Organizations
+	readonly reports: Reports
+	readonly audits: Audit
+	readonly logs: Logs
+	readonly rules: Rules
+	readonly settlements: Settlements
+	readonly transactions: Transactions
+	readonly treasury: Treasury
+	readonly flags: Labels
+	readonly groups: Labels
 	readonly userwidgets = (server: string, application: string) =>
 		new userwidgets.ClientCollection(new http.Client(server), { application })
-	readonly version = new Version(this.client)
+	readonly version: Version
+	private constructor(private readonly client: http.Client<gracely.Error>) {
+		this.accounts = new Accounts(this.client)
+		this.cards = new Cards(this.client)
+		this.operations = new Operations(this.client)
+		this.exchanges = new Exchanges(this.client)
+		this.organizations = new Organizations(this.client)
+		this.reports = new Reports(this.client)
+		this.audits = new Audit(this.client)
+		this.logs = new Logs(this.client)
+		this.rules = new Rules(this.client)
+		this.settlements = new Settlements(this.client)
+		this.transactions = new Transactions(this.client)
+		this.treasury = new Treasury(this.client)
+		this.flags = new Labels(this.client, "flag")
+		this.groups = new Labels(this.client, "group")
+		this.version = new Version(this.client)
+	}
 
-	static create<T = Record<string, any>>(server: string, key?: string, load?: (client: http.Client) => T): Client & T {
-		let httpClient: http.Client<gracely.Error>
-		const result: Client = new Client(
-			(httpClient = new http.Client<gracely.Error>(server, key, {
-				appendHeader: request => ({
-					...request.header,
-					realm: result.realm,
-					organization: request.header.organization ?? result.organization,
-				}),
-				postprocess: async response => {
-					let result = response
-					const body = await response.body
-					if (Array.isArray(body))
-						result = http.Response.create(
-							Object.defineProperty(body, "cursor", {
-								value: response.header.cursor ?? response.header.link?.split?.(",")[0],
-							})
-						)
-					return result
-				},
-			}))
-		)
-		if (load)
-			Object.assign(result, load(httpClient))
-		return result as Client & T
+	static create(server: string, key?: string): Client {
+		const httpClient: http.Client<gracely.Error> = new http.Client<gracely.Error>(server, key, {
+			appendHeader: request => ({
+				...request.header,
+				realm: result.realm,
+				organization: request.header.organization ?? result.organization,
+			}),
+			postprocess: async response => {
+				let result = response
+				const body = await response.body
+				if (Array.isArray(body))
+					result = http.Response.create(
+						Object.defineProperty(body, "cursor", {
+							value: response.header.cursor ?? response.header.link?.split?.(",")[0],
+						})
+					)
+				return result
+			},
+		})
+		const result: Client = new Client(httpClient)
+		return result
 	}
 }
 export namespace Client {
