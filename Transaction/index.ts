@@ -137,7 +137,10 @@ export namespace Transaction {
 		risk: isly.number().optional(),
 		state: isly.any().optional(),
 	})
-
+	export type Internal = Omit<Transaction, "operations">
+	export namespace Internal {
+		export const type = Transaction.type.omit<"operations">(["operations"])
+	}
 	export interface Legacy extends Omit<Transaction, "amount"> {
 		amount: number
 	}
@@ -183,7 +186,7 @@ export namespace Transaction {
 		state: Rule.State.Evaluated,
 		account: { id: string; name: string; organization: string; address: Rail.Address },
 		balance: { actual: number; reserved: number; available: number },
-		operation: Operation | Status.Reason,
+		operation: Operation | Status.Reason | undefined,
 		by: string | undefined
 	): Transaction {
 		const status: Status =
@@ -214,7 +217,7 @@ export namespace Transaction {
 			posted: isoly.DateTime.now(),
 			by,
 			balance,
-			operations: typeof operation == "string" ? [] : [operation],
+			operations: typeof operation == "string" || !operation ? [] : [operation],
 			status,
 			rail,
 			flags: state.flags,
@@ -290,7 +293,7 @@ export namespace Transaction {
 		account: { id: string; name: string; organization: string; address: Rail.Address },
 		currency: isoly.Currency,
 		balance: { actual: number; reserved: number; available: number },
-		operation: Operation,
+		operation: Operation | undefined,
 		by: string | undefined
 	): Transaction {
 		return {
@@ -313,7 +316,7 @@ export namespace Transaction {
 			transacted: isoly.DateTime.now(),
 			by,
 			balance,
-			operations: [operation],
+			operations: !operation ? [] : [operation],
 			status: "finalized",
 			rail: "internal",
 			flags: [],
@@ -357,7 +360,7 @@ export namespace Transaction {
 		id: string,
 		account: { id: string; name: string; organization: string },
 		card: Rail.Address.Card,
-		operation: Operation,
+		operation: Operation | undefined,
 		balance: { actual: number; reserved: number; available: number },
 		state: Rule.State.Evaluated
 	): Transaction {
@@ -371,7 +374,7 @@ export namespace Transaction {
 			accountName: account.name,
 			balance,
 			id,
-			operations: [operation],
+			operations: !operation ? [] : [operation],
 			status: "review",
 			flags: [],
 			oldFlags: [],
