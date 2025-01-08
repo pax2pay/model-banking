@@ -16,7 +16,6 @@ export interface Refund extends Omit<Refund.Creatable, "settlement"> {
 	created?: isoly.DateTime
 	settlement?: SettlementIdentifier
 }
-
 export namespace Refund {
 	export interface Creatable {
 		type: "refund"
