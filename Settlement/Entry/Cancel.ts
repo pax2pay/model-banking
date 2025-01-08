@@ -12,7 +12,6 @@ export interface Cancel extends Omit<Cancel.Creatable, "settlement"> {
 	created?: isoly.DateTime
 	settlement?: SettlementIdentifier
 }
-
 export namespace Cancel {
 	export interface Creatable {
 		type: "cancel"

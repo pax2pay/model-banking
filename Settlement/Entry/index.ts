@@ -10,43 +10,19 @@ import { Summary as EntrySummary } from "./Summary"
 import { Unknown as EntryUnknown } from "./Unknown"
 
 export type Entry = Entry.Cancel | Entry.Capture | Entry.Refund | Entry.Unknown
-
 export namespace Entry {
-	export type Cancel = EntryCancel
-	export const Cancel = EntryCancel
-	export namespace Cancel {
-		export type Creatable = EntryCancel.Creatable
-	}
-	export type Capture = EntryCapture
-	export const Capture = EntryCapture
-	export namespace Capture {
-		export type Creatable = EntryCapture.Creatable
-	}
-	export type Refund = EntryRefund
-	export const Refund = EntryRefund
-	export namespace Refund {
-		export type Creatable = EntryRefund.Creatable
-	}
-	export type Unknown = EntryUnknown
-	export const Unknown = EntryUnknown
-	export namespace Unknown {
-		export type Creatable = EntryUnknown.Creatable
-	}
+	export import Cancel = EntryCancel
+	export import Capture = EntryCapture
+	export import Refund = EntryRefund
+	export import Unknown = EntryUnknown
 	export type Type = "unknown" | "refund" | "capture" | "cancel"
-	export type Summary = EntrySummary
-	export const Summary = EntrySummary
-	export type Creatable = EntryCreatable
-	export const Creatable = EntryCreatable
+	export import Summary = EntrySummary
+	export import Creatable = EntryCreatable
 	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
 		let result: Entry
 		const created = isoly.DateTime.now()
 		if (!Transaction.type.is(transaction) || transaction.status != "finalized")
-			result = {
-				status: "failed",
-				reason: reason(creatable, transaction),
-				...creatable,
-				created,
-			}
+			result = { status: "failed", reason: reason(creatable, transaction), ...creatable, created }
 		else
 			switch (creatable.type) {
 				case "capture":
@@ -56,12 +32,7 @@ export namespace Entry {
 					result = Refund.from(creatable, transaction)
 					break
 				default:
-					result = {
-						...creatable,
-						status: "failed",
-						reason: "Entry type not implemented yet.",
-						created,
-					}
+					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet.", created }
 					break
 			}
 		return result
