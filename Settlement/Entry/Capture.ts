@@ -21,7 +21,7 @@ export namespace Capture {
 	export interface Creatable {
 		type: "capture"
 		account?: string // Only defined when using the new card id + account id card references
-		authorization: Authorization
+		authorization?: Authorization
 		reference: string // card transaction
 		batch: Batch
 		fee: Fee
@@ -32,7 +32,7 @@ export namespace Capture {
 		export const type = isly.object<Creatable>({
 			type: isly.string("capture"),
 			account: isly.string().optional(),
-			authorization: Authorization.type,
+			authorization: Authorization.type.optional(),
 			reference: isly.string(),
 			fee: Fee.type,
 			amount: Amount.type,
