@@ -22,7 +22,7 @@ export namespace Capture {
 		type: "capture"
 		card?: string
 		account?: string // Only defined when using the new card id + account id card references
-		authorization?: Authorization
+		authorization: Authorization
 		reference: string // card transaction
 		batch: Batch
 		fee: Fee
@@ -34,7 +34,7 @@ export namespace Capture {
 			type: isly.string("capture"),
 			card: isly.string().optional(),
 			account: isly.string().optional(),
-			authorization: Authorization.type.optional(),
+			authorization: Authorization.type,
 			reference: isly.string(),
 			fee: Fee.type,
 			amount: Amount.type,

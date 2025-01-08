@@ -10,7 +10,6 @@ export interface Unknown extends Omit<Unknown.Creatable, "settlement"> {
 	created?: isoly.DateTime
 	settlement?: SettlementIdentifier
 }
-
 export namespace Unknown {
 	export interface Creatable {
 		type: "unknown"
