@@ -3,6 +3,7 @@ import { isly } from "isly"
 import { Amount } from "../../Amount"
 import { Authorization } from "../../Authorization"
 import { Identifier as SettlementIdentifier } from "../../Settlement/Identifier"
+import { Transaction } from "../../Transaction"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
 
@@ -11,10 +12,11 @@ export interface Capture extends Omit<Capture.Creatable, "settlement"> {
 	reason?: string
 	created?: isoly.DateTime
 	settlement?: SettlementIdentifier
+	transaction?: Transaction.CardTransaction
 }
 export namespace Capture {
-	export function from(creatable: Creatable): Capture {
-		return { status: "succeeded", ...creatable, created: isoly.DateTime.now() }
+	export function from(creatable: Creatable, transaction: Transaction.CardTransaction): Capture {
+		return { status: "succeeded", ...creatable, transaction, created: isoly.DateTime.now() }
 	}
 	export interface Creatable {
 		type: "capture"
@@ -43,5 +45,6 @@ export namespace Capture {
 		reason: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is).optional(),
 		settlement: SettlementIdentifier.type.optional(),
+		transaction: isly.any().optional(),
 	})
 }

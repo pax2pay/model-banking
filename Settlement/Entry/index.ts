@@ -18,7 +18,10 @@ export namespace Entry {
 	export type Type = "unknown" | "refund" | "capture" | "cancel"
 	export import Summary = EntrySummary
 	export import Creatable = EntryCreatable
-	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
+	export function from(
+		creatable: Entry.Creatable,
+		transaction: Transaction.CardTransaction | gracely.Error | string
+	): Entry {
 		let result: Entry
 		const created = isoly.DateTime.now()
 		if (!Transaction.type.is(transaction) || transaction.status != "finalized")
@@ -26,7 +29,7 @@ export namespace Entry {
 		else
 			switch (creatable.type) {
 				case "capture":
-					result = Capture.from(creatable)
+					result = Capture.from(creatable, transaction)
 					break
 				case "refund":
 					result = Refund.from(creatable, transaction)
