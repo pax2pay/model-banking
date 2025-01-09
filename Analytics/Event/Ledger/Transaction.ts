@@ -5,7 +5,7 @@ import { Base } from "./Base"
 
 export interface Transaction extends Base<modelTransaction> {
 	entity: { type: "transaction"; id: string }
-	action: "created" | "finalized" | "cancelled" | "failed"
+	action: "created" | "finalized" | "cancelled" | "failed" | "updated"
 	isError?: true
 }
 export namespace Transaction {
