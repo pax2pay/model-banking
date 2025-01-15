@@ -45,7 +45,7 @@ export class Transactions extends rest.Collection<gracely.Error> {
 	}
 	async statistics(
 		range: isoly.DateRange,
-		queries?: { cursor?: string; scheme?: Card.Scheme; supplier?: Supplier }
+		queries?: { cursor?: string; scheme?: Card.Scheme; supplier?: Supplier; limit?: number }
 	): Promise<Transaction.Statistics | gracely.Error> {
 		const query = "?" + http.Search.stringify({ ...queries, ...range })
 		return this.client.get<Transaction.Statistics>(`/transaction/statistics${query}`)
