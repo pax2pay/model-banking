@@ -48,7 +48,7 @@ export namespace Statistics {
 		const state = transaction.state
 		const authorization = state?.authorization
 		if (state && authorization && (state.transaction.kind == "capture" || state.transaction.kind == "refund")) {
-			const region = domestic.some(country => country == authorization.merchant.country)
+			const region = domestic.includes(authorization.merchant.country)
 				? "domestic"
 				: intraRegion.includes(authorization.merchant.country)
 				? "intraRegion"
