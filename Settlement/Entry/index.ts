@@ -26,7 +26,7 @@ export namespace Entry {
 		else
 			switch (creatable.type) {
 				case "capture":
-					result = Capture.from(creatable)
+					result = Capture.from(creatable, transaction)
 					break
 				case "refund":
 					result = Refund.from(creatable, transaction)

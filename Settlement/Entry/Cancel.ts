@@ -3,16 +3,21 @@ import { isly } from "isly"
 import { Amount } from "../../Amount"
 import { Authorization } from "../../Authorization"
 import { Identifier as SettlementIdentifier } from "../../Settlement/Identifier"
+import { Transaction } from "../../Transaction"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
 
 export interface Cancel extends Omit<Cancel.Creatable, "settlement"> {
 	status: "succeeded" | "failed"
 	reason?: string
+	transaction?: Transaction
 	created?: isoly.DateTime
 	settlement?: SettlementIdentifier
 }
 export namespace Cancel {
+	export function from(creatable: Creatable, transaction: Transaction): Cancel {
+		return { status: "succeeded", ...creatable, transaction, created: isoly.DateTime.now() }
+	}
 	export interface Creatable {
 		type: "cancel"
 		authorization?: Authorization
@@ -36,6 +41,7 @@ export namespace Cancel {
 	export const type = Creatable.type.omit(["settlement"]).extend<Cancel>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
+		transaction: Transaction.type.optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		settlement: SettlementIdentifier.type.optional(),
 	})
