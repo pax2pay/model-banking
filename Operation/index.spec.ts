@@ -63,14 +63,7 @@ const operation: pax2pay.Operation = {
 	account: "3Lb41MlP",
 	currency: "GBP",
 	type: "collect",
-	changes: {
-		"fee_test-paxgiro_202333303": {
-			type: "subtract",
-			amount: 10,
-			status: "success",
-			result: 0,
-		},
-	},
+	changes: { "fee_test-paxgiro_202333303": { type: "subtract", amount: 10, status: "success", result: 0 } },
 	transaction: "zzzyRwIvXovdzVNA",
 	counter: 0,
 	created: "2023-12-05T17:26:36.977Z",
@@ -78,14 +71,7 @@ const operation: pax2pay.Operation = {
 const operation2: pax2pay.Operation = {
 	account: "23Md_znq",
 	currency: "GBP",
-	changes: {
-		available: {
-			type: "add",
-			amount: 1000,
-			status: "success",
-			result: 71000,
-		},
-	},
+	changes: { available: { type: "add", amount: 1000, status: "success", result: 71000 } },
 	type: "manual",
 	transaction: "manual",
 	counter: 71,
@@ -95,14 +81,7 @@ const operation3: pax2pay.Operation = {
 	account: "3Lb41MlP",
 	currency: "GBP",
 	type: "collect",
-	changes: {
-		"internal-safe01-2024-03-04T15Z": {
-			type: "subtract",
-			amount: 10,
-			status: "success",
-			result: 0,
-		},
-	},
+	changes: { "internal-safe01-2024-03-04T15Z": { type: "subtract", amount: 10, status: "success", result: 0 } },
 	transaction: "zzzyRwIvXovdzVNA",
 	counter: 0,
 	created: "2023-12-05T17:26:36.977Z",
@@ -111,24 +90,9 @@ const operation4: pax2pay.Operation = {
 	account: "23Md_znq",
 	currency: "GBP",
 	changes: {
-		"fee_test-paxgiro_202333303": {
-			type: "add",
-			amount: 10,
-			status: "success",
-			result: 0,
-		},
-		available: {
-			type: "subtract",
-			amount: 1000,
-			status: "success",
-			result: 71000,
-		},
-		"internal-safe01-2024-03-04T15Z": {
-			type: "add",
-			amount: 10,
-			status: "success",
-			result: 0,
-		},
+		"fee_test-paxgiro_202333303": { type: "add", amount: 10, status: "success", result: 0 },
+		available: { type: "subtract", amount: 1000, status: "success", result: 71000 },
+		"internal-safe01-2024-03-04T15Z": { type: "add", amount: 10, status: "success", result: 0 },
 	},
 	type: "manual",
 	transaction: "manual",
