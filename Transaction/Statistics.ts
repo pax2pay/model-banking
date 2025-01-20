@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Rail } from "../Rail"
 import { Transaction } from "."
 
 export interface Statistics {
@@ -46,13 +47,14 @@ export namespace Statistics {
 		currency: isoly.Currency
 	): Statistics {
 		const state = transaction.state
-		const authorization = state?.authorization
-		if (state && authorization && state?.transaction)
-			console.log({ transaction: transaction.id, kind: state.transaction.kind })
-		if (state && authorization && (state.transaction.kind == "capture" || state.transaction.kind == "refund")) {
-			const region = domestic.includes(authorization.merchant.country)
+		if (
+			state &&
+			Rail.Address.Card.Counterpart.type.is(transaction.counterpart) &&
+			(state.transaction.kind == "capture" || state.transaction.kind == "refund")
+		) {
+			const region = domestic.includes(transaction.counterpart.merchant.country)
 				? "domestic"
-				: intraRegion.includes(authorization.merchant.country)
+				: intraRegion.includes(transaction.counterpart.merchant.country)
 				? "intraRegion"
 				: "extraRegion"
 			statistics[state.transaction.kind][region].count++
