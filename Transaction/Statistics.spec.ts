@@ -50,16 +50,20 @@ describe("Transaction Statistics", () => {
 	})
 	it("should append a transaction to statistics", () => {
 		const transactionToCount = {
-			state: {
-				authorization: { merchant: { country: "SE" } },
-				transaction: { kind: "capture", amount: 99 },
+			counterpart: {
+				type: "card",
+				merchant: { name: "", id: "", category: "", address: "", city: "", zip: "", country: "SE" },
+				acquirer: { id: "", number: "" },
 			},
+			state: { transaction: { kind: "capture", amount: 99 } },
 		} as unknown as pax2pay.Transaction
 		const transactionToNotCount = {
-			state: {
-				authorization: { merchant: { country: "NO" } },
-				transaction: { kind: "authorization", amount: 100 },
+			counterpart: {
+				type: "card",
+				merchant: { name: "", id: "", category: "", address: "", city: "", zip: "", country: "NO" },
+				acquirer: { id: "", number: "" },
 			},
+			state: { transaction: { kind: "authorization", amount: 100 } },
 		} as unknown as pax2pay.Transaction
 		expect(pax2pay.Transaction.Statistics.append(statistics, transactionToCount, ["SE"], ["NO"], "SEK")).toEqual({
 			capture: {
