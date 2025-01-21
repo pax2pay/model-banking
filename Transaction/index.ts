@@ -32,7 +32,7 @@ export interface Transaction {
 	transacted?: isoly.DateTime
 	by?: string
 	balance: { actual: number; reserved: number; available: number }
-	operations: Operation[]
+	operations?: Operation[]
 	status: Transaction.Status
 	rail?: Rail
 	flags: string[]
@@ -128,7 +128,7 @@ export namespace Transaction {
 			available: isly.number(),
 			reserved: isly.number(),
 		}),
-		operations: Operation.type.array(),
+		operations: Operation.type.array().optional(),
 		status: Status.type,
 		rail: Rail.type.optional(),
 		flags: isly.string().array(),
