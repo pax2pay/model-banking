@@ -3,6 +3,7 @@ import { isly } from "isly"
 import { Acquirer } from "../Acquirer"
 import { Amount } from "../Amount"
 import { Merchant } from "../Merchant"
+import { Transaction } from "../Transaction"
 import { Exchange } from "./Exchange"
 
 export interface Creatable {
@@ -28,4 +29,16 @@ export namespace Creatable {
 		description: isly.string(),
 		approvalCode: isly.string().optional(),
 	})
+	export function fromTransaction(transaction: Transaction.CardTransaction, approvalCode: string): Creatable {
+		return {
+			card: transaction.account.id,
+			account: transaction.accountId,
+			amount: [transaction.currency, -transaction.amount.original],
+			merchant: transaction.counterpart.merchant,
+			acquirer: transaction.counterpart.acquirer,
+			reference: "",
+			description: transaction.description,
+			approvalCode,
+		}
+	}
 }

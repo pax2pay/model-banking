@@ -219,6 +219,7 @@ const entries: pax2pay.Settlement.Entry[] = [
 	{
 		status: "succeeded",
 		type: "capture",
+		card: "zzzzzzzzzzzzzzzz",
 		authorization: authorization1,
 		reference: "string",
 		settlement: "20241202a1",
@@ -229,6 +230,7 @@ const entries: pax2pay.Settlement.Entry[] = [
 	{
 		status: "succeeded",
 		type: "capture",
+		card: "zzzzzzzzzzzzzzzz",
 		authorization: authorization2,
 		reference: "string",
 		settlement: "20241202a1",
