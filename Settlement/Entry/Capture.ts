@@ -3,6 +3,7 @@ import { isly } from "isly"
 import { Amount } from "../../Amount"
 import { Authorization } from "../../Authorization"
 import { Identifier as SettlementIdentifier } from "../../Settlement/Identifier"
+import { Transaction } from "../../Transaction"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
 
@@ -11,14 +12,17 @@ export interface Capture extends Omit<Capture.Creatable, "settlement"> {
 	reason?: string
 	created?: isoly.DateTime
 	settlement?: SettlementIdentifier
+	transaction?: Transaction.CardTransaction
 }
 export namespace Capture {
-	export function from(creatable: Creatable): Capture {
-		return { status: "succeeded", ...creatable, created: isoly.DateTime.now() }
+	export function from(creatable: Creatable, transaction: Transaction.CardTransaction): Capture {
+		return { status: "succeeded", ...creatable, transaction, created: isoly.DateTime.now() }
 	}
 	export interface Creatable {
 		type: "capture"
+		card?: string
 		account?: string // Only defined when using the new card id + account id card references
+		transactionId?: string
 		authorization: Authorization
 		reference: string // card transaction
 		batch: Batch
@@ -29,8 +33,10 @@ export namespace Capture {
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
 			type: isly.string("capture"),
+			card: isly.string().optional(),
 			account: isly.string().optional(),
 			authorization: Authorization.type,
+			transactionId: isly.string().optional(),
 			reference: isly.string(),
 			fee: Fee.type,
 			amount: Amount.type,
@@ -43,5 +49,6 @@ export namespace Capture {
 		reason: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is).optional(),
 		settlement: SettlementIdentifier.type.optional(),
+		transaction: isly.any().optional(),
 	})
 }
