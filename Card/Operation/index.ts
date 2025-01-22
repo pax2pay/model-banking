@@ -21,7 +21,14 @@ export namespace Operation {
 			? undefined
 			: {
 					type: "authorization",
-					id: (entry.type != "refund" ? entry.authorization?.id : entry.transaction?.id) ?? "unknown",
+					id:
+						typeof entry.transaction == "string"
+							? entry.transaction
+							: entry.transaction
+							? entry.transaction.id
+							: entry.authorization && "id" in entry.authorization
+							? entry.authorization.id
+							: "unknown",
 					status: Operation.fromEntryStatus(entry.type),
 					created: isoly.DateTime.now(),
 			  }

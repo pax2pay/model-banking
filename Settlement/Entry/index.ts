@@ -18,7 +18,10 @@ export namespace Entry {
 	export type Type = "unknown" | "refund" | "capture" | "cancel"
 	export import Summary = EntrySummary
 	export import Creatable = EntryCreatable
-	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
+	export function from(
+		creatable: Entry.Creatable,
+		transaction: Transaction.CardTransaction | gracely.Error | string
+	): Entry {
 		let result: Entry
 		const created = isoly.DateTime.now()
 		if (!Transaction.type.is(transaction) || transaction.status != "finalized")
@@ -32,14 +35,14 @@ export namespace Entry {
 					result = Refund.from(creatable, transaction)
 					break
 				default:
-					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet.", created }
+					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet.", created, transaction }
 					break
 			}
 		return result
 	}
 	function reason(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): string {
 		const result = []
-		!creatable.authorization && result.push("Missing authorization.")
+		!creatable.transaction && result.push("Missing authorization.")
 		if (gracely.Error.is(transaction))
 			result.push(`gracely error: ${JSON.stringify(transaction)}`)
 		else if (typeof transaction != "string")
