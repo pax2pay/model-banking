@@ -6,6 +6,7 @@ import { Transaction } from "."
 export interface Statistics {
 	capture: Statistics.Regional
 	refund: Statistics.Regional
+	cards: string[]
 	cursor?: string
 }
 
@@ -37,6 +38,7 @@ export namespace Statistics {
 	export const type = isly.object<Statistics>({
 		capture: Regional.type,
 		refund: Regional.type,
+		cards: isly.string().array(),
 		cursor: isly.string().optional(),
 	})
 	export function append(
@@ -49,6 +51,7 @@ export namespace Statistics {
 		const state = transaction.state
 		if (
 			state &&
+			Rail.Address.Card.type.is(transaction.account) &&
 			Rail.Address.Card.Counterpart.type.is(transaction.counterpart) &&
 			(state.transaction.kind == "capture" || state.transaction.kind == "refund")
 		) {
@@ -63,25 +66,27 @@ export namespace Statistics {
 				statistics[state.transaction.kind][region].amount,
 				state.transaction.amount
 			)
+			statistics.cards.includes(transaction.account.id) || statistics.cards.push(transaction.account.id)
 		}
 		return statistics
 	}
 	export function combine(accumulation: Statistics, incoming: Statistics, currency: isoly.Currency): Statistics {
-		Object.entries((({ cursor, ...rest }) => rest)(incoming)).forEach(
-			([kind, statistic]: [TransactionType, Statistics[TransactionType]]) =>
-				Object.entries(statistic).forEach(
-					([region, { count, amount }]: [
-						Region,
-						{
-							count: number
-							amount: number
-						}
-					]) => {
-						accumulation[kind][region].count += count
-						accumulation[kind][region].amount = isoly.Currency.add(currency, accumulation[kind][region].amount, amount)
+		const [statistics, cards] = (({ cursor, cards, ...rest }) => [rest, cards])(incoming)
+		Object.entries(statistics).forEach(([kind, statistic]: [TransactionType, Statistics[TransactionType]]) =>
+			Object.entries(statistic).forEach(
+				([region, { count, amount }]: [
+					Region,
+					{
+						count: number
+						amount: number
 					}
-				)
+				]) => {
+					accumulation[kind][region].count += count
+					accumulation[kind][region].amount = isoly.Currency.add(currency, accumulation[kind][region].amount, amount)
+				}
+			)
 		)
+		cards.forEach(card => accumulation.cards.includes(card) || accumulation.cards.push(card))
 		return accumulation
 	}
 }
