@@ -451,4 +451,10 @@ export namespace Transaction {
 		account: Extract<Transaction["account"], Rail.Address.Card>
 		counterpart: Extract<Transaction["counterpart"], Rail.Address.Card.Counterpart>
 	}
+	export namespace CardTransaction {
+		export const type = Transaction.type.omit(["account", "counterpart"]).extend<CardTransaction>({
+			account: Rail.Address.Card.type,
+			counterpart: Rail.Address.Card.Counterpart.type,
+		})
+	}
 }
