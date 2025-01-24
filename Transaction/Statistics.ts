@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Rail } from "../Rail"
+import { Card } from "../Card"
 import { Transaction } from "."
 
 export interface Statistics {
@@ -41,34 +41,48 @@ export namespace Statistics {
 		cards: isly.string().array(),
 		cursor: isly.string().optional(),
 	})
-	export function append(
-		statistics: Statistics,
-		transaction: Transaction,
-		domestic: isoly.CountryCode.Alpha2[],
-		intraRegion: isoly.CountryCode.Alpha2[],
-		currency: isoly.Currency
-	): Statistics {
-		const state = transaction.state
-		if (
-			state &&
-			Rail.Address.Card.type.is(transaction.account) &&
-			Rail.Address.Card.Counterpart.type.is(transaction.counterpart) &&
-			(state.transaction.kind == "capture" || state.transaction.kind == "refund")
-		) {
-			const region = domestic.includes(transaction.counterpart.merchant.country)
-				? "domestic"
-				: intraRegion.includes(transaction.counterpart.merchant.country)
-				? "intraRegion"
-				: "extraRegion"
-			statistics[state.transaction.kind][region].count++
-			statistics[state.transaction.kind][region].amount = isoly.Currency.add(
-				currency,
-				statistics[state.transaction.kind][region].amount,
-				state.transaction.amount
-			)
-			statistics.cards.includes(transaction.account.id) || statistics.cards.push(transaction.account.id)
+	function empty(): Statistics {
+		return {
+			capture: {
+				domestic: { count: 0, amount: 0 },
+				intraRegion: { count: 0, amount: 0 },
+				extraRegion: { count: 0, amount: 0 },
+			},
+			refund: {
+				domestic: { count: 0, amount: 0 },
+				intraRegion: { count: 0, amount: 0 },
+				extraRegion: { count: 0, amount: 0 },
+			},
+			cards: [],
 		}
-		return statistics
+	}
+	export function compile(
+		transactions: Transaction[],
+		scheme: Card.Scheme,
+		regions: Record<"domestic" | "intraRegion", isoly.CountryCode.Alpha2[]>
+	): Statistics {
+		const result: Statistics = empty()
+		for (const transaction of transactions)
+			if (
+				Transaction.CardTransaction.type.is(transaction) &&
+				transaction.status == "finalized" &&
+				transaction.account.scheme == scheme
+			) {
+				const region = regions.domestic.includes(transaction.counterpart.merchant.country)
+					? "domestic"
+					: regions.intraRegion.includes(transaction.counterpart.merchant.country)
+					? "intraRegion"
+					: "extraRegion"
+				const kind = transaction.direction == "outbound" ? "capture" : "refund"
+				result[kind][region].count++
+				result[kind][region].amount = isoly.Currency.add(
+					transaction.currency,
+					result[kind][region].amount,
+					Math.abs(transaction.amount.original)
+				)
+				result.cards.includes(transaction.account.id) || result.cards.push(transaction.account.id)
+			}
+		return result
 	}
 	export function combine(accumulation: Statistics, incoming: Statistics, currency: isoly.Currency): Statistics {
 		const [statistics, cards] = (({ cursor, cards, ...rest }) => [rest, cards])(incoming)
