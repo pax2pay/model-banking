@@ -1,5 +1,6 @@
 import { Account as AccountEvent } from "./Account"
 import { Base as EventBase } from "./Base"
+import { Card as CardEvent } from "./Card"
 import { Operation as OperationEvent } from "./Operation"
 import { Organization as OrganizationEvent } from "./Organization"
 import { Rule as RuleEvent } from "./Rule"
@@ -14,4 +15,5 @@ export namespace Ledger {
 	export import Rule = RuleEvent
 	export import Operation = OperationEvent
 	export import User = UserEvent
+	export import Card = CardEvent
 }
