@@ -4,9 +4,13 @@ import { Base } from "./Base"
 
 export interface Card extends Base<modelCard> {
 	entity: { type: "card"; id: string }
-	action: "created" | "updated" | "cancelled"
+	action: Card.Action
 }
 export namespace Card {
+	export type Action = typeof Action.values[number]
+	export namespace Action {
+		export const values = ["created", "updated", "cancelled"] as const
+	}
 	export function create(value: modelCard, action: Card["action"]): Card {
 		return {
 			realm: value.realm,

@@ -5,9 +5,13 @@ import { Base } from "./Base"
 
 export interface Organization extends Base<modelOrganization> {
 	entity: { type: "organization"; id: string }
-	action: "created" | "updated"
+	action: Organization.Action
 }
 export namespace Organization {
+	export type Action = typeof Action.values[number]
+	export namespace Action {
+		export const values = ["created", "updated"] as const
+	}
 	export function create(value: modelOrganization, realm: Realm, action: Organization["action"]): Organization {
 		return {
 			realm,

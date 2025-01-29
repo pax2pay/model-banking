@@ -9,6 +9,17 @@ import { User as UserEvent } from "./User"
 
 export namespace Ledger {
 	export type Base<T> = EventBase<T>
+	export type Resource = "transaction" | "account" | "organization" | "rule" | "operation" | "user" | "card"
+	export const action = {
+		transaction: TransactionEvent.Action.values,
+		account: AccountEvent.Action.values,
+		organization: OrganizationEvent.Action.values,
+		rule: RuleEvent.Action.values,
+		operation: OperationEvent.Action.values,
+		user: UserEvent.Action.values,
+		card: CardEvent.Action.values,
+		//eslint-disable-next-line
+	} satisfies Record<Resource, readonly string[]>
 	export import Transaction = TransactionEvent
 	export import Account = AccountEvent
 	export import Organization = OrganizationEvent

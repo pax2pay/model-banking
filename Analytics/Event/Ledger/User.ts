@@ -9,6 +9,10 @@ export type User = Base<userwidgets.User> & {
 }
 
 export namespace User {
+	export type Action = typeof Action.values[number]
+	export namespace Action {
+		export const values = ["created", "updated", "removed"] as const
+	}
 	export function create(value: userwidgets.User, realm: Realm, action: User["action"]): User {
 		return {
 			realm,

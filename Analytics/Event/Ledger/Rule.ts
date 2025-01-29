@@ -5,7 +5,7 @@ import { Base } from "./Base"
 
 export interface Rule extends Base<modelRule> {
 	entity: { type: "rule"; id: string }
-	action: "created" | "updated" | "removed"
+	action: Rule.Action
 	meta: {
 		ruleType: modelRule.Kind
 		ruleCategory: modelRule.Category
@@ -13,6 +13,10 @@ export interface Rule extends Base<modelRule> {
 	}
 }
 export namespace Rule {
+	export type Action = typeof Action.values[number]
+	export namespace Action {
+		export const values = ["created", "updated", "removed"] as const
+	}
 	export function create(
 		value: modelRule,
 		realm: Realm,
