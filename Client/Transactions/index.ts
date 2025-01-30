@@ -26,7 +26,6 @@ export class Transactions extends rest.Collection<gracely.Error> {
 			...(options?.cursor ? { cursor: options.cursor } : {}),
 			...(!options?.query ? {} : options?.query == "review" ? { status: "review" } : { order: options?.query }),
 			...(options?.dateRange ?? {}),
-			detailed: "true",
 		})
 			.map(([k, v]) => `${k}=${v}`)
 			.join("&")
@@ -38,9 +37,7 @@ export class Transactions extends rest.Collection<gracely.Error> {
 	}
 	async fetch(transaction: string, account?: string): Promise<Transaction | gracely.Error> {
 		return this.client.get<Transaction>(
-			account
-				? `/account/${account}/transaction/${transaction}?detailed=true`
-				: `/transaction/${transaction}?detailed=true`
+			account ? `/account/${account}/transaction/${transaction}` : `/transaction/${transaction}`
 		)
 	}
 	async statistics(
