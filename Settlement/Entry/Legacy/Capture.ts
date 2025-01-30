@@ -1,10 +1,10 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Amount } from "../../Amount"
-import { Authorization } from "../../Authorization"
-import { Identifier as SettlementIdentifier } from "../../Settlement/Identifier"
-import { Batch } from "../Batch"
-import { Fee } from "../Fee"
+import { Amount } from "../../../Amount"
+import { Authorization } from "../../../Authorization"
+import { Batch } from "../../Batch"
+import { Fee } from "../../Fee"
+import { Identifier as SettlementIdentifier } from "../../Identifier"
 
 export interface Capture extends Omit<Capture.Creatable, "settlement"> {
 	status: "succeeded" | "failed"
