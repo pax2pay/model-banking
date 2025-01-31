@@ -335,7 +335,7 @@ export namespace Transaction {
 		}
 	}
 	export function fromRefund(
-		refund: Settlement.Entry.Refund.Creatable,
+		refund: Settlement.Entry.Creatable.Known & { type: "refund" },
 		id: string,
 		account: { id: string; name: string; organization: string },
 		card: Rail.Address.Card,

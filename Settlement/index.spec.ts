@@ -3,8 +3,11 @@ import { pax2pay } from "../index"
 // cSpell:disable
 describe("Settlement", () => {
 	it("compile", () => {
-		const result = pax2pay.Settlement.compile(settlement, entries)
+		const result = pax2pay.Settlement.compile(settlement, entries.map(pax2pay.Settlement.Entry.fromLegacy))
+		console.log(result)
 		expect(result.totals.GBP?.outcome?.net).toEqual(settlement.totals.GBP?.expected.net)
+		expect(result.entries.count).toBe(2)
+		expect(result.entries.failed?.count).toBe(1)
 	})
 	it("from legacy", () => {
 		const transformed = pax2pay.Settlement.fromLegacy(oldSettlement)
@@ -215,7 +218,7 @@ const authorization2: pax2pay.Authorization = {
 	reference: "ahgt3817",
 	description: "golf trip",
 }
-const entries: pax2pay.Settlement.Entry[] = [
+const entries: pax2pay.Settlement.Entry.Legacy[] = [
 	{
 		status: "succeeded",
 		type: "capture",
@@ -235,6 +238,14 @@ const entries: pax2pay.Settlement.Entry[] = [
 		batch: "20241202",
 		fee: { other: { [authorization2.amount[0]]: authorization2.amount[1] * 0.01 } },
 		amount: authorization2.amount,
+	},
+	{
+		status: "failed",
+		reason: "Error",
+		created: "2023-12-05T17:26:36.977Z",
+		type: "unknown",
+		data: { type: "Error", message: "Error" },
+		batch: "20241202",
 	},
 ]
 const oldSettlement: pax2pay.Settlement.OldSettlement = {

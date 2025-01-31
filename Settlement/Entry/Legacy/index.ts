@@ -6,7 +6,6 @@ import { Cancel as EntryCancel } from "./Cancel"
 import { Capture as EntryCapture } from "./Capture"
 import { Creatable as EntryCreatable } from "./Creatable"
 import { Refund as EntryRefund } from "./Refund"
-import { Summary as EntrySummary } from "./Summary"
 import { Unknown as EntryUnknown } from "./Unknown"
 
 export type Entry = Entry.Cancel | Entry.Capture | Entry.Refund | Entry.Unknown
@@ -16,7 +15,6 @@ export namespace Entry {
 	export import Refund = EntryRefund
 	export import Unknown = EntryUnknown
 	export type Type = "unknown" | "refund" | "capture" | "cancel"
-	export import Summary = EntrySummary
 	export import Creatable = EntryCreatable
 	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
 		let result: Entry

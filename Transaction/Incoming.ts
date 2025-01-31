@@ -26,7 +26,10 @@ export namespace Incoming {
 		reference: TransactionReference.type.optional(),
 	})
 
-	export function fromRefund(entry: Settlement.Entry.Refund.Creatable, card: Rail.Address.Card): Incoming {
+	export function fromRefund(
+		entry: Settlement.Entry.Creatable.Known & { type: "refund" },
+		card: Rail.Address.Card
+	): Incoming {
 		const [currency, amount] = entry.amount
 		return {
 			account: card,

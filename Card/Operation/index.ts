@@ -16,20 +16,19 @@ export namespace Operation {
 			created: isoly.DateTime.now(),
 		}
 	}
-	export function fromEntry(entry: Entry): Operation | undefined {
+	export function fromEntry(entry: Entry | Entry.Failed): Operation | undefined {
 		return entry.type == "unknown"
 			? undefined
 			: {
 					type: "authorization",
-					id: (entry.type != "refund" ? entry.authorization?.id : entry.transaction?.id) ?? "unknown",
+					id: entry.transaction ?? "unknown",
 					status: Operation.fromEntryStatus(entry.type),
 					created: isoly.DateTime.now(),
 			  }
 	}
-	export function fromEntryStatus(status: Exclude<Entry.Type, "unknown">): OperationAuthorization.Status {
-		const statusConverter: Record<Exclude<Entry.Type, "unknown">, OperationAuthorization.Status> = {
+	export function fromEntryStatus(status: Exclude<Entry["type"], "unknown">): OperationAuthorization.Status {
+		const statusConverter: Record<Exclude<Entry["type"], "unknown">, OperationAuthorization.Status> = {
 			capture: "captured",
-			cancel: "cancelled",
 			refund: "refunded",
 		}
 		return statusConverter[status]
