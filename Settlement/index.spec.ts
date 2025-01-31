@@ -4,7 +4,6 @@ import { pax2pay } from "../index"
 describe("Settlement", () => {
 	it("compile", () => {
 		const result = pax2pay.Settlement.compile(settlement, entries.map(pax2pay.Settlement.Entry.fromLegacy))
-		console.log(result)
 		expect(result.totals.GBP?.outcome?.net).toEqual(settlement.totals.GBP?.expected.net)
 		expect(result.entries.count).toBe(2)
 		expect(result.entries.failed?.count).toBe(1)
