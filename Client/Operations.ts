@@ -27,4 +27,7 @@ export class Operations extends rest.Collection<gracely.Error> {
 			options && (({ start, end, ...headers }) => headers)(options)
 		)
 	}
+	async getOperationsOnTransaction(transactionId: string): Promise<Operation[] | gracely.Error> {
+		return this.client.get<Operation[]>(`/transaction/${transactionId}/operations`)
+	}
 }
