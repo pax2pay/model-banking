@@ -3,6 +3,7 @@ import { isoly } from "isoly"
 import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Card } from "../../Card"
+import { Operation } from "../../Operation"
 import { Supplier } from "../../Supplier"
 import { Transaction } from "../../Transaction"
 import { Notes } from "./Notes"
@@ -39,6 +40,9 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		return this.client.get<Transaction>(
 			account ? `/account/${account}/transaction/${transaction}` : `/transaction/${transaction}`
 		)
+	}
+	async getOperations(transactionId: string): Promise<Operation[] | gracely.Error> {
+		return this.client.get<Operation[]>(`/transaction/${transactionId}/operations`)
 	}
 	async statistics(
 		range: isoly.DateRange,
