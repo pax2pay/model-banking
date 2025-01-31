@@ -36,11 +36,7 @@ export namespace Creatable {
 		changes: Changes.type,
 		type: isly.string(types),
 	})
-	export function fromRefund(
-		account: string,
-		settlement: string,
-		entry: Settlement.Entry.Creatable.Known & { type: "refund" }
-	): Creatable {
+	export function fromRefund(account: string, settlement: string, entry: Settlement.Entry.Creatable.Refund): Creatable {
 		// The Entry.Refund.Creatable has negative amount and fee
 		// The operation amounts should always be positive
 		const [currency, entryAmount] = entry.amount

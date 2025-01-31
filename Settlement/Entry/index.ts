@@ -14,6 +14,12 @@ export interface Entry extends Omit<Entry.Creatable.Known, "transaction" | "card
 	created: isoly.DateTime
 }
 export namespace Entry {
+	export interface Capture extends Entry {
+		type: "capture"
+	}
+	export interface Refund extends Entry {
+		type: "refund"
+	}
 	export import Creatable = EntryCreatable
 	export import Summary = EntrySummary
 	export import Legacy = LegacyEntry

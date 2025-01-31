@@ -17,21 +17,14 @@ export namespace Operation {
 		}
 	}
 	export function fromEntry(entry: Entry | Entry.Failed): Operation | undefined {
-		return entry.type == "unknown"
+		return entry.status == "failed"
 			? undefined
 			: {
 					type: "authorization",
 					id: entry.transaction ?? "unknown",
-					status: Operation.fromEntryStatus(entry.type),
+					status: entry.type == "capture" ? "captured" : "refunded",
 					created: isoly.DateTime.now(),
 			  }
-	}
-	export function fromEntryStatus(status: Exclude<Entry["type"], "unknown">): OperationAuthorization.Status {
-		const statusConverter: Record<Exclude<Entry["type"], "unknown">, OperationAuthorization.Status> = {
-			capture: "captured",
-			refund: "refunded",
-		}
-		return statusConverter[status]
 	}
 	export const type = isly.union(Card.type, OperationAuthorization.type)
 }

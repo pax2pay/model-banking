@@ -8,6 +8,12 @@ import { Identifier as SettlementIdentifier } from "../Identifier"
 
 export type Creatable = Creatable.Known | Creatable.Unknown
 export namespace Creatable {
+	export interface Capture extends Known {
+		type: "capture"
+	}
+	export interface Refund extends Known {
+		type: "refund"
+	}
 	export interface Known {
 		type: "capture" | "refund"
 		card: string
