@@ -42,7 +42,7 @@ export class Transactions extends rest.Collection<gracely.Error> {
 		)
 	}
 	async getOperations(transactionId: string): Promise<Operation[] | gracely.Error> {
-		return this.client.get<Operation[]>(`/transaction/${transactionId}/operations`)
+		return this.client.get<Operation[]>(`/transaction/${transactionId}/operation`)
 	}
 	async statistics(
 		range: isoly.DateRange,
