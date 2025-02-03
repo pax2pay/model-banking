@@ -56,7 +56,7 @@ export namespace Creatable {
 							("authorization" in maybeLegacy &&
 								"transaction" in maybeLegacy.authorization &&
 								maybeLegacy.authorization.transaction?.id) ||
-							"unknown",
+							undefined,
 						account:
 							maybeLegacy.account ||
 							("authorization" in maybeLegacy &&
