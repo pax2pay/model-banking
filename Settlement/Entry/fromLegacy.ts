@@ -5,6 +5,7 @@ import { Identifier as SettlementIdentifier } from "../Identifier"
 import type { Entry } from "."
 import type { Failed } from "./Failed"
 import { Entry as LegacyEntry } from "./Legacy"
+import { type } from "./type"
 
 function toFailed(legacy: LegacyEntry.Unknown | LegacyEntry.Cancel): Failed {
 	return {
@@ -29,7 +30,7 @@ function toFailed(legacy: LegacyEntry.Unknown | LegacyEntry.Cancel): Failed {
 		...("amount" in legacy && { amount: legacy.amount }),
 	}
 }
-function toEntry(legacy: LegacyEntry.Capture | LegacyEntry.Refund, card?: Rail.Address.Card): Entry | Failed {
+function toEntry(legacy: LegacyEntry.Capture | LegacyEntry.Refund, card?: Rail.Address.Card): Entry {
 	return {
 		type: legacy.type,
 		created: legacy.created ?? isoly.DateTime.now(),
@@ -75,6 +76,11 @@ function toEntry(legacy: LegacyEntry.Capture | LegacyEntry.Refund, card?: Rail.A
 		settlement: legacy.settlement ?? "unknown",
 	}
 }
-export function fromLegacy(legacy: LegacyEntry): Entry | Entry.Failed {
-	return legacy.type == "cancel" || legacy.type == "unknown" ? toFailed(legacy) : toEntry(legacy)
+
+export function fromLegacy(maybeLegacy: LegacyEntry | Entry): Entry {
+	return type.is(maybeLegacy)
+		? maybeLegacy
+		: maybeLegacy.type == "cancel" || maybeLegacy.type == "unknown"
+		? toFailed(maybeLegacy)
+		: toEntry(maybeLegacy)
 }
