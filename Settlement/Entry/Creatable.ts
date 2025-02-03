@@ -9,14 +9,14 @@ import { Entry as LegacyEntry } from "./Legacy"
 
 export type Creatable = Creatable.Known | Creatable.Unknown
 export namespace Creatable {
-	export interface Capture extends Known {
+	export interface Capture extends Base {
 		type: "capture"
 	}
-	export interface Refund extends Known {
+	export interface Refund extends Base {
 		type: "refund"
 	}
-	export interface Known {
-		type: "capture" | "refund"
+	export type Known = Capture | Refund
+	interface Base {
 		card: string
 		transaction?: string
 		account: string
@@ -75,7 +75,7 @@ export namespace Creatable {
 				  }
 		}
 	}
-	export interface Unknown extends Partial<Omit<Known, "type">> {
+	export interface Unknown extends Partial<Base> {
 		type: "unknown"
 		data: Record<string, unknown>
 	}
