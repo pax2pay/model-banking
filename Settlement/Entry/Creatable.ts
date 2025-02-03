@@ -5,6 +5,7 @@ import { Merchant } from "../../Merchant"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
 import { Identifier as SettlementIdentifier } from "../Identifier"
+import { Entry as LegacyEntry } from "./Legacy"
 
 export type Creatable = Creatable.Known | Creatable.Unknown
 export namespace Creatable {
@@ -43,6 +44,36 @@ export namespace Creatable {
 			amount: Amount.type,
 			settlement: SettlementIdentifier.type,
 		})
+		export function fromLegacy(
+			maybeLegacy: Creatable.Known | LegacyEntry.Capture.Creatable | LegacyEntry.Refund.Creatable
+		): Creatable.Known {
+			return type.is(maybeLegacy)
+				? maybeLegacy
+				: {
+						type: maybeLegacy.type,
+						card: maybeLegacy.type == "refund" ? maybeLegacy.card : maybeLegacy.authorization.card.id,
+						transaction:
+							("authorization" in maybeLegacy &&
+								"transaction" in maybeLegacy.authorization &&
+								maybeLegacy.authorization.transaction?.id) ||
+							"unknown",
+						account:
+							maybeLegacy.account ||
+							("authorization" in maybeLegacy &&
+								"account" in maybeLegacy.authorization &&
+								maybeLegacy.authorization.account) ||
+							"unknown",
+						approvalCode: maybeLegacy.authorization.approvalCode ?? "unknown",
+						...(maybeLegacy.type == "refund"
+							? { merchant: maybeLegacy.merchant, acquirer: maybeLegacy.acquirer }
+							: { merchant: maybeLegacy.authorization.merchant, acquirer: maybeLegacy.authorization.acquirer }),
+						reference: maybeLegacy.reference,
+						batch: maybeLegacy.batch,
+						fee: maybeLegacy.fee,
+						amount: maybeLegacy.amount,
+						settlement: maybeLegacy.settlement ?? "unknown",
+				  }
+		}
 	}
 	export interface Unknown extends Partial<Omit<Known, "type">> {
 		type: "unknown"
