@@ -1,57 +1,59 @@
 import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Card } from "../../Card"
+import { Rail } from "../../Rail"
 import { Transaction } from "../../Transaction"
-import { Cancel as EntryCancel } from "./Cancel"
-import { Capture as EntryCapture } from "./Capture"
 import { Creatable as EntryCreatable } from "./Creatable"
-import { Refund as EntryRefund } from "./Refund"
+import { Failed as EntryFailed } from "./Failed"
+import * as mapping from "./fromLegacy"
+import { Entry as LegacyEntry } from "./Legacy"
+import { Succeeded as EntrySucceeded } from "./Succeeded"
 import { Summary as EntrySummary } from "./Summary"
-import { Unknown as EntryUnknown } from "./Unknown"
 
-export type Entry = Entry.Cancel | Entry.Capture | Entry.Refund | Entry.Unknown
+export type Entry = EntrySucceeded | EntryFailed
 export namespace Entry {
-	export import Cancel = EntryCancel
-	export import Capture = EntryCapture
-	export import Refund = EntryRefund
-	export import Unknown = EntryUnknown
-	export type Type = "unknown" | "refund" | "capture" | "cancel"
-	export import Summary = EntrySummary
+	export interface Capture extends EntrySucceeded {
+		type: "capture"
+	}
+	export interface Refund extends EntrySucceeded {
+		type: "refund"
+	}
 	export import Creatable = EntryCreatable
-	export function from(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): Entry {
-		let result: Entry
+	export import Summary = EntrySummary
+	export import Legacy = LegacyEntry
+	export import Failed = EntryFailed
+	export import Succeeded = EntrySucceeded
+	export const fromLegacy = mapping.fromLegacy
+	export const type = isly.union<EntrySucceeded | EntryFailed>(EntrySucceeded.type, EntryFailed.type)
+	export function from(
+		creatable: Entry.Creatable,
+		transaction: Transaction.CardTransaction | gracely.Error | string,
+		card?: Card
+	): Entry | Entry.Failed {
+		let result: Entry | Entry.Failed
+		const reasons: string[] = []
 		const created = isoly.DateTime.now()
-		if (!Transaction.type.is(transaction) || transaction.status != "finalized")
-			result = { status: "failed", reason: reason(creatable, transaction), ...creatable, created }
+		if (creatable.type == "unknown")
+			reasons.push("Unknown entry type.")
+		if (gracely.Error.is(transaction))
+			reasons.push(`gracely error: ${JSON.stringify(transaction)}`)
+		else if (typeof transaction == "string")
+			reasons.push(transaction || "No reason provided.")
+		else if (transaction.status != "finalized")
+			reasons.push(`Transaction ${transaction.id} on account ${transaction.accountId} unable to be finalized.`)
+		if (reasons.length > 0)
+			result = { status: "failed", reason: reasons.join("\n"), ...creatable, created }
+		else if (!card)
+			result = { status: "failed", reason: "Missing card", ...creatable, created }
 		else
-			switch (creatable.type) {
-				case "capture":
-					result = Capture.from(creatable)
-					break
-				case "refund":
-					result = Refund.from(creatable, transaction)
-					break
-				default:
-					result = { ...creatable, status: "failed", reason: "Entry type not implemented yet.", created }
-					break
+			result = {
+				status: "succeeded",
+				...(creatable as Creatable.Known),
+				created,
+				card: Rail.Address.Card.from(card),
+				transaction: (transaction as Transaction.CardTransaction).id,
 			}
 		return result
 	}
-	function reason(creatable: Entry.Creatable, transaction: Transaction | gracely.Error | string): string {
-		const result = []
-		!creatable.authorization && result.push("Missing authorization.")
-		if (gracely.Error.is(transaction))
-			result.push(`gracely error: ${JSON.stringify(transaction)}`)
-		else if (typeof transaction != "string")
-			result.push(`Transaction ${transaction.id} on account ${transaction.accountId} unable to be finalized.`)
-		else
-			result.push(transaction || "No reason provided")
-		return result.join("\n")
-	}
-	export const type = isly.union<Entry, Entry.Cancel, Entry.Capture, Entry.Refund, Entry.Unknown>(
-		Entry.Cancel.type,
-		Entry.Capture.type,
-		Entry.Refund.type,
-		Entry.Unknown.type
-	)
 }
