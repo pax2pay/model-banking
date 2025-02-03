@@ -9,24 +9,7 @@ import { Entry as LegacyEntry } from "./Legacy"
 
 export type Creatable = Creatable.Known | Creatable.Unknown
 export namespace Creatable {
-	export interface Capture extends Base {
-		type: "capture"
-	}
-	export namespace Capture {
-		export const type = Known.type.extend<Capture>({
-			type: isly.string("capture"),
-		})
-	}
-	export interface Refund extends Base {
-		type: "refund"
-	}
-	export namespace Refund {
-		export const type = Known.type.extend<Refund>({
-			type: isly.string("refund"),
-		})
-	}
-	export type Known = Capture | Refund
-	interface Base {
+	export interface Base {
 		card: string
 		transaction?: string
 		account: string
@@ -39,9 +22,8 @@ export namespace Creatable {
 		amount: Amount
 		settlement: SettlementIdentifier
 	}
-	export namespace Known {
-		export const type = isly.object<Known>({
-			type: isly.string<"capture" | "refund">(["capture", "refund"]),
+	export namespace Base {
+		export const type = isly.object<Base>({
 			card: isly.string(),
 			transaction: isly.string().optional(),
 			account: isly.string(),
@@ -54,35 +36,66 @@ export namespace Creatable {
 			amount: Amount.type,
 			settlement: SettlementIdentifier.type,
 		})
-		export function fromLegacy(
-			maybeLegacy: Creatable.Known | LegacyEntry.Capture.Creatable | LegacyEntry.Refund.Creatable
-		): Creatable.Known {
+	}
+	export interface Capture extends Base {
+		type: "capture"
+	}
+	export namespace Capture {
+		export const type = Base.type.extend<Capture>({
+			type: isly.string("capture"),
+		})
+		export function fromLegacy(maybeLegacy: Capture | LegacyEntry.Capture.Creatable): Capture {
 			return type.is(maybeLegacy)
 				? maybeLegacy
 				: {
 						type: maybeLegacy.type,
-						card: maybeLegacy.type == "refund" ? maybeLegacy.card : maybeLegacy.authorization.card.id,
-						transaction:
-							("authorization" in maybeLegacy &&
-								"transaction" in maybeLegacy.authorization &&
-								maybeLegacy.authorization.transaction?.id) ||
-							undefined,
-						account:
-							maybeLegacy.account ||
-							("authorization" in maybeLegacy &&
-								"account" in maybeLegacy.authorization &&
-								maybeLegacy.authorization.account) ||
-							"unknown",
+						card: maybeLegacy.authorization.card.id,
+						transaction: maybeLegacy.authorization.transaction?.id,
+						account: maybeLegacy.authorization.account || "unknown",
 						approvalCode: maybeLegacy.authorization.approvalCode ?? "unknown",
-						...(maybeLegacy.type == "refund"
-							? { merchant: maybeLegacy.merchant, acquirer: maybeLegacy.acquirer }
-							: { merchant: maybeLegacy.authorization.merchant, acquirer: maybeLegacy.authorization.acquirer }),
+						merchant: maybeLegacy.authorization.merchant,
+						acquirer: maybeLegacy.authorization.acquirer,
 						reference: maybeLegacy.reference,
 						batch: maybeLegacy.batch,
 						fee: maybeLegacy.fee,
 						amount: maybeLegacy.amount,
 						settlement: maybeLegacy.settlement ?? "unknown",
 				  }
+		}
+	}
+	export interface Refund extends Base {
+		type: "refund"
+	}
+	export namespace Refund {
+		export const type = Base.type.extend<Refund>({
+			type: isly.string("refund"),
+		})
+		export function fromLegacy(maybeLegacy: Refund | LegacyEntry.Refund.Creatable): Refund {
+			return type.is(maybeLegacy)
+				? maybeLegacy
+				: {
+						type: maybeLegacy.type,
+						card: maybeLegacy.card,
+						account: maybeLegacy.account ?? "unknown",
+						approvalCode: maybeLegacy.authorization.approvalCode ?? "unknown",
+						merchant: maybeLegacy.merchant,
+						acquirer: maybeLegacy.acquirer,
+						reference: maybeLegacy.reference,
+						batch: maybeLegacy.batch,
+						fee: maybeLegacy.fee,
+						amount: maybeLegacy.amount,
+						settlement: maybeLegacy.settlement ?? "unknown",
+				  }
+		}
+	}
+	export type Known = Capture | Refund
+
+	export namespace Known {
+		export const type = isly.union(Capture.type, Refund.type)
+		export function fromLegacy(
+			maybeLegacy: Creatable.Known | LegacyEntry.Capture.Creatable | LegacyEntry.Refund.Creatable
+		): Creatable.Known {
+			return maybeLegacy.type == "capture" ? Capture.fromLegacy(maybeLegacy) : Refund.fromLegacy(maybeLegacy)
 		}
 	}
 	export interface Unknown extends Partial<Base> {
@@ -92,8 +105,8 @@ export namespace Creatable {
 	export namespace Unknown {
 		export const type = isly.object<Unknown>({
 			...(Object.fromEntries(
-				Object.entries(Known.type.omit<"type">(["type"]).getProperties()).map(([k, v]) => [k, v.optional()])
-			) as isly.object.Properties<Partial<Omit<Known, "type">>>), // TODO: Add "Partial" to isly
+				Object.entries(Base.type.getProperties()).map(([k, v]) => [k, v.optional()])
+			) as isly.object.Properties<Partial<Base>>), // TODO: Add "Partial" to isly
 			type: isly.string("unknown"),
 			data: isly.record<Record<string, unknown>>(isly.string(), isly.any()),
 		})
