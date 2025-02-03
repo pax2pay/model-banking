@@ -12,8 +12,18 @@ export namespace Creatable {
 	export interface Capture extends Base {
 		type: "capture"
 	}
+	export namespace Capture {
+		export const type = Known.type.extend<Capture>({
+			type: isly.string("capture"),
+		})
+	}
 	export interface Refund extends Base {
 		type: "refund"
+	}
+	export namespace Refund {
+		export const type = Known.type.extend<Refund>({
+			type: isly.string("refund"),
+		})
 	}
 	export type Known = Capture | Refund
 	interface Base {
