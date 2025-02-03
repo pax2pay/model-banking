@@ -25,13 +25,13 @@ export namespace Entry {
 	export import Failed = EntryFailed
 	export import Succeeded = EntrySucceeded
 	export const fromLegacy = mapping.fromLegacy
-	export const type = isly.union<EntrySucceeded | EntryFailed>(EntrySucceeded.type, EntryFailed.type)
+	export const type = isly.union<Entry, EntrySucceeded, EntryFailed>(EntrySucceeded.type, EntryFailed.type)
 	export function from(
 		creatable: Entry.Creatable,
 		transaction: Transaction.CardTransaction | gracely.Error | string,
 		card?: Card
-	): Entry | Entry.Failed {
-		let result: Entry | Entry.Failed
+	): Entry {
+		let result: Entry
 		const reasons: string[] = []
 		const created = isoly.DateTime.now()
 		if (creatable.type == "unknown")
