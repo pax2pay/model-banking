@@ -40,7 +40,7 @@ export namespace Settlement {
 			entries: { count: 0 },
 		}
 	}
-	export function compile(settlement: Settlement, entries: (Settlement.Entry | Settlement.Entry.Failed)[]): Settlement {
+	export function compile(settlement: Settlement, entries: Settlement.Entry[]): Settlement {
 		const result = { ...settlement }
 		for (const entry of entries) {
 			switch (entry.status) {

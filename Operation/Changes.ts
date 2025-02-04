@@ -114,7 +114,7 @@ export namespace Changes {
 	}
 	export function fromRefund(
 		settlement: string | undefined, // FIXME: remove | undefined when we're sure we send the id
-		refund: Settlement.Entry.Creatable.Refund,
+		refund: Settlement.Entry.Refund.Creatable,
 		charge: number | undefined,
 		sum: Sum
 	): Changes {
