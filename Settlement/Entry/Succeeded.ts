@@ -6,7 +6,7 @@ import { Creatable } from "./Creatable"
 export interface Succeeded extends Omit<Creatable.Known, "transaction" | "card"> {
 	status: "succeeded"
 	card: Rail.Address.Card
-	transaction: string
+	transaction: { id: string; posted: isoly.DateTime; description: string }
 	created: isoly.DateTime
 }
 export namespace Succeeded {
@@ -16,7 +16,11 @@ export namespace Succeeded {
 			type: isly.string(["capture", "refund"]),
 			status: isly.string<"succeeded">("succeeded"),
 			card: Rail.Address.Card.type,
-			transaction: isly.string(),
+			transaction: isly.object({
+				id: isly.string(),
+				posted: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+				description: isly.string(),
+			}),
 			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		})
 }
