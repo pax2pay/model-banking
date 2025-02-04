@@ -32,7 +32,11 @@ export function fromCreatable(
 			...(creatable as Creatable.Known),
 			created,
 			card: Rail.Address.Card.from(card),
-			transaction: (transaction as Transaction.CardTransaction).id,
+			transaction: {
+				id: (transaction as Transaction.CardTransaction).id,
+				posted: (transaction as Transaction.CardTransaction).posted,
+				description: (transaction as Transaction.CardTransaction).description,
+			},
 		}
 	return result
 }

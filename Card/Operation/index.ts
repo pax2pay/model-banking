@@ -16,12 +16,12 @@ export namespace Operation {
 			created: isoly.DateTime.now(),
 		}
 	}
-	export function fromEntry(entry: Entry | Entry.Failed): Operation | undefined {
+	export function fromEntry(entry: Entry): Operation | undefined {
 		return entry.status == "failed"
 			? undefined
 			: {
 					type: "authorization",
-					id: entry.transaction ?? "unknown",
+					id: entry.transaction.id,
 					status: entry.type == "capture" ? "captured" : "refunded",
 					created: isoly.DateTime.now(),
 			  }

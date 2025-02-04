@@ -39,6 +39,12 @@ function toEntry(legacy: LegacyEntry.Capture | LegacyEntry.Refund, card?: Rail.A
 					card: legacy.type == "refund" ? legacy.card : legacy.authorization.card.id,
 					status: "failed",
 					reason: legacy.reason ?? "unknown",
+					transaction:
+						("transaction" in legacy
+							? legacy.transaction?.id
+							: "authorization" in legacy && "transaction" in legacy.authorization
+							? legacy.authorization.transaction?.id
+							: "unknown") ?? "unknown",
 			  }
 			: {
 					card: card ?? {
@@ -57,13 +63,16 @@ function toEntry(legacy: LegacyEntry.Capture | LegacyEntry.Refund, card?: Rail.A
 						holder: "unknown",
 					},
 					status: "succeeded",
+					transaction: ("transaction" in legacy && legacy.transaction
+						? {
+								id: legacy.transaction.id,
+								posted: legacy.transaction.posted,
+								description: legacy.transaction.description,
+						  }
+						: "authorization" in legacy && "transaction" in legacy.authorization
+						? legacy.authorization.transaction
+						: undefined) ?? { id: "unknown", posted: "", description: "" },
 			  }),
-		transaction:
-			("transaction" in legacy
-				? legacy.transaction?.id
-				: "authorization" in legacy && "transaction" in legacy.authorization
-				? legacy.authorization.transaction?.id
-				: "unknown") ?? "unknown",
 		account: legacy.account ?? (("transaction" in legacy && legacy.transaction?.accountId) || "unknown"),
 		approvalCode: legacy.authorization.approvalCode ?? "unknown",
 		...(legacy.type == "refund"
