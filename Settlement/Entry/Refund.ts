@@ -12,7 +12,7 @@ import { Fee } from "../Fee"
 export interface Refund extends Omit<Refund.Creatable, "settlement"> {
 	status: "succeeded" | "failed"
 	reason?: string
-	transaction?: Transaction
+	transaction?: Transaction.CardTransaction
 	created?: isoly.DateTime
 	settlement?: SettlementIdentifier
 }
@@ -30,7 +30,7 @@ export namespace Refund {
 		amount: Amount
 		settlement: SettlementIdentifier
 	}
-	export function from(refund: Refund.Creatable, transaction: Transaction): Refund {
+	export function from(refund: Refund.Creatable, transaction: Transaction.CardTransaction): Refund {
 		return { ...refund, status: "succeeded", transaction, created: isoly.DateTime.now() }
 	}
 	export namespace Creatable {
@@ -51,7 +51,7 @@ export namespace Refund {
 	export const type = Creatable.type.omit(["settlement"]).extend<Refund>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
-		transaction: Transaction.type.optional(),
+		transaction: isly.any().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is).optional(),
 		settlement: SettlementIdentifier.type.optional(),
 	})
