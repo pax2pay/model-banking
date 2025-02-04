@@ -4,6 +4,7 @@ import { http } from "cloudly-http"
 import * as rest from "cloudly-rest"
 import { Card } from "../../Card"
 import { Operation } from "../../Operation"
+import { Rule } from "../../Rule"
 import { Supplier } from "../../Supplier"
 import { Transaction } from "../../Transaction"
 import { Notes } from "./Notes"
@@ -43,6 +44,9 @@ export class Transactions extends rest.Collection<gracely.Error> {
 	}
 	async getOperations(transactionId: string): Promise<Operation[] | gracely.Error> {
 		return this.client.get<Operation[]>(`/transaction/${transactionId}/operation`)
+	}
+	async getState(transactionId: string): Promise<Rule.State | gracely.Error> {
+		return this.client.get<Rule.State>(`/transaction/${transactionId}/state`)
 	}
 	async statistics(
 		range: isoly.DateRange,
