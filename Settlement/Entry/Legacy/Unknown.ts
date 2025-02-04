@@ -1,8 +1,8 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Authorization } from "../../Authorization"
-import { Identifier as SettlementIdentifier } from "../../Settlement/Identifier"
-import { Batch } from "../Batch"
+import { Authorization } from "../../../Authorization"
+import { Batch } from "../../Batch"
+import { Identifier as SettlementIdentifier } from "../../Identifier"
 
 export interface Unknown extends Omit<Unknown.Creatable, "settlement"> {
 	status: "succeeded" | "failed"
