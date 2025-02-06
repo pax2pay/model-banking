@@ -1,15 +1,12 @@
 import { gracely } from "gracely"
 import { isoly } from "isoly"
-import { Card } from "../../Card"
-import { Rail } from "../../Rail"
 import { Transaction } from "../../Transaction"
 import type { Entry } from "."
 import { Creatable } from "./Creatable"
 
 export function fromCreatable(
 	creatable: Creatable,
-	transaction: Transaction.CardTransaction | gracely.Error | string,
-	card?: Card
+	transaction: Transaction.CardTransaction | gracely.Error | string
 ): Entry {
 	let result: Entry
 	const reasons: string[] = []
@@ -24,14 +21,12 @@ export function fromCreatable(
 		reasons.push(`Transaction ${transaction.id} on account ${transaction.accountId} unable to be finalized.`)
 	if (reasons.length > 0)
 		result = { status: "failed", reason: reasons.join("\n"), ...creatable, created }
-	else if (!card)
-		result = { status: "failed", reason: "Missing card", ...creatable, created }
 	else
 		result = {
 			status: "succeeded",
 			...(creatable as Creatable.Known),
 			created,
-			card: Rail.Address.Card.from(card),
+			card: (transaction as Transaction.CardTransaction).account,
 			transaction: {
 				id: (transaction as Transaction.CardTransaction).id,
 				posted: (transaction as Transaction.CardTransaction).posted,
