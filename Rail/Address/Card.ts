@@ -17,6 +17,7 @@ interface CardCounterpart {
 	type: "card"
 	merchant: Merchant
 	acquirer: Acquirer
+	present?: boolean // Do we go for a pos object?
 }
 namespace CardCounterpart {
 	export const type = isly.object<CardCounterpart>({
