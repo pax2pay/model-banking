@@ -17,13 +17,14 @@ interface CardCounterpart {
 	type: "card"
 	merchant: Merchant
 	acquirer: Acquirer
-	present?: boolean // Do we go for a pos object?
+	present?: boolean
 }
 namespace CardCounterpart {
 	export const type = isly.object<CardCounterpart>({
 		type: isly.string("card"),
 		acquirer: Acquirer.type,
 		merchant: Merchant.type,
+		present: isly.boolean().optional(),
 	})
 }
 export namespace Card {
