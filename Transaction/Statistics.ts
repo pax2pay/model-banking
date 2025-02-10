@@ -19,20 +19,11 @@ export namespace Statistics {
 	export namespace Region {
 		export const values = ["domestic", "intraRegion", "extraRegion"] as const
 	}
-	export type Regional = Record<
-		Statistics.Region,
-		{
-			count: number
-			amount: number
-		}
-	>
+	export type Regional = Record<Statistics.Region, { count: number; amount: number }>
 	export namespace Regional {
 		export const type = isly.record(
 			isly.string<Region>(Region.values),
-			isly.object({
-				count: isly.number(),
-				amount: isly.number(),
-			})
+			isly.object({ count: isly.number(), amount: isly.number() })
 		)
 	}
 	export const type = isly.object<Statistics>({
@@ -87,18 +78,10 @@ export namespace Statistics {
 	export function combine(accumulation: Statistics, incoming: Statistics, currency: isoly.Currency): Statistics {
 		const [statistics, cards] = (({ cursor, cards, ...rest }) => [rest, cards])(incoming)
 		Object.entries(statistics).forEach(([kind, statistic]: [TransactionType, Statistics[TransactionType]]) =>
-			Object.entries(statistic).forEach(
-				([region, { count, amount }]: [
-					Region,
-					{
-						count: number
-						amount: number
-					}
-				]) => {
-					accumulation[kind][region].count += count
-					accumulation[kind][region].amount = isoly.Currency.add(currency, accumulation[kind][region].amount, amount)
-				}
-			)
+			Object.entries(statistic).forEach(([region, { count, amount }]: [Region, { count: number; amount: number }]) => {
+				accumulation[kind][region].count += count
+				accumulation[kind][region].amount = isoly.Currency.add(currency, accumulation[kind][region].amount, amount)
+			})
 		)
 		cards.forEach(card => accumulation.cards.includes(card) || accumulation.cards.push(card))
 		return accumulation
