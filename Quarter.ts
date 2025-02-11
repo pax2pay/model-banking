@@ -7,10 +7,14 @@ export namespace Quarter {
 	export const type = isly.string<Quarter>(values)
 	export function from(date: isoly.Date): Quarter {
 		const month = isoly.Date.getMonth(date)
-		return month < 3 ? "Q1" : month < 6 ? "Q2" : month < 9 ? "Q3" : "Q4"
+		return month <= 3 ? "Q1" : month <= 6 ? "Q2" : month <= 9 ? "Q3" : "Q4"
 	}
 	export function now() {
 		return from(isoly.Date.now())
+	}
+	export function previous(quarter: Quarter): Quarter {
+		const index = values.indexOf(quarter) - 1
+		return values[index < 0 ? values.length - 1 : index]
 	}
 	export namespace DateRange {
 		export const converter: Record<Quarter, { start: string; end: string }> = {
@@ -27,6 +31,10 @@ export namespace Quarter {
 		export function now(): isoly.DateRange | undefined {
 			const now = isoly.Date.now()
 			return from(isoly.Date.getYear(now), Quarter.from(now))
+		}
+		export function getPrevious(): isoly.DateRange | undefined {
+			const quarter = Quarter.previous(Quarter.now())
+			return from(isoly.Date.getYear(isoly.Date.now()), quarter)
 		}
 	}
 }
