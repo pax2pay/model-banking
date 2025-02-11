@@ -1,3 +1,4 @@
+import { isoly } from "isoly"
 import { Transaction } from "../../Transaction"
 import { Region } from "./Region"
 import { rows } from "./rows"
@@ -64,7 +65,7 @@ export namespace Data {
 		if (transaction.direction == "outbound") {
 			const month = getMonth(transaction)
 			result[month].count++
-			result[month].volume += Math.abs(transaction.amount.original)
+			result[month].volume = isoly.Currency.add("GBP", result[month].volume, Math.abs(transaction.amount.original))
 		}
 		return result
 	}
@@ -76,6 +77,7 @@ export namespace Data {
 		else if (transaction.status == "finalized") {
 			const key: keyof Monthly = getKey(transaction)
 			data[key] = updatePerMonth(data[key], transaction)
+			// TODO: add non monthly data
 			// TODO: add wacky country data
 		}
 		return result
@@ -104,10 +106,7 @@ export namespace Data {
 			result = ""
 			for (const month of months) {
 				result += `${row.replace("Month x", `Month ${month}`)},`
-				const thingy = `${data["45672555"]?.[key]?.[month][which] ?? 0},`
-				console.log("data: ", data["45672555"])
-
-				result += thingy
+				result += `${data["45672555"]?.[key]?.[month][which] ?? 0},`
 				result += `${data["4567255"]?.[key]?.[month][which] ?? 0},`
 				result += `${data["45672557"]?.[key]?.[month][which] ?? 0},`
 				result += "999," // TODO: total idx
@@ -116,8 +115,17 @@ export namespace Data {
 				result += `${data["45672554"]?.[key]?.[month][which] ?? 0}`
 				result += "\n"
 			}
-		} else
-			result = "\n"
+		} else {
+			result = row + ","
+			result += `${data["45672555"]?.[row] ?? 0},`
+			result += `${data["4567255"]?.[row] ?? 0},`
+			result += `${data["45672557"]?.[row] ?? 0},`
+			result += "999," // TODO: total idx
+			result += `${data["44260108"]?.[row] ?? 0},`
+			result += `${data["49359119"]?.[row] ?? 0},`
+			result += `${data["45672554"]?.[row] ?? 0}`
+			result += "\n"
+		}
 		return result
 	}
 }
