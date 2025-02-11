@@ -1,5 +1,4 @@
-import { pax2pay } from "../index"
-import { visa } from "./visa"
+import { pax2pay } from "../../index"
 
 describe("VisaComponent", () => {
 	const transaction: pax2pay.Transaction.CardTransaction = {
@@ -51,7 +50,7 @@ describe("VisaComponent", () => {
 		charge: 0,
 		transacted: "2025-02-11T10:44:24.384Z",
 	}
-	const data: visa.Data = visa.create([transaction])
+	const data: pax2pay.reports.visa.Data = pax2pay.reports.visa.Data.create([transaction])
 	it("should make visa report data", () => {
 		expect(data).toMatchObject({
 			"45672555": {
@@ -64,7 +63,7 @@ describe("VisaComponent", () => {
 		})
 	})
 	it("should make visa csv", () => {
-		expect(visa.toCsv(data)).toMatchInlineSnapshot(`
+		expect(pax2pay.reports.visa.toCsv(data)).toMatchInlineSnapshot(`
 "Product Local Name,Visa IDX - 45672555,Visa IDX  - 4567255,Visa IDX 1.4% - 45672557,Total Visa IDX products,Visa Business Prepaid - 44260108,Visa Corporate Deferred Debit  - 49359119,Visa Business Immediate Debit - BIN: 45672554
 On-Us Payments Count - Month 1,0,0,0,0,0,0,0
 On-Us Payments Count - Month 2,0,0,0,0,0,0,0

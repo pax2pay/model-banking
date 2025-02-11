@@ -1,9 +1,10 @@
 import { isoly } from "isoly"
+import { Transaction } from "./index"
 
 export namespace visa {
-	const regions: Record<"national" | "intra-region" | "inter-region" | "other", isoly.CountryCode.Alpha2[]> = {
-		national: ["GB"],
-		"intra-region": [
+	const regions: Record<"National" | "Intra-Regional" | "Inter-Regional" | "Non-EEA", isoly.CountryCode.Alpha2[]> = {
+		National: ["GB"],
+		"Intra-Regional": [
 			"AT",
 			"BE",
 			"BG",
@@ -32,10 +33,10 @@ export namespace visa {
 			"ES",
 			"SE",
 		],
-		"inter-region": ["IS", "NO", "LI"],
-		other: [],
+		"Inter-Regional": ["IS", "NO", "LI"],
+		"Non-EEA": [],
 	}
-	const headers: string[] = [
+	const headers = [
 		"Product Local Name",
 		"Visa IDX - 45672555",
 		"Visa IDX  - 4567255",
@@ -44,8 +45,8 @@ export namespace visa {
 		"Visa Business Prepaid - 44260108",
 		"Visa Corporate Deferred Debit  - 49359119",
 		"Visa Business Immediate Debit - BIN: 45672554",
-	]
-	const rows: string[] = [
+	] as const
+	const rows = [
 		"On-Us Payments Count - Month x",
 		"On-Us Payments Volume - Month x",
 		"On-Us Account Funding Transaction Count - Month x",
@@ -108,9 +109,9 @@ export namespace visa {
 		"International - Inter-Regional Cashback Volume - Month x",
 		"Total Number of Cards",
 		"Number of Cards - Magnetic Stripe",
-		"Number of Cards - Magnetic Stripe, Chip",
-		"Number of Cards - Magnetic Stripe, Contactless",
-		"Number of Cards - Magnetic Stripe, Chip, Contactless",
+		"Number of Cards - Magnetic Stripe Chip", // TODO: switch to "|" separator. Real value: "Number of Cards - Magnetic Stripe, Chip",
+		"Number of Cards - Magnetic Stripe Contactless", // TODO: switch to "|" separator. Real value: "Number of Cards - Magnetic Stripe, Contactless",
+		"Number of Cards - Magnetic Stripe Chip Contactless", // TODO: switch to "|" separator. Real value: "Number of Cards - Magnetic Stripe, Chip, Contactless",
 		"Total Number of Active Cards",
 		"Number of Active Cards - used at Contactless device",
 		"Number of Devices with Visa Contactless - Micro Tags",
@@ -140,12 +141,12 @@ export namespace visa {
 		"Total Product Balance - Volume",
 		"Payments Transactions Declined for Insufficient Funds - Number",
 		"Cash Transactions Declined for Insufficient Funds - Number",
-		"Country X - Region X Payments Card Present Count - Month x",
-		"Country X - Region X Payments Card Present Volume - Month x",
-		"Country X - Region X Payments Card Not Present Count - Month x",
-		"Country X - Region X Payments Card Not Present Volume - Month x",
-	]
-	const rowsNonZero: string[] = [
+		// "Country X - Region X Payments Card Present Count - Month x",
+		// "Country X - Region X Payments Card Present Volume - Month x",
+		// "Country X - Region X Payments Card Not Present Count - Month x",
+		// "Country X - Region X Payments Card Not Present Volume - Month x",
+	] as const
+	const rowsNonZero = [
 		"National Payments Count - Month x",
 		"National Payments Volume - Month x",
 		"International - Intra-Regional Payments Count - Month x",
@@ -159,12 +160,18 @@ export namespace visa {
 		"Total Number of Accounts",
 		"Number of Accounts - International Enabled",
 		"Payments Transactions Declined for Insufficient Funds - Number",
-		"Country X - Region X Payments Card Present Count - Month x",
-		"Country X - Region X Payments Card Present Volume - Month x",
-		"Country X - Region X Payments Card Not Present Count - Month x",
-		"Country X - Region X Payments Card Not Present Volume - Month x",
-	]
-	const rowsBlank: string[] = [
+		// "Country X - Region X Payments Card Present Count - Month x",
+		// "Country X - Region X Payments Card Present Volume - Month x",
+		// "Country X - Region X Payments Card Not Present Count - Month x",
+		// "Country X - Region X Payments Card Not Present Volume - Month x",
+	] as const
+	// const rowsReport2 /* visa didgeridoo */ = [
+	// "Country X - Region X Payments Card Present Count - Month x",
+	// "Country X - Region X Payments Card Present Volume - Month x",
+	// "Country X - Region X Payments Card Not Present Count - Month x",
+	// "Country X - Region X Payments Card Not Present Volume - Month x",
+	// ] as const
+	const rowsBlank = [
 		"Fraud Recoveries - Domestic - Cash Disbursements - Amount",
 		"Fraud Recoveries - Domestic - Payments - Amount",
 		"Fraud Recoveries - International - Cash Disbursements - Amount",
@@ -179,32 +186,26 @@ export namespace visa {
 		"Gross Fraud Losses - International - Cash Disbursements - Volume",
 		"Gross Fraud Losses - International - Payments - Count",
 		"Gross Fraud Losses - International - Payments - Volume",
-	]
-	type PerIinEnum = Record<
-		| "National Payments Count - Month 1"
-		| "National Payments Count - Month 2"
-		| "National Payments Count - Month 3"
-		| "National Payments Volume - Month 1"
-		| "National Payments Volume - Month 2"
-		| "National Payments Volume - Month 3"
-		| "International - Intra-Regional Payments Count - Month 1"
-		| "International - Intra-Regional Payments Count - Month 2"
-		| "International - Intra-Regional Payments Count - Month 3"
-		| "International - Intra-Regional Payments Volume - Month 1"
-		| "International - Intra-Regional Payments Volume - Month 2"
-		| "International - Intra-Regional Payments Volume - Month 3"
-		| "International - Non-EEA Payments Count - Month 1"
-		| "International - Non-EEA Payments Count - Month 2"
-		| "International - Non-EEA Payments Count - Month 3"
-		| "International - Non-EEA Payments Volume - Month 1"
-		| "International - Non-EEA Payments Volume - Month 2"
-		| "International - Non-EEA Payments Volume - Month 3"
-		| "International - Inter-Regional Payments Count - Month 1"
-		| "International - Inter-Regional Payments Count - Month 2"
-		| "International - Inter-Regional Payments Count - Month 3"
-		| "International - Inter-Regional Payments Volume - Month 1"
-		| "International - Inter-Regional Payments Volume - Month 2"
-		| "International - Inter-Regional Payments Volume - Month 3"
+	] as const
+	type PerMonth = Record<1 | 2 | 3, { count: number; volume: number }>
+	type PerIinEnum = Partial<
+		Record<
+			// | "National Payments Count - Month "
+			// | "National Payments Volume - Month "
+			// | "International - Intra-Regional Payments Count - Month "
+			// | "International - Intra-Regional Payments Volume - Month "
+			// | "International - Non-EEA Payments Count - Month "
+			// | "International - Non-EEA Payments Volume - Month "
+			// | "International - Inter-Regional Payments Count - Month "
+			// | "International - Inter-Regional Payments Volume - Month "
+			| "National Payments"
+			| "International - Intra-Regional Payments"
+			| "International - Non-EEA Payments"
+			| "International - Inter-Regional Payments",
+			PerMonth
+		>
+	>
+	type NonMonthly = Record<
 		| "Total Number of Cards"
 		| "Total Number of Active Cards"
 		| "Total Number of Accounts"
@@ -212,34 +213,122 @@ export namespace visa {
 		| "Payments Transactions Declined for Insufficient Funds - Number",
 		number
 	>
+	type PerIin = Partial<PerIinEnum & NonMonthly & Record<string, PerMonth>>
+	export const idxIins = ["45672555", "4567255", "45672557"] as const
+	export const visaIins = ["45672555", "4567255", "45672557", "44260108", "49359119", "45672554"] as const
+	type VisaIin = typeof visaIins[number]
+	export type Data = Partial<Record<VisaIin, PerIin>>
 
-	type PerIin = PerIinEnum & Record<string, number>
-	type VisaIin = "45672555" | "4567255" | "45672557" | "totalIdx" | "44260108" | "49359119" | "45672554"
-	type Statistacs = Record<VisaIin, PerIin>
-
-	// export function create(transactions: pax2pay.Transaction.CardTransaction[]) {
-	// 	const result: Statistacs = {}
-	// 	for (const transaction of transactions)
-	// 		result[transaction.account.iin as VisaIin] = {}
-
-	// 	return result
-	// }
-	export function statistacsToRow(statistics: Statistacs, iin: VisaIin): string {
-		
+	export function getRegion(transaction: Transaction.CardTransaction): keyof typeof regions {
+		let result: keyof typeof regions
+		if (regions.National.includes(transaction.counterpart.merchant.country))
+			result = "National"
+		else if (regions["Intra-Regional"].includes(transaction.counterpart.merchant.country))
+			result = "Intra-Regional"
+		else if (regions["Inter-Regional"].includes(transaction.counterpart.merchant.country))
+			result = "Inter-Regional"
+		else
+			result = "Non-EEA"
+		return result
 	}
-	export function toCsv(statistics: Statistacs): string {
-		const a = statistics[44260108]
+	export function getMonth(transaction: Transaction.CardTransaction): 1 | 2 | 3 {
+		return 1 // TODO: figure out month number
+	}
+	export function getKey(transaction: Transaction.CardTransaction): keyof PerIinEnum {
+		let result: keyof PerIinEnum
+		const region = getRegion(transaction)
+		switch (region) {
+			case "National":
+				result = "National Payments"
+				break
+			case "Inter-Regional":
+				result = "International - Inter-Regional Payments"
+				break
+			case "Intra-Regional":
+				result = "International - Intra-Regional Payments"
+				break
+			case "Non-EEA":
+				result = "International - Non-EEA Payments"
+				break
+		}
+		return result
+	}
+	export function updatePerMonth(previous: PerMonth | undefined, transaction: Transaction.CardTransaction): PerMonth {
+		const result: PerMonth = previous ?? {
+			"1": { count: 0, volume: 0 },
+			"2": { count: 0, volume: 0 },
+			"3": { count: 0, volume: 0 },
+		}
+		if (transaction.direction == "outbound") {
+			const month = getMonth(transaction)
+			result[month].count++
+			result[month].volume += Math.abs(transaction.amount.original)
+		}
+		return result
+	}
+	export function updateDataRow(data: PerIin, transaction: Transaction.CardTransaction): PerIin {
+		const result: PerIin = data
+		if (Array.isArray(transaction.status) && transaction.status[1] == "insufficient funds")
+			data["Payments Transactions Declined for Insufficient Funds - Number"] =
+				(data?.["Payments Transactions Declined for Insufficient Funds - Number"] ?? 0) + 1
+		else if (transaction.status == "finalized") {
+			const key: keyof PerIinEnum = getKey(transaction)
+			data[key] = updatePerMonth(data[key], transaction)
+			// TODO: add wacky country data
+		}
+		return result
+	}
+
+	export function create(transactions: Transaction.CardTransaction[]): Data {
+		const result: Data = {}
+		for (const transaction of transactions)
+			result[transaction.account.iin as VisaIin] = updateDataRow(
+				result[transaction.account.iin as VisaIin] ?? {},
+				transaction
+			)
+		return result
+	}
+	export function dataToCsv(data: Data, row: typeof rowsNonZero[number]): string {
+		let result: string
+		if (row.endsWith("Month x")) {
+			let key: keyof PerIinEnum
+			if (row.startsWith("National"))
+				key = "National Payments"
+			else if (row.startsWith("International - Inter-Regional"))
+				key = "International - Inter-Regional Payments"
+			else if (row.startsWith("International - Intra-Regional"))
+				key = "International - Intra-Regional Payments"
+			else
+				key = "International - Non-EEA Payments"
+			const months = [1, 2, 3] as const
+			const which: "count" | "volume" = row.includes("Count") ? "count" : "volume"
+			result = ""
+			for (const month of months) {
+				result += `${row.replace("Month x", `Month ${month}`)},`
+				const thingy = `${data["45672555"]?.[key]?.[month][which] ?? 0},`
+				console.log("data: ", data["45672555"])
+
+				result += thingy
+				result += `${data["4567255"]?.[key]?.[month][which] ?? 0},`
+				result += `${data["45672557"]?.[key]?.[month][which] ?? 0},`
+				result += "999," // TODO: total idx
+				result += `${data["44260108"]?.[key]?.[month][which] ?? 0},`
+				result += `${data["49359119"]?.[key]?.[month][which] ?? 0},`
+				result += `${data["45672554"]?.[key]?.[month][which] ?? 0}`
+				result += "\n"
+			}
+		} else
+			result = "\n"
+		return result
+	}
+	export function toCsv(data: Data): string {
 		let csv = headers.join(",") + "\n"
 		for (const row of rows)
-			if (rowsBlank.includes(row))
-				csv += row + "\n"
-			else if (rowsNonZero.includes(row)) {
-				if (row.endsWith("x"))
-					for (let i = 1; 3 >= i; i++)
-						csv += statistics row.replace("Month x", `Month ${i}`) + ",0".repeat(headers.length - 1) + "\n"
-
-				csv += "\n"
-			} else if (row.endsWith("x"))
+			if (rowsBlank.includes(row as any))
+				csv += row + ",".repeat(headers.length - 1) + "\n"
+			else if (rowsNonZero.includes(row as any))
+				csv += dataToCsv(data, row as any)
+			else if (row.endsWith("Month x"))
 				for (let i = 1; 3 >= i; i++)
 					csv += row.replace("Month x", `Month ${i}`) + ",0".repeat(headers.length - 1) + "\n"
 			else
