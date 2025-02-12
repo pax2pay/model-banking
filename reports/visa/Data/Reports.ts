@@ -10,8 +10,8 @@ export namespace Reports {
 	// Country X - Region X Payments Card Present Count
 	// Country X - Region X Payments Card Not Present Count
 	export type Two = Record<string, PerMonth> //
-	export function getKey(transaction: Transaction.CardTransaction): keyof Monthly {
-		let result: keyof Monthly
+	export function getKey(transaction: Transaction.CardTransaction): Monthly.Key {
+		let result: Monthly.Key
 		const region = Region.find(transaction)
 		switch (region) {
 			case "National":
@@ -35,7 +35,7 @@ export namespace Reports {
 			reports["Payments Transactions Declined for Insufficient Funds - Number"] =
 				(reports?.["Payments Transactions Declined for Insufficient Funds - Number"] ?? 0) + 1
 		else if (transaction.status == "finalized") {
-			const key: keyof Monthly = getKey(transaction)
+			const key: Monthly.Key = getKey(transaction)
 			reports[key] = Monthly.update(reports[key], transaction)
 			// TODO: add non monthly data
 			// TODO: add wacky country data

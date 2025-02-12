@@ -26,7 +26,8 @@ export namespace Monthly {
 		return key
 	}
 	export function getMonth(transaction: Transaction.CardTransaction): 1 | 2 | 3 {
-		return 1 // TODO: figure out month number
+		const month = isoly.DateTime.getMonth(transaction.transacted ?? transaction.posted)
+		return (((month - 1) % 3) + 1) as 1 | 2 | 3
 	}
 	export function update(previous: PerMonth | undefined, transaction: Transaction.CardTransaction): PerMonth {
 		const result: PerMonth = previous ?? {
