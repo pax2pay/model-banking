@@ -25,6 +25,7 @@ export namespace Monthly {
 			key = "International - Non-EEA Payments"
 		return key
 	}
+	// returns which number of the month in the quarter the transaction is in
 	export function getMonth(transaction: Transaction.CardTransaction): 1 | 2 | 3 {
 		const month = isoly.DateTime.getMonth(transaction.transacted ?? transaction.posted)
 		return (((month - 1) % 3) + 1) as 1 | 2 | 3

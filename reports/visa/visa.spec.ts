@@ -55,8 +55,15 @@ describe("VisaComponent", () => {
 		expect(data).toMatchObject({
 			"45672555": {
 				"International - Intra-Regional Payments": {
-					"1": { count: 1, volume: 1148.77 },
-					"2": { count: 0, volume: 0 },
+					"1": { count: 0, volume: 0 },
+					"2": { count: 1, volume: 1148.77 },
+					"3": { count: 0, volume: 0 },
+				},
+			},
+			totalIdx: {
+				"International - Intra-Regional Payments": {
+					"1": { count: 0, volume: 0 },
+					"2": { count: 1, volume: 1148.77 },
 					"3": { count: 0, volume: 0 },
 				},
 			},
@@ -137,11 +144,11 @@ National Cashback Count - Month 3,0,0,0,0,0,0,0
 National Cashback Volume - Month 1,0,0,0,0,0,0,0
 National Cashback Volume - Month 2,0,0,0,0,0,0,0
 National Cashback Volume - Month 3,0,0,0,0,0,0,0
-International - Intra-Regional Payments Count - Month 1,1,0,0,1,0,0,0
-International - Intra-Regional Payments Count - Month 2,0,0,0,0,0,0,0
+International - Intra-Regional Payments Count - Month 1,0,0,0,0,0,0,0
+International - Intra-Regional Payments Count - Month 2,1,0,0,1,0,0,0
 International - Intra-Regional Payments Count - Month 3,0,0,0,0,0,0,0
-International - Intra-Regional Payments Volume - Month 1,1148.77,0,0,1148.77,0,0,0
-International - Intra-Regional Payments Volume - Month 2,0,0,0,0,0,0,0
+International - Intra-Regional Payments Volume - Month 1,0,0,0,0,0,0,0
+International - Intra-Regional Payments Volume - Month 2,1148.77,0,0,1148.77,0,0,0
 International - Intra-Regional Payments Volume - Month 3,0,0,0,0,0,0,0
 International - Intra-Regional Account Funding Transaction Count - Month 1,0,0,0,0,0,0,0
 International - Intra-Regional Account Funding Transaction Count - Month 2,0,0,0,0,0,0,0
