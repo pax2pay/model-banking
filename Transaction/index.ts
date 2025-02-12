@@ -40,7 +40,6 @@ export interface Transaction {
 	notes: Transaction.Note[]
 	risk?: number
 	state?: Rule.State
-	exchange?: Transaction.Exchange
 }
 export namespace Transaction {
 	export import Exchange = TransactionExchange
@@ -87,7 +86,7 @@ export namespace Transaction {
 			currency: isoly.Currency,
 			amount: Amount,
 			change: number,
-			type: Exclude<keyof Amount, "total">
+			type: Exclude<keyof Amount, "total" | "exchange">
 		): Amount {
 			amount[type] = isoly.Currency.add(currency, amount[type], change)
 			amount.total = isoly.Currency.add(currency, amount.total, change)
@@ -134,7 +133,6 @@ export namespace Transaction {
 		notes: Note.type.array(),
 		risk: isly.number().optional(),
 		state: isly.any().optional(),
-		exchange: Exchange.type.optional(),
 	})
 
 	export interface Legacy extends Omit<Transaction, "amount"> {
