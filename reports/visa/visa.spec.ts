@@ -101,12 +101,12 @@ On-Us Cashback Count - Month 3,0,0,0,0,0,0,0
 On-Us Cashback Volume - Month 1,0,0,0,0,0,0,0
 On-Us Cashback Volume - Month 2,0,0,0,0,0,0,0
 On-Us Cashback Volume - Month 3,0,0,0,0,0,0,0
-National Payments Count - Month 1,0,0,0,999,0,0,0
-National Payments Count - Month 2,0,0,0,999,0,0,0
-National Payments Count - Month 3,0,0,0,999,0,0,0
-National Payments Volume - Month 1,0,0,0,999,0,0,0
-National Payments Volume - Month 2,0,0,0,999,0,0,0
-National Payments Volume - Month 3,0,0,0,999,0,0,0
+National Payments Count - Month 1,0,0,0,0,0,0,0
+National Payments Count - Month 2,0,0,0,0,0,0,0
+National Payments Count - Month 3,0,0,0,0,0,0,0
+National Payments Volume - Month 1,0,0,0,0,0,0,0
+National Payments Volume - Month 2,0,0,0,0,0,0,0
+National Payments Volume - Month 3,0,0,0,0,0,0,0
 National Account Funding Transaction Count - Month 1,0,0,0,0,0,0,0
 National Account Funding Transaction Count - Month 2,0,0,0,0,0,0,0
 National Account Funding Transaction Count - Month 3,0,0,0,0,0,0,0
@@ -137,12 +137,12 @@ National Cashback Count - Month 3,0,0,0,0,0,0,0
 National Cashback Volume - Month 1,0,0,0,0,0,0,0
 National Cashback Volume - Month 2,0,0,0,0,0,0,0
 National Cashback Volume - Month 3,0,0,0,0,0,0,0
-International - Intra-Regional Payments Count - Month 1,1,0,0,999,0,0,0
-International - Intra-Regional Payments Count - Month 2,0,0,0,999,0,0,0
-International - Intra-Regional Payments Count - Month 3,0,0,0,999,0,0,0
-International - Intra-Regional Payments Volume - Month 1,1148.77,0,0,999,0,0,0
-International - Intra-Regional Payments Volume - Month 2,0,0,0,999,0,0,0
-International - Intra-Regional Payments Volume - Month 3,0,0,0,999,0,0,0
+International - Intra-Regional Payments Count - Month 1,1,0,0,1,0,0,0
+International - Intra-Regional Payments Count - Month 2,0,0,0,0,0,0,0
+International - Intra-Regional Payments Count - Month 3,0,0,0,0,0,0,0
+International - Intra-Regional Payments Volume - Month 1,1148.77,0,0,1148.77,0,0,0
+International - Intra-Regional Payments Volume - Month 2,0,0,0,0,0,0,0
+International - Intra-Regional Payments Volume - Month 3,0,0,0,0,0,0,0
 International - Intra-Regional Account Funding Transaction Count - Month 1,0,0,0,0,0,0,0
 International - Intra-Regional Account Funding Transaction Count - Month 2,0,0,0,0,0,0,0
 International - Intra-Regional Account Funding Transaction Count - Month 3,0,0,0,0,0,0,0
@@ -173,12 +173,12 @@ International - Intra-Regional Cashback Count - Month 3,0,0,0,0,0,0,0
 International - Intra-Regional Cashback Volume - Month 1,0,0,0,0,0,0,0
 International - Intra-Regional Cashback Volume - Month 2,0,0,0,0,0,0,0
 International - Intra-Regional Cashback Volume - Month 3,0,0,0,0,0,0,0
-International - Non-EEA Payments Count - Month 1,0,0,0,999,0,0,0
-International - Non-EEA Payments Count - Month 2,0,0,0,999,0,0,0
-International - Non-EEA Payments Count - Month 3,0,0,0,999,0,0,0
-International - Non-EEA Payments Volume - Month 1,0,0,0,999,0,0,0
-International - Non-EEA Payments Volume - Month 2,0,0,0,999,0,0,0
-International - Non-EEA Payments Volume - Month 3,0,0,0,999,0,0,0
+International - Non-EEA Payments Count - Month 1,0,0,0,0,0,0,0
+International - Non-EEA Payments Count - Month 2,0,0,0,0,0,0,0
+International - Non-EEA Payments Count - Month 3,0,0,0,0,0,0,0
+International - Non-EEA Payments Volume - Month 1,0,0,0,0,0,0,0
+International - Non-EEA Payments Volume - Month 2,0,0,0,0,0,0,0
+International - Non-EEA Payments Volume - Month 3,0,0,0,0,0,0,0
 International - Non-EEA Account Funding Transaction Count - Month 1,0,0,0,0,0,0,0
 International - Non-EEA Account Funding Transaction Count - Month 2,0,0,0,0,0,0,0
 International - Non-EEA Account Funding Transaction Count - Month 3,0,0,0,0,0,0,0
@@ -209,12 +209,12 @@ International - Non-EEA Cashback Count - Month 3,0,0,0,0,0,0,0
 International - Non-EEA Cashback Volume - Month 1,0,0,0,0,0,0,0
 International - Non-EEA Cashback Volume - Month 2,0,0,0,0,0,0,0
 International - Non-EEA Cashback Volume - Month 3,0,0,0,0,0,0,0
-International - Inter-Regional Payments Count - Month 1,0,0,0,999,0,0,0
-International - Inter-Regional Payments Count - Month 2,0,0,0,999,0,0,0
-International - Inter-Regional Payments Count - Month 3,0,0,0,999,0,0,0
-International - Inter-Regional Payments Volume - Month 1,0,0,0,999,0,0,0
-International - Inter-Regional Payments Volume - Month 2,0,0,0,999,0,0,0
-International - Inter-Regional Payments Volume - Month 3,0,0,0,999,0,0,0
+International - Inter-Regional Payments Count - Month 1,0,0,0,0,0,0,0
+International - Inter-Regional Payments Count - Month 2,0,0,0,0,0,0,0
+International - Inter-Regional Payments Count - Month 3,0,0,0,0,0,0,0
+International - Inter-Regional Payments Volume - Month 1,0,0,0,0,0,0,0
+International - Inter-Regional Payments Volume - Month 2,0,0,0,0,0,0,0
+International - Inter-Regional Payments Volume - Month 3,0,0,0,0,0,0,0
 International - Inter-Regional Account Funding Transaction Count - Month 1,0,0,0,0,0,0,0
 International - Inter-Regional Account Funding Transaction Count - Month 2,0,0,0,0,0,0,0
 International - Inter-Regional Account Funding Transaction Count - Month 3,0,0,0,0,0,0,0
@@ -245,19 +245,19 @@ International - Inter-Regional Cashback Count - Month 3,0,0,0,0,0,0,0
 International - Inter-Regional Cashback Volume - Month 1,0,0,0,0,0,0,0
 International - Inter-Regional Cashback Volume - Month 2,0,0,0,0,0,0,0
 International - Inter-Regional Cashback Volume - Month 3,0,0,0,0,0,0,0
-Total Number of Cards,0,0,0,999,0,0,0
+Total Number of Cards,0,0,0,0,0,0,0
 Number of Cards - Magnetic Stripe,0,0,0,0,0,0,0
 Number of Cards - Magnetic Stripe Chip,0,0,0,0,0,0,0
 Number of Cards - Magnetic Stripe Contactless,0,0,0,0,0,0,0
 Number of Cards - Magnetic Stripe Chip Contactless,0,0,0,0,0,0,0
-Total Number of Active Cards,0,0,0,999,0,0,0
+Total Number of Active Cards,0,0,0,0,0,0,0
 Number of Active Cards - used at Contactless device,0,0,0,0,0,0,0
 Number of Devices with Visa Contactless - Micro Tags,0,0,0,0,0,0,0
 Number of Devices with Visa Contactless - Mobile Phones,0,0,0,0,0,0,0
 Number of Devices with Visa Contactless - Other Devices,0,0,0,0,0,0,0
-Total Number of Accounts,0,0,0,999,0,0,0
+Total Number of Accounts,0,0,0,0,0,0,0
 Number of Accounts - Domestic Use Only,0,0,0,0,0,0,0
-Number of Accounts - International Enabled,0,0,0,999,0,0,0
+Number of Accounts - International Enabled,0,0,0,0,0,0,0
 Total Number of Active Accounts,0,0,0,0,0,0,0
 Total Number of Personal Deposit Accounts,0,0,0,0,0,0,0
 Number of Savings Accounts,0,0,0,0,0,0,0
@@ -277,7 +277,7 @@ Gross Fraud Losses - International - Cash Disbursements - Volume,,,,,,,
 Gross Fraud Losses - International - Payments - Count,,,,,,,
 Gross Fraud Losses - International - Payments - Volume,,,,,,,
 Total Product Balance - Volume,0,0,0,0,0,0,0
-Payments Transactions Declined for Insufficient Funds - Number,0,0,0,999,0,0,0
+Payments Transactions Declined for Insufficient Funds - Number,0,0,0,0,0,0,0
 Cash Transactions Declined for Insufficient Funds - Number,0,0,0,0,0,0,0
 "
 `)

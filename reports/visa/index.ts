@@ -22,7 +22,7 @@ export namespace visa {
 			if (rows.blank.includes(row as any))
 				csv += row + ",".repeat(headers.length - 1) + "\n"
 			else if (rows.nonZero.includes(row as any))
-				csv += Data.dataToCsv(data, row as any)
+				csv += Data.toCsv(data, row as any)
 			else if (row.endsWith("Month x"))
 				for (let i = 1; 3 >= i; i++)
 					csv += row.replace("Month x", `Month ${i}`) + ",0".repeat(headers.length - 1) + "\n"
