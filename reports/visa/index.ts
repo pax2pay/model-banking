@@ -28,7 +28,7 @@ export namespace visa {
 					csv += row.replace("Month x", `Month ${i}`) + ",0".repeat(headers.length - 1) + "\n"
 			else
 				csv += row + ",0".repeat(headers.length - 1) + "\n"
-
+		csv += Data.Country.toCsv(data.country)
 		return csv
 	}
 }
