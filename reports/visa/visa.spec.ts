@@ -52,22 +52,24 @@ describe("VisaComponent", () => {
 	}
 	const data: pax2pay.reports.visa.Data = pax2pay.reports.visa.Data.create([transaction])
 	it("should make visa report data", () => {
-		expect(data).toMatchObject({
-			"45672555": {
+		const result: pax2pay.reports.visa.Data = {
+			nonMonthly: {
+				"Number of Accounts - International Enabled": {},
+				"Payments Transactions Declined for Insufficient Funds - Number": {},
+				"Total Number of Accounts": {},
+				"Total Number of Active Cards": {},
+				"Total Number of Cards": {},
+			},
+			country: {},
+			monthly: {
 				"International - Intra-Regional Payments": {
-					"1": { count: 0, volume: 0 },
-					"2": { count: 1, volume: 1148.77 },
-					"3": { count: 0, volume: 0 },
+					1: { count: {}, volume: {} },
+					2: { count: { "45672555": 1, totalIdx: 1 }, volume: { "45672555": 1148.77, totalIdx: 1148.77 } },
+					3: { count: {}, volume: {} },
 				},
 			},
-			totalIdx: {
-				"International - Intra-Regional Payments": {
-					"1": { count: 0, volume: 0 },
-					"2": { count: 1, volume: 1148.77 },
-					"3": { count: 0, volume: 0 },
-				},
-			},
-		})
+		}
+		expect(data).toMatchObject(result)
 	})
 	it("should make visa csv", () => {
 		expect(pax2pay.reports.visa.toCsv(data)).toMatchInlineSnapshot(`

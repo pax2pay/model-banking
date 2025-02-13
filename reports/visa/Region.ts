@@ -4,11 +4,16 @@ import { Transaction } from "../../Transaction"
 
 export type Region = typeof Region.values[number]
 export namespace Region {
-	export const values = ["National", "Intra-Regional", "Inter-Regional", "Non-EEA"] as const
+	export const values = [
+		"National Payments",
+		"International - Intra-Regional Payments",
+		"International - Non-EEA Payments",
+		"International - Inter-Regional Payments",
+	] as const
 	export const type = isly.string<Region>(values)
 	export const regions: Record<Region, isoly.CountryCode.Alpha2[]> = {
-		National: ["GB"],
-		"Intra-Regional": [
+		"National Payments": ["GB"],
+		"International - Intra-Regional Payments": [
 			"AT",
 			"BE",
 			"BG",
@@ -37,19 +42,19 @@ export namespace Region {
 			"ES",
 			"SE",
 		],
-		"Inter-Regional": ["IS", "NO", "LI"],
-		"Non-EEA": [],
+		"International - Non-EEA Payments": [],
+		"International - Inter-Regional Payments": ["IS", "NO", "LI"],
 	}
 	export function find(transaction: Transaction.CardTransaction): Region {
 		let result: Region
-		if (regions.National.includes(transaction.counterpart.merchant.country))
-			result = "National"
-		else if (regions["Intra-Regional"].includes(transaction.counterpart.merchant.country))
-			result = "Intra-Regional"
-		else if (regions["Inter-Regional"].includes(transaction.counterpart.merchant.country))
-			result = "Inter-Regional"
+		if (regions["National Payments"].includes(transaction.counterpart.merchant.country))
+			result = "National Payments"
+		else if (regions["International - Intra-Regional Payments"].includes(transaction.counterpart.merchant.country))
+			result = "International - Intra-Regional Payments"
+		else if (regions["International - Inter-Regional Payments"].includes(transaction.counterpart.merchant.country))
+			result = "International - Inter-Regional Payments"
 		else
-			result = "Non-EEA"
+			result = "International - Non-EEA Payments"
 		return result
 	}
 }

@@ -1,54 +1,64 @@
+import { isoly } from "isoly"
 import { Transaction } from "../../../Transaction"
+import { Region } from "../Region"
 // import { Region } from "../Region"
 import { rows } from "../rows"
 import { Iin as DataIin } from "./Iin"
 import { Monthly } from "./Monthly"
+import { NonMonthly } from "./NonMonthly"
+import { PerMonth } from "./PerMonth"
 // import { NonMonthly } from "./NonMonthly"
 // import { PerMonth } from "./PerMonth"
-import { Reports } from "./Reports"
+// import { Reports } from "./Reports"
 
-export type Data = Partial<Record<Data.Iin, Reports>>
+export type Data = {
+	monthly: Monthly
+	nonMonthly: NonMonthly
+	country: Partial<Record<isoly.CountryCode.Alpha2, PerMonth>>
+}
 export namespace Data {
 	export import Iin = DataIin
 	export function create(transactions: Transaction.CardTransaction[]): Data {
-		const result: Data = {}
-		for (const transaction of transactions) {
-			result[transaction.account.iin as Iin] = Reports.update(result[transaction.account.iin as Iin] ?? {}, transaction)
-			if (Iin.isIdx(transaction.account.iin))
-				// TODO: better
-				result["totalIdx"] = Reports.update(result["totalIdx"] ?? {}, transaction)
-		}
+		const result: Data = { monthly: {}, nonMonthly: NonMonthly.empty, country: {} }
+		for (const transaction of transactions)
+			if (Array.isArray(transaction.status) && transaction.status[1] == "insufficient funds")
+				result.nonMonthly["Payments Transactions Declined for Insufficient Funds - Number"][
+					transaction.account.iin as Iin
+				] =
+					(result.nonMonthly["Payments Transactions Declined for Insufficient Funds - Number"]?.[
+						transaction.account.iin as Iin
+					] ?? 0) + 1
+			else if (transaction.status == "finalized") {
+				const key = Region.find(transaction)
+				result.monthly[key] = Monthly.update(result.monthly[key], transaction)
+				// TODO: country / regional data
+				// const a = result.monthly[key]
+				// result.country[transaction.counterpart.merchant.country] = result.monthly[key]
+			}
+
 		return result
 	}
 	export function toCsv(data: Data, row: typeof rows.nonZero[number]): string {
 		let result: string
-		if (row.endsWith("Month x")) {
-			const key = Monthly.getKey(row)
-			const months = [1, 2, 3] as const
-			const which: "count" | "volume" = row.includes("Count") ? "count" : "volume"
-			result = ""
-			for (const month of months) {
-				result += `${row.replace("Month x", `Month ${month}`)},`
-				result += `${data["45672555"]?.[key]?.[month][which] ?? 0},`
-				result += `${data["4567255"]?.[key]?.[month][which] ?? 0},`
-				result += `${data["45672557"]?.[key]?.[month][which] ?? 0},`
-				result += `${data["totalIdx"]?.[key]?.[month][which] ?? 0},`
-				result += `${data["44260108"]?.[key]?.[month][which] ?? 0},`
-				result += `${data["49359119"]?.[key]?.[month][which] ?? 0},`
-				result += `${data["45672554"]?.[key]?.[month][which] ?? 0}`
-				result += "\n"
-			}
-		} else {
-			result = row + ","
-			result += `${data["45672555"]?.[row] ?? 0},`
-			result += `${data["4567255"]?.[row] ?? 0},`
-			result += `${data["45672557"]?.[row] ?? 0},`
-			result += `${data["totalIdx"]?.[row] ?? 0},`
-			result += `${data["44260108"]?.[row] ?? 0},`
-			result += `${data["49359119"]?.[row] ?? 0},`
-			result += `${data["45672554"]?.[row] ?? 0}`
-			result += "\n"
-		}
+		if (row.endsWith("Month x"))
+			// const key = Monthly.getRegion(row)
+			// const months = [1, 2, 3] as const
+			// result = ""
+			// const which: "count" | "volume" = row.includes("Count") ? "count" : "volume"
+			// for (const month of months) {
+			// 	result += row.replace("Month x", `Month ${month}`)
+			// 	for (const iin of Iin.values)
+			// 		result += `,${data.monthly[key]?.[month][which][iin] ?? 0}`
+			// 	result += "\n"
+			// }
+			result = Monthly.toCsvRow(data.monthly, row)
+		else
+			result = NonMonthly.toCsvRow(data.nonMonthly, row)
+		// result = row
+		// for (const iin of Iin.values)
+		// 	result += `,${data.nonMonthly[row as keyof NonMonthly][iin] ?? 0}`
+		// result += "\n"
+
 		return result
 	}
 }
