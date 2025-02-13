@@ -16,12 +16,12 @@ export namespace Realm {
 		eea: "EUR",
 	}
 	export const suppliers: Record<Realm, modelSupplier[]> = {
-		test: ["paxgiro", "paxgiroCredit", "clearbank"],
+		test: ["paxgiro", "paxgiroCredit"],
 		uk: ["clearbank"],
 		eea: [],
 	}
 	export interface Suppliers extends Record<Realm, modelSupplier[]> {
-		test: ["paxgiro", "paxgiroCredit", "clearbank"]
+		test: ["paxgiro", "paxgiroCredit"]
 		uk: ["clearbank"]
 		eea: []
 	}
