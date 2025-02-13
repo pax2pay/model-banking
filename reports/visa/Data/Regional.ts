@@ -4,10 +4,10 @@ import { Region } from "../Region"
 import { Iin } from "./Iin"
 import { PerMonth } from "./PerMonth"
 
-export type Monthly = Partial<Record<Region, PerMonth>>
-export namespace Monthly {
+export type Regional = Partial<Record<Region, PerMonth>>
+export namespace Regional {
 	export function getRegion(row: string): Region {
-		let key: keyof Monthly
+		let key: keyof Regional
 		if (row.startsWith("National"))
 			key = "National Payments"
 		else if (row.startsWith("International - Inter-Regional"))
@@ -49,8 +49,8 @@ export namespace Monthly {
 		}
 		return result
 	}
-	export function toCsvRow(monthly: Monthly, row: string): string {
-		const key = Monthly.getRegion(row)
+	export function toCsvRow(monthly: Regional, row: string): string {
+		const key = Regional.getRegion(row)
 		const months = [1, 2, 3] as const
 		let result = ""
 		const which: "count" | "volume" = row.includes("Count") ? "count" : "volume"

@@ -61,7 +61,7 @@ describe("VisaComponent", () => {
 				"Total Number of Cards": {},
 			},
 			country: {},
-			monthly: {
+			regional: {
 				"International - Intra-Regional Payments": {
 					1: { count: {}, volume: {} },
 					2: { count: { "45672555": 1, totalIdx: 1 }, volume: { "45672555": 1148.77, totalIdx: 1148.77 } },
