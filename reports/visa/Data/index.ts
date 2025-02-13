@@ -15,14 +15,11 @@ export namespace Data {
 	export import Country = DataCountry
 	export function create(transactions: Transaction.CardTransaction[]): Data {
 		const result: Data = { regional: {}, nonMonthly: NonMonthly.empty, country: {} }
-		for (const transaction of transactions)
-			if (Array.isArray(transaction.status) && transaction.status[1] == "insufficient funds")
-				result.nonMonthly = NonMonthly.update(result.nonMonthly, transaction)
-			else if (transaction.status == "finalized") {
-				result.regional = Regional.update(result.regional, transaction)
-				result.country = Country.update(result.country, transaction)
-			}
-
+		for (const transaction of transactions) {
+			result.nonMonthly = NonMonthly.update(result.nonMonthly, transaction)
+			result.regional = Regional.update(result.regional, transaction)
+			result.country = Country.update(result.country, transaction)
+		}
 		return result
 	}
 	export function toCsv(data: Data, row: typeof rows.nonZero[number]): string {

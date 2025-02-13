@@ -19,9 +19,10 @@ export namespace NonMonthly {
 	}
 	export function update(previous: NonMonthly, transaction: Transaction.CardTransaction): NonMonthly {
 		const result = previous
-		result["Payments Transactions Declined for Insufficient Funds - Number"][transaction.account.iin as Iin] =
-			(result["Payments Transactions Declined for Insufficient Funds - Number"]?.[transaction.account.iin as Iin] ??
-				0) + 1
+		if (Array.isArray(transaction.status) && transaction.status[1] == "insufficient funds")
+			result["Payments Transactions Declined for Insufficient Funds - Number"][transaction.account.iin as Iin] =
+				(result["Payments Transactions Declined for Insufficient Funds - Number"]?.[transaction.account.iin as Iin] ??
+					0) + 1
 		return result
 	}
 	export function toCsvRow(data: NonMonthly, row: string): string {

@@ -22,7 +22,7 @@ export namespace Monthly {
 			"2": { count: {}, volume: {} },
 			"3": { count: {}, volume: {} },
 		}
-		if (transaction.direction == "outbound") {
+		if (transaction.direction == "outbound" && transaction.status == "finalized") {
 			const month = getMonth(transaction)
 			result[month].count[transaction.account.iin as Iin] =
 				(result[month].count[transaction.account.iin as Iin] ?? 0) + 1
