@@ -61,6 +61,7 @@ export namespace Transaction {
 				reserved: sign * (state.transaction.original.reserve ?? 0),
 				charge: sign * (state.transaction.original.charge?.total ?? 0),
 				total: sign * state.transaction.original.total,
+				exchange: state.authorization?.exchange,
 			}
 		}
 		export function fromOperations(
