@@ -41,24 +41,9 @@ export namespace Data {
 	export function toCsv(data: Data, row: typeof rows.nonZero[number]): string {
 		let result: string
 		if (row.endsWith("Month x"))
-			// const key = Monthly.getRegion(row)
-			// const months = [1, 2, 3] as const
-			// result = ""
-			// const which: "count" | "volume" = row.includes("Count") ? "count" : "volume"
-			// for (const month of months) {
-			// 	result += row.replace("Month x", `Month ${month}`)
-			// 	for (const iin of Iin.values)
-			// 		result += `,${data.monthly[key]?.[month][which][iin] ?? 0}`
-			// 	result += "\n"
-			// }
 			result = Monthly.toCsvRow(data.monthly, row)
 		else
 			result = NonMonthly.toCsvRow(data.nonMonthly, row)
-		// result = row
-		// for (const iin of Iin.values)
-		// 	result += `,${data.nonMonthly[row as keyof NonMonthly][iin] ?? 0}`
-		// result += "\n"
-
 		return result
 	}
 }
