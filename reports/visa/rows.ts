@@ -1,3 +1,5 @@
+import { isly } from "isly"
+
 export namespace rows {
 	export const all = [
 		"On-Us Payments Count - Month x",
@@ -95,41 +97,55 @@ export namespace rows {
 		"Payments Transactions Declined for Insufficient Funds - Number",
 		"Cash Transactions Declined for Insufficient Funds - Number",
 	] as const
-	export const nonZero = [
-		"National Payments Count - Month x",
-		"National Payments Volume - Month x",
-		"International - Intra-Regional Payments Count - Month x",
-		"International - Intra-Regional Payments Volume - Month x",
-		"International - Non-EEA Payments Count - Month x",
-		"International - Non-EEA Payments Volume - Month x",
-		"International - Inter-Regional Payments Count - Month x",
-		"International - Inter-Regional Payments Volume - Month x",
-		"Total Number of Cards",
-		"Total Number of Active Cards",
-		"Total Number of Accounts",
-		"Number of Accounts - International Enabled",
-		"Payments Transactions Declined for Insufficient Funds - Number",
-	] as const
-	export const blank = [
-		"Fraud Recoveries - Domestic - Cash Disbursements - Amount",
-		"Fraud Recoveries - Domestic - Payments - Amount",
-		"Fraud Recoveries - International - Cash Disbursements - Amount",
-		"Fraud Recoveries - International - Payments - Amount",
-		"Gross Fraud Losses - Number of Accounts",
-		"Gross Fraud Losses - Number of Recovered Accounts",
-		"Gross Fraud Losses - Domestic - Cash Disbursements - Count",
-		"Gross Fraud Losses - Domestic - Cash Disbursements - Volume",
-		"Gross Fraud Losses - Domestic - Payments - Count",
-		"Gross Fraud Losses - Domestic - Payments - Volume",
-		"Gross Fraud Losses - International - Cash Disbursements - Count",
-		"Gross Fraud Losses - International - Cash Disbursements - Volume",
-		"Gross Fraud Losses - International - Payments - Count",
-		"Gross Fraud Losses - International - Payments - Volume",
-	] as const
-	export const report2 /* visa didgeridoo */ = [
-		"Country X - Region X Payments Card Present Count - Month x",
-		"Country X - Region X Payments Card Present Volume - Month x",
-		"Country X - Region X Payments Card Not Present Count - Month x",
-		"Country X - Region X Payments Card Not Present Volume - Month x",
-	] as const
+	export type NonZero = typeof NonZero.values[number]
+	export namespace NonZero {
+		export const values = [
+			"National Payments Count - Month x",
+			"National Payments Volume - Month x",
+			"International - Intra-Regional Payments Count - Month x",
+			"International - Intra-Regional Payments Volume - Month x",
+			"International - Non-EEA Payments Count - Month x",
+			"International - Non-EEA Payments Volume - Month x",
+			"International - Inter-Regional Payments Count - Month x",
+			"International - Inter-Regional Payments Volume - Month x",
+			"Total Number of Cards",
+			"Total Number of Active Cards",
+			"Total Number of Accounts",
+			"Number of Accounts - International Enabled",
+			"Payments Transactions Declined for Insufficient Funds - Number",
+		] as const
+		export const type = isly.string<NonZero>(values)
+	}
+	export type Blank = typeof Blank.values[number]
+	export namespace Blank {
+		export const values = [
+			"Fraud Recoveries - Domestic - Cash Disbursements - Amount",
+			"Fraud Recoveries - Domestic - Payments - Amount",
+			"Fraud Recoveries - International - Cash Disbursements - Amount",
+			"Fraud Recoveries - International - Payments - Amount",
+			"Gross Fraud Losses - Number of Accounts",
+			"Gross Fraud Losses - Number of Recovered Accounts",
+			"Gross Fraud Losses - Domestic - Cash Disbursements - Count",
+			"Gross Fraud Losses - Domestic - Cash Disbursements - Volume",
+			"Gross Fraud Losses - Domestic - Payments - Count",
+			"Gross Fraud Losses - Domestic - Payments - Volume",
+			"Gross Fraud Losses - International - Cash Disbursements - Count",
+			"Gross Fraud Losses - International - Cash Disbursements - Volume",
+			"Gross Fraud Losses - International - Payments - Count",
+			"Gross Fraud Losses - International - Payments - Volume",
+		] as const
+		export const type = isly.string<Blank>(values)
+		export function toCsvRow(row: Blank, count: number): string {
+			return row + "|".repeat(count) + "\n"
+		}
+	}
+	export function monthlyZeroRows(row: string, zeroes: number): string {
+		let result = ""
+		for (let i = 1; 3 >= i; i++)
+			result += row.replace("Month x", `Month ${i}`) + "|0".repeat(zeroes) + "\n"
+		return result
+	}
+	export function zeros(row: string, zeroes: number): string {
+		return row + "|0".repeat(zeroes) + "\n"
+	}
 }

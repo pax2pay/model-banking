@@ -18,16 +18,19 @@ export namespace visa {
 		// report 1
 		let csv = headers.join("|") + "\n"
 		for (const row of rows.all)
-			if (rows.blank.includes(row as any))
-				csv += row + "|".repeat(headers.length - 1) + "\n"
-			else if (rows.nonZero.includes(row as any))
-				csv += Data.toCsv(data, row as any)
+			if (rows.Blank.type.is(row))
+				// Leave empty for operations team to fill
+				csv += rows.Blank.toCsvRow(row, headers.length - 1)
+			else if (rows.NonZero.type.is(row))
+				// "report 1" data
+				csv += Data.toCsv(data, row)
 			else if (row.endsWith("Month x"))
-				for (let i = 1; 3 >= i; i++)
-					csv += row.replace("Month x", `Month ${i}`) + "|0".repeat(headers.length - 1) + "\n"
+				// rows with zeroes for each month
+				csv += rows.monthlyZeroRows(row, headers.length - 1)
+			// rows with zeroes
 			else
-				csv += row + "|0".repeat(headers.length - 1) + "\n"
-		// report 2
+				csv += rows.zeros(row, headers.length - 1)
+		// append "report 2" to the end
 		csv += Data.Country.toCsv(data.country)
 		return csv
 	}

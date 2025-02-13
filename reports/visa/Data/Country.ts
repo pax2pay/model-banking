@@ -4,6 +4,11 @@ import { Iin } from "./Iin"
 import { Monthly } from "./Monthly"
 import { Region } from "./Region"
 
+// data for rows of format:
+// "Country X - Region X Payments Card Present Count - Month x",
+// "Country X - Region X Payments Card Present Volume - Month x",
+// "Country X - Region X Payments Card Not Present Count - Month x",
+// "Country X - Region X Payments Card Not Present Volume - Month x",
 type PerCountry = { present?: Monthly; notPresent?: Monthly }
 export type Country = Partial<Record<isoly.CountryCode.Alpha2, PerCountry>>
 export namespace Country {

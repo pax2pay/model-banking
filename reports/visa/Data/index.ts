@@ -22,7 +22,7 @@ export namespace Data {
 		}
 		return result
 	}
-	export function toCsv(data: Data, row: typeof rows.nonZero[number]): string {
+	export function toCsv(data: Data, row: rows.NonZero): string {
 		let result: string
 		if (row.endsWith("Month x"))
 			result = Regional.toCsvRow(data.regional, row)

@@ -1,4 +1,5 @@
 import { Transaction } from "../../../Transaction"
+import { rows } from "../rows"
 import { Iin } from "./Iin"
 
 export type NonMonthly = Record<
@@ -25,7 +26,7 @@ export namespace NonMonthly {
 					0) + 1
 		return result
 	}
-	export function toCsvRow(data: NonMonthly, row: string): string {
+	export function toCsvRow(data: NonMonthly, row: rows.NonZero): string {
 		let result = row
 		for (const iin of Iin.values)
 			result += `|${data[row as keyof NonMonthly][iin] ?? 0}`
