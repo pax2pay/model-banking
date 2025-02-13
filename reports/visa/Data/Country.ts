@@ -2,7 +2,7 @@ import { isoly } from "isoly"
 import { Transaction } from "../../../Transaction"
 import { Iin } from "./Iin"
 import { Monthly } from "./Monthly"
-import { Regional } from "./Regional"
+import { Region } from "./Region"
 
 type PerCountry = { present?: Monthly; notPresent?: Monthly }
 export type Country = Partial<Record<isoly.CountryCode.Alpha2, PerCountry>>
@@ -10,29 +10,29 @@ export namespace Country {
 	export function toCsv(country: Country): string {
 		let result = ""
 		for (const [countryCode, perCountry] of Object.entries(country)) {
-			const region = Regional.getRegion(countryCode)
+			const region = Region.find(countryCode as isoly.CountryCode.Alpha2)
 			for (const month of Monthly.Month.values) {
 				result += `Country ${countryCode} - ${region} Card Present Count Month ${month}`
 				for (const iin of Iin.values)
-					result += `,${perCountry.present?.[month].count[iin] ?? 0}`
+					result += `|${perCountry.present?.[month].count[iin] ?? 0}`
 				result += "\n"
 			}
 			for (const month of Monthly.Month.values) {
 				result += `Country ${countryCode} - ${region} Card Present Volume Month ${month}`
 				for (const iin of Iin.values)
-					result += `,${perCountry.present?.[month].volume[iin] ?? 0}`
+					result += `|${perCountry.present?.[month].volume[iin] ?? 0}`
 				result += "\n"
 			}
 			for (const month of Monthly.Month.values) {
 				result += `Country ${countryCode} - ${region} Card Not Present Count Month ${month}`
 				for (const iin of Iin.values)
-					result += `,${perCountry.notPresent?.[month].count[iin] ?? 0}`
+					result += `|${perCountry.notPresent?.[month].count[iin] ?? 0}`
 				result += "\n"
 			}
 			for (const month of Monthly.Month.values) {
 				result += `Country ${countryCode} - ${region} Card Not Present Volume Month ${month}`
 				for (const iin of Iin.values)
-					result += `,${perCountry.notPresent?.[month].volume[iin] ?? 0}`
+					result += `|${perCountry.notPresent?.[month].volume[iin] ?? 0}`
 				result += "\n"
 			}
 		}

@@ -27,7 +27,7 @@ export namespace NonMonthly {
 	export function toCsvRow(data: NonMonthly, row: string): string {
 		let result = row
 		for (const iin of Iin.values)
-			result += `,${data[row as keyof NonMonthly][iin] ?? 0}`
+			result += `|${data[row as keyof NonMonthly][iin] ?? 0}`
 		result += "\n"
 		return result
 	}

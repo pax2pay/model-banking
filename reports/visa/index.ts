@@ -15,17 +15,19 @@ export namespace visa {
 		"Visa Business Immediate Debit - BIN: 45672554",
 	] as const
 	export function toCsv(data: Data): string {
-		let csv = headers.join(",") + "\n"
+		// report 1
+		let csv = headers.join("|") + "\n"
 		for (const row of rows.all)
 			if (rows.blank.includes(row as any))
-				csv += row + ",".repeat(headers.length - 1) + "\n"
+				csv += row + "|".repeat(headers.length - 1) + "\n"
 			else if (rows.nonZero.includes(row as any))
 				csv += Data.toCsv(data, row as any)
 			else if (row.endsWith("Month x"))
 				for (let i = 1; 3 >= i; i++)
-					csv += row.replace("Month x", `Month ${i}`) + ",0".repeat(headers.length - 1) + "\n"
+					csv += row.replace("Month x", `Month ${i}`) + "|0".repeat(headers.length - 1) + "\n"
 			else
-				csv += row + ",0".repeat(headers.length - 1) + "\n"
+				csv += row + "|0".repeat(headers.length - 1) + "\n"
+		// report 2
 		csv += Data.Country.toCsv(data.country)
 		return csv
 	}

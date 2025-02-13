@@ -1,6 +1,5 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Transaction } from "../../../Transaction"
 
 export type Region = typeof Region.values[number]
 export namespace Region {
@@ -45,14 +44,26 @@ export namespace Region {
 		"International - Non-EEA Payments": [],
 		"International - Inter-Regional Payments": ["IS", "NO", "LI"],
 	}
-	export function find(transaction: Transaction.CardTransaction): Region {
+	export function find(country: isoly.CountryCode.Alpha2): Region {
 		let result: Region
-		if (regions["National Payments"].includes(transaction.counterpart.merchant.country))
+		if (regions["National Payments"].includes(country))
 			result = "National Payments"
-		else if (regions["International - Intra-Regional Payments"].includes(transaction.counterpart.merchant.country))
+		else if (regions["International - Intra-Regional Payments"].includes(country))
 			result = "International - Intra-Regional Payments"
-		else if (regions["International - Inter-Regional Payments"].includes(transaction.counterpart.merchant.country))
+		else if (regions["International - Inter-Regional Payments"].includes(country))
 			result = "International - Inter-Regional Payments"
+		else
+			result = "International - Non-EEA Payments"
+		return result
+	}
+	export function fromRow(row: string): Region {
+		let result: Region
+		if (row.startsWith("National"))
+			result = "National Payments"
+		else if (row.startsWith("International - Inter-Regional"))
+			result = "International - Inter-Regional Payments"
+		else if (row.startsWith("International - Intra-Regional"))
+			result = "International - Intra-Regional Payments"
 		else
 			result = "International - Non-EEA Payments"
 		return result
