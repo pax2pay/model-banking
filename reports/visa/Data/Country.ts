@@ -4,11 +4,7 @@ import { Iin } from "./Iin"
 import { PerMonth } from "./PerMonth"
 import { Regional } from "./Regional"
 
-type PerCountry = {
-	present?: PerMonth
-	notPresent?: PerMonth
-}
-
+type PerCountry = { present?: PerMonth; notPresent?: PerMonth }
 export type Country = Partial<Record<isoly.CountryCode.Alpha2, PerCountry>>
 export namespace Country {
 	export function toCsv(country: Country): string {
@@ -43,11 +39,6 @@ export namespace Country {
 		}
 		return result
 	}
-	// returns which number of the month in the quarter the transaction is in
-	export function getMonth(transaction: Transaction.CardTransaction): 1 | 2 | 3 {
-		const month = isoly.DateTime.getMonth(transaction.transacted ?? transaction.posted)
-		return (((month - 1) % 3) + 1) as 1 | 2 | 3
-	}
 	export function update(country: Country, transaction: Transaction.CardTransaction): Country {
 		const result: Country = country
 		result[transaction.counterpart.merchant.country] = updateHelper(
@@ -56,9 +47,10 @@ export namespace Country {
 		)
 		return result
 	}
-	export function updateHelper(value: PerCountry, transaction: Transaction.CardTransaction): PerCountry {
+	function updateHelper(input: PerCountry, transaction: Transaction.CardTransaction): PerCountry {
+		const result = input
 		const key = transaction.counterpart.present === true ? "present" : "notPresent"
-		value[key] = Regional.update(value[key], transaction)
-		return value
+		result[key] = PerMonth.update(result[key], transaction)
+		return result
 	}
 }

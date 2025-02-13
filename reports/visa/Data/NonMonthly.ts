@@ -1,3 +1,4 @@
+import { Transaction } from "../../../Transaction"
 import { Iin } from "./Iin"
 
 export type NonMonthly = Record<
@@ -15,6 +16,13 @@ export namespace NonMonthly {
 		"Total Number of Accounts": {},
 		"Total Number of Active Cards": {},
 		"Total Number of Cards": {},
+	}
+	export function update(previous: NonMonthly, transaction: Transaction.CardTransaction): NonMonthly {
+		const result = previous
+		result["Payments Transactions Declined for Insufficient Funds - Number"][transaction.account.iin as Iin] =
+			(result["Payments Transactions Declined for Insufficient Funds - Number"]?.[transaction.account.iin as Iin] ??
+				0) + 1
+		return result
 	}
 	export function toCsvRow(data: NonMonthly, row: string): string {
 		let result = row

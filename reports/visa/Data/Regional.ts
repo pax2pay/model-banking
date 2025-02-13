@@ -1,4 +1,3 @@
-import { isoly } from "isoly"
 import { Transaction } from "../../../Transaction"
 import { Region } from "../Region"
 import { Iin } from "./Iin"
@@ -18,38 +17,13 @@ export namespace Regional {
 			key = "International - Non-EEA Payments"
 		return key
 	}
-	// returns which number of the month in the quarter the transaction is in
-	export function getMonth(transaction: Transaction.CardTransaction): 1 | 2 | 3 {
-		const month = isoly.DateTime.getMonth(transaction.transacted ?? transaction.posted)
-		return (((month - 1) % 3) + 1) as 1 | 2 | 3
-	}
-	export function update(previous: PerMonth | undefined, transaction: Transaction.CardTransaction): PerMonth {
-		const result: PerMonth = previous ?? {
-			"1": { count: {}, volume: {} },
-			"2": { count: {}, volume: {} },
-			"3": { count: {}, volume: {} },
-		}
-		if (transaction.direction == "outbound") {
-			const month = getMonth(transaction)
-			result[month].count[transaction.account.iin as Iin] =
-				(result[month].count[transaction.account.iin as Iin] ?? 0) + 1
-			result[month].volume[transaction.account.iin as Iin] = isoly.Currency.add(
-				"GBP",
-				result[month].volume[transaction.account.iin as Iin] ?? 0,
-				Math.abs(transaction.amount.original)
-			)
-			if (Iin.isIdx(transaction.account.iin)) {
-				result[month].count["totalIdx"] = (result[month].count["totalIdx"] ?? 0) + 1
-				result[month].volume["totalIdx"] = isoly.Currency.add(
-					"GBP",
-					result[month].volume["totalIdx"] ?? 0,
-					Math.abs(transaction.amount.original)
-				)
-			}
-		}
+	export function update(previous: Regional, transaction: Transaction.CardTransaction): Regional {
+		const region = Region.find(transaction)
+		const result: Regional = previous
+		result[region] = PerMonth.update(result[region], transaction)
 		return result
 	}
-	export function toCsvRow(monthly: Regional, row: string): string {
+	export function toCsvRow(regional: Regional, row: string): string {
 		const key = Regional.getRegion(row)
 		const months = [1, 2, 3] as const
 		let result = ""
@@ -57,7 +31,7 @@ export namespace Regional {
 		for (const month of months) {
 			result += row.replace("Month x", `Month ${month}`)
 			for (const iin of Iin.values)
-				result += `,${monthly[key]?.[month][which][iin] ?? 0}`
+				result += `,${regional[key]?.[month][which][iin] ?? 0}`
 			result += "\n"
 		}
 		return result
