@@ -37,7 +37,6 @@ describe("Identity", () => {
 			treasury: { rebalance: true },
 		}
 		expect(await authenticate({ [`*-*`]: ["admin"] }, constraint, "test", orgCode)).toBeTruthy()
-		expect(await authenticate({ [`*-*`]: ["admin"] }, constraint, "testUK", orgCode)).toBeTruthy()
 	})
 	it("authenticate finance roll on several realms", async () => {
 		const constraint: pax2pay.Key.Permissions = {
@@ -45,10 +44,9 @@ describe("Identity", () => {
 		}
 		const roles: pax2pay.Key.Roles = {
 			[`test-*`]: ["finance"],
-			[`testUK-*`]: ["finance"],
+			[`uk-*`]: ["finance"],
 		}
 		expect(await authenticate(roles, constraint, "test", orgCode)).toBeTruthy()
-		expect(await authenticate(roles, constraint, "testUK", orgCode)).toBeTruthy()
 		expect(await authenticate(roles, constraint, "eea", orgCode)).toBeFalsy()
 	})
 	it("get realms one realm", async () => {
@@ -58,13 +56,12 @@ describe("Identity", () => {
 		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(["test"])
 	})
 	it("get realms several realms", async () => {
-		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`test-*`]: ["finance"], [`testUK-*`]: ["finance"] })
-		expect(pax2pay.Identity.getRealms(permissionsRealm)).toEqual(["test", "testUK"])
+		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`test-*`]: ["finance"] })
+		expect(pax2pay.Identity.getRealms(permissionsRealm)).toEqual(["test"])
 		const permissionsOrganization = pax2pay.Key.Roles.resolve({
 			[`test-${orgCode}`]: ["finance"],
-			[`testUK-${orgCode}`]: ["finance"],
 		})
-		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(["test", "testUK"])
+		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(["test"])
 	})
 	it("get realms all realms", async () => {
 		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`*-*`]: ["finance"] })
@@ -108,7 +105,7 @@ async function authenticate<T extends Partial<Record<"realm" | "organization", t
 async function tokenize(role: pax2pay.Key.Roles): Promise<string | undefined> {
 	const issuer = userwidgets.User.Key.Issuer.create("jest", "all ages", publicKey, privateKey)
 	return await issuer.sign({
-		...{ name: { first: "", last: "" }, email: "", permissions: "" },
+		...{ name: { first: "", last: "" }, email: "" },
 		permissions: flagly.Flags.stringify(pax2pay.Key.Roles.resolve(role)),
 	})
 }

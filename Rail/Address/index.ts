@@ -19,10 +19,8 @@ export type Address =
 export namespace Address {
 	export const realm: Record<Realm, string[]> = {
 		test: ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"],
-		testUK: ["internal", "iban", "scan", "card"],
 		uk: ["internal", "iban", "scan", "card"],
 		eea: ["internal", "iban", "scan", "card"],
-		upcheck: ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"],
 	}
 	export const values = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
 	export type Type = typeof values[number]
