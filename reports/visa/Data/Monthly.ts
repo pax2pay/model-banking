@@ -2,15 +2,22 @@ import { isoly } from "isoly"
 import { Transaction } from "../../../Transaction"
 import { Iin } from "./Iin"
 
-export type PerMonth = Record<1 | 2 | 3, { count: Partial<Record<Iin, number>>; volume: Partial<Record<Iin, number>> }>
-export namespace PerMonth {
-	// returns which number of the month in the quarter the transaction is in
-	export function getMonth(transaction: Transaction.CardTransaction): 1 | 2 | 3 {
-		const month = isoly.DateTime.getMonth(transaction.transacted ?? transaction.posted)
-		return (((month - 1) % 3) + 1) as 1 | 2 | 3
+export type Monthly = Record<
+	Monthly.Month,
+	{ count: Partial<Record<Iin, number>>; volume: Partial<Record<Iin, number>> }
+>
+export namespace Monthly {
+	export type Month = typeof Month.values[number]
+	export namespace Month {
+		export const values = [1, 2, 3] as const
 	}
-	export function update(previous: PerMonth | undefined, transaction: Transaction.CardTransaction): PerMonth {
-		const result: PerMonth = previous ?? {
+	// returns which number of the month in the quarter the transaction is in
+	export function getMonth(transaction: Transaction.CardTransaction): Monthly.Month {
+		const month = isoly.DateTime.getMonth(transaction.transacted ?? transaction.posted)
+		return (((month - 1) % 3) + 1) as Monthly.Month
+	}
+	export function update(previous: Monthly | undefined, transaction: Transaction.CardTransaction): Monthly {
+		const result: Monthly = previous ?? {
 			"1": { count: {}, volume: {} },
 			"2": { count: {}, volume: {} },
 			"3": { count: {}, volume: {} },

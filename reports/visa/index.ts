@@ -1,12 +1,10 @@
 import { Data as visaData } from "./Data"
-import { Region as visaRegion } from "./Region"
 import { rows as visaRows } from "./rows"
 
 export namespace visa {
-	export import Region = visaRegion
 	export import Data = visaData
 	export import rows = visaRows
-	export const headers = [
+	const headers = [
 		"Product Local Name",
 		"Visa IDX - 45672555",
 		"Visa IDX  - 4567255",

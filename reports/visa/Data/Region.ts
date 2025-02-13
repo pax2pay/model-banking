@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Transaction } from "../../Transaction"
+import { Transaction } from "../../../Transaction"
 
 export type Region = typeof Region.values[number]
 export namespace Region {
