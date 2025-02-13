@@ -8,12 +8,12 @@ import { Report } from "../Report"
 import type { Rule } from "../Rule"
 import { Settlement } from "../Settlement"
 import { Creatable as TransactionCreatable } from "./Creatable"
+import { Exchange as TransactionExchange } from "./Exchange"
 import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
 import { Reference as TransactionReference } from "./Reference"
 import { Statistics as TransactionStatistics } from "./Statistics"
 import { Status as TransactionStatus } from "./Status"
-
 export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
@@ -42,13 +42,15 @@ export interface Transaction {
 	state?: Rule.State
 }
 export namespace Transaction {
-	export type Amount = { original: number; reserved: number; charge: number; total: number }
+	export import Exchange = TransactionExchange
+	export type Amount = { original: number; reserved: number; charge: number; total: number; exchange?: Exchange }
 	export namespace Amount {
 		export const type = isly.object<Amount>({
 			original: isly.number(),
 			reserved: isly.number(),
 			charge: isly.number(),
 			total: isly.number(),
+			exchange: Exchange.type.optional(),
 		})
 		export function fromState(state: Rule.State): Amount {
 			const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
@@ -84,7 +86,7 @@ export namespace Transaction {
 			currency: isoly.Currency,
 			amount: Amount,
 			change: number,
-			type: Exclude<keyof Amount, "total">
+			type: Exclude<keyof Amount, "total" | "exchange">
 		): Amount {
 			amount[type] = isoly.Currency.add(currency, amount[type], change)
 			amount.total = isoly.Currency.add(currency, amount.total, change)
