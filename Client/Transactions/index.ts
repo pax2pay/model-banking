@@ -39,7 +39,9 @@ export class Transactions extends rest.Collection<gracely.Error> {
 	}
 	async fetch(transaction: string, account?: string): Promise<Transaction | gracely.Error> {
 		return this.client.get<Transaction>(
-			account ? `/account/${account}/transaction/${transaction}` : `/transaction/${transaction}`
+			account
+				? `/account/${account}/transaction/${transaction}?detailed=true`
+				: `/transaction/${transaction}?detailed=true`
 		)
 	}
 	async getOperations(transactionId: string): Promise<Operation[] | gracely.Error> {
