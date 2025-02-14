@@ -296,12 +296,12 @@ Gross Fraud Losses - International - Payments - Volume|||||||
 Total Product Balance - Volume|0|0|0|0|0|0|0
 Payments Transactions Declined for Insufficient Funds - Number|0|0|0|0|0|0|0
 Cash Transactions Declined for Insufficient Funds - Number|0|0|0|0|0|0|0
-Country DE - International - Intra-Regional Payments Card Not Present Count Month 1|0|0|0|0|0|0|0
-Country DE - International - Intra-Regional Payments Card Not Present Count Month 2|1|0|0|1|0|0|0
-Country DE - International - Intra-Regional Payments Card Not Present Count Month 3|0|0|0|0|0|0|0
-Country DE - International - Intra-Regional Payments Card Not Present Volume Month 1|0|0|0|0|0|0|0
-Country DE - International - Intra-Regional Payments Card Not Present Volume Month 2|1148.77|0|0|1148.77|0|0|0
-Country DE - International - Intra-Regional Payments Card Not Present Volume Month 3|0|0|0|0|0|0|0
+Country DE - International - Intra-Regional Payments Card Not Present Count - Month 1|0|0|0|0|0|0|0
+Country DE - International - Intra-Regional Payments Card Not Present Count - Month 2|1|0|0|1|0|0|0
+Country DE - International - Intra-Regional Payments Card Not Present Count - Month 3|0|0|0|0|0|0|0
+Country DE - International - Intra-Regional Payments Card Not Present Volume - Month 1|0|0|0|0|0|0|0
+Country DE - International - Intra-Regional Payments Card Not Present Volume - Month 2|1148.77|0|0|1148.77|0|0|0
+Country DE - International - Intra-Regional Payments Card Not Present Volume - Month 3|0|0|0|0|0|0|0
 "
 `)
 	})

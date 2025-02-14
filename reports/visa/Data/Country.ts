@@ -35,7 +35,7 @@ export namespace Country {
 			for (const month of Monthly.Month.values) {
 				result += `Country ${country} - ${region} Card ${presence == "present" ? "Present" : "Not Present"} ${
 					type == "count" ? "Count" : "Volume"
-				} Month ${month}`
+				} - Month ${month}`
 				for (const iin of Iin.values)
 					result += `|${data[presence][month][type][iin] ?? 0}`
 				result += "\n"
