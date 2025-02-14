@@ -31,7 +31,7 @@ export namespace Monthly {
 				result[month].volume[transaction.account.iin as Iin] ?? 0,
 				Math.abs(transaction.amount.original)
 			)
-			if (Iin.isIdx(transaction.account.iin)) {
+			if (Iin.Idx.type.is(transaction.account.iin)) {
 				result[month].count["totalIdx"] = (result[month].count["totalIdx"] ?? 0) + 1
 				result[month].volume["totalIdx"] = isoly.Currency.add(
 					"GBP",

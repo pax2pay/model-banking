@@ -16,31 +16,30 @@ export namespace Country {
 		let result = ""
 		for (const [countryCode, perCountry] of Object.entries(country)) {
 			const region = Region.find(countryCode as isoly.CountryCode.Alpha2)
-			for (const month of Monthly.Month.values) {
-				result += `Country ${countryCode} - ${region} Card Present Count Month ${month}`
-				for (const iin of Iin.values)
-					result += `|${perCountry.present?.[month].count[iin] ?? 0}`
-				result += "\n"
-			}
-			for (const month of Monthly.Month.values) {
-				result += `Country ${countryCode} - ${region} Card Present Volume Month ${month}`
-				for (const iin of Iin.values)
-					result += `|${perCountry.present?.[month].volume[iin] ?? 0}`
-				result += "\n"
-			}
-			for (const month of Monthly.Month.values) {
-				result += `Country ${countryCode} - ${region} Card Not Present Count Month ${month}`
-				for (const iin of Iin.values)
-					result += `|${perCountry.notPresent?.[month].count[iin] ?? 0}`
-				result += "\n"
-			}
-			for (const month of Monthly.Month.values) {
-				result += `Country ${countryCode} - ${region} Card Not Present Volume Month ${month}`
-				for (const iin of Iin.values)
-					result += `|${perCountry.notPresent?.[month].volume[iin] ?? 0}`
-				result += "\n"
-			}
+			result += csvLine(countryCode, region, perCountry, "present", "count")
+			result += csvLine(countryCode, region, perCountry, "present", "volume")
+			result += csvLine(countryCode, region, perCountry, "notPresent", "count")
+			result += csvLine(countryCode, region, perCountry, "notPresent", "volume")
 		}
+		return result
+	}
+	export function csvLine(
+		country: string,
+		region: Region,
+		data: PerCountry,
+		presence: "present" | "notPresent",
+		type: "count" | "volume"
+	): string {
+		let result = ""
+		if (data[presence])
+			for (const month of Monthly.Month.values) {
+				result += `Country ${country} - ${region} Card ${presence == "present" ? "Present" : "Not Present"} ${
+					type == "count" ? "Count" : "Volume"
+				} Month ${month}`
+				for (const iin of Iin.values)
+					result += `|${data[presence][month][type][iin] ?? 0}`
+				result += "\n"
+			}
 		return result
 	}
 	export function update(country: Country, transaction: Transaction.CardTransaction): Country {
