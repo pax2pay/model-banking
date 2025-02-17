@@ -1,7 +1,6 @@
 import { gracely } from "gracely"
 import { userwidgets } from "@userwidgets/model"
 import { http } from "cloudly-http"
-import { rest } from "cloudly-rest"
 import { Accounts } from "./Accounts"
 import { Audit } from "./Audit"
 import { Cards } from "./Cards"
@@ -75,7 +74,4 @@ export class Client {
 		const result: Client = new Client(httpClient)
 		return result
 	}
-}
-export namespace Client {
-	export type Unauthorized = (client: rest.Client<never>) => Promise<boolean>
 }
