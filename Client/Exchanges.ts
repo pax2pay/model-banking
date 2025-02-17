@@ -1,13 +1,10 @@
 import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { http } from "cloudly-http"
-import * as rest from "cloudly-rest"
 import { Exchange } from "../Exchange"
 
-export class Exchanges extends rest.Collection<gracely.Error> {
-	constructor(client: http.Client) {
-		super(client)
-	}
+export class Exchanges {
+	constructor(private readonly client: http.Client) {}
 	async fetch(currency: isoly.Currency): Promise<Exchange.Rates | gracely.Error> {
 		return this.client.get<Exchange.Rates>(`/exchange?currencies=${currency}`)
 	}
