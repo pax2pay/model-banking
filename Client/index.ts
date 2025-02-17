@@ -37,7 +37,10 @@ export class Client {
 	readonly userwidgets = (server: string, application: string) =>
 		new userwidgets.ClientCollection(new http.Client(server), { application })
 	readonly version = new Version(this.client)
-	private constructor(private readonly client: http.Client<gracely.Error>) {}
+	onUnauthorized?: (client: Client) => Promise<boolean>
+	private constructor(private readonly client: http.Client<gracely.Error>) {
+		this.client.onUnauthorized = async () => this.onUnauthorized != undefined && (await this.onUnauthorized(this))
+	}
 	set key(value: string | undefined) {
 		this.client.key = value
 	}
