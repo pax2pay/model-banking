@@ -1,13 +1,10 @@
 import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { http } from "cloudly-http"
-import * as rest from "cloudly-rest"
 import { Card } from "../Card"
 
-export class Cards extends rest.Collection<gracely.Error> {
-	constructor(client: http.Client) {
-		super(client)
-	}
+export class Cards {
+	constructor(private readonly client: http.Client) {}
 
 	async fetch(card: string): Promise<Card | gracely.Error> {
 		// I mean it's supposed to return Card.Storable
