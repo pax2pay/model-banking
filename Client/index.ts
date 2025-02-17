@@ -73,7 +73,7 @@ export class Client {
 			},
 		})
 		const result: Client = new Client(httpClient)
-		return new Client(httpClient)
+		return result
 	}
 }
 export namespace Client {
