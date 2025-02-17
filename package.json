@@ -34,7 +34,7 @@
 	"scripts": {
 		"lint": "eslint --max-warnings=0 '**/*.{ts,tsx}'",
 		"fix": "eslint '**/*.{ts,tsx}' --fix",
-		"build": "tsc -p .",
+		"build": "rimraf dist/* && tsc -p tsconfig.mjs.json && tsc -p tsconfig.cjs.json",
 		"test": "vitest --run",
 		"coverage": "vitest --coverage",
 		"prepare": "npm run build",
