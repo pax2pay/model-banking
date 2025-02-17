@@ -39,7 +39,18 @@ export class Client {
 	readonly processors = new Processor(this.client)
 	readonly version = new Version(this.client)
 	private constructor(private readonly client: http.Client<gracely.Error>) {}
-
+	set key(value: string | undefined) {
+		this.client.key = value
+	}
+	get key(): string | undefined {
+		return this.client.key
+	}
+	set onError(value: ((request: http.Request, response: http.Response) => Promise<boolean>) | undefined) {
+		this.client.onError = value
+	}
+	get onError(): ((request: http.Request, response: http.Response) => Promise<boolean>) | undefined {
+		return this.client.onError
+	}
 	static create(server: string, key?: string): Client {
 		const httpClient: http.Client<gracely.Error> = new http.Client<gracely.Error>(server, key, {
 			appendHeader: request => ({
