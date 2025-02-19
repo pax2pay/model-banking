@@ -1,7 +1,6 @@
 import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { http } from "cloudly-http"
-import * as rest from "cloudly-rest"
 import { Card } from "../../Card"
 import { Operation } from "../../Operation"
 import { Rule } from "../../Rule"
@@ -9,11 +8,9 @@ import { Supplier } from "../../Supplier"
 import { Transaction } from "../../Transaction"
 import { Notes } from "./Notes"
 
-export class Transactions extends rest.Collection<gracely.Error> {
+export class Transactions {
 	readonly Notes = new Notes(this.client)
-	constructor(client: http.Client) {
-		super(client)
-	}
+	constructor(private readonly client: http.Client) {}
 	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
 		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
 	}
