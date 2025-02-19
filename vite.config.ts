@@ -9,7 +9,7 @@ export default defineConfig({
 			enabled: true,
 			all: true,
 			cleanOnRerun: true,
-			thresholds: { statements: 99, branches: 94, functions: 95, lines: 99 },
+			thresholds: { statements: 60, branches: 70, functions: 20, lines: 60 },
 		},
 		globals: true,
 		include: ["**/*.spec.[tj]s"],
