@@ -79,6 +79,34 @@ describe("VisaComponent", () => {
 		}
 		expect(data).toMatchObject(result)
 	})
+	it("should merge data", () => {
+		const result: pax2pay.reports.visa.Data = {
+			nonMonthly: {
+				"Number of Accounts - International Enabled": {},
+				"Payments Transactions Declined for Insufficient Funds - Number": {},
+				"Total Number of Accounts": {},
+				"Total Number of Active Cards": {},
+				"Total Number of Cards": {},
+			},
+			country: {
+				DE: {
+					notPresent: {
+						1: { count: {}, volume: {} },
+						2: { count: { "45672555": 2, totalIdx: 2 }, volume: { "45672555": 2297.54, totalIdx: 2297.54 } },
+						3: { count: {}, volume: {} },
+					},
+				},
+			},
+			regional: {
+				"International - Intra-Regional Payments": {
+					1: { count: {}, volume: {} },
+					2: { count: { "45672555": 2, totalIdx: 2 }, volume: { "45672555": 2297.54, totalIdx: 2297.54 } },
+					3: { count: {}, volume: {} },
+				},
+			},
+		}
+		expect(pax2pay.reports.visa.Data.merge(data, data)).toMatchObject(result)
+	})
 	it("should make visa csv", () => {
 		expect(pax2pay.reports.visa.toCsv(data)).toMatchInlineSnapshot(`
 "Product Local Name|Visa IDX - 45672555|Visa IDX  - 4567255|Visa IDX 1.4% - 45672557|Total Visa IDX products|Visa Business Prepaid - 44260108|Visa Corporate Deferred Debit  - 49359119|Visa Business Immediate Debit - BIN: 45672554
