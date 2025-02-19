@@ -11,12 +11,14 @@ export type NonMonthly = Record<
 	Partial<Record<Iin, number>>
 >
 export namespace NonMonthly {
-	export const empty: NonMonthly = {
-		"Number of Accounts - International Enabled": {},
-		"Payments Transactions Declined for Insufficient Funds - Number": {},
-		"Total Number of Accounts": {},
-		"Total Number of Active Cards": {},
-		"Total Number of Cards": {},
+	export function empty(): NonMonthly {
+		return {
+			"Number of Accounts - International Enabled": {},
+			"Payments Transactions Declined for Insufficient Funds - Number": {},
+			"Total Number of Accounts": {},
+			"Total Number of Active Cards": {},
+			"Total Number of Cards": {},
+		}
 	}
 	export function update(previous: NonMonthly, transaction: Transaction.CardTransaction): NonMonthly {
 		const result = previous
@@ -31,6 +33,13 @@ export namespace NonMonthly {
 		for (const iin of Iin.values)
 			result += `|${data[row as keyof NonMonthly][iin] ?? 0}`
 		result += "\n"
+		return result
+	}
+	export function merge(previous: NonMonthly, addition: NonMonthly): NonMonthly {
+		const result: NonMonthly = empty()
+		for (const key of Object.keys(result) as (keyof NonMonthly)[])
+			for (const iin of Iin.values)
+				result[key][iin] = (previous[key]?.[iin] ?? 0) + (addition[key]?.[iin] ?? 0)
 		return result
 	}
 }

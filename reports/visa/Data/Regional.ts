@@ -11,6 +11,12 @@ export namespace Regional {
 		result[region] = Monthly.update(result[region], transaction)
 		return result
 	}
+	export function merge(previous: Regional, addition: Regional): Regional {
+		const result: Regional = {}
+		for (const region of Region.values)
+			result[region] = Monthly.merge(previous[region], addition[region])
+		return result
+	}
 	export function toCsvRow(regional: Regional, row: string): string {
 		let result = ""
 		const region = Region.fromRow(row)
