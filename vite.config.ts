@@ -19,6 +19,7 @@ export default defineConfig({
 		server: {
 			deps: {
 				inline: [
+					"@cloudflare/workers-types",
 					"cryptly",
 					"flagly",
 					"authly",
@@ -32,7 +33,6 @@ export default defineConfig({
 					"cloudly-storage",
 					"cloudly-analytics-administration",
 					"cloudly-analytics-common",
-					"@cloudflare/workers-types",
 					"@userwidgets",
 					"@userwidgets/model",
 					"selectively",
