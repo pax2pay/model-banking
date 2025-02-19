@@ -1,12 +1,9 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
-import * as rest from "cloudly-rest"
 import { Operation } from "../Operation"
 
-export class Operations extends rest.Collection<gracely.Error> {
-	constructor(client: http.Client) {
-		super(client)
-	}
+export class Operations {
+	constructor(private readonly client: http.Client) {}
 	async list(options?: {
 		start?: string
 		end?: string

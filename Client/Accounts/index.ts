@@ -1,6 +1,5 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
-import * as rest from "cloudly-rest"
 import { Account } from "../../Account"
 import { Buffer } from "./Buffer"
 import { Counterparts } from "./Counterparts"
@@ -9,7 +8,7 @@ import { Rails } from "./Rails"
 import { Rules } from "./Rules"
 import { Status } from "./Status"
 
-export class Accounts extends rest.Collection<gracely.Error> {
+export class Accounts {
 	readonly buffer = new Buffer(this.client)
 	readonly Rails = new Rails(this.client)
 	readonly rules = new Rules(this.client)
@@ -17,9 +16,7 @@ export class Accounts extends rest.Collection<gracely.Error> {
 	readonly counterparts = new Counterparts(this.client)
 	readonly history = new History(this.client)
 
-	constructor(client: http.Client) {
-		super(client)
-	}
+	constructor(private readonly client: http.Client) {}
 	async create(account: Account.Creatable): Promise<Account | gracely.Error> {
 		return this.client.post<Account>("/account", account)
 	}
