@@ -56,4 +56,16 @@ export namespace Country {
 		result[key] = Monthly.update(result[key], transaction)
 		return result
 	}
+	export function merge(previous: Country, addition: Country): Country {
+		const result: Country = {}
+		for (const country of Object.keys(previous).concat(Object.keys(addition)) as isoly.CountryCode.Alpha2[])
+			result[country] = mergePerCountry(previous[country] ?? {}, addition[country] ?? {})
+		return result
+	}
+}
+function mergePerCountry(previous: PerCountry, addition: PerCountry): PerCountry {
+	return {
+		present: Monthly.merge(previous.present, addition.present),
+		notPresent: Monthly.merge(previous.notPresent, addition.notPresent),
+	}
 }
