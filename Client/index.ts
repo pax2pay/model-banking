@@ -9,6 +9,7 @@ import { Labels } from "./Labels"
 import { Logs } from "./Logs"
 import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
+import { Processor } from "./Processor"
 import { Reports } from "./Reports"
 import { Rules } from "./Rules"
 import { Settlements } from "./Settlements"
@@ -35,6 +36,7 @@ export class Client {
 	readonly groups = new Labels(this.client, "group")
 	readonly userwidgets = (server: string, application: string) =>
 		new userwidgets.ClientCollection(new http.Client(server), { application })
+	readonly processors = new Processor(this.client)
 	readonly version = new Version(this.client)
 	onUnauthorized?: (client: Client) => Promise<boolean>
 	private constructor(private readonly client: http.Client<gracely.Error>) {
