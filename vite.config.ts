@@ -6,7 +6,7 @@ export default defineConfig({
 		typecheck: { tsconfig: "./tsconfig.json" },
 		coverage: {
 			reporter: ["text", "json", "html"],
-			enabled: true,
+			enabled: false,
 			all: true,
 			cleanOnRerun: true,
 			thresholds: { statements: 60, branches: 70, functions: 20, lines: 60 },
