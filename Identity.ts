@@ -58,12 +58,12 @@ export class Identity {
 	): Promise<Key | undefined> {
 		return await verifier.verify(authorization)
 	}
-	static getRealms(permissions: Key.Permissions) {
+	static getRealms(permissions: Key.Permissions): Realm[] {
 		return [
 			...new Set(
 				Object.keys(permissions).flatMap(code =>
-					code.split("-")[0] == "*" ? Realm.realms : code.split("-")[0]
-				) as Realm[]
+					code.split("-")[0] == "*" ? Realm.realms : Realm.type.get(code.split("-")[0]) ?? []
+				)
 			),
 		]
 	}
