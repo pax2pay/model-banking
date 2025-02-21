@@ -37,7 +37,7 @@ export namespace Country {
 					type == "count" ? "Count" : "Volume"
 				} - Month ${month}`
 				for (const iin of Iin.values)
-					result += `|${data[presence][month][type][iin] ?? 0}`
+					result += `|${data[presence]?.[month][type][iin] ?? 0}`
 				result += "\n"
 			}
 		return result
