@@ -67,6 +67,7 @@
 		"isly": "0.1.20",
 		"isly2": "npm:isly@1.0.1-alpha.14",
 		"isoly": "^2.3.11",
+		"typedly": "0.0.26",
 		"selectively": "^2.0.15"
 	}
 }

@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { typedly } from "typedly"
 import { Identifier } from "../../Settlement/Identifier"
-import { Total } from "../../Settlement/Total"
 import { Totals } from "../../Settlement/Totals"
 import { Base } from "../Base"
 
@@ -21,8 +21,9 @@ export namespace NegativeAmount {
 	})
 	export function create(resource: Identifier, totals: Totals): NegativeAmount[] {
 		const warnings: NegativeAmount[] = []
-		Object.entries(totals).forEach(
-			([currency, total]: [isoly.Currency, Total]) =>
+		typedly.Object.entries(totals).forEach(
+			([currency, total]) =>
+				total &&
 				(total.outcome?.net ?? 0) < 0 &&
 				warnings.push({
 					type: "negative-amount",
