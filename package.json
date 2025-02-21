@@ -65,6 +65,7 @@
 		"cryptly": "^4.0.6",
 		"gracely": "^2.0.10",
 		"isly": "0.1.20",
+		"isly2": "npm:isly@1.0.1-alpha.14",
 		"isoly": "^2.3.11",
 		"selectively": "^2.0.15"
 	}
