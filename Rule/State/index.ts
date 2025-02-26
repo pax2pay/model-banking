@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import { Account as ModelAccount } from "../../Account"
+import { Rail } from "../../Rail"
 import type { Transaction as ModelTransaction } from "../../Transaction"
 import type { Rule } from "../index"
 import { Account as StateAccount } from "./Account"
@@ -40,6 +41,7 @@ export namespace State {
 	export function from(
 		data: Data,
 		account: ModelAccount,
+		address: Rail.Address,
 		transactions: Account.Transactions,
 		days: Account.Days,
 		transaction: ModelTransaction.Creatable.Resolved | ModelTransaction,
@@ -51,7 +53,7 @@ export namespace State {
 	): State {
 		return {
 			data,
-			account: Account.from(account, transactions, days),
+			account: Account.from(account, address, transactions, days),
 			transaction: Transaction.from(account.name, transaction, kind, stage),
 			authorization,
 			card,
