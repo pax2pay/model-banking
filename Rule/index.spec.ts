@@ -235,6 +235,7 @@ function getState(
 			},
 		},
 		account,
+		{ type: "card", iin: "111111", scheme: "visa", last4: "1234", id: "", expiry: [25, 12], holder: "" },
 		{
 			today: { count: 3, amount: 3 },
 			incoming: { today: { count: 1, amount: 1 } },
