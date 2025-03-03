@@ -11,8 +11,22 @@ export namespace Stack {
 		return stack.split("-")[0] as Realm
 	}
 	export function toScheme(stack: Stack): string {
-		const scheme = stack.split("-")[1]
-		return scheme == "mc" ? "mastercard" : scheme == "diners" ? "diners" : "unknown"
+		let result: string
+		switch (stack.split("-")[1]) {
+			case "mc":
+				result = "mastercard"
+				break
+			case "diners":
+				result = "diners"
+				break
+			case "visa":
+				result = "visa"
+				break
+			default:
+				result = "unknown"
+				break
+		}
+		return result
 	}
 	export function toProcessor(stack: Stack): string {
 		return stack

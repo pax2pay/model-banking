@@ -1,6 +1,8 @@
 import type { Account as ModelAccount } from "../../Account"
+import { Rail } from "../../Rail"
 
 export interface Account extends ModelAccount {
+	address: Rail.Address
 	transactions: Account.Transactions
 	days: Account.Days
 }
@@ -24,7 +26,7 @@ export namespace Account {
 		outgoing: { today: Today }
 		card: { today: Today }
 	}
-	export function from(account: ModelAccount, transactions: Transactions, days: Days): Account {
-		return { ...account, transactions, days }
+	export function from(account: ModelAccount, address: Rail.Address, transactions: Transactions, days: Days): Account {
+		return { ...account, address, transactions, days }
 	}
 }
