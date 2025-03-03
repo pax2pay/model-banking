@@ -19,6 +19,7 @@ export default defineConfig({
 			deps: {
 				inline: [
 					"@cloudflare/workers-types",
+					"typedly",
 					"cryptly",
 					"flagly",
 					"authly",
