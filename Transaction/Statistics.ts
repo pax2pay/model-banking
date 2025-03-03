@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { typedly } from "typedly"
 import { Card } from "../Card"
 import { Transaction } from "."
 
@@ -9,7 +10,6 @@ export interface Statistics {
 	cards: string[]
 	cursor?: string
 }
-
 export namespace Statistics {
 	export type TransactionType = typeof TransactionType.values[number]
 	export namespace TransactionType {
@@ -77,11 +77,13 @@ export namespace Statistics {
 	}
 	export function combine(accumulation: Statistics, incoming: Statistics, currency: isoly.Currency): Statistics {
 		const [statistics, cards] = (({ cursor, cards, ...rest }) => [rest, cards])(incoming)
-		Object.entries(statistics).forEach(([kind, statistic]: [TransactionType, Statistics[TransactionType]]) =>
-			Object.entries(statistic).forEach(([region, { count, amount }]: [Region, { count: number; amount: number }]) => {
-				accumulation[kind][region].count += count
-				accumulation[kind][region].amount = isoly.Currency.add(currency, accumulation[kind][region].amount, amount)
-			})
+		typedly.Object.entries(statistics).forEach(([kind, statistic]: [TransactionType, Statistics[TransactionType]]) =>
+			typedly.Object.entries(statistic).forEach(
+				([region, { count, amount }]: [Region, { count: number; amount: number }]) => {
+					accumulation[kind][region].count += count
+					accumulation[kind][region].amount = isoly.Currency.add(currency, accumulation[kind][region].amount, amount)
+				}
+			)
 		)
 		cards.forEach(card => accumulation.cards.includes(card) || accumulation.cards.push(card))
 		return accumulation
