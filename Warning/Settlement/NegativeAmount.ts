@@ -22,8 +22,8 @@ export namespace NegativeAmount {
 		const warnings: NegativeAmount[] = []
 		typedly.Object.entries(totals).forEach(
 			([currency, total]) =>
-				(total.outcome?.net ?? 0) < 0 &&
 				total &&
+				(total.outcome?.net ?? 0) < 0 &&
 				warnings.push({
 					type: "negative-amount",
 					resource,
