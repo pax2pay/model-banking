@@ -51,7 +51,8 @@
 		"prettierx": "github:utily/prettierx#utily-20231004",
 		"rimraf": "^6.0.1",
 		"vitest": "^3.0.7",
-		"typescript": "^5.5.4"
+		"typescript": "^5.5.4",
+		"cloudly-analytics-administration": "^0.3.33"
 	},
 	"dependencies": {
 		"@userwidgets/model": "0.8.32",
