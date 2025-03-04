@@ -28,7 +28,7 @@ export namespace Operation {
 			  }
 	}
 	export const type = isly.union(Card.type, OperationAuthorization.type)
-	export const type2 = isly2
+	export const type2: isly2.Union<Operation> = isly2
 		.union<Operation>(Card.type2, OperationAuthorization.type2)
 		.rename("Operation")
 		.describe("An operation performed on a card.")

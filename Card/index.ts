@@ -64,7 +64,7 @@ export namespace Card {
 		rules: ruleType.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 	})
-	export const type2 = isly2
+	export const type2: isly2.Object<Card> = isly2
 		.object<Card>({
 			id: isly2.string().rename("Id").describe("Unique 16 character base 64 identifier."),
 			number: isly2.string().optional().rename("Number").describe("Api users identifier."),
@@ -82,14 +82,8 @@ export namespace Card {
 				holder: isly2.string().rename("Holder").describe("Card holder name."),
 				token: isly2.string().optional().rename("Token").describe("Encrypted token of the card."),
 			}),
-			limit: isly2
-				.tuple(isly2.from("isoly.Currency", isoly.Currency.is), isly2.number())
-				.rename("Limit")
-				.describe("Maximum amount that can be spent on the card."),
-			spent: isly2
-				.tuple(isly2.from("isoly.Currency", isoly.Currency.is), isly2.number())
-				.rename("Spent")
-				.describe("Amount spent on the card."),
+			limit: Amount.type2.rename("Limit").describe("Maximum amount that can be spent on the card."),
+			spent: Amount.type2.rename("Spent").describe("Amount spent on the card."),
 			status: isly2.string("value", ["active", "cancelled"]).rename("Status").describe("Current card status."),
 			history: CardOperation.type2.array().rename("History").describe("Card operation history."),
 			rules: isly2

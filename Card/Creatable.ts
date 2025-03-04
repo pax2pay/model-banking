@@ -1,4 +1,5 @@
 import { isoly } from "isoly"
+import { isoly as isoly2 } from "isoly2"
 import { isly } from "isly"
 import { isly as isly2 } from "isly2"
 import { Amount } from "../Amount"
@@ -48,10 +49,7 @@ export namespace Creatable {
 			.rename("Details")
 			.describe("The card details, the information that will be displayed on the card."),
 		limit: isly2
-			.tuple(
-				isly2.from("isoly.Currency", isoly.Currency.is).rename("Currency").describe("Alpha3"),
-				isly2.number().rename("Amount").describe("The amount of the limit.")
-			)
+			.tuple(isoly2.Currency.type, isly2.number().rename("Amount").describe("The amount of the limit."))
 			.rename("Limit")
 			.describe("Maximum amount that can be spent on the card."),
 		rules: isly2

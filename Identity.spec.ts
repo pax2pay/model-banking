@@ -47,6 +47,7 @@ describe("Identity", () => {
 			[`uk-*`]: ["finance"],
 		}
 		expect(await authenticate(roles, constraint, "test", orgCode)).toBeTruthy()
+		expect(await authenticate(roles, constraint, "uk", orgCode)).toBeTruthy()
 		expect(await authenticate(roles, constraint, "eea", orgCode)).toBeFalsy()
 	})
 	it("get realms one realm", async () => {

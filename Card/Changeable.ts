@@ -1,4 +1,5 @@
 import { isoly } from "isoly"
+import { isoly as isoly2 } from "isoly2"
 import { isly } from "isly"
 import { isly as isly2 } from "isly2"
 import { Amount } from "../Amount"
@@ -14,10 +15,10 @@ export namespace Changeable {
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()).optional(),
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 	})
-	export const type2 = isly2
+	export const type2: isly2.Object<Changeable> = isly2
 		.object<Changeable>({
 			limit: isly2
-				.tuple(isly2.from("isoly.Currency", isoly.Currency.is), isly2.number())
+				.tuple(isoly2.Currency.type, isly2.number())
 				.optional()
 				.rename("Limit")
 				.describe("The new limit of the card."),

@@ -24,7 +24,7 @@ export namespace Score {
 		category: isly.string("fincrime"),
 		risk: Risk,
 	})
-	export const type2 = Base.type2.extend<Score>({
+	export const type2: isly2.Object<Score> = Base.type2.extend<Score>({
 		action: isly2
 			.string("value", Action.value)
 			.rename("Action")

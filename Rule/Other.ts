@@ -21,7 +21,7 @@ export namespace Other {
 			.describe("The action to take when the rule is applied.")
 	}
 	export const type = Base.type.extend<Other>({ action: Action.type })
-	export const type2 = Base.type2.extend<Other>({ action: Action.type2 })
+	export const type2: isly2.Object<Other> = Base.type2.extend<Other>({ action: Action.type2 })
 	export function evaluate(
 		rules: Other[],
 		state: State,
