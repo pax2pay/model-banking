@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { typedly } from "typedly"
 import { Realm } from "../../Realm"
 import { Card as AddressCard } from "./Card"
 import { Iban as AddressIban } from "./Iban"
@@ -25,7 +26,7 @@ export namespace Address {
 	export const values = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
 	export type Type = typeof values[number]
 	export function compare(addresses: [Address, Address]): boolean {
-		return Object.entries(addresses[0]).every(
+		return typedly.Object.entries(addresses[0]).every(
 			([key, value]: [keyof Address, Address[keyof Address]]) => value == addresses[1][key]
 		)
 	}
