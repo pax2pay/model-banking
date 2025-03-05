@@ -49,7 +49,7 @@ export namespace Creatable {
 			.rename("Details")
 			.describe("The card details, the information that will be displayed on the card."),
 		limit: isly2
-			.tuple(isoly2.Currency.type, isly2.number().rename("Amount").describe("The amount of the limit."))
+			.tuple(isoly2.Currency.type, isly2.number().rename("Amount").describe("Amount in a specified currency."))
 			.rename("Limit")
 			.describe("Maximum amount that can be spent on the card."),
 		rules: isly2
