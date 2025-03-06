@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { selectively } from "selectively"
 import { isly } from "isly"
+import { isly as isly2 } from "isly2"
 import type { Note } from "../Transaction/Note"
 import { Base } from "./Base"
 import { control } from "./control"
@@ -22,6 +23,19 @@ export namespace Score {
 		action: isly.string(Action.value),
 		category: isly.string("fincrime"),
 		risk: Risk,
+	})
+	export const type2: isly2.Object<Score> = Base.type2.extend<Score>({
+		action: isly2
+			.string("value", Action.value)
+			.rename("Action")
+			.describe("The action to take when the rule is applied."),
+		category: isly2.string("value", "fincrime").rename("Category").describe("The category of the rule."),
+		risk: isly2
+			.number<Risk>()
+			.restrict("integer")
+			.restrict("positive")
+			.rename("Risk")
+			.describe("The risk of the rule."),
 	})
 	export function evaluate(
 		rules: Score[],

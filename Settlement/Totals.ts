@@ -5,7 +5,7 @@ import { Total } from "./Total"
 
 export type Totals = Partial<Record<isoly.Currency, Total>>
 export namespace Totals {
-	export const type = isly.record<isoly.Currency, Total>(isly.string(isoly.Currency.types), Total.type)
+	export const type = isly.record<isoly.Currency, Total>(isly.string(isoly.Currency.values), Total.type)
 	export function addEntry(totals: Totals, entry: Entry): Totals {
 		const result = { ...totals }
 		if (entry.status == "succeeded" && (entry.type == "capture" || entry.type == "refund"))

@@ -1,4 +1,3 @@
-import "jest"
 import { pax2pay } from "../index"
 
 describe("transaction", () => {

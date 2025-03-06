@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { isly as isly2 } from "isly2"
 import { Stack } from "./Stack"
 
 export type Preset = typeof Preset.names[number]
@@ -15,6 +16,10 @@ export namespace Preset {
 		"p2p-diners-200",
 	] as const
 	export const type = isly.string<Preset>(names)
+	export const type2 = isly2
+		.string<Preset>("value", ...names)
+		.rename("Preset")
+		.describe("Card configuration (iin/scheme/interchange).")
 	export const presets: Record<Preset, Stack> = {
 		"p2p-mc-200": "uk-mc-tpl-marqeta",
 		"p2p-diners-175": "uk-diners-dpg",

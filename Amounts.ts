@@ -18,5 +18,5 @@ export namespace Amounts {
 			currency => left[currency] == right[currency]
 		)
 	}
-	export const type = isly.record<Amounts>(isly.string(isoly.Currency.types), isly.number())
+	export const type = isly.record<Amounts>(isly.string(isoly.Currency.values), isly.number())
 }
