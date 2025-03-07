@@ -55,6 +55,7 @@ export namespace Creatable {
 		rules: isly2
 			.from("Rule", ruleType.is)
 			.array()
+			.optional()
 			.rename("Rules")
 			.describe("Card rules that applies to authorizations made with the card."),
 		meta: isly2.from("Meta", Meta.is).optional(),
