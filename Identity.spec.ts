@@ -1,4 +1,5 @@
 import { flagly } from "flagly"
+import { gracely } from "gracely"
 import { userwidgets } from "@userwidgets/model"
 import { pax2pay } from "./index"
 
@@ -74,7 +75,7 @@ describe("Identity", () => {
 		const identity = await authenticate({ "test-*": ["admin"] }, { cards: { view: true } }, undefined, undefined, {
 			realm: true,
 		})
-		identity && identity !== "forbidden" && expect(identity?.realm).toEqual("test")
+		!gracely.Error.is(identity) && expect(identity?.realm).toEqual("test")
 	})
 })
 const privateKey =
@@ -92,8 +93,8 @@ async function authenticate<T extends Partial<Record<"realm" | "organization", t
 	| (keyof T extends keyof pax2pay.Identity
 			? Required<Pick<pax2pay.Identity, keyof T>> & pax2pay.Identity
 			: pax2pay.Identity)
+	| gracely.Error
 	| undefined
-	| "forbidden"
 > {
 	const header = {
 		authorization: "Bearer " + (await tokenize(roles)),
