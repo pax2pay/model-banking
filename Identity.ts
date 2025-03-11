@@ -30,27 +30,36 @@ export class Identity {
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier
-	): Promise<(keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity) | undefined> {
+	): Promise<
+		(keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity) | undefined | "forbidden"
+	> {
+		let result: (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity) | "forbidden"
 		const authorization = header.authorization?.startsWith("Bearer ")
 			? header.authorization.replace("Bearer ", "")
 			: undefined
-		const key = await Identity.verify(authorization, verifier)
-		const realms = key && Identity.getRealms(key.permissions)
-		const identity =
-			key &&
-			new Identity(
-				key,
-				(realms?.length == 1 ? realms[0] : header.realm) as Realm,
-				(key.organization ?? header.organization) as string
-			)
-		const requirement = (
-			value: Identity | undefined
-		): value is
-			| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
-			| undefined =>
-			(requires?.organization ? !!identity?.organization : true) &&
-			(requires?.realm ? Realm.type.is(identity?.realm) : true)
-		return (identity?.check(constraint) && requirement(identity) && identity) || undefined
+		if (authorization == undefined)
+			return undefined
+		else {
+			const key = await Identity.verify(authorization, verifier)
+			const realms = key && Identity.getRealms(key.permissions)
+			const identity =
+				key &&
+				new Identity(
+					key,
+					(realms?.length == 1 ? realms[0] : header.realm) as Realm,
+					(key.organization ?? header.organization) as string
+				)
+			const requirement = (
+				value: Identity | undefined
+			): value is
+				| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
+				| undefined =>
+				(requires?.organization ? !!identity?.organization : true) &&
+				(requires?.realm ? Realm.type.is(identity?.realm) : true)
+
+			result = (identity?.check(constraint) && requirement(identity) && identity) || "forbidden"
+		}
+		return result
 	}
 	static async verify(
 		authorization: string | undefined,
