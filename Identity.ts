@@ -31,7 +31,7 @@ export class Identity {
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier,
-		legacy: boolean = false
+		legacy: boolean = true
 	): Promise<
 		| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
 		| gracely.Error
@@ -44,18 +44,16 @@ export class Identity {
 		const authorization = header.authorization?.startsWith("Bearer ")
 			? header.authorization.replace("Bearer ", "")
 			: undefined
-		if (authorization == undefined)
-			return legacy ? undefined : gracely.client.unauthorized("Authorization header is missing.")
+		const key = await Identity.verify(authorization, verifier)
+		if (!key)
+			!legacy && (result = gracely.client.unauthorized())
 		else {
-			const key = await Identity.verify(authorization, verifier)
-			const realms = key && Identity.getRealms(key.permissions)
-			const identity =
-				key &&
-				new Identity(
-					key,
-					(realms?.length == 1 ? realms[0] : header.realm) as Realm,
-					(key.organization ?? header.organization) as string
-				)
+			const realms = Identity.getRealms(key.permissions)
+			const identity = new Identity(
+				key,
+				(realms?.length == 1 ? realms[0] : header.realm) as Realm,
+				(key.organization ?? header.organization) as string
+			)
 			const requirement = (
 				value: Identity | undefined
 			): value is
@@ -63,11 +61,9 @@ export class Identity {
 				| undefined =>
 				(requires?.organization ? !!identity?.organization : true) &&
 				(requires?.realm ? Realm.type.is(identity?.realm) : true)
-
 			result =
-				(identity?.check(constraint) && requirement(identity) && identity) || legacy
-					? undefined
-					: gracely.client.forbidden()
+				(identity?.check(constraint) && requirement(identity) && identity) ||
+				(legacy ? undefined : gracely.client.forbidden())
 		}
 		return result
 	}

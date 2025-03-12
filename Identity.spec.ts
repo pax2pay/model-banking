@@ -6,15 +6,38 @@ import { pax2pay } from "./index"
 describe("Identity", () => {
 	it("authenticate with empty constraint", async () => {
 		const constraint: pax2pay.Key.Permissions = {}
-		expect(await authenticate({ [`test-*`]: ["finance"] }, constraint)).toBeTruthy()
-		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, constraint)).toBeTruthy()
+		expect(await authenticate(constraint, { [`test-*`]: ["finance"] })).toBeTruthy()
+		expect(await authenticate(constraint, { [`test-${orgCode}`]: ["finance"] })).toBeTruthy()
+	})
+	it("authenticate with empty constraint, returning error if unauth", async () => {
+		const constraint: pax2pay.Key.Permissions = {}
+		expect(await authenticate(constraint, undefined, "test", orgCode, undefined, false)).toStrictEqual({
+			status: 401,
+			type: "not authorized",
+			error: undefined,
+		})
+		expect(await authenticate(constraint, { [`test-${orgCode}`]: ["finance"] })).toBeTruthy()
 	})
 	it("authenticate finance roll on test", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
-		expect(await authenticate({ [`test-*`]: ["finance"] }, constraint, "test", orgCode)).toBeTruthy()
-		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, constraint, "test", orgCode)).toBe("forbidden")
+		expect(await authenticate(constraint, { [`test-*`]: ["finance"] }, "test", orgCode)).toBeTruthy()
+		expect(await authenticate(constraint, { [`test-${orgCode}`]: ["finance"] }, "test", orgCode)).toBeFalsy()
+	})
+	it("authenticate finance roll on test, return Error if unauth", async () => {
+		const constraint: pax2pay.Key.Permissions = {
+			treasury: { rebalance: true },
+		}
+		expect(await authenticate(constraint, { [`test-*`]: ["finance"] }, "test", orgCode, undefined, false)).toBeTruthy()
+		expect(
+			await authenticate(constraint, { [`test-${orgCode}`]: ["finance"] }, "test", orgCode, undefined, false)
+		).toStrictEqual({
+			error: undefined,
+			reason: undefined,
+			status: 403,
+			type: "forbidden",
+		})
 	})
 	it("authenticate finance roll with several constraints", async () => {
 		const failingConstraint: pax2pay.Key.Permissions[] = [
@@ -24,20 +47,20 @@ describe("Identity", () => {
 		]
 		const passingConstraint: pax2pay.Key.Permissions[] = failingConstraint.concat({ treasury: { rebalance: true } })
 		const role: pax2pay.Key.Roles = { [`test-*`]: ["finance"] }
-		expect(await authenticate(role, failingConstraint, "test", orgCode)).toBe("forbidden")
-		expect(await authenticate(role, passingConstraint, "test", orgCode)).toBeTruthy()
+		expect(await authenticate(failingConstraint, role, "test", orgCode)).toBeFalsy()
+		expect(await authenticate(passingConstraint, role, "test", orgCode)).toBeTruthy()
 	})
 	it("authenticate organization finance roll on test", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			cards: { view: true },
 		}
-		expect(await authenticate({ [`test-${orgCode}`]: ["finance"] }, constraint, "test", orgCode)).toBeTruthy()
+		expect(await authenticate(constraint, { [`test-${orgCode}`]: ["finance"] }, "test", orgCode)).toBeTruthy()
 	})
 	it("authenticate admin", async () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
-		expect(await authenticate({ [`*-*`]: ["admin"] }, constraint, "test", orgCode)).toBeTruthy()
+		expect(await authenticate(constraint, { [`*-*`]: ["admin"] }, "test", orgCode)).toBeTruthy()
 	})
 	it("authenticate finance roll on several realms", async () => {
 		const constraint: pax2pay.Key.Permissions = {
@@ -47,9 +70,26 @@ describe("Identity", () => {
 			[`test-*`]: ["finance"],
 			[`uk-*`]: ["finance"],
 		}
-		expect(await authenticate(roles, constraint, "test", orgCode)).toBeTruthy()
-		expect(await authenticate(roles, constraint, "uk", orgCode)).toBeTruthy()
-		expect(await authenticate(roles, constraint, "eea", orgCode)).toBe("forbidden")
+		expect(await authenticate(constraint, roles, "test", orgCode)).toBeTruthy()
+		expect(await authenticate(constraint, roles, "uk", orgCode)).toBeTruthy()
+		expect(await authenticate(constraint, roles, "eea", orgCode)).toBeFalsy()
+	})
+	it("authenticate finance roll on several realms, return Error if unauth", async () => {
+		const constraint: pax2pay.Key.Permissions = {
+			treasury: { rebalance: true },
+		}
+		const roles: pax2pay.Key.Roles = {
+			[`test-*`]: ["finance"],
+			[`uk-*`]: ["finance"],
+		}
+		expect(await authenticate(constraint, roles, "test", orgCode, undefined, false)).toBeTruthy()
+		expect(await authenticate(constraint, roles, "uk", orgCode, undefined, false)).toBeTruthy()
+		expect(await authenticate(constraint, roles, "eea", orgCode, undefined, false)).toStrictEqual({
+			error: undefined,
+			reason: undefined,
+			status: 403,
+			type: "forbidden",
+		})
 	})
 	it("get realms one realm", async () => {
 		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`test-*`]: ["finance"] })
@@ -72,7 +112,7 @@ describe("Identity", () => {
 		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(pax2pay.Realm.realms)
 	})
 	it("single realm key inference", async () => {
-		const identity = await authenticate({ "test-*": ["admin"] }, { cards: { view: true } }, undefined, undefined, {
+		const identity = await authenticate({ cards: { view: true } }, { "test-*": ["admin"] }, undefined, undefined, {
 			realm: true,
 		})
 		!gracely.Error.is(identity) && expect(identity?.realm).toEqual("test")
@@ -84,11 +124,12 @@ const publicKey =
 	"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzWKqXfw8HU6lMtoLdc1WEkEZP/Dmhx8JmfMMQxcUIiFUkObL9zAEo/pk4/1FCaAy/l14yX76OU97Eannq8FObjd8tU5UOqb4n9RpXO3md1JDIZkuqhjQwuCJax/0nyNY+WH5MLWCBgo5kw6R+AHBdCXQGSGoMGfm0qQAySDE1PmZWc/6sR4WacK+ooMO/YtP7HuQQeG8qsJ44wbQXaYlKupxJr3EDo+Un4N9/PHmXlTTz1u7/aO2KbzP+V6kevvPzf+mS+KvSLMYMgIuDiQXvlor9UeC1M5VNj7Trx6HKnoiekKUt3tL14cIHVKhpOTlN2l2yj4ImmAG3qZ4gMO6DwIDAQAB"
 const orgCode = "paxair"
 async function authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
-	roles: pax2pay.Key.Roles,
 	constraint: pax2pay.Key.Permissions | pax2pay.Key.Permissions[],
+	roles?: pax2pay.Key.Roles,
 	realm?: pax2pay.Realm,
 	organization?: string,
-	options?: T
+	options?: T,
+	legacy = true
 ): Promise<
 	| (keyof T extends keyof pax2pay.Identity
 			? Required<Pick<pax2pay.Identity, keyof T>> & pax2pay.Identity
@@ -97,12 +138,12 @@ async function authenticate<T extends Partial<Record<"realm" | "organization", t
 	| undefined
 > {
 	const header = {
-		authorization: "Bearer " + (await tokenize(roles)),
+		authorization: roles ? "Bearer " + (await tokenize(roles)) : undefined,
 		realm,
 		organization,
 	}
 	const verifier = userwidgets.User.Key.Verifier.create<pax2pay.Key>(publicKey)
-	const result = await pax2pay.Identity.authenticate<T>(header, constraint, options, verifier)
+	const result = await pax2pay.Identity.authenticate<T>(header, constraint, options, verifier, legacy)
 	return result
 }
 async function tokenize(role: pax2pay.Key.Roles): Promise<string | undefined> {
