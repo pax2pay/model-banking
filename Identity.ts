@@ -3,13 +3,17 @@ import { userwidgets } from "@userwidgets/model"
 import { Key } from "./Key"
 import { Realm } from "./Realm"
 
-export class Identity {
+export class Identity<T extends Identity.Require = never> {
 	#realms: Realm[] | undefined
 	get realms(): Realm[] | undefined {
 		return (this.#realms ??= Identity.getRealms(this.key.permissions))
 	}
 
-	constructor(readonly key: Key, readonly realm?: Realm, readonly organization?: string) {}
+	constructor(
+		readonly key: Key,
+		readonly realm: T["realm"] extends true ? Realm : Realm | undefined,
+		readonly organization: T["organization"] extends true ? string : string | undefined
+	) {}
 	check(constraint: Key.Permissions | Key.Permissions[], realm?: Realm, organization?: string): boolean {
 		return Array.isArray(constraint)
 			? constraint.some(c => this.check(c, realm, organization))
@@ -26,44 +30,28 @@ export class Identity {
 		)
 	}
 
-	static async authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
-		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
+	static async authenticate<T extends Identity.Require = Record<string, never>>(
+		header: Identity.Header,
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier?: userwidgets.User.Key.Verifier<Key>,
 		output?: "undefined"
-	): Promise<(keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity) | undefined>
-	static async authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
+	): Promise<Identity<T> | undefined>
+	static async authenticate<T extends Identity.Require = Record<string, never>>(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier?: userwidgets.User.Key.Verifier<Key>,
 		output?: "error"
-	): Promise<(keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity) | gracely.Error>
-	static async authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
-		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
-		constraint: Key.Permissions | Key.Permissions[],
-		requires?: T,
-		verifier?: userwidgets.User.Key.Verifier<Key>,
-		output?: "error" | "undefined"
-	): Promise<
-		| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
-		| (gracely.Error | undefined)
-	>
-	static async authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
+	): Promise<Identity<T> | gracely.Error>
+	static async authenticate<T extends Identity.Require = Record<string, never>>(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier,
 		output: "error" | "undefined" = "undefined"
-	): Promise<
-		| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
-		| (gracely.Error | undefined)
-	> {
-		let result:
-			| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
-			| gracely.Error
-			| undefined
+	): Promise<Identity<T> | (gracely.Error | undefined)> {
+		let result: Identity<T> | gracely.Error | undefined
 		const authorization = header.authorization?.startsWith("Bearer ")
 			? header.authorization.replace("Bearer ", "")
 			: undefined
@@ -104,6 +92,18 @@ export class Identity {
 				)
 			),
 		]
+	}
+}
+
+export namespace Identity {
+	export type Require = {
+		realm?: true
+		organization?: true
+	}
+	export interface Header {
+		authorization?: string | undefined
+		realm?: Realm
+		organization?: string
 	}
 }
 const publicKey =
