@@ -1,14 +1,19 @@
+import { gracely } from "gracely"
 import { userwidgets } from "@userwidgets/model"
 import { Key } from "./Key"
 import { Realm } from "./Realm"
 
-export class Identity {
+export class Identity<T extends Identity.Require = never> {
 	#realms: Realm[] | undefined
 	get realms(): Realm[] | undefined {
 		return (this.#realms ??= Identity.getRealms(this.key.permissions))
 	}
 
-	constructor(readonly key: Key, readonly realm?: Realm, readonly organization?: string) {}
+	constructor(
+		readonly key: Key,
+		readonly realm: T["realm"] extends true ? Realm : Realm | undefined,
+		readonly organization: T["organization"] extends true ? string : string | undefined
+	) {}
 	check(constraint: Key.Permissions | Key.Permissions[], realm?: Realm, organization?: string): boolean {
 		return Array.isArray(constraint)
 			? constraint.some(c => this.check(c, realm, organization))
@@ -25,32 +30,53 @@ export class Identity {
 		)
 	}
 
-	static async authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
+	static async authenticate<T extends Identity.Require = Record<string, never>>(
+		header: Identity.Header,
+		constraint: Key.Permissions | Key.Permissions[],
+		requires?: T,
+		verifier?: userwidgets.User.Key.Verifier<Key>,
+		output?: "undefined"
+	): Promise<Identity<T> | undefined>
+	static async authenticate<T extends Identity.Require = Record<string, never>>(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
-		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier
-	): Promise<(keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity) | undefined> {
+		verifier?: userwidgets.User.Key.Verifier<Key>,
+		output?: "error"
+	): Promise<Identity<T> | gracely.Error>
+	static async authenticate<T extends Identity.Require = Record<string, never>>(
+		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
+		constraint: Key.Permissions | Key.Permissions[],
+		requires?: T,
+		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier,
+		output: "error" | "undefined" = "undefined"
+	): Promise<Identity<T> | (gracely.Error | undefined)> {
+		let result: Identity<T> | gracely.Error | undefined
 		const authorization = header.authorization?.startsWith("Bearer ")
 			? header.authorization.replace("Bearer ", "")
 			: undefined
 		const key = await Identity.verify(authorization, verifier)
-		const realms = key && Identity.getRealms(key.permissions)
-		const identity =
-			key &&
-			new Identity(
+		if (!key)
+			output !== "undefined" && (result = gracely.client.unauthorized())
+		else {
+			const realms = Identity.getRealms(key.permissions)
+			const identity = new Identity(
 				key,
 				(realms?.length == 1 ? realms[0] : header.realm) as Realm,
 				(key.organization ?? header.organization) as string
 			)
-		const requirement = (
-			value: Identity | undefined
-		): value is
-			| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
-			| undefined =>
-			(requires?.organization ? !!identity?.organization : true) &&
-			(requires?.realm ? Realm.type.is(identity?.realm) : true)
-		return (identity?.check(constraint) && requirement(identity) && identity) || undefined
+			const requirement = (
+				value: Identity | undefined
+			): value is
+				| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
+				| undefined =>
+				(requires?.organization ? !!identity?.organization : true) &&
+				(requires?.realm ? Realm.type.is(identity?.realm) : true)
+			result =
+				(identity?.check(constraint) && requirement(identity) && identity) ||
+				(output === "undefined" ? undefined : gracely.client.forbidden())
+		}
+		return result
 	}
 	static async verify(
 		authorization: string | undefined,
@@ -66,6 +92,18 @@ export class Identity {
 				)
 			),
 		]
+	}
+}
+
+export namespace Identity {
+	export type Require = {
+		realm?: true
+		organization?: true
+	}
+	export interface Header {
+		authorization?: string | undefined
+		realm?: Realm
+		organization?: string
 	}
 }
 const publicKey =
