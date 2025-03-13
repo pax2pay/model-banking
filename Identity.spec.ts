@@ -11,7 +11,8 @@ describe("Identity", () => {
 	})
 	it("authenticate with empty constraint, returning error if unauth", async () => {
 		const constraint: pax2pay.Key.Permissions = {}
-		expect(await authenticate(constraint, undefined, "test", orgCode, undefined, false)).toStrictEqual({
+		const identity = await authenticate(constraint, undefined, "test", orgCode, undefined, "error")
+		expect(identity).toStrictEqual({
 			status: 401,
 			type: "not authorized",
 			error: undefined,
@@ -29,9 +30,11 @@ describe("Identity", () => {
 		const constraint: pax2pay.Key.Permissions = {
 			treasury: { rebalance: true },
 		}
-		expect(await authenticate(constraint, { [`test-*`]: ["finance"] }, "test", orgCode, undefined, false)).toBeTruthy()
 		expect(
-			await authenticate(constraint, { [`test-${orgCode}`]: ["finance"] }, "test", orgCode, undefined, false)
+			await authenticate(constraint, { [`test-*`]: ["finance"] }, "test", orgCode, undefined, "error")
+		).toBeTruthy()
+		expect(
+			await authenticate(constraint, { [`test-${orgCode}`]: ["finance"] }, "test", orgCode, undefined, "error")
 		).toStrictEqual({
 			error: undefined,
 			reason: undefined,
@@ -82,9 +85,9 @@ describe("Identity", () => {
 			[`test-*`]: ["finance"],
 			[`uk-*`]: ["finance"],
 		}
-		expect(await authenticate(constraint, roles, "test", orgCode, undefined, false)).toBeTruthy()
-		expect(await authenticate(constraint, roles, "uk", orgCode, undefined, false)).toBeTruthy()
-		expect(await authenticate(constraint, roles, "eea", orgCode, undefined, false)).toStrictEqual({
+		expect(await authenticate(constraint, roles, "test", orgCode, undefined, "error")).toBeTruthy()
+		expect(await authenticate(constraint, roles, "uk", orgCode, undefined, "error")).toBeTruthy()
+		expect(await authenticate(constraint, roles, "eea", orgCode, undefined, "error")).toStrictEqual({
 			error: undefined,
 			reason: undefined,
 			status: 403,
@@ -128,8 +131,8 @@ async function authenticate<T extends Partial<Record<"realm" | "organization", t
 	roles?: pax2pay.Key.Roles,
 	realm?: pax2pay.Realm,
 	organization?: string,
-	options?: T,
-	legacy = true
+	requires?: T,
+	output: "undefined" | "error" = "undefined"
 ): Promise<
 	| (keyof T extends keyof pax2pay.Identity
 			? Required<Pick<pax2pay.Identity, keyof T>> & pax2pay.Identity
@@ -143,7 +146,7 @@ async function authenticate<T extends Partial<Record<"realm" | "organization", t
 		organization,
 	}
 	const verifier = userwidgets.User.Key.Verifier.create<pax2pay.Key>(publicKey)
-	const result = await pax2pay.Identity.authenticate<T>(header, constraint, options, verifier, legacy)
+	const result = await pax2pay.Identity.authenticate<T>(header, constraint, requires, verifier, output)
 	return result
 }
 async function tokenize(role: pax2pay.Key.Roles): Promise<string | undefined> {

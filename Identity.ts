@@ -30,12 +30,35 @@ export class Identity {
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
-		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier,
-		legacy: boolean = true
+		verifier?: userwidgets.User.Key.Verifier<Key>,
+		output?: "undefined"
+	): Promise<(keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity) | undefined>
+	static async authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
+		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
+		constraint: Key.Permissions | Key.Permissions[],
+		requires?: T,
+		verifier?: userwidgets.User.Key.Verifier<Key>,
+		output?: "error"
+	): Promise<(keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity) | gracely.Error>
+	static async authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
+		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
+		constraint: Key.Permissions | Key.Permissions[],
+		requires?: T,
+		verifier?: userwidgets.User.Key.Verifier<Key>,
+		output?: "error" | "undefined"
 	): Promise<
 		| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
-		| gracely.Error
-		| undefined
+		| (gracely.Error | undefined)
+	>
+	static async authenticate<T extends Partial<Record<"realm" | "organization", true>> = Record<string, never>>(
+		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
+		constraint: Key.Permissions | Key.Permissions[],
+		requires?: T,
+		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier,
+		output: "error" | "undefined" = "undefined"
+	): Promise<
+		| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
+		| (gracely.Error | undefined)
 	> {
 		let result:
 			| (keyof T extends keyof Identity ? Required<Pick<Identity, keyof T>> & Identity : Identity)
@@ -46,7 +69,7 @@ export class Identity {
 			: undefined
 		const key = await Identity.verify(authorization, verifier)
 		if (!key)
-			!legacy && (result = gracely.client.unauthorized())
+			output !== "undefined" && (result = gracely.client.unauthorized())
 		else {
 			const realms = Identity.getRealms(key.permissions)
 			const identity = new Identity(
@@ -63,7 +86,7 @@ export class Identity {
 				(requires?.realm ? Realm.type.is(identity?.realm) : true)
 			result =
 				(identity?.check(constraint) && requirement(identity) && identity) ||
-				(legacy ? undefined : gracely.client.forbidden())
+				(output === "undefined" ? undefined : gracely.client.forbidden())
 		}
 		return result
 	}
