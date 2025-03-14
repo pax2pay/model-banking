@@ -45,16 +45,16 @@
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20241112.0",
-		"@vitest/coverage-v8": "^2.1.8",
 		"@typescript-eslint/eslint-plugin": "8.2.0",
 		"@typescript-eslint/parser": "8.2.0",
+		"@vitest/coverage-v8": "^2.1.8",
 		"eslint": "^8.57.0",
 		"eslint-plugin-prettierx": "github:utily/eslint-plugin-prettierx#utily-20231004",
 		"eslint-plugin-simple-import-sort": "^12.1.1",
 		"prettierx": "github:utily/prettierx#utily-20231004",
 		"rimraf": "^6.0.1",
-		"vitest": "^2.1.8",
-		"typescript": "^5.5.4"
+		"typescript": "^5.5.4",
+		"vitest": "^2.1.8"
 	},
 	"dependencies": {
 		"@userwidgets/model": "0.8.32",
@@ -68,7 +68,8 @@
 		"isly2": "npm:isly@1.0.1-alpha.21",
 		"isoly": "3.0.6",
 		"isoly2": "npm:isoly@3.0.7-alpha.10",
-		"typedly": "0.0.26",
-		"selectively": "^2.0.15"
+		"selectively": "^2.0.15",
+		"slackly": "^0.0.5",
+		"typedly": "0.0.26"
 	}
 }
