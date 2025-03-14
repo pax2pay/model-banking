@@ -82,7 +82,10 @@ export class Identity<T extends Identity.Require = never> {
 		}
 		gracely.Error.is(result) &&
 			result.type == "forbidden" &&
-			notify?.slack.send("card", `Unauthorized access attempt at ${notify.method} ${notify.endpoint}`)
+			(await notify?.slack.send(
+				"card",
+				`Unauthorized access attempt at ${notify.method.toUpperCase()} ${notify.endpoint}`
+			))
 		return result
 	}
 	static async verify(
