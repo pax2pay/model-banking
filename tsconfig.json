@@ -1,17 +1,17 @@
 {
 	"compilerOptions": {
+		"outDir": "dist/mjs",
+		"module": "ESNext",
+		"target": "ESNext",
 		"lib": [
-			"es2021",
+			"ESNext",
 			"webworker"
 		],
 		"moduleResolution": "node10",
-		"module": "ESNext",
-		"outDir": "dist/mjs",
 		"declaration": true,
 		"sourceMap": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
-		"target": "es2021",
 		"allowJs": true,
 		"resolveJsonModule": true,
 		// "strict": true,

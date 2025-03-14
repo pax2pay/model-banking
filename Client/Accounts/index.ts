@@ -9,14 +9,21 @@ import { Rules } from "./Rules"
 import { Status } from "./Status"
 
 export class Accounts {
-	readonly buffer = new Buffer(this.client)
-	readonly Rails = new Rails(this.client)
-	readonly rules = new Rules(this.client)
-	readonly status = new Status(this.client)
-	readonly counterparts = new Counterparts(this.client)
-	readonly history = new History(this.client)
+	readonly buffer: Buffer
+	readonly Rails: Rails
+	readonly rules: Rules
+	readonly status: Status
+	readonly counterparts: Counterparts
+	readonly history: History
+	constructor(private readonly client: http.Client) {
+		this.buffer = new Buffer(this.client)
+		this.Rails = new Rails(this.client)
+		this.rules = new Rules(this.client)
+		this.status = new Status(this.client)
+		this.counterparts = new Counterparts(this.client)
+		this.history = new History(this.client)
+	}
 
-	constructor(private readonly client: http.Client) {}
 	async create(account: Account.Creatable): Promise<Account | gracely.Error> {
 		return this.client.post<Account>("/account", account)
 	}
