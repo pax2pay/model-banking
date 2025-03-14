@@ -1,5 +1,6 @@
 import { gracely } from "gracely"
 import { userwidgets } from "@userwidgets/model"
+import { slackly } from "slackly"
 import { Key } from "./Key"
 import { Realm } from "./Realm"
 
@@ -35,6 +36,7 @@ export class Identity<T extends Identity.Require = never> {
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier?: userwidgets.User.Key.Verifier<Key>,
+		notify?: Identity.Notify,
 		output?: "undefined"
 	): Promise<Identity<T> | undefined>
 	static async authenticate<T extends Identity.Require = Record<string, never>>(
@@ -42,6 +44,7 @@ export class Identity<T extends Identity.Require = never> {
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier?: userwidgets.User.Key.Verifier<Key>,
+		notify?: Identity.Notify,
 		output?: "error"
 	): Promise<Identity<T> | gracely.Error>
 	static async authenticate<T extends Identity.Require = Record<string, never>>(
@@ -49,6 +52,7 @@ export class Identity<T extends Identity.Require = never> {
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier,
+		notify?: Identity.Notify,
 		output: "error" | "undefined" = "undefined"
 	): Promise<Identity<T> | (gracely.Error | undefined)> {
 		let result: Identity<T> | gracely.Error | undefined
@@ -76,6 +80,12 @@ export class Identity<T extends Identity.Require = never> {
 				(identity?.check(constraint) && requirement(identity) && identity) ||
 				(output === "undefined" ? undefined : gracely.client.forbidden())
 		}
+		gracely.Error.is(result) &&
+			result.type == "forbidden" &&
+			(await notify?.slack.send(
+				"card",
+				`Unauthorized access attempt at ${notify.method.toUpperCase()} ${notify.endpoint}`
+			))
 		return result
 	}
 	static async verify(
@@ -104,6 +114,11 @@ export namespace Identity {
 		authorization?: string | undefined
 		realm?: Realm
 		organization?: string
+	}
+	export type Notify = {
+		slack: slackly.Connection<["card"]>
+		endpoint: string
+		method: string
 	}
 }
 const publicKey =
