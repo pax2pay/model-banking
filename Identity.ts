@@ -36,24 +36,24 @@ export class Identity<T extends Identity.Require = never> {
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier?: userwidgets.User.Key.Verifier<Key>,
-		output?: "undefined",
-		notify?: Identity.Notify
+		notify?: Identity.Notify,
+		output?: "undefined"
 	): Promise<Identity<T> | undefined>
 	static async authenticate<T extends Identity.Require = Record<string, never>>(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier?: userwidgets.User.Key.Verifier<Key>,
-		output?: "error",
-		notify?: Identity.Notify
+		notify?: Identity.Notify,
+		output?: "error"
 	): Promise<Identity<T> | gracely.Error>
 	static async authenticate<T extends Identity.Require = Record<string, never>>(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		verifier: userwidgets.User.Key.Verifier<Key> = productionVerifier,
-		output: "error" | "undefined" = "undefined",
-		notify?: Identity.Notify
+		notify?: Identity.Notify,
+		output: "error" | "undefined" = "undefined"
 	): Promise<Identity<T> | (gracely.Error | undefined)> {
 		let result: Identity<T> | gracely.Error | undefined
 		const authorization = header.authorization?.startsWith("Bearer ")
