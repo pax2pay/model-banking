@@ -5,10 +5,13 @@ import { Groups } from "./Groups"
 import { Rules } from "./Rules"
 
 export class Organizations {
-	readonly Rules = new Rules(this.client)
-	readonly groups = new Groups(this.client)
+	readonly Rules: Rules
+	readonly groups: Groups
+	constructor(private readonly client: http.Client) {
+		this.Rules = new Rules(this.client)
+		this.groups = new Groups(this.client)
+	}
 
-	constructor(private readonly client: http.Client) {}
 	async list(options?: {
 		limit?: string
 		cursor?: string
