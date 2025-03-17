@@ -86,10 +86,10 @@ function toEntry(legacy: LegacyEntry.Capture | LegacyEntry.Refund, card?: Rail.A
 	}
 }
 
-export function fromLegacy(maybeLegacy: LegacyEntry | Entry): Entry {
+export function fromLegacy(maybeLegacy: LegacyEntry | Entry, card?: Rail.Address.Card): Entry {
 	return type.is(maybeLegacy)
 		? maybeLegacy
 		: maybeLegacy.type == "cancel" || maybeLegacy.type == "unknown"
 		? toFailed(maybeLegacy)
-		: toEntry(maybeLegacy)
+		: toEntry(maybeLegacy, card)
 }
