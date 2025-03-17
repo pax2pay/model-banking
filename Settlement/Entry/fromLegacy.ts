@@ -30,7 +30,11 @@ function toFailed(legacy: LegacyEntry.Unknown | LegacyEntry.Cancel): Failed {
 		...("amount" in legacy && { amount: legacy.amount }),
 	}
 }
-function toEntry(legacy: LegacyEntry.Capture | LegacyEntry.Refund, card?: Rail.Address.Card): Entry {
+function toEntry(
+	legacy: LegacyEntry.Capture | LegacyEntry.Refund,
+	settlement: string,
+	card?: Rail.Address.Card
+): Entry {
 	return {
 		type: legacy.type,
 		created: legacy.created ?? isoly.DateTime.now(),
@@ -73,7 +77,12 @@ function toEntry(legacy: LegacyEntry.Capture | LegacyEntry.Refund, card?: Rail.A
 						? legacy.authorization.transaction
 						: undefined) ?? { id: "unknown", posted: "", description: "" },
 			  }),
-		account: legacy.account ?? (("transaction" in legacy && legacy.transaction?.accountId) || "unknown"),
+		account:
+			(legacy.account
+				? legacy.account
+				: "account" in legacy.authorization
+				? legacy.authorization.account
+				: "transaction" in legacy && legacy.transaction?.accountId) || "unknown",
 		approvalCode: legacy.authorization.approvalCode ?? "unknown",
 		...(legacy.type == "refund"
 			? { merchant: legacy.merchant, acquirer: legacy.acquirer }
@@ -82,14 +91,14 @@ function toEntry(legacy: LegacyEntry.Capture | LegacyEntry.Refund, card?: Rail.A
 		batch: legacy.batch,
 		fee: legacy.fee,
 		amount: legacy.amount,
-		settlement: legacy.settlement ?? "unknown",
+		settlement,
 	}
 }
 
-export function fromLegacy(maybeLegacy: LegacyEntry | Entry, card?: Rail.Address.Card): Entry {
+export function fromLegacy(maybeLegacy: LegacyEntry | Entry, settlement: string, card?: Rail.Address.Card): Entry {
 	return type.is(maybeLegacy)
 		? maybeLegacy
 		: maybeLegacy.type == "cancel" || maybeLegacy.type == "unknown"
 		? toFailed(maybeLegacy)
-		: toEntry(maybeLegacy, card)
+		: toEntry(maybeLegacy, settlement, card)
 }
