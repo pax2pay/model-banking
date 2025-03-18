@@ -40,7 +40,10 @@ function toEntry(
 		created: legacy.created ?? isoly.DateTime.now(),
 		...(legacy.status == "failed"
 			? {
-					card: legacy.type == "refund" ? legacy.card : legacy.authorization.card.id,
+					card:
+						legacy.type == "refund"
+							? legacy.card ?? (legacy.authorization as any)?.card?.id
+							: legacy.authorization.card.id,
 					status: "failed",
 					reason: legacy.reason ?? "unknown",
 					transaction:
@@ -85,7 +88,10 @@ function toEntry(
 				: "transaction" in legacy && legacy.transaction?.accountId) || "unknown",
 		approvalCode: legacy.authorization.approvalCode ?? "unknown",
 		...(legacy.type == "refund"
-			? { merchant: legacy.merchant, acquirer: legacy.acquirer }
+			? {
+					merchant: legacy.merchant ?? (legacy.authorization as any)?.merchant,
+					acquirer: legacy.acquirer ?? (legacy.authorization as any)?.acquirer,
+			  }
 			: { merchant: legacy.authorization.merchant, acquirer: legacy.authorization.acquirer }),
 		reference: legacy.reference,
 		batch: legacy.batch,
