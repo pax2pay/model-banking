@@ -55,7 +55,7 @@ export namespace Card {
 		age: isly.object<Card["age"]>({ days: isly.number(), minutes: isly.number() }),
 		limit: isly.number(),
 		original: isly.object<Card["original"]>({
-			currency: isly.string(isoly.Currency.types),
+			currency: isly.string(isoly.Currency.values),
 			limit: isly.number(),
 		}),
 		used: isly.object<Card["used"]>({ amount: isly.number(), count: isly.number(), merchants: isly.string().array() }),

@@ -26,9 +26,7 @@ export namespace Address {
 	export const values = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
 	export type Type = typeof values[number]
 	export function compare(addresses: [Address, Address]): boolean {
-		return typedly.Object.entries(addresses[0]).every(
-			([key, value]: [keyof Address, Address[keyof Address]]) => value == addresses[1][key]
-		)
+		return Object.entries(addresses[0]).every(([key, value]) => value == (addresses[1] as any)[key])
 	}
 	export function parse(value: string): Address | undefined {
 		let result: Address | undefined
