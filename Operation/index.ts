@@ -29,7 +29,7 @@ export namespace Operation {
 			})
 		return result
 	}
-	export const Signer = OperationSigner
+	export import Signer = OperationSigner
 	export import Creatable = OperationCreatable
 	export import Changes = OperationChanges
 	export import Change = OperationChange

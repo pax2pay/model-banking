@@ -9,8 +9,11 @@ import { Transaction } from "../../Transaction"
 import { Notes } from "./Notes"
 
 export class Transactions {
-	readonly Notes = new Notes(this.client)
-	constructor(private readonly client: http.Client) {}
+	readonly Notes: Notes
+	constructor(private readonly client: http.Client) {
+		this.Notes = new Notes(this.client)
+	}
+
 	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
 		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
 	}
