@@ -84,7 +84,7 @@ export class Identity<T extends Identity.Require = never> {
 			result.type == "forbidden" &&
 			(await notify?.slack.send(
 				"card",
-				`TESTING Unauthorized access attempt at ${notify.method.toUpperCase()} ${notify.endpoint}`
+				`Unauthorized access attempt at ${notify.method.toUpperCase()} ${notify.endpoint}`
 			))
 		return result
 	}
