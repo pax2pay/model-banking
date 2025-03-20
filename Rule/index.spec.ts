@@ -266,7 +266,6 @@ function getState(
 		},
 		kind,
 		stage,
-		undefined,
 		card,
 		organization
 	)

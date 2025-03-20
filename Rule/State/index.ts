@@ -47,7 +47,6 @@ export namespace State {
 		transaction: ModelTransaction.Creatable.Resolved | ModelTransaction,
 		kind: Rule.Base.Kind,
 		stage: "finalize" | "initiate",
-		authorization?: Authorization,
 		card?: Card,
 		organization?: Organization
 	): State {
@@ -55,7 +54,7 @@ export namespace State {
 			data,
 			account: Account.from(account, address, transactions, days),
 			transaction: Transaction.from(account.name, transaction, kind, stage),
-			authorization,
+			authorization: Authorization.from(transaction),
 			card,
 			organization,
 		}
