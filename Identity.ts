@@ -83,7 +83,7 @@ export class Identity<T extends Identity.Require = never> {
 		gracely.Error.is(result) &&
 			result.type == "forbidden" &&
 			(await notify?.slack.send(
-				"card",
+				"monitoring",
 				`Unauthorized access attempt at ${notify.method.toUpperCase()} ${notify.endpoint}`
 			))
 		return result
@@ -116,7 +116,7 @@ export namespace Identity {
 		organization?: string
 	}
 	export type Notify = {
-		slack: slackly.Connection<["card"]>
+		slack: slackly.Connection<["monitoring"]>
 		endpoint: string
 		method: string
 	}
