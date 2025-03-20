@@ -11,7 +11,7 @@ export interface Creatable {
 	exchange?: Exchange
 }
 export namespace Creatable {
-	export type Resolved = Creatable & { counterpart: Rail.Address }
+	export type Resolved = (Creatable & { counterpart: Rail.Address }) | CardTransaction
 	export const type = isly.object<Creatable>({
 		counterpart: isly.union<string | Rail.Address, string, Rail.Address>(isly.string(), Rail.Address.type),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
@@ -19,4 +19,10 @@ export namespace Creatable {
 		description: isly.string(),
 		exchange: Exchange.type.optional(),
 	})
+	export interface CardTransaction extends Creatable {
+		account: Pick<Rail.Address.Card, "id" | "type">
+		counterpart: Rail.Address.Card.Counterpart
+		reference: { reference: string }
+		approvalCode?: string
+	}
 }

@@ -2,26 +2,39 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Creatable as AuthorizationCreatable } from "../../Authorization/Creatable"
 import { Merchant } from "../../Merchant"
-import type { Rail } from "../../Rail"
+import { Rail } from "../../Rail"
 import type { Transaction } from "../../Transaction"
 
-export interface Authorization extends Omit<AuthorizationCreatable, "amount"> {
+export interface Authorization extends Omit<AuthorizationCreatable, "amount" | "reference"> {
 	time: string
 	hour: number
 	currency: isoly.Currency
 	amount: number
 	merchant: Merchant & { reference: string }
+	reference?: string
 }
 export namespace Authorization {
-	export function from(authorization: AuthorizationCreatable): Authorization {
-		return {
-			...authorization,
-			time: isoly.DateTime.getTime(isoly.DateTime.now()),
-			hour: isoly.DateTime.getHour(isoly.DateTime.now()),
-			currency: authorization.amount[0],
-			amount: Math.abs(authorization.amount[1]),
-			merchant: { ...authorization.merchant, reference: `${authorization.acquirer.id}-${authorization.merchant.id}` },
-		}
+	export function from(transaction: Transaction.Creatable.Resolved | Transaction): Authorization | undefined {
+		return Rail.Address.Card.Counterpart.type.is(transaction.counterpart) &&
+			"account" in transaction &&
+			transaction.account.type == "card" &&
+			"id" in transaction.account
+			? {
+					time: isoly.DateTime.getTime(isoly.DateTime.now()),
+					hour: isoly.DateTime.getHour(isoly.DateTime.now()),
+					currency: transaction.currency,
+					amount: Math.abs(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original),
+					merchant: {
+						...transaction.counterpart.merchant,
+						reference: `${transaction.counterpart.acquirer.id}-${transaction.counterpart.merchant.id}`,
+					},
+					card: transaction.account.id,
+					acquirer: transaction.counterpart.acquirer,
+					reference:
+						typeof transaction.reference == "string" ? transaction.reference : transaction.reference?.reference,
+					description: transaction.description,
+			  }
+			: undefined
 	}
 	export function toTransaction(authorization: Authorization): Transaction.Creatable & {
 		counterpart: Rail.Address.Card.Counterpart
@@ -37,7 +50,7 @@ export namespace Authorization {
 			},
 		}
 	}
-	export const type = AuthorizationCreatable.type.omit(["amount"]).extend<Authorization>({
+	export const type = AuthorizationCreatable.type.omit(["amount", "reference"]).extend<Authorization>({
 		time: isly.string(),
 		hour: isly.number(),
 		currency: isly.string(isoly.Currency.values),
@@ -46,5 +59,6 @@ export namespace Authorization {
 			Merchant.type,
 			isly.object<{ reference: string }>({ reference: isly.string() })
 		),
+		reference: isly.string().optional(),
 	})
 }
