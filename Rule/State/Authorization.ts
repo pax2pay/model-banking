@@ -33,6 +33,7 @@ export namespace Authorization {
 					reference:
 						typeof transaction.reference == "string" ? transaction.reference : transaction.reference?.reference,
 					description: transaction.description,
+					...("exchange" in transaction ? { exchange: transaction.exchange } : {}),
 			  }
 			: undefined
 	}
