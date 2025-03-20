@@ -13,6 +13,22 @@ export interface Authorization extends Omit<AuthorizationCreatable, "amount"> {
 	merchant: Merchant & { reference: string }
 }
 export namespace Authorization {
+	export function fromCardTransactionCreatable(creatable: Transaction.CardTransaction.Creatable): Authorization {
+		return {
+			time: isoly.DateTime.getTime(isoly.DateTime.now()),
+			hour: isoly.DateTime.getHour(isoly.DateTime.now()),
+			currency: creatable.currency,
+			amount: Math.abs(creatable.amount),
+			merchant: {
+				...creatable.counterpart.merchant,
+				reference: `${creatable.counterpart.acquirer.id}-${creatable.counterpart.merchant.id}`,
+			},
+			acquirer: creatable.counterpart.acquirer,
+			card: creatable.account.id,
+			reference: creatable.reference,
+			description: creatable.description,
+		}
+	}
 	export function from(authorization: AuthorizationCreatable): Authorization {
 		return {
 			...authorization,

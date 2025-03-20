@@ -459,5 +459,10 @@ export namespace Transaction {
 			account: Rail.Address.Card.type,
 			counterpart: Rail.Address.Card.Counterpart.type,
 		})
+		export interface Creatable extends Transaction.Creatable {
+			account: Pick<Rail.Address.Card, "id" | "type">
+			counterpart: Rail.Address.Card.Counterpart
+			reference: string
+		}
 	}
 }
