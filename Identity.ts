@@ -76,16 +76,23 @@ export class Identity<T extends Identity.Require = never> {
 				| undefined =>
 				(requires?.organization ? !!identity?.organization : true) &&
 				(requires?.realm ? Realm.type.is(identity?.realm) : true)
-			result =
-				(identity?.check(constraint) && requirement(identity) && identity) ||
-				(output === "undefined" ? undefined : gracely.client.forbidden())
-		}
-		if (gracely.Error.is(result) && result.type == "forbidden") {
-			await notify?.slack.send(
-				"notifications",
-				`Unauthorized access attempt at ${notify.method.toUpperCase()} ${notify.endpoint}`
-			)
-			console.log("Unauthorized access attempt at", notify?.method.toUpperCase(), notify?.endpoint)
+			if (identity?.check(constraint) && requirement(identity))
+				result = identity
+			else if (output === "undefined")
+				result = undefined
+			else {
+				await notify?.slack.send(
+					"notifications",
+					`Unauthorized access attempt at ${notify.method.toUpperCase()} ${notify.endpoint}`
+				)
+				console.log(
+					identity.key.email,
+					"unauthorized access attempt at",
+					notify?.method.toUpperCase(),
+					notify?.endpoint
+				)
+				result = gracely.client.forbidden()
+			}
 		}
 		return result
 	}
