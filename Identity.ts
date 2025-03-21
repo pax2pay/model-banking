@@ -80,12 +80,13 @@ export class Identity<T extends Identity.Require = never> {
 				(identity?.check(constraint) && requirement(identity) && identity) ||
 				(output === "undefined" ? undefined : gracely.client.forbidden())
 		}
-		gracely.Error.is(result) &&
-			result.type == "forbidden" &&
-			(await notify?.slack.send(
-				"monitoring",
+		if (gracely.Error.is(result) && result.type == "forbidden") {
+			await notify?.slack.send(
+				"notifications",
 				`Unauthorized access attempt at ${notify.method.toUpperCase()} ${notify.endpoint}`
-			))
+			)
+			console.log("Unauthorized access attempt at", notify?.method.toUpperCase(), notify?.endpoint)
+		}
 		return result
 	}
 	static async verify(
@@ -116,7 +117,7 @@ export namespace Identity {
 		organization?: string
 	}
 	export type Notify = {
-		slack: slackly.Connection<["monitoring", ...string[]]>
+		slack: slackly.Connection<["notifications", ...string[]]>
 		endpoint: string
 		method: string
 	}
