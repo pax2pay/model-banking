@@ -18,6 +18,7 @@ interface CardCounterpart {
 	merchant: Merchant
 	acquirer: Acquirer
 	present?: boolean
+	approvalCode?: string
 }
 namespace CardCounterpart {
 	export const type = isly.object<CardCounterpart>({
@@ -25,6 +26,7 @@ namespace CardCounterpart {
 		acquirer: Acquirer.type,
 		merchant: Merchant.type,
 		present: isly.boolean().optional(),
+		approvalCode: isly.string().optional(),
 	})
 }
 export namespace Card {
