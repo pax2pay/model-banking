@@ -1,10 +1,8 @@
 import { cryptly } from "cryptly"
-import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Acquirer } from "../Acquirer"
 import { Amount } from "../Amount"
-import { Identifier } from "../Identifier"
 import { Merchant } from "../Merchant"
 import { Transaction } from "../Transaction"
 import { Creatable as AuthorizationCreatable } from "./Creatable"
@@ -65,49 +63,23 @@ export namespace Authorization {
 		approvalCode: isly.string().optional(),
 		description: isly.string(),
 	})
-	export function fromCreatable(
-		creatable: Creatable,
-		transaction: Transaction.CardTransaction | gracely.Error
-	): Authorization {
-		const partial: Pick<
-			Authorization,
-			"created" | "amount" | "merchant" | "acquirer" | "reference" | "description" | "exchange" | "approvalCode"
-		> = {
+	export function fromTransaction(transaction: Transaction.CardTransaction): Authorization {
+		return {
+			id: transaction.id,
 			created: isoly.DateTime.now(),
-			amount: creatable.amount,
-			merchant: creatable.merchant,
-			acquirer: creatable.acquirer,
-			reference: creatable.reference,
-			description: creatable.description,
-			exchange: creatable.exchange,
-			approvalCode: creatable.approvalCode,
+			status: Transaction.Status.Success.is(transaction.status)
+				? "approved"
+				: Status.Failed.from(transaction.status[1]),
+			reference: transaction.reference?.reference ?? "",
+			approvalCode: transaction.counterpart.approvalCode,
+			amount: [transaction.currency, transaction.amount.original],
+			exchange: transaction.amount.exchange,
+			card: { iin: transaction.account.iin, last4: transaction.account.last4, id: transaction.account.id },
+			transaction: { id: transaction.id, posted: transaction.posted, description: transaction.description },
+			account: transaction.accountId,
+			merchant: transaction.counterpart.merchant,
+			acquirer: transaction.counterpart.acquirer,
+			description: transaction.description,
 		}
-		let result: Authorization
-		if (gracely.Error.is(transaction))
-			result = {
-				id: Identifier.generate(),
-				status: Status.Failed.from(transaction),
-				...partial,
-				account: creatable.account,
-				card: { id: creatable.card },
-			}
-		else if (!Transaction.Status.Success.is(transaction.status))
-			result = {
-				id: transaction.id,
-				status: Status.Failed.from(transaction.status[1]),
-				...partial,
-				account: transaction.accountId,
-				card: { iin: transaction.account.iin, last4: transaction.account.last4, id: creatable.card },
-			}
-		else
-			result = {
-				id: transaction.id,
-				status: "approved",
-				...partial,
-				card: { iin: transaction.account.iin, last4: transaction.account.last4, id: creatable.card },
-				account: transaction.accountId,
-				transaction: { id: transaction.id, posted: transaction.posted, description: transaction.description },
-			}
-		return result
 	}
 }
