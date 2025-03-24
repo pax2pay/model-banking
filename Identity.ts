@@ -124,7 +124,7 @@ export namespace Identity {
 		organization?: string
 	}
 	export type Notify = {
-		slack: slackly.Connection<["notifications", ...string[]]>
+		slack: slackly.Connection<"notifications">
 		endpoint: string
 		method: string
 	}
