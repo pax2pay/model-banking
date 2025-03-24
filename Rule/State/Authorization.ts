@@ -24,6 +24,7 @@ export namespace Authorization {
 					hour: isoly.DateTime.getHour(isoly.DateTime.now()),
 					currency: transaction.currency,
 					amount: Math.abs(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original),
+					account: transaction.accountId,
 					merchant: {
 						...transaction.counterpart.merchant,
 						reference: `${transaction.counterpart.acquirer.id}-${transaction.counterpart.merchant.id}`,
