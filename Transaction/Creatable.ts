@@ -25,4 +25,12 @@ export namespace Creatable {
 		reference: { reference: string }
 		approvalCode?: string
 	}
+	export namespace CardTransaction {
+		export const type = Creatable.type.extend<CardTransaction>({
+			account: Rail.Address.Card.type.pick(["id", "type"]),
+			counterpart: Rail.Address.Card.Counterpart.type,
+			reference: isly.object<{ reference: string }>({ reference: isly.string() }),
+			approvalCode: isly.string().optional(),
+		})
+	}
 }
