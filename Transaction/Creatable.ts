@@ -21,8 +21,18 @@ export namespace Creatable {
 	})
 	export interface CardTransaction extends Creatable {
 		account: Pick<Rail.Address.Card, "id" | "type">
+		accountId: string
 		counterpart: Rail.Address.Card.Counterpart
 		reference: { reference: string }
 		approvalCode?: string
+	}
+	export namespace CardTransaction {
+		export const type = Creatable.type.extend<CardTransaction>({
+			account: Rail.Address.Card.type.pick(["id", "type"]),
+			accountId: isly.string(),
+			counterpart: Rail.Address.Card.Counterpart.type,
+			reference: isly.object<{ reference: string }>({ reference: isly.string() }),
+			approvalCode: isly.string().optional(),
+		})
 	}
 }

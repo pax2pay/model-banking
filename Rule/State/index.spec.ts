@@ -8,6 +8,7 @@ describe("State", () => {
 			card: "cardid",
 			currency: "USD",
 			amount: 100,
+			account: "accountid",
 			merchant: {
 				name: "Merchant",
 				id: "abcd1234",
