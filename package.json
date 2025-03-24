@@ -69,7 +69,7 @@
 		"isoly": "3.0.6",
 		"isoly2": "npm:isoly@3.0.7-alpha.10",
 		"selectively": "^2.0.15",
-		"slackly": "utily/slackly#type-open",
+		"slackly": "0.0.6",
 		"typedly": "0.0.26"
 	}
 }
