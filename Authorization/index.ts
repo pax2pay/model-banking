@@ -5,7 +5,6 @@ import { Acquirer } from "../Acquirer"
 import { Amount } from "../Amount"
 import { Merchant } from "../Merchant"
 import { Transaction } from "../Transaction"
-import { Creatable as AuthorizationCreatable } from "./Creatable"
 import { Exchange as AuthorizationExchange } from "./Exchange"
 import { Status as AuthorizationStatus } from "./Status"
 
@@ -34,7 +33,6 @@ export interface Authorization {
 	description: string
 }
 export namespace Authorization {
-	export import Creatable = AuthorizationCreatable
 	export import Exchange = AuthorizationExchange
 	export import Status = AuthorizationStatus
 	export const type = isly.object<Authorization>({
