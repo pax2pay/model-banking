@@ -18,5 +18,5 @@ export namespace Identifier {
 		const decoded = cryptly.Base64.decode(identifier, ordering)
 		return isoly.DateTime.create(Number(new BigUint64Array(decoded.slice(decoded.length - 8).buffer)), "milliseconds")
 	}
-	export const type = isly.fromIs("Identifier", cryptly.Identifier.is)
+	export const type = isly.string()
 }

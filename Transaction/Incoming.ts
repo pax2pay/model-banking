@@ -18,7 +18,7 @@ export namespace Incoming {
 	export const type = isly.object<Incoming>({
 		account: Rail.Address.type,
 		counterpart: Rail.Address.type,
-		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
+		currency: isoly.Currency.type),
 		amount: isly.number(),
 		description: isly.string(),
 		posted: isly.string(),

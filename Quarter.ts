@@ -4,7 +4,7 @@ import { isly } from "isly"
 export type Quarter = typeof Quarter.values[number]
 export namespace Quarter {
 	export const values = ["Q1", "Q2", "Q3", "Q4"] as const
-	export const type = isly.string<Quarter>(values)
+	export const type = isly.string<Quarter>("value", ...values)
 	export function from(date: isoly.Date): Quarter {
 		const month = isoly.Date.getMonth(date)
 		return month <= 3 ? "Q1" : month <= 6 ? "Q2" : month <= 9 ? "Q3" : "Q4"

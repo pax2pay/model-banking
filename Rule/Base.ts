@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
+import { isly as isly } from "isly"
 import { Preset } from "../Card/Preset"
 
 export interface Base {
@@ -17,8 +17,8 @@ export namespace Base {
 	export type Kind = typeof Kind.values[number]
 	export namespace Kind {
 		export const values = ["authorization", "outbound", "inbound", "capture", "refund"] as const
-		export const type = isly.string<Kind>(values)
-		export const type2 = isly2
+		export const type = isly.string<Kind>("value", ...values)
+		export const type = isly
 			.string<Kind>("value", ...values)
 			.rename("Kind")
 			.describe("The type of the rule.")
@@ -32,8 +32,8 @@ export namespace Base {
 	export type Category = typeof Category.values[number]
 	export namespace Category {
 		export const values = ["fincrime", "product", "customer"] as const
-		export const type = isly.string<Category>(values)
-		export const type2 = isly2
+		export const type = isly.string<Category>("value", ...values)
+		export const type = isly
 			.string<Category>("value", ...values)
 			.rename("Category")
 			.describe("The category of the rule.")
@@ -49,21 +49,21 @@ export namespace Base {
 		groups: isly.string().array().optional(),
 		presets: Preset.type.array().optional(),
 	})
-	export const type2 = isly2.object<Base>({
-		code: isly2
+	export const type = isly.object<Base>({
+		code: isly
 			.string("value", /^[a-z0-9\-_]+$/)
 			.rename("Code")
 			.describe("The unique identifier of the rule."),
-		name: isly2.string().rename("Name").describe("The name of the rule."),
-		description: isly2.string().rename("Description").describe("The description of the rule."),
-		type: Kind.type2,
-		category: Category.type2,
-		condition: isly2
+		name: isly.string().rename("Name").describe("The name of the rule."),
+		description: isly.string().rename("Description").describe("The description of the rule."),
+		type: Kind.type,
+		category: Category.type,
+		condition: isly
 			.string()
 			.rename("Condition")
 			.describe("The condition to evaluate, determines if the action is applied or not."),
-		flags: isly2.string().array().rename("Flags").describe("The flags to set when the rule is applied."),
-		groups: isly2.string().array().optional().rename("Groups").describe("The groups the rule applies to."),
-		presets: Preset.type2.array().optional().rename("Presets").describe("The presets the rule applies to."),
+		flags: isly.string().array().rename("Flags").describe("The flags to set when the rule is applied."),
+		groups: isly.string().array().optional().rename("Groups").describe("The groups the rule applies to."),
+		presets: Preset.type.array().optional().rename("Presets").describe("The presets the rule applies to."),
 	})
 }

@@ -28,7 +28,7 @@ export namespace Account {
 	}
 	export const type = Creatable.type.extend<Account>({
 		id: isly.string(),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		created: isoly.DateTime.type,
 		balances: Balances.type,
 		rails: Rail.Address.type.array(),
 		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.type).optional(),

@@ -11,16 +11,8 @@ describe("library", () => {
 		).toEqual(true)
 	})
 	const body = {
-		account: {
-			type: "iban",
-			iban: "GB54CLRB04081800000157",
-			holder: "",
-		},
-		counterpart: {
-			type: "iban",
-			iban: "GB26CLRB04081800000176",
-			holder: "",
-		},
+		account: { type: "iban", iban: "GB54CLRB04081800000157", holder: "" },
+		counterpart: { type: "iban", iban: "GB26CLRB04081800000176", holder: "" },
 		reference: {
 			supplier: "clearbank",
 			reference: "LghIz_9W",
@@ -47,11 +39,7 @@ describe("library", () => {
 			account: { type: "internal", identifier: "6gpfb4Bf" },
 			accountId: "6gpfb4Bf",
 			amount: { original: -1, reserved: 0, charge: 0, total: -1 },
-			balance: {
-				actual: 420,
-				reserved: 420,
-				available: 420,
-			},
+			balance: { actual: 420, reserved: 420, available: 420 },
 			counterpart: { identifier: "ENycgXna", type: "internal" },
 			currency: "GBP",
 			description: "test",

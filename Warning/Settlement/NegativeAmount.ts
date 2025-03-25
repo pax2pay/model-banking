@@ -11,13 +11,12 @@ export interface NegativeAmount extends Base {
 	value: number
 	currency: isoly.Currency
 }
-
 export namespace NegativeAmount {
 	export const type = Base.type.extend<NegativeAmount>({
-		type: isly.string("negative-amount"),
+		type: isly.string("value", "negative-amount"),
 		resource: Identifier.type,
 		value: isly.number(),
-		currency: isly.fromIs("currency", isoly.Currency.is),
+		currency: isoly.Currency.type,
 	})
 	export function create(resource: Identifier, totals: Totals): NegativeAmount[] {
 		const warnings: NegativeAmount[] = []

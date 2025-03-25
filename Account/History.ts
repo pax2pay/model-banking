@@ -6,7 +6,6 @@ export type History = {
 	property: History.Property
 	to?: any
 }
-
 export namespace History {
 	export type Property = typeof Property.values[number]
 	export namespace Property {
@@ -20,10 +19,10 @@ export namespace History {
 			"buffer",
 			"listeners",
 		] as const
-		export const type = isly.string<Property>(values)
+		export const type = isly.string<Property>("value", ...values)
 	}
 	export const type = isly.object<History>({
-		timestamp: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		timestamp: isoly.DateTime.type,
 		property: Property.type,
 		to: isly.any().optional(),
 	})

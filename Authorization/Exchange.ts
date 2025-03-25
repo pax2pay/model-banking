@@ -6,8 +6,5 @@ export interface Exchange {
 	from: Amount
 }
 export namespace Exchange {
-	export const type = isly.object<Exchange>({
-		rate: isly.number(),
-		from: Amount.type,
-	})
+	export const type = isly.object<Exchange>({ rate: isly.number(), from: Amount.type })
 }

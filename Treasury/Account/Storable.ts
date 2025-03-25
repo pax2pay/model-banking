@@ -17,7 +17,7 @@ export interface Storable {
 export namespace Storable {
 	export const type = isly.object<Storable>({
 		code: isly.string(),
-		created: isly.fromIs("Treasury.Account.Storable", isoly.DateTime.is),
+		created: isoly.DateTime.type,
 		realm: Realm.type,
 		supplier: Supplier.type,
 		type: Category.type,

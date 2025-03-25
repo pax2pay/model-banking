@@ -27,7 +27,7 @@ export namespace Log {
 		collection: isly.string(),
 		resource: isly.string().optional(),
 		entries: Log.Entry.type.array(),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		created: isoly.DateTime.type,
 	})
 	export function fromEvents(events: TraceItem[]): Log[] {
 		const result: Log[] = []

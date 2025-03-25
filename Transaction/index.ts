@@ -106,7 +106,7 @@ export namespace Transaction {
 	export import Statistics = TransactionStatistics
 	export const type = isly.object<Transaction>({
 		counterpart: isly.fromIs("Rail.Address", Rail.Address.type.is),
-		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
+		currency: isoly.Currency.type),
 		amount: Amount.type,
 		charge: isly.number().optional(),
 		description: isly.string(),

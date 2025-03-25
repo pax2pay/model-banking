@@ -3,10 +3,7 @@ import { isly } from "isly"
 
 export namespace Exchange {
 	export type Rates = Partial<Record<isoly.Currency, Partial<Record<isoly.Currency, number>>>>
-	export const type = isly.record(
-		isly.fromIs("Currency", isoly.Currency.is),
-		isly.record(isly.fromIs("Currency", isoly.Currency.is), isly.number())
-	)
+	export const type = isly.record(isoly.Currency.type, isly.record(isoly.Currency.type, isly.number()))
 	export function convert(
 		amount: number,
 		from: isoly.Currency,

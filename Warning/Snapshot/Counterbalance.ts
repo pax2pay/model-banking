@@ -8,7 +8,7 @@ export interface Counterbalance extends Base {
 }
 export namespace Counterbalance {
 	export const type = Base.type.extend<Counterbalance>({
-		type: isly.string("counterbalance"),
+		type: isly.string("value", "counterbalance"),
 		currency: isly.string(),
 	})
 }

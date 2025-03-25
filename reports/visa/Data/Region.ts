@@ -9,7 +9,7 @@ export namespace Region {
 		"International - Non-EEA Payments",
 		"International - Inter-Regional Payments",
 	] as const
-	export const type = isly.string<Region>(values)
+	export const type = isly.string<Region>("value", ...values)
 	export const regions: Record<Region, isoly.CountryCode.Alpha2[]> = {
 		"National Payments": ["GB"],
 		"International - Intra-Regional Payments": [

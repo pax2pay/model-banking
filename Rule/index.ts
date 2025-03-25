@@ -46,7 +46,7 @@ export namespace Rule {
 			Charge.Action.value,
 			Reserve.Action.value,
 		] as const
-		export const type = isly.string<Action>(values)
+		export const type = isly.string<Action>("value", ...values)
 	}
 	export const type = ruleType
 	export function evaluate(

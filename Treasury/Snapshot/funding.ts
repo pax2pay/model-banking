@@ -18,7 +18,7 @@ export namespace funding {
 	}
 	export type Cursors = Partial<Record<isoly.Currency, Cursor>>
 	export namespace Cursors {
-		export const type = isly.record<Cursors>(isly.fromIs("isoly.Currency", isoly.Currency.is), Cursor.type)
+		export const type = isly.record<Cursors>(isoly.Currency.type), Cursor.type)
 		export function updateAmount(settlement: Transaction, cursors: Cursors): Cursors {
 			const cursor = cursors[settlement.currency]
 			if (!cursor)

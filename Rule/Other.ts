@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { selectively } from "selectively"
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
+import { isly as isly } from "isly"
 import type { Note } from "../Transaction/Note"
 import { Base } from "./Base"
 import { control } from "./control"
@@ -14,14 +14,14 @@ export namespace Other {
 	export type Action = typeof Action.values[number]
 	export namespace Action {
 		export const values = ["review", "reject", "flag"] as const
-		export const type = isly.string<Action>(values)
-		export const type2 = isly2
+		export const type = isly.string<Action>("value", ...values)
+		export const type = isly
 			.string<Action>("value", ...values)
 			.rename("Action")
 			.describe("The action to take when the rule is applied.")
 	}
 	export const type = Base.type.extend<Other>({ action: Action.type })
-	export const type2: isly2.Object<Other> = Base.type2.extend<Other>({ action: Action.type2 })
+	export const type: isly.Object<Other> = Base.type.extend<Other>({ action: Action.type })
 	export function evaluate(
 		rules: Other[],
 		state: State,

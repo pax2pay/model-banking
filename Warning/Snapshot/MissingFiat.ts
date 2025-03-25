@@ -8,7 +8,7 @@ export interface MissingFiat extends Base {
 }
 export namespace MissingFiat {
 	export const type = Base.type.extend<MissingFiat>({
-		type: isly.string("missing-fiat"),
+		type: isly.string("value", "missing-fiat"),
 		currency: isly.string(),
 	})
 }

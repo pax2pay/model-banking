@@ -26,12 +26,12 @@ export interface Account {
 export namespace Account {
 	export const type = isly.object<Account>({
 		code: isly.string(),
-		created: isly.fromIs("Treasury.Account.Created", isoly.DateTime.is),
+		created: isoly.DateTime.type,
 		label: isly.string(),
 		realm: Realm.type,
 		supplier: Supplier.type,
 		reference: isly.string(),
-		currencies: isly.fromIs("Treasury.Account.currencies", isoly.Currency.is).array(),
+		currencies: isoly.Currency.type.array(),
 		type: AccountCategory.type,
 		conditions: AccountConditions.type,
 		rail: Rail.Address.type.array(),

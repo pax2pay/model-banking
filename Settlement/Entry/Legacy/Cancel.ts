@@ -36,7 +36,7 @@ export namespace Cancel {
 	export const type = Creatable.type.omit(["settlement"]).extend<Cancel>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		created: isoly.DateTime.type,
 		settlement: SettlementIdentifier.type.optional(),
 	})
 }

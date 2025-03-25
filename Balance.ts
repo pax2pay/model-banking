@@ -7,7 +7,7 @@ export namespace Balance {
 	export type Reserve = typeof Reserve.values[number]
 	export namespace Reserve {
 		export const values = ["incoming", "outgoing", "buffer"] as const
-		export const type = isly.string<Reserve>(values)
+		export const type = isly.string<Reserve>("value", ...values)
 	}
 	export type Reserved = Partial<Record<Balance.Reserve, number>>
 	export const type = isly.object<Balance>({
@@ -19,7 +19,7 @@ export namespace Balance {
 		export type Entry = typeof Entry.values[number]
 		export namespace Entry {
 			export const values = ["actual", "incomingReserved", "outgoingReserved", "bufferReserved"] as const
-			export const type = isly.string<Entry>(values)
+			export const type = isly.string<Entry>("value", ...values)
 		}
 		export const type = isly.record<Legacy>(Entry.type, isly.number())
 	}

@@ -14,7 +14,7 @@ export namespace Creatable {
 	export type Resolved = Creatable & { counterpart: Rail.Address }
 	export const type = isly.object<Creatable>({
 		counterpart: isly.union<string | Rail.Address, string, Rail.Address>(isly.string(), Rail.Address.type),
-		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
+		currency: isoly.Currency.type),
 		amount: isly.number(),
 		description: isly.string(),
 		exchange: Exchange.type.optional(),

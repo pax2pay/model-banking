@@ -41,7 +41,7 @@ export namespace Capture {
 	export const type = Creatable.type.omit(["settlement"]).extend<Capture>({
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is).optional(),
+		created: isoly.DateTime.type.optional(),
 		settlement: SettlementIdentifier.type.optional(),
 	})
 }

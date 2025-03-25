@@ -40,7 +40,7 @@ export namespace Authorization {
 	export const type = AuthorizationCreatable.type.omit(["amount"]).extend<Authorization>({
 		time: isly.string(),
 		hour: isly.number(),
-		currency: isly.string(isoly.Currency.values),
+		currency: isoly.Currency.type,
 		amount: isly.number(),
 		merchant: isly.intersection<Authorization["merchant"], Merchant, { reference: string }>(
 			Merchant.type,

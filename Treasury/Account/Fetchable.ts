@@ -19,7 +19,7 @@ export namespace Fetchable {
 		label: isly.string(),
 		supplier: Supplier.type,
 		reference: isly.string(),
-		currencies: isly.fromIs("Account.Fetchable.currencies", isoly.Currency.is).array(),
+		currencies: isoly.Currency.type.array(),
 		type: Category.type,
 		rail: Rail.Address.type.array(),
 		balance: Balance.type,

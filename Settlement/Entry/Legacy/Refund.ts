@@ -52,7 +52,7 @@ export namespace Refund {
 		status: isly.string(["succeeded", "failed"]),
 		reason: isly.string().optional(),
 		transaction: Transaction.type.optional(),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is).optional(),
+		created: isoly.DateTime.type.optional(),
 		settlement: SettlementIdentifier.type.optional(),
 	})
 }

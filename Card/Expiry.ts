@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
+import { isly as isly } from "isly"
 
 const year = [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40] as const
 type Year = typeof year[number]
@@ -11,13 +11,13 @@ type Month = typeof month[number]
 export type Expiry = [Year, Month]
 export namespace Expiry {
 	export const type = isly.tuple<Expiry>(isly.number([...year]), isly.number([...month])) // Deconstructing to remove readonly.
-	export const type2: isly2.Tuple<Expiry> = isly2
+	export const type: isly.Tuple<Expiry> = isly
 		.tuple<Expiry>(
-			isly2
+			isly
 				.number("value", ...year)
 				.rename("Year")
 				.describe("Year of expiry."),
-			isly2
+			isly
 				.number("value", ...month)
 				.rename("Month")
 				.describe("Month of expiry.")

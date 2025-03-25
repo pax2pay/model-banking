@@ -21,7 +21,7 @@ export namespace Failed {
 		isly.object({
 			status: isly.string<"failed">("failed"),
 			reason: isly.string(),
-			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+			created: isoly.DateTime.type,
 		})
 	)
 }

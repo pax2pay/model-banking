@@ -1,4 +1,3 @@
-import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Authorization } from "../../Authorization"
@@ -13,20 +12,14 @@ export interface UnknownEntry extends Base {
 	authorization?: Authorization["id"]
 	transaction?: Transaction["id"]
 }
-
 export namespace UnknownEntry {
 	export const type = Base.type.extend<UnknownEntry>({
-		type: isly.string("unknown-entry"),
+		type: isly.string("value", "unknown-entry"),
 		resource: Identifier.type,
-		authorization: isly.fromIs("Authorization.id", cryptly.Identifier.is).optional(),
+		authorization: isly.string().optional(),
 		transaction: isly.string().optional(),
 	})
 	export function create(entry: Extract<Entry.Failed, { type: "unknown" }>, resource: Identifier): UnknownEntry {
-		return {
-			type: "unknown-entry",
-			resource,
-			transaction: entry.transaction,
-			date: isoly.Date.now(),
-		}
+		return { type: "unknown-entry", resource, transaction: entry.transaction, date: isoly.Date.now() }
 	}
 }

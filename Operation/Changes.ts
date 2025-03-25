@@ -97,7 +97,7 @@ export namespace Changes {
 		export type Balance = typeof Balance.values[number]
 		export namespace Balance {
 			export const values = ["available", "reserved-incoming", "reserved-outgoing", "reserved-buffer"] as const
-			export const type = isly.string<Balance>(values)
+			export const type = isly.string<Balance>("value", ...values)
 		}
 	}
 	export function fromCapture(

@@ -53,6 +53,6 @@ export namespace Audit {
 	export type Resource = typeof Resource.values[number]
 	export namespace Resource {
 		export const values = ["rule", "user", "settlements", "marqeta"] as const
-		export const type = isly.string(values)
+		export const type = isly.string("value", ...values)
 	}
 }

@@ -1,25 +1,19 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
 import { Supplier as modelSupplier } from "./Supplier"
 
 export type Realm = typeof Realm.realms[number]
 
 export namespace Realm {
 	export const realms = ["test", "uk", "eea"] as const
-	export const type = isly.string<Realm>(realms)
-	export const type2 = isly2
+	export const type = isly
 		.string<Realm>("value", ...realms)
 		.rename("Realm")
 		.describe("Financial jurisdiction.")
 	export function toString(): string {
 		return realms.toString().replaceAll(",", ", ") + "."
 	}
-	export const currency: Record<Realm, isoly.Currency> = {
-		test: "EUR",
-		uk: "GBP",
-		eea: "EUR",
-	}
+	export const currency: Record<Realm, isoly.Currency> = { test: "EUR", uk: "GBP", eea: "EUR" }
 	export const suppliers: Record<Realm, modelSupplier[]> = {
 		test: ["paxgiro", "paxgiroCredit"],
 		uk: ["clearbank"],

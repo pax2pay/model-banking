@@ -3,7 +3,6 @@ import { isly } from "isly"
 import { Transaction } from "../Transaction"
 
 export type Status = "approved" | Status.Failed
-
 export namespace Status {
 	export const failures = [...Transaction.Status.reasons, "card not found", "account not found", "other"] as const
 	export type Failed = typeof failures[number]
@@ -22,5 +21,5 @@ export namespace Status {
 			return result
 		}
 	}
-	export const type = isly.union(isly.string("approved"), isly.string<Failed>(failures))
+	export const type = isly.union(isly.string("value", "approved"), isly.string<Failed>("value", ...failures))
 }

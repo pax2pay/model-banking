@@ -5,7 +5,6 @@ export interface Creatable {
 	name: string
 	location?: Creatable.Location
 }
-
 export namespace Creatable {
 	export type Location = typeof Location.values[number]
 	export namespace Location {
@@ -14,7 +13,7 @@ export namespace Creatable {
 			return value == "north-east-america" ? "enam" : "weur"
 		}
 		// All location hints: ["wnam", "enam", "sam", "weur", "eeur", "apac", "oc", "afr", "me"]
-		export const type = isly.string(values)
+		export const type = isly.string<Location>("value", ...values)
 	}
 	export const type = isly.object<Creatable>({ name: isly.string(), location: Location.type.optional() })
 }

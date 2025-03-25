@@ -32,7 +32,7 @@ export namespace Creatable {
 	export type Type = typeof types[number]
 	export const type = isly.object<Creatable>({
 		account: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is),
-		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
+		currency: isoly.Currency.type),
 		changes: Changes.type,
 		type: isly.string(types),
 	})

@@ -12,5 +12,5 @@ export namespace Snapshot {
 	export import funding = snapshotFunding
 	export type Emoney = SnapshotEmoney
 	export type Fiat = SnapshotFiat
-	export const type = isly.record(isly.fromIs("Currency", isoly.Currency.is), Fragment.type)
+	export const type = isly.record(isoly.Currency.type, Fragment.type)
 }

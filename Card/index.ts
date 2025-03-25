@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
+import { isly as isly } from "isly"
 import { Amount } from "../Amount"
 import { Realm } from "../Realm"
 import { Report } from "../Report"
@@ -57,41 +57,41 @@ export namespace Card {
 			holder: isly.string(),
 			token: isly.string().optional(),
 		}),
-		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
-		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
+		limit: isly.tuple(isoly.Currency.type), isly.number()),
+		spent: isly.tuple(isoly.Currency.type), isly.number()),
 		status: isly.union(isly.string("active"), isly.string("cancelled")),
 		history: isly.array(CardOperation.type),
 		rules: ruleType.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 	})
-	export const type2: isly2.Object<Card> = isly2
+	export const type: isly.Object<Card> = isly
 		.object<Card>({
-			id: isly2.string().rename("Id").describe("Unique 16 character base 64 identifier."),
-			number: isly2.string().optional().rename("Number").describe("Api users identifier."),
-			created: isly2.string().rename("Created").describe("Date and time of creation."),
-			organization: isly2.string().rename("Organization").describe("Organization code."),
-			realm: Realm.type2,
-			account: isly2.string().rename("Account").describe("Account identifier."),
-			preset: CardPreset.type2,
-			scheme: CardScheme.type2,
-			reference: isly2.string().optional().rename("Reference").describe("Reference to external system."),
-			details: isly2.object<Card["details"]>({
-				iin: isly2.string().rename("Iin").describe("First 6-8 numbers of the pan."),
-				last4: isly2.string().rename("Last4").describe("Last four digits of pan."),
-				expiry: CardExpiry.type2,
-				holder: isly2.string().rename("Holder").describe("Card holder name."),
-				token: isly2.string().optional().rename("Token").describe("Encrypted token of the card."),
+			id: isly.string().rename("Id").describe("Unique 16 character base 64 identifier."),
+			number: isly.string().optional().rename("Number").describe("Api users identifier."),
+			created: isly.string().rename("Created").describe("Date and time of creation."),
+			organization: isly.string().rename("Organization").describe("Organization code."),
+			realm: Realm.type,
+			account: isly.string().rename("Account").describe("Account identifier."),
+			preset: CardPreset.type,
+			scheme: CardScheme.type,
+			reference: isly.string().optional().rename("Reference").describe("Reference to external system."),
+			details: isly.object<Card["details"]>({
+				iin: isly.string().rename("Iin").describe("First 6-8 numbers of the pan."),
+				last4: isly.string().rename("Last4").describe("Last four digits of pan."),
+				expiry: CardExpiry.type,
+				holder: isly.string().rename("Holder").describe("Card holder name."),
+				token: isly.string().optional().rename("Token").describe("Encrypted token of the card."),
 			}),
-			limit: Amount.type2.rename("Limit").describe("Maximum amount that can be spent on the card."),
-			spent: Amount.type2.rename("Spent").describe("Amount spent on the card."),
-			status: isly2.string("value", ["active", "cancelled"]).rename("Status").describe("Current card status."),
-			history: CardOperation.type2.array().rename("History").describe("Card operation history."),
-			rules: isly2
+			limit: Amount.type.rename("Limit").describe("Maximum amount that can be spent on the card."),
+			spent: Amount.type.rename("Spent").describe("Amount spent on the card."),
+			status: isly.string("value", ["active", "cancelled"]).rename("Status").describe("Current card status."),
+			history: CardOperation.type.array().rename("History").describe("Card operation history."),
+			rules: isly
 				.from("Rule", ruleType.is)
 				.array()
 				.rename("Rules")
 				.describe("Card rules that applies to authorizations made with the card."),
-			meta: isly2.from("Card.Meta", CardMeta.is).optional().rename("Meta").describe("Additional card information."),
+			meta: isly.from("Card.Meta", CardMeta.is).optional().rename("Meta").describe("Additional card information."),
 		})
 		.rename("Card")
 		.describe("Card information.")

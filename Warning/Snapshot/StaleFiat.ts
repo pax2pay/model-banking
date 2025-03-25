@@ -11,7 +11,7 @@ export interface StaleFiat extends Base {
 }
 export namespace StaleFiat {
 	export const type = Base.type.extend<StaleFiat>({
-		type: isly.string("stale-fiat"),
+		type: isly.string("value", "stale-fiat"),
 		currency: isly.string(),
 		transaction: isly.object<StaleFiat["transaction"]>({ id: isly.string(), created: isly.string() }),
 	})

@@ -18,9 +18,9 @@ export namespace Succeeded {
 			card: Rail.Address.Card.type,
 			transaction: isly.object({
 				id: isly.string(),
-				posted: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+				posted: isoly.DateTime.type,
 				description: isly.string(),
 			}),
-			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+			created: isoly.DateTime.type,
 		})
 }

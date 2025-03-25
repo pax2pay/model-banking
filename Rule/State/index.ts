@@ -30,7 +30,7 @@ export namespace State {
 	export type Outcome = typeof Outcome.values[number]
 	export namespace Outcome {
 		export const values = ["approve", "reject", "review"] as const
-		export const type = isly.string<Outcome>(values)
+		export const type = isly.string<Outcome>("value", ...values)
 	}
 	export interface Evaluated extends State {
 		outcomes: globalThis.Partial<Record<Rule.Action, Rule[]>>

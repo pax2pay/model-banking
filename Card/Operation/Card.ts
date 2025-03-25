@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
-import { isoly as isoly2 } from "isoly2"
+import { isoly as isoly } from "isoly"
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
+import { isly as isly } from "isly"
 import { Changeable } from "../Changeable"
 
 export interface Card {
@@ -18,17 +18,17 @@ export namespace Card {
 		type: isly.string("card"),
 		status: isly.string(statuses),
 		from: Changeable.type.optional(),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		created: isoly.DateTime.type,
 	})
-	export const type2: isly2.Object<Card> = isly2
+	export const type: isly.Object<Card> = isly
 		.object<Card>({
-			type: isly2.string("value", "card").rename("Type").describe("Type of operation."),
-			status: isly2
+			type: isly.string("value", "card").rename("Type").describe("Type of operation."),
+			status: isly
 				.string("value", ...statuses)
 				.rename("Status")
 				.describe("The updated status of the card."),
-			from: Changeable.type2.optional(),
-			created: isoly2.DateTime.type.rename("Created").describe("The time of the operation."),
+			from: Changeable.type.optional(),
+			created: isoly.DateTime.type.rename("Created").describe("The time of the operation."),
 		})
 		.describe("A card operation.")
 		.rename("Operation.Card")

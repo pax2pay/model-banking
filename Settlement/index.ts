@@ -101,7 +101,7 @@ export namespace Settlement {
 	export const type = SettlementCreatable.type.extend<Settlement>({
 		id: isly.union(SettlementIdentifier.type, isly.string()),
 		by: isly.string().optional(),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		created: isoly.DateTime.type,
 		status: Status.type,
 		entries: Settlement.Entry.Summary.type,
 		warnings: Settlement.Warning.type.array().optional(),

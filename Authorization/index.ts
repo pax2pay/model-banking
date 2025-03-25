@@ -40,12 +40,12 @@ export namespace Authorization {
 	export import Exchange = AuthorizationExchange
 	export import Status = AuthorizationStatus
 	export const type = isly.object<Authorization>({
-		id: isly.fromIs("Authorization.id", cryptly.Identifier.is),
+		id: isly.string(),
 		status: Status.type,
 		transaction: isly
 			.object<Required<Authorization>["transaction"]>({
 				id: isly.string(),
-				posted: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+				posted: isoly.DateTime.type,
 				description: isly.string(),
 			})
 			.optional(),
@@ -56,8 +56,8 @@ export namespace Authorization {
 			iin: isly.string().optional(),
 			last4: isly.string().optional(),
 		}),
-		created: isly.fromIs("Authorization.created", isoly.DateTime.is),
-		amount: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
+		created: isoly.DateTime.type,
+		amount: Amount.type,
 		account: isly.string().optional(),
 		merchant: Merchant.type,
 		acquirer: Acquirer.type,

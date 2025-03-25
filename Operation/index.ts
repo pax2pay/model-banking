@@ -36,7 +36,7 @@ export namespace Operation {
 	export const type = OperationCreatable.type.extend<Operation>({
 		transaction: isly.string(),
 		counter: isly.number(),
-		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		created: isoly.DateTime.type,
 		signature: isly.string().optional(),
 		previous: isly.string().optional(),
 	})

@@ -10,6 +10,6 @@ export namespace Label {
 	export type Type = typeof Type.values[number]
 	export namespace Type {
 		export const values = ["flag", "group"] as const
-		export const type = isly.string(values)
+		export const type = isly.string("value", ...values)
 	}
 }

@@ -114,7 +114,7 @@ export namespace rows {
 			"Number of Accounts - International Enabled",
 			"Payments Transactions Declined for Insufficient Funds - Number",
 		] as const
-		export const type = isly.string<NonZero>(values)
+		export const type = isly.string<NonZero>("value", ...values)
 	}
 	export type Blank = typeof Blank.values[number]
 	export namespace Blank {
@@ -134,7 +134,7 @@ export namespace rows {
 			"Gross Fraud Losses - International - Payments - Count",
 			"Gross Fraud Losses - International - Payments - Volume",
 		] as const
-		export const type = isly.string<Blank>(values)
+		export const type = isly.string<Blank>("value", ...values)
 		export function toCsvRow(row: Blank, count: number): string {
 			return row + "|".repeat(count) + "\n"
 		}

@@ -6,7 +6,7 @@ export namespace Holidays {
 	export type Regions = typeof Regions.values[number]
 	export namespace Regions {
 		export const values = ["England", "Wales", "Scotland", "Northern Ireland"] as const
-		export const type = isly.string<Regions>(values)
+		export const type = isly.string<Regions>("value", ...values)
 	}
 	export const dates: Record<Regions, Readonly<isoly.Date>[]> = {
 		England: Dates.englandAndWales,

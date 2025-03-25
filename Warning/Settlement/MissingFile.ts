@@ -10,20 +10,14 @@ export interface MissingFile extends Base {
 	cycle?: string
 	totals?: Totals
 }
-
 export namespace MissingFile {
 	export const type = Base.type.extend<MissingFile>({
-		type: isly.string("missing-file"),
+		type: isly.string("value", "missing-file"),
 		resource: Identifier.type,
 		cycle: isly.string().optional(),
 		totals: Totals.type.optional(),
 	})
 	export function create(id: string, cycle: string, date: isoly.Date): MissingFile {
-		return {
-			type: "missing-file",
-			resource: id,
-			cycle,
-			date,
-		}
+		return { type: "missing-file", resource: id, cycle, date }
 	}
 }

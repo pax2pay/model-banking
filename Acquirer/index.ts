@@ -12,7 +12,7 @@ export namespace Acquirer {
 	export const type = isly.object<Acquirer>({
 		id: isly.string(),
 		number: isly.string(),
-		country: isly.fromIs("Acquirer.country", isoly.CountryCode.Alpha2.is).optional(),
+		country: isoly.CountryCode.Alpha2.type.optional(),
 		retrievalReferenceNumber: isly.string().optional(),
 		systemTraceAuditNumber: isly.string().optional(),
 	})

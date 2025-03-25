@@ -1,4 +1,3 @@
-import { isoly } from "isoly"
 import { isly } from "isly"
 import { Acquirer } from "../Acquirer"
 import { Amount } from "../Amount"
@@ -20,7 +19,7 @@ export namespace Creatable {
 	export const type = isly.object<Creatable>({
 		card: isly.string(),
 		account: isly.string().optional(),
-		amount: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
+		amount: Amount.type,
 		exchange: Exchange.type.optional(),
 		merchant: Merchant.type,
 		acquirer: Acquirer.type,

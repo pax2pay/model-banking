@@ -14,7 +14,7 @@ export namespace Status {
 		export const values = ["overdraft", "other"] as const
 	}
 	export const type = isly.object<Status>({
-		mode: isly.string<Mode>(Mode.values),
+		mode: isly.string<Mode>("value", ...Mode.values),
 		reason: isly.string().optional(),
 	})
 }

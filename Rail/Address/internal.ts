@@ -14,7 +14,7 @@ export namespace Internal {
 	export const type = isly.object<Internal>({
 		type: isly.string("internal"),
 		name: isly.string().optional(),
-		identifier: isly.union(isly.fromIs("Identifier", cryptly.Identifier.is), Operation.Changes.Entry.type),
+		identifier: isly.union(isly.string(), Operation.Changes.Entry.type),
 		organization: isly.string().optional(),
 	})
 

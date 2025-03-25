@@ -8,7 +8,7 @@ export interface Issue {
 export namespace Issue {
 	export const type = isly.object<Issue>({
 		link: isly.string(),
-		status: isly.string(["closed", "open"]),
+		status: isly.string("value", ["closed", "open"]),
 	})
 	export interface Creatable {
 		type: string
@@ -19,7 +19,7 @@ export namespace Issue {
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
 			type: isly.string(),
-			currency: isly.fromIs("Currency", isoly.Currency.is),
+			currency: isoly.Currency.type,
 			resource: isly.string().optional(),
 			issue: Issue.type,
 		})

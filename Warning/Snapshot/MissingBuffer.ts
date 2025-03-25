@@ -11,7 +11,7 @@ export interface MissingBuffer extends Base {
 }
 export namespace MissingBuffer {
 	export const type = Base.type.extend<MissingBuffer>({
-		type: isly.string("missing-buffer"),
+		type: isly.string("value", "missing-buffer"),
 		currency: isly.string(),
 		minimum: isly.number(),
 		balance: isly.number(),
