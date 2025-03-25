@@ -1,11 +1,18 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Creatable as AuthorizationCreatable } from "../../Authorization/Creatable"
+import { Acquirer } from "../../Acquirer"
+import { Exchange } from "../../Authorization/Exchange"
 import { Merchant } from "../../Merchant"
 import { Rail } from "../../Rail"
 import type { Transaction } from "../../Transaction"
 
-export interface Authorization extends Omit<AuthorizationCreatable, "amount" | "reference"> {
+export interface Authorization {
+	card: string
+	account: string
+	exchange?: Exchange
+	acquirer: Acquirer
+	description: string
+	approvalCode?: string
 	time: string
 	hour: number
 	currency: isoly.Currency
@@ -52,7 +59,13 @@ export namespace Authorization {
 			},
 		}
 	}
-	export const type = AuthorizationCreatable.type.omit(["amount", "reference"]).extend<Authorization>({
+	export const type = isly.object<Authorization>({
+		card: isly.string(),
+		account: isly.string(),
+		exchange: Exchange.type.optional(),
+		acquirer: Acquirer.type,
+		description: isly.string(),
+		approvalCode: isly.string().optional(),
 		time: isly.string(),
 		hour: isly.number(),
 		currency: isly.string(isoly.Currency.values),
