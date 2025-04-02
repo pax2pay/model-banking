@@ -11,6 +11,7 @@ import { Status as AccountStatus } from "./Status"
 export interface Account extends Account.Creatable {
 	id: cryptly.Identifier
 	created: isoly.DateTime
+	organization?: string
 	balances: Balances
 	rails: Rail.Address[]
 	counterparts?: Record<string, Rail.Address>
@@ -29,6 +30,7 @@ export namespace Account {
 	export const type = Creatable.type.extend<Account>({
 		id: isly.string(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		organization: isly.string().optional(),
 		balances: Balances.type,
 		rails: Rail.Address.type.array(),
 		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.type).optional(),
