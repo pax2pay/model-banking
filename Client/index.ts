@@ -76,7 +76,9 @@ export class Client {
 			appendHeader: request => ({
 				...request.header,
 				realm: result.realm,
-				organization: request.header.organization ?? result.organization,
+				...(request.header.organization ?? result.organization
+					? { organization: request.header.organization ?? result.organization }
+					: {}),
 			}),
 			postprocess: async response => {
 				let result = response
