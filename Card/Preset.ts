@@ -8,6 +8,12 @@ export type Preset = typeof Preset.names[number]
 export namespace Preset {
 	export const names = [
 		"p2p-mc-200",
+		"p2p-visa-bid-115", //P2PS-115-Visa-Debit
+		"p2p-visa-bp-140", //P2PS-140-Visa-Prepaid
+		"p2p-visa-cdd-185", //P2PS-185-Visa-Corporate
+		"p2p-visa-idx-140", //P2PS-140-Visa-Travel
+		"p2p-visa-idx-160", //P2PS-160-Visa-Travel
+		"p2p-visa-idx-200", //P2PS-200-Visa-Travel
 		"test-pg-200",
 		"test-pg-150",
 		"test-ta-pg-200",
@@ -22,6 +28,12 @@ export namespace Preset {
 		.describe("Card configuration (iin/scheme/interchange).")
 	export const presets: Record<Preset, Stack> = {
 		"p2p-mc-200": "uk-mc-tpl-marqeta",
+		"p2p-visa-bid-115": "uk-mc-tpl-marqeta",
+		"p2p-visa-bp-140": "uk-mc-tpl-marqeta",
+		"p2p-visa-cdd-185": "uk-mc-tpl-marqeta",
+		"p2p-visa-idx-140": "uk-mc-tpl-marqeta",
+		"p2p-visa-idx-160": "uk-mc-tpl-marqeta",
+		"p2p-visa-idx-200": "uk-mc-tpl-marqeta",
 		"p2p-diners-175": "uk-diners-dpg",
 		"p2p-diners-200": "uk-diners-dpg",
 		"test-pg-200": "test-paxgiro",
