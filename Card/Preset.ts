@@ -8,12 +8,12 @@ export type Preset = typeof Preset.names[number]
 export namespace Preset {
 	export const names = [
 		"p2p-mc-200",
-		"p2p-visa-bid-115", //P2PS-115-Visa-Debit
-		"p2p-visa-bp-140", //P2PS-140-Visa-Prepaid
-		"p2p-visa-cdd-185", //P2PS-185-Visa-Corporate
-		"p2p-visa-idx-140", //P2PS-140-Visa-Travel
-		"p2p-visa-idx-160", //P2PS-160-Visa-Travel
-		"p2p-visa-idx-200", //P2PS-200-Visa-Travel
+		"p2p-visa-bid-115",
+		"p2p-visa-bp-140",
+		"p2p-visa-cdd-185",
+		"p2p-visa-idx-140",
+		"p2p-visa-idx-160",
+		"p2p-visa-idx-200",
 		"test-pg-200",
 		"test-pg-150",
 		"test-ta-pg-200",
