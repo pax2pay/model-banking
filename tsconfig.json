@@ -33,7 +33,9 @@
 		"**/*.spec.ts",
 	],
 	"files": [
-		"index.ts"
+		"index.ts",
+		"Transaction/PreTransaction/Authorization.ts",
+		"Transaction/PreTransaction/Outgoing.ts"
 	],
 	"typeAcquisition": {
 		"enable": true

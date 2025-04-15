@@ -1,4 +1,4 @@
-import { pax2pay } from "../index"
+import { pax2pay } from "../../index"
 
 // cSpell:disable
 describe("Transaction", () => {
