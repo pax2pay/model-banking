@@ -28,12 +28,12 @@ export namespace Preset {
 		.describe("Card configuration (iin/scheme/interchange).")
 	export const presets: Record<Preset, Stack> = {
 		"p2p-mc-200": "uk-mc-tpl-marqeta",
-		"p2p-visa-bid-115": "uk-mc-tpl-marqeta",
-		"p2p-visa-bp-140": "uk-mc-tpl-marqeta",
-		"p2p-visa-cdd-185": "uk-mc-tpl-marqeta",
-		"p2p-visa-idx-140": "uk-mc-tpl-marqeta",
-		"p2p-visa-idx-160": "uk-mc-tpl-marqeta",
-		"p2p-visa-idx-200": "uk-mc-tpl-marqeta",
+		"p2p-visa-bid-115": "uk-visa-tpl-marqeta",
+		"p2p-visa-bp-140": "uk-visa-tpl-marqeta",
+		"p2p-visa-cdd-185": "uk-visa-tpl-marqeta",
+		"p2p-visa-idx-140": "uk-visa-tpl-marqeta",
+		"p2p-visa-idx-160": "uk-visa-tpl-marqeta",
+		"p2p-visa-idx-200": "uk-visa-tpl-marqeta",
 		"p2p-diners-175": "uk-diners-dpg",
 		"p2p-diners-200": "uk-diners-dpg",
 		"test-pg-200": "test-paxgiro",

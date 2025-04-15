@@ -5,7 +5,13 @@ export type Stack = typeof Stack.stacks[number]
 
 // realm-scheme-processor(-processor...)
 export namespace Stack {
-	export const stacks = ["test-paxgiro", "test-tpl-paxgiro", "uk-diners-dpg", "uk-mc-tpl-marqeta"] as const
+	export const stacks = [
+		"test-paxgiro",
+		"test-tpl-paxgiro",
+		"uk-diners-dpg",
+		"uk-mc-tpl-marqeta",
+		"uk-visa-tpl-marqeta",
+	] as const
 	export const type = isly.string(stacks)
 	export function toRealm(stack: Stack): Realm {
 		return stack.split("-")[0] as Realm
@@ -69,6 +75,7 @@ export namespace Stack {
 			"test-tpl-paxgiro": "y",
 			"uk-mc-tpl-marqeta": "a",
 			"uk-diners-dpg": "b",
+			"uk-visa-tpl-marqeta": "c",
 		}
 		export function from(stack: Stack): Stack.Character {
 			return table[stack]
