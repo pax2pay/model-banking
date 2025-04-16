@@ -15,6 +15,7 @@ import { Note as TransactionNote } from "./Note"
 import { Reference as TransactionReference } from "./Reference"
 import { Statistics as TransactionStatistics } from "./Statistics"
 import { Status as TransactionStatus } from "./Status"
+
 export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
@@ -100,7 +101,6 @@ export namespace Transaction {
 		)
 		return {
 			original: typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
-			reserved,
 			charge: stateAmount?.charge ?? 0,
 			total: changes.available ?? reserved ?? 0,
 			exchange: state?.transaction.exchange ?? state?.authorization?.exchange,
@@ -122,7 +122,6 @@ export namespace Transaction {
 								transaction.state?.transaction.original.amount ??
 								isoly.Currency.subtract(transaction.currency, transaction.amount, transaction.charge ?? 0),
 							charge: transaction.state?.transaction.original.charge?.total ?? transaction.charge ?? 0,
-							reserved: transaction.state?.transaction.original.reserve ?? 0,
 							total: transaction.state?.transaction.original.total ?? transaction.amount,
 						},
 				  }
@@ -200,7 +199,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...creatable,
-			amount: { original: creatable.amount, reserved: 0, charge: 0, total: creatable.amount },
+			amount: { original: creatable.amount, charge: 0, total: creatable.amount },
 			type: getType(creatable.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -226,7 +225,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...creatable,
-			amount: { original: 0, reserved: 0, charge: 0, total: 0 },
+			amount: { original: 0, charge: 0, total: 0 },
 			type: getType(creatable.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -260,7 +259,7 @@ export namespace Transaction {
 				name: account.name,
 				organization: account.organization,
 			},
-			amount: { original: 0, reserved: 0, charge: 0, total: 0 },
+			amount: { original: 0, charge: 0, total: 0 },
 			type: "internal",
 			direction: "inbound",
 			organization: account.organization,

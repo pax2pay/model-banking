@@ -2,6 +2,7 @@ import { selectively } from "selectively"
 import { isly } from "isly"
 import { Exchange } from "../Exchange"
 import { Realm } from "../Realm"
+import type { Note } from "../Transaction/Note"
 import { Base as RuleBase } from "./Base"
 import { Charge as RuleCharge } from "./Charge"
 import { control as ruleControl } from "./control"
@@ -63,30 +64,32 @@ export namespace Rule {
 			score: [],
 			reserve: [],
 		}
+		const notes: Note[] = []
 		const { other, chargers, scorers, reservers } = sort(rules, state)
 		const scored = Score.evaluate(scorers, state, macros)
+		notes.push(...scored.notes)
 		outcomes.score.push(...scored.outcomes)
 		state.transaction.risk = scored.risk
 		const evaluated = Other.evaluate(other, state, macros)
+		notes.push(...evaluated.notes)
 		outcomes.flag.push(...evaluated.outcomes.flag)
 		outcomes.review.push(...evaluated.outcomes.review)
 		outcomes.reject.push(...evaluated.outcomes.reject)
-		const reserved = Reserve.evaluate(reservers, state, macros, table)
-		outcomes.reserve.push(...reserved.outcomes)
-		state.transaction.original.reserve = reserved.reserve
-		state.transaction.original.total = Reserve.apply(reserved.reserve, state)
-		const charged = Charge.evaluate(chargers, state, macros, table)
-		outcomes.charge.push(...charged.outcomes)
-		state.transaction.original.charge = charged.charge
-		state.transaction.original.total = Charge.apply(charged.charge, state)
-		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
-		return {
-			...state,
-			flags: [...evaluated.flags],
-			notes: [...scored.notes, ...evaluated.notes, ...reserved.notes, ...charged.notes],
-			outcomes,
-			outcome,
+		if (state.transaction.stage == "initiate") {
+			const reserved = Reserve.evaluate(reservers, state, macros, table)
+			state.transaction.original.charge = { current: reserved.reserve, total: reserved.reserve }
+			state.transaction.original.total = Reserve.apply(reserved.reserve, state)
+			outcomes.reserve.push(...reserved.outcomes)
+			notes.push(...reserved.notes)
+		} else if (state.transaction.stage == "finalize") {
+			const charged = Charge.evaluate(chargers, state, macros, table)
+			outcomes.charge.push(...charged.outcomes)
+			state.transaction.original.charge = charged.charge
+			state.transaction.original.total = Charge.apply(charged.charge, state)
+			notes.push(...charged.notes)
 		}
+		const outcome = outcomes.reject.length > 0 ? "reject" : outcomes.review.length > 0 ? "review" : "approve"
+		return { ...state, flags: [...evaluated.flags], notes, outcomes, outcome }
 	}
 	function sort(
 		rules: Rule[],
