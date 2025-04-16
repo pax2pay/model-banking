@@ -9,11 +9,12 @@ import type { Rule } from "../Rule"
 import { Settlement } from "../Settlement"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Exchange as TransactionExchange } from "./Exchange"
-import { Incoming as TransactionIncoming } from "./Incoming"
 import { Note as TransactionNote } from "./Note"
+import { PreTransaction as TransactionPreTransaction } from "./PreTransaction"
 import { Reference as TransactionReference } from "./Reference"
 import { Statistics as TransactionStatistics } from "./Statistics"
 import { Status as TransactionStatus } from "./Status"
+
 export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
@@ -100,7 +101,7 @@ export namespace Transaction {
 	export const directions = ["inbound", "outbound"] as const
 	export type Direction = typeof directions[number]
 	export import Creatable = TransactionCreatable
-	export import Incoming = TransactionIncoming
+	export import PreTransaction = TransactionPreTransaction
 	export import Reference = TransactionReference
 	export import Note = TransactionNote
 	export import Status = TransactionStatus
@@ -311,7 +312,7 @@ export namespace Transaction {
 		}
 	}
 	export function fromIncoming(
-		transaction: Transaction.Incoming,
+		transaction: Transaction.PreTransaction.Incoming,
 		id: string,
 		state: Rule.State.Evaluated,
 		account: { id: string; name: string; organization: string },
@@ -347,7 +348,7 @@ export namespace Transaction {
 		state: Rule.State.Evaluated
 	): Transaction {
 		return {
-			...Incoming.fromRefund(refund, card),
+			...Transaction.PreTransaction.Incoming.fromRefund(refund, card),
 			amount: Amount.fromState(state),
 			type: "card",
 			direction: "inbound",
