@@ -1,8 +1,9 @@
 import { isoly } from "isoly"
+import { isly } from "isly"
 import { Rail } from "../../Rail"
 import { Settlement } from "../../Settlement"
 import { Reference as TransactionReference } from "../Reference"
-import type { Base } from "./Base"
+import { Base } from "./Base"
 
 export interface Incoming extends Base {
 	type: "incoming"
@@ -15,6 +16,16 @@ export interface Incoming extends Base {
 	reference?: TransactionReference
 }
 export namespace Incoming {
+	export const type = Base.type.extend<Incoming>({
+		type: isly.string("incoming"),
+		account: Rail.Address.type,
+		currency: isly.fromIs("Currency", isoly.Currency.is),
+		amount: isly.number(),
+		description: isly.string(),
+		posted: isly.string(),
+		rail: Rail.type.optional(),
+		reference: TransactionReference.type.optional(),
+	})
 	export function fromRefund(entry: Settlement.Entry.Creatable.Refund, card: Rail.Address.Card): Incoming {
 		const [currency, amount] = entry.amount
 		return {

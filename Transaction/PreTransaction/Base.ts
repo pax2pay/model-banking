@@ -13,7 +13,7 @@ export interface Base {
 }
 export namespace Base {
 	export const type = isly.object<Base>({
-		type: isly.string("outgoing"),
+		type: isly.string(["outgoing", "incoming", "authorization"]),
 		counterpart: Rail.Address.type,
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		amount: isly.number(),
