@@ -10,7 +10,8 @@ describe("library", () => {
 			)
 		).toEqual(true)
 	})
-	const body = {
+	const body: pax2pay.Transaction.PreTransaction = {
+		type: "incoming",
 		account: {
 			type: "iban",
 			iban: "GB54CLRB04081800000157",
@@ -37,7 +38,7 @@ describe("library", () => {
 		expect(true).toEqual(true)
 	})
 	it("incoming is", () => {
-		expect(pax2pay.Transaction.Incoming.type.is(body)).toBeTruthy()
+		expect(pax2pay.Transaction.PreTransaction.Incoming.type.is(body)).toBeTruthy()
 	})
 	it("DateTime is", () => {
 		expect(isoly.DateTime.is("2023-05-17T07:24:16.72Z")).toBeFalsy()
