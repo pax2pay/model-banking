@@ -34,8 +34,6 @@
 	],
 	"files": [
 		"index.ts",
-		"Transaction/PreTransaction/Authorization.ts",
-		"Transaction/PreTransaction/Outgoing.ts"
 	],
 	"typeAcquisition": {
 		"enable": true
