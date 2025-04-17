@@ -1,6 +1,6 @@
 {
 	"name": "@pax2pay/model-banking",
-	"version": "0.1.491",
+	"version": "0.1.492",
 	"description": "Library containing data model types and functions for the Pax2Pay Banking API.",
 	"author": "Pax2Pay Ltd",
 	"license": "MIT",
@@ -44,7 +44,7 @@
 		"esbuild": ">=0.25.0"
 	},
 	"devDependencies": {
-		"@cloudflare/workers-types": "^4.20241112.0",
+		"@cloudflare/workers-types": "^4.20250129.0",
 		"@typescript-eslint/eslint-plugin": "8.2.0",
 		"@typescript-eslint/parser": "8.2.0",
 		"@vitest/coverage-v8": "^3.1.1",
@@ -63,13 +63,13 @@
 		"cloudly-http": "^0.1.7",
 		"cloudly-storage": "^0.10.16",
 		"cryptly": "^4.0.6",
-		"gracely": "^2.0.10",
+		"gracely": "^2.0.11",
 		"isly": "0.1.20",
 		"isly2": "npm:isly@1.0.1-alpha.21",
 		"isoly": "3.0.6",
 		"isoly2": "npm:isoly@3.0.7-alpha.11",
 		"selectively": "^2.0.15",
 		"slackly": "0.0.6",
-		"typedly": "0.0.26"
+		"typedly": "0.0.27"
 	}
 }

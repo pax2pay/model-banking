@@ -1,6 +1,5 @@
-type Value = Meta | Value[] | undefined | number | string | boolean
 export interface Meta {
-	[key: string]: Value
+	[key: string]: any
 }
 
 export namespace Meta {
