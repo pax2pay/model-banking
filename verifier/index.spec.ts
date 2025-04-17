@@ -25,18 +25,11 @@ describe("verifier", () => {
 const transaction: pax2pay.Transaction.Event = {
 	organization: "organization",
 	accountId: "qwerty12",
-	account: {
-		type: "internal",
-		identifier: "12345678",
-	},
+	account: { type: "internal", identifier: "12345678" },
 	id: "11112222",
 	posted: `${isoly.DateTime.now()}`,
-	balance: {
-		actual: 420,
-		reserved: 420,
-		available: 420,
-	},
-	amount: { original: -1, reserved: 0, charge: 0, total: -1 },
+	balance: { actual: 420, reserved: 420, available: 420 },
+	amount: { original: -1, charge: 0, total: -1 },
 	currency: "USD",
 	description: "string",
 	counterpart: {
@@ -56,23 +49,13 @@ const transaction: pax2pay.Transaction.Event = {
 			zip: "12345",
 			address: "Streetname 1, 12345 Towncity",
 		},
-		acquirer: {
-			id: "2345erty",
-			number: "1351858913568",
-			country: "GB",
-		},
+		acquirer: { id: "2345erty", number: "1351858913568", country: "GB" },
 	},
 	operations: [
 		{
 			account: "WzauRHBO",
 			currency: "USD",
-			changes: {
-				"reserved-outgoing": {
-					type: "add",
-					amount: 1,
-					status: "pending",
-				},
-			},
+			changes: { "reserved-outgoing": { type: "add", amount: 1, status: "pending" } },
 			transaction: "i9knT4yR",
 			type: "authorization",
 			counter: 0,

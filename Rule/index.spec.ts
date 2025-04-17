@@ -387,7 +387,7 @@ describe("definitions", () => {
 		const originalAmount = state.transaction.original.amount
 		const evaluated = pax2pay.Rule.evaluate([outboundReserve], state, undefined, table)
 		const fixedReserveAmount = outboundReserve.reserve.fixed ? outboundReserve.reserve.fixed[1] : 0
-		expect(evaluated.transaction.original.reserve).toEqual(fixedReserveAmount)
+		expect(evaluated.transaction.original.charge?.total).toEqual(fixedReserveAmount)
 		expect(evaluated.transaction.original.total).toEqual(originalAmount + fixedReserveAmount)
 	})
 	it("one incoming charge fixed", () => {
