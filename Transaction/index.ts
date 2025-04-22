@@ -7,6 +7,7 @@ import { Rail } from "../Rail"
 import { Report } from "../Report"
 import type { Rule } from "../Rule"
 import { Settlement } from "../Settlement"
+import { Amount as TransactionAmount } from "./Amount"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Exchange as TransactionExchange } from "./Exchange"
 import { Note as TransactionNote } from "./Note"
@@ -44,58 +45,7 @@ export interface Transaction {
 }
 export namespace Transaction {
 	export import Exchange = TransactionExchange
-	export type Amount = { original: number; reserved: number; charge: number; total: number; exchange?: Exchange }
-	export namespace Amount {
-		export const type = isly.object<Amount>({
-			original: isly.number(),
-			reserved: isly.number(),
-			charge: isly.number(),
-			total: isly.number(),
-			exchange: Exchange.type.optional(),
-		})
-		export function fromState(state: Rule.State): Amount {
-			const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
-				? -1
-				: 1
-			return {
-				original: sign * state.transaction.original.amount,
-				reserved: sign * (state.transaction.original.reserve ?? 0),
-				charge: sign * (state.transaction.original.charge?.total ?? 0),
-				total: sign * state.transaction.original.total,
-				exchange: state?.transaction.exchange ?? state.authorization?.exchange,
-			}
-		}
-		export function fromOperations(
-			transaction: Transaction | Transaction.Creatable,
-			operations: Operation[],
-			state?: Rule.State
-		): Amount {
-			const stateAmount = state && fromState(state)
-			const changes = Operation.sum(operations)
-			const reserved = isoly.Currency.add(
-				transaction.currency,
-				changes["reserved-incoming"] ?? 0,
-				changes["reserved-outgoing"] ?? 0
-			)
-			return {
-				original: typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
-				reserved,
-				charge: stateAmount?.charge ?? 0,
-				total: changes.available ?? reserved ?? 0,
-				exchange: state?.transaction.exchange ?? state?.authorization?.exchange,
-			}
-		}
-		export function change(
-			currency: isoly.Currency,
-			amount: Amount,
-			change: number,
-			type: Exclude<keyof Amount, "total" | "exchange">
-		): Amount {
-			amount[type] = isoly.Currency.add(currency, amount[type], change)
-			amount.total = isoly.Currency.add(currency, amount.total, change)
-			return amount
-		}
-	}
+	export import Amount = TransactionAmount
 	export const types = ["card", "internal", "external", "system"] as const
 	export type Types = typeof types[number]
 	export const directions = ["inbound", "outbound"] as const
@@ -137,7 +87,25 @@ export namespace Transaction {
 		risk: isly.number().optional(),
 		state: isly.any().optional(),
 	})
-
+	export function amountFromOperations(
+		transaction: Transaction | Transaction.Creatable,
+		operations: Operation[],
+		state?: Rule.State
+	): Amount {
+		const stateAmount = state && Amount.fromState(state)
+		const changes = Operation.sum(operations)
+		const reserved = isoly.Currency.add(
+			transaction.currency,
+			changes["reserved-incoming"] ?? 0,
+			changes["reserved-outgoing"] ?? 0
+		)
+		return {
+			original: typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
+			charge: stateAmount?.charge ?? 0,
+			total: changes.available ?? reserved ?? 0,
+			exchange: state?.transaction.exchange ?? state?.authorization?.exchange,
+		}
+	}
 	export interface Legacy extends Omit<Transaction, "amount"> {
 		amount: number
 	}
@@ -154,7 +122,6 @@ export namespace Transaction {
 								transaction.state?.transaction.original.amount ??
 								isoly.Currency.subtract(transaction.currency, transaction.amount, transaction.charge ?? 0),
 							charge: transaction.state?.transaction.original.charge?.total ?? transaction.charge ?? 0,
-							reserved: transaction.state?.transaction.original.reserve ?? 0,
 							total: transaction.state?.transaction.original.total ?? transaction.amount,
 						},
 				  }
@@ -232,7 +199,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...creatable,
-			amount: { original: creatable.amount, reserved: 0, charge: 0, total: creatable.amount },
+			amount: { original: creatable.amount, charge: 0, total: creatable.amount },
 			type: getType(creatable.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -258,7 +225,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...creatable,
-			amount: { original: 0, reserved: 0, charge: 0, total: 0 },
+			amount: { original: 0, charge: 0, total: 0 },
 			type: getType(creatable.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -292,7 +259,7 @@ export namespace Transaction {
 				name: account.name,
 				organization: account.organization,
 			},
-			amount: { original: 0, reserved: 0, charge: 0, total: 0 },
+			amount: { original: 0, charge: 0, total: 0 },
 			type: "internal",
 			direction: "inbound",
 			organization: account.organization,

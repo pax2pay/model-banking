@@ -21,10 +21,7 @@ export namespace Reserve {
 	}
 	export const type = Base.type.extend<Reserve>({
 		action: isly.string(Action.value),
-		reserve: isly.object({
-			percentage: isly.number(),
-			fixed: Amount.type.optional(),
-		}),
+		reserve: isly.object({ percentage: isly.number(), fixed: Amount.type.optional() }),
 	})
 
 	export interface Api extends Base {
@@ -63,11 +60,7 @@ export namespace Reserve {
 		macros?: Record<string, selectively.Definition>,
 		table: Exchange.Rates = {}
 	): { outcomes: Reserve[]; notes: Note[]; reserve: number } {
-		const result: ReturnType<typeof evaluate> = {
-			outcomes: [],
-			notes: [],
-			reserve: 0,
-		}
+		const result: ReturnType<typeof evaluate> = { outcomes: [], notes: [], reserve: 0 }
 		const now = isoly.DateTime.now()
 		if (
 			state.transaction.stage == "initiate" &&

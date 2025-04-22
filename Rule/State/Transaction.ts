@@ -13,7 +13,6 @@ export type Transaction = ModelTransaction.Creatable.Resolved & {
 		total: number
 		amount: number
 		charge?: { current: number; total: number }
-		reserve?: number
 	}
 }
 export namespace Transaction {
@@ -31,7 +30,7 @@ export namespace Transaction {
 							transaction.currency,
 							transaction.state?.transaction.original.total ??
 								(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.total),
-							stage === "finalize" ? transaction.state?.transaction.original.reserve ?? 0 : 0
+							stage === "finalize" ? transaction.state?.transaction.original.charge?.total ?? 0 : 0
 						),
 				  ]
 				: [transaction.amount, transaction.amount]
