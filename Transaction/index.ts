@@ -280,7 +280,6 @@ export namespace Transaction {
 	}
 	export function fromIncoming(
 		transaction: Transaction.PreTransaction.Incoming,
-		id: string,
 		state: Rule.State.Evaluated,
 		account: { id: string; name: string; organization: string },
 		balance: { actual: number; reserved: number; available: number }
@@ -296,7 +295,7 @@ export namespace Transaction {
 			accountId: account.id,
 			accountName: account.name,
 			balance,
-			id,
+			id: state.transaction.id,
 			status,
 			flags: state.flags,
 			oldFlags: [],
