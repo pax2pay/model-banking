@@ -19,7 +19,7 @@ export namespace Totals {
 		return result
 	}
 	export function verify(totals: Totals, type: "outcome" | "settled"): boolean {
-		return Object.values(totals).every(t => Total.verify(t, type))
+		return Object.entries(totals).every(([currency, total]) => Total.verify(currency as isoly.Currency, total, type))
 	}
 	export function add(addendee: Totals, addends: Partial<Record<isoly.Currency, Partial<Total>>>): Totals {
 		const result = { ...addendee }
