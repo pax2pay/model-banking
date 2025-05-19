@@ -94,6 +94,13 @@ export namespace Reserve {
 					result.outcomes.push(rule)
 					result.notes.push({ author: "automatic", created: now, text: rule.name, rule })
 				}
+		// TODO: find some way to keep the authorized charge amount, then remove this
+		result.reserve &&
+			result.notes.push({
+				author: "automatic",
+				created: now,
+				text: `reserved charge:${result.reserve}${state.transaction.original.currency}`,
+			})
 		return result
 	}
 	export function apply(reserve: number, state: State): number {
