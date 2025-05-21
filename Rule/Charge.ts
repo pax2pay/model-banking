@@ -99,6 +99,12 @@ export namespace Charge {
 			result.charge.current,
 			result.charge.total
 		)
+		result.charge.total &&
+			result.notes.push({
+				author: "automatic",
+				created: now,
+				text: `captured charge:${result.charge.total}${state.transaction.original.currency}`,
+			})
 		return result
 	}
 	export function apply(charge: { current: number; total: number }, state: State): number {
