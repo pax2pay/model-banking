@@ -2,6 +2,7 @@ import { isly } from "isly"
 import { Acquirer } from "../../Acquirer"
 import { Amount } from "../../Amount"
 import { Merchant } from "../../Merchant"
+import { Exchange } from "../../Transaction/Exchange"
 import { Batch } from "../Batch"
 import { Fee } from "../Fee"
 import { Identifier as SettlementIdentifier } from "../Identifier"
@@ -21,6 +22,7 @@ export namespace Creatable {
 		fee: Fee
 		amount: Amount
 		settlement: SettlementIdentifier
+		exchange?: Exchange
 	}
 	export namespace Base {
 		export const type = isly.object<Base>({
@@ -35,6 +37,7 @@ export namespace Creatable {
 			fee: Fee.type,
 			amount: Amount.type,
 			settlement: SettlementIdentifier.type,
+			exchange: Exchange.type.optional(),
 		})
 	}
 	export interface Capture extends Base {
