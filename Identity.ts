@@ -25,10 +25,13 @@ export class Identity<T extends Identity.Require = never> {
 					{ [`*-*`]: constraint },
 			  ].some(e => userwidgets.User.Permissions.check(this.key.permissions, e))
 	}
-	collectionCheck(collection: string): boolean {
-		return Object.values(this.key.permissions).some(
-			value => (typeof value == "object" && value[collection]) || value == true
-		)
+	collectionCheck(collections: string): boolean {
+		return Object.values(this.key.permissions).some(permission => {
+			const collection = collections
+				.split(".")
+				.reduce((result, c) => (typeof result == "object" ? result?.[c] : undefined), permission)
+			return collection === true || typeof collection == "object"
+		})
 	}
 
 	static async authenticate<T extends Identity.Require = Record<string, never>>(
