@@ -1,7 +1,8 @@
 import { isoly } from "isoly"
-import { Card } from "Card"
+import { Card } from "../../../Card"
 import { Transaction } from "../../../Transaction"
 import { rows } from "../rows"
+import { Cards } from "./Cards"
 import { Country as DataCountry } from "./Country"
 import { Iin as DataIin } from "./Iin"
 import { NonMonthly } from "./NonMonthly"
@@ -30,7 +31,7 @@ export namespace Data {
 			result.regional = Regional.update(result.regional, transaction)
 			result.country = Country.update(result.country, transaction)
 		}
-		result.nonMonthly = NonMonthly.cards(result.nonMonthly, cards, range)
+		result.nonMonthly = { ...result.nonMonthly, ...Cards.report(result.nonMonthly, cards, range) }
 		return result
 	}
 	export function merge(previous: Data, addition: Data): Data {
