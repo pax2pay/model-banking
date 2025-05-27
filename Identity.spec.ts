@@ -3,7 +3,7 @@ import { userwidgets } from "@userwidgets/model"
 import { pax2pay } from "./index"
 
 describe("Identity", () => {
-	it.skip("authenticate with empty constraint", async () => {
+	it("authenticate with empty constraint", async () => {
 		const constraint: pax2pay.Key.Permissions = {}
 		const header1 = await createHeader({ [`test-*`]: ["finance"] }, "test", orgCode)
 		const authenticated = await pax2pay.Identity.authenticate(header1, constraint, undefined, verifier)
@@ -11,20 +11,20 @@ describe("Identity", () => {
 		const header2 = await createHeader({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode)
 		expect(await pax2pay.Identity.authenticate(header2, constraint, undefined, verifier)).toBeTruthy()
 	})
-	it.skip("authenticate with empty constraint, returning error if unauth", async () => {
+	it("authenticate with empty constraint, returning error if unauth", async () => {
 		const constraint: pax2pay.Key.Permissions = {}
 		const header = await createHeader(undefined, undefined, undefined)
 		const identity = await pax2pay.Identity.authenticate(header, constraint, undefined, verifier, "error")
 		expect(identity).toStrictEqual({ status: 401, type: "not authorized", error: undefined })
 	})
-	it.skip("authenticate finance roll on test", async () => {
+	it("authenticate finance roll on test", async () => {
 		const constraint: pax2pay.Key.Permissions = { treasury: { rebalance: true } }
 		const header1 = await createHeader({ [`test-*`]: ["finance"] }, "test", orgCode)
 		const header2 = await createHeader({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode)
 		expect(await pax2pay.Identity.authenticate(header1, constraint, undefined, verifier)).toBeTruthy()
 		expect(await pax2pay.Identity.authenticate(header2, constraint, undefined, verifier)).toBeFalsy()
 	})
-	it.skip("authenticate finance roll on test, return Error if unauth", async () => {
+	it("authenticate finance roll on test, return Error if unauth", async () => {
 		const constraint: pax2pay.Key.Permissions = { treasury: { rebalance: true } }
 		const header1 = await createHeader({ [`test-*`]: ["finance"] }, "test", orgCode)
 		const header2 = await createHeader({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode)
@@ -36,24 +36,24 @@ describe("Identity", () => {
 			type: "forbidden",
 		})
 	})
-	it.skip("authenticate finance roll with several constraints", async () => {
+	it("authenticate finance roll with several constraints", async () => {
 		const failingConstraint: pax2pay.Key.Permissions[] = [{ organizations: true }]
 		const passingConstraint: pax2pay.Key.Permissions[] = failingConstraint.concat({ treasury: { rebalance: true } })
 		const header = await createHeader({ [`test-*`]: ["finance"] }, "test", orgCode)
 		expect(await pax2pay.Identity.authenticate(header, failingConstraint, undefined, verifier)).toBeFalsy()
 		expect(await pax2pay.Identity.authenticate(header, passingConstraint, undefined, verifier)).toBeTruthy()
 	})
-	it.skip("authenticate organization finance roll on test", async () => {
+	it("authenticate organization finance roll on test", async () => {
 		const constraint: pax2pay.Key.Permissions = { cards: { view: true } }
 		const header = await createHeader({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode)
 		expect(await pax2pay.Identity.authenticate(header, constraint, undefined, verifier)).toBeTruthy()
 	})
-	it.skip("authenticate admin", async () => {
+	it("authenticate admin", async () => {
 		const constraint: pax2pay.Key.Permissions = { treasury: { rebalance: true } }
 		const header = await createHeader({ [`*-*`]: ["admin"] }, "test", orgCode)
 		expect(await pax2pay.Identity.authenticate(header, constraint, undefined, verifier)).toBeTruthy()
 	})
-	it.skip("authenticate finance roll on several realms", async () => {
+	it("authenticate finance roll on several realms", async () => {
 		const constraint: pax2pay.Key.Permissions = { treasury: { rebalance: true } }
 		const header1 = await createHeader({ [`test-*`]: ["finance"], [`uk-*`]: ["finance"] }, "test", orgCode)
 		const header2 = await createHeader({ [`test-*`]: ["finance"], [`uk-*`]: ["finance"] }, "uk", orgCode)
@@ -68,25 +68,25 @@ describe("Identity", () => {
 			type: "forbidden",
 		})
 	})
-	it.skip("get realms one realm", async () => {
+	it("get realms one realm", async () => {
 		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`test-*`]: ["finance"] })
 		expect(pax2pay.Identity.getRealms(permissionsRealm)).toEqual(["test"])
 		const permissionsOrganization = pax2pay.Key.Roles.resolve({ [`test-${orgCode}`]: ["finance"] })
 		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(["test"])
 	})
-	it.skip("get realms several realms", async () => {
+	it("get realms several realms", async () => {
 		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`test-*`]: ["finance"] })
 		expect(pax2pay.Identity.getRealms(permissionsRealm)).toEqual(["test"])
 		const permissionsOrganization = pax2pay.Key.Roles.resolve({ [`test-${orgCode}`]: ["finance"] })
 		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(["test"])
 	})
-	it.skip("get realms all realms", async () => {
+	it("get realms all realms", async () => {
 		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`*-*`]: ["finance"] })
 		expect(pax2pay.Identity.getRealms(permissionsRealm)).toEqual(pax2pay.Realm.realms)
 		const permissionsOrganization = pax2pay.Key.Roles.resolve({ [`*-${orgCode}`]: ["finance"] })
 		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(pax2pay.Realm.realms)
 	})
-	it.skip("single realm key inference", async () => {
+	it("single realm key inference", async () => {
 		const header = await createHeader({ "test-*": ["admin"] }, undefined, undefined)
 		const constraint: pax2pay.Key.Permissions = { cards: { view: true } }
 		const identity = await pax2pay.Identity.authenticate(header, constraint, { realm: true }, verifier)
