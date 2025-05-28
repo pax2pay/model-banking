@@ -60,7 +60,7 @@ describe("VisaComponent", () => {
 				"Payments Transactions Declined for Insufficient Funds - Number": {},
 				"Number of Accounts - International Enabled": { "45672557": 1, "45672555": 1, totalIdx: 2 },
 				"Total Number of Accounts": { "45672557": 1, "45672555": 1, totalIdx: 2 },
-				"Total Number of Active Cards": { "45672557": 1, totalIdx: 1 },
+				"Total Number of Active Cards": { "45672557": 2, totalIdx: 2 },
 				"Total Number of Cards": { "45672555": 1, "45672557": 2, totalIdx: 3 },
 				"Total Number of Active Accounts": { "45672557": 1, totalIdx: 1 },
 			},

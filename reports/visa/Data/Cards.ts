@@ -34,7 +34,7 @@ export namespace Cards {
 
 				// Total number of cards in range
 				const iinCardsWithinRange = iinCards.filter((card, i) => {
-					console.log(i, card.created, range.start, range.end)
+					console.log(i, card.created, "typeof card.created: ", typeof card.created, range.start, range.end)
 					console.log(
 						i,
 						isoly.DateTime.getDate(card.created) >= range.start,
@@ -49,8 +49,9 @@ export namespace Cards {
 				// Total number of active cards at end of range
 				const activeCards = iinCardsWithinRange.filter(
 					card =>
-						card.history.some(history => history.status == "cancelled" && history.created > range.end) ||
-						!card.history.some(history => history.status == "cancelled")
+						card.history.some(
+							history => history.status == "cancelled" && isoly.DateTime.getDate(history.created) > range.end
+						) || !card.history.some(history => history.status == "cancelled")
 				)
 				activeCards.length > 0 && (result["Total Number of Active Cards"][iin] = activeCards.length)
 
