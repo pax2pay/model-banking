@@ -32,18 +32,21 @@ export namespace Cards {
 						accounts)
 
 				// Total number of cards in range
-				const iinCardsWithinRange = iinCards.filter(
-					card =>
-						isoly.DateTime.getDate(card.created) >= range.start && isoly.DateTime.getDate(card.created) <= range.end
-				)
+				const iinCardsWithinRange = iinCards.filter(card => {
+					const created = isoly.DateTime.is(card.created) ? isoly.DateTime.getDate(card.created) : card.created
+					return created >= range.start && created <= range.end
+				})
 				iinCardsWithinRange.length > 0 && (result["Total Number of Cards"][iin] = iinCardsWithinRange.length)
 
 				// Total number of active cards at end of range
 				const activeCards = iinCardsWithinRange.filter(
 					card =>
-						card.history.some(
-							history => history.status == "cancelled" && isoly.DateTime.getDate(history.created) > range.end
-						) || !card.history.some(history => history.status == "cancelled")
+						card.history.some(history => {
+							const created = isoly.DateTime.is(history.created)
+								? isoly.DateTime.getDate(history.created)
+								: history.created
+							return history.status == "cancelled" && created > range.end
+						}) || !card.history.some(history => history.status == "cancelled")
 				)
 				activeCards.length > 0 && (result["Total Number of Active Cards"][iin] = activeCards.length)
 

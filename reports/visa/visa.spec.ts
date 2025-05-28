@@ -1,3 +1,4 @@
+import { isoly } from "isoly"
 import { pax2pay } from "../../index"
 
 describe("VisaComponent", () => {
@@ -52,17 +53,18 @@ describe("VisaComponent", () => {
 	}
 	const data: pax2pay.reports.visa.Data = pax2pay.reports.visa.Data.create([transaction], cards, {
 		start: "2025-05-01",
-		end: "2025-05-20",
+		end: "2025-05-11",
 	})
+	console.log(data)
 	it("should make visa report data", () => {
 		const result: pax2pay.reports.visa.Data = {
 			nonMonthly: {
 				"Payments Transactions Declined for Insufficient Funds - Number": {},
-				"Number of Accounts - International Enabled": {},
-				"Total Number of Accounts": {},
-				"Total Number of Active Cards": {},
-				"Total Number of Cards": {},
-				"Total Number of Active Accounts": {},
+				"Number of Accounts - International Enabled": { "45672557": 1, totalIdx: 1 },
+				"Total Number of Accounts": { "45672557": 1, totalIdx: 1 },
+				"Total Number of Active Cards": { "45672557": 1, totalIdx: 1 },
+				"Total Number of Cards": { "45672557": 1, totalIdx: 1 },
+				"Total Number of Active Accounts": { "45672557": 1, totalIdx: 1 },
 			},
 			country: {
 				DE: {
@@ -113,6 +115,7 @@ describe("VisaComponent", () => {
 		expect(pax2pay.reports.visa.Data.merge(data, data)).toMatchObject(result)
 	})
 	it("should make visa csv", () => {
+		console.log(isoly.DateTime.getDate("2025-05-11T14:20:50.937Z"))
 		expect(pax2pay.reports.visa.toCsv(data)).toMatchInlineSnapshot(`
 "Product Local Name|Visa IDX - 45672555|Visa IDX  - 4567255|Visa IDX 1.4% - 45672557|Total Visa IDX products|Visa Business Prepaid - 44260108|Visa Corporate Deferred Debit  - 49359119|Visa Business Immediate Debit - BIN: 45672554
 On-Us Payments Count - Month 1|0|0|0|0|0|0|0
@@ -295,7 +298,7 @@ International - Inter-Regional Cashback Count - Month 3|0|0|0|0|0|0|0
 International - Inter-Regional Cashback Volume - Month 1|0|0|0|0|0|0|0
 International - Inter-Regional Cashback Volume - Month 2|0|0|0|0|0|0|0
 International - Inter-Regional Cashback Volume - Month 3|0|0|0|0|0|0|0
-Total Number of Cards|1|0|2|3|0|0|0
+Total Number of Cards|0|0|1|1|0|0|0
 Number of Cards - Magnetic Stripe|0|0|0|0|0|0|0
 Number of Cards - Magnetic Stripe, Chip|0|0|0|0|0|0|0
 Number of Cards - Magnetic Stripe, Contactless|0|0|0|0|0|0|0
@@ -305,9 +308,9 @@ Number of Active Cards - used at Contactless device|0|0|0|0|0|0|0
 Number of Devices with Visa Contactless - Micro Tags|0|0|0|0|0|0|0
 Number of Devices with Visa Contactless - Mobile Phones|0|0|0|0|0|0|0
 Number of Devices with Visa Contactless - Other Devices|0|0|0|0|0|0|0
-Total Number of Accounts|1|0|1|2|0|0|0
+Total Number of Accounts|0|0|1|1|0|0|0
 Number of Accounts - Domestic Use Only|0|0|0|0|0|0|0
-Number of Accounts - International Enabled|1|0|1|2|0|0|0
+Number of Accounts - International Enabled|0|0|1|1|0|0|0
 Total Number of Active Accounts|0|0|1|1|0|0|0
 Total Number of Personal Deposit Accounts|0|0|0|0|0|0|0
 Number of Savings Accounts|0|0|0|0|0|0|0
@@ -342,111 +345,210 @@ Country DE - International - Intra-Regional Payments Card Not Present Volume - M
 
 const cards: pax2pay.Card[] = [
 	{
-		id: "zzzyP",
-		created: "2025-04-18T11:01:53.919Z",
-		organization: "hej",
-		realm: "test",
-		account: "123",
+		id: "zzzyPIeVH_vC8k5R",
+		created: "2025-05-12T16:41:47.380Z",
+		organization: "dnatatravel",
+		realm: "uk",
+		account: "Y8R5zVTA",
 		preset: "p2p-visa-idx-140",
 		scheme: "visa",
-		reference: "zzzyP",
+		reference: "zzzyPIeVH_vC8k5RY8R5zVTA",
 		status: "cancelled",
 		details: {
 			iin: "45672557",
-			last4: "1111",
+			last4: "3677",
 			expiry: [25, 6],
-			holder: "Hej",
+			holder: " Dnata Travel Holdings ",
 		},
 		history: [
 			{
 				type: "card",
+				status: "created",
+				created: "2025-05-12T16:41:47.380Z",
+			},
+			{
+				type: "card",
 				status: "cancelled",
-				created: "2025-05-20T11:01:59.349Z",
+				created: "2025-05-16T10:45:56.883Z",
 			},
 		],
 		limit: ["GBP", 0],
 		rules: [],
-		spent: ["GBP", 414.15],
+		spent: ["GBP", 0],
 	},
 	{
-		id: "zzzyPG",
-		created: "2025-05-19T10:45:19.568Z",
-		organization: "hej",
-		realm: "test",
-		account: "123",
+		id: "zzzyPIfntQQ7yEiW",
+		created: "2025-05-12T15:10:28.020Z",
+		organization: "dnatatravel",
+		realm: "uk",
+		account: "Y8R5zVTA",
 		preset: "p2p-visa-idx-140",
 		scheme: "visa",
-		reference: "zzzyPG",
+		reference: "zzzyPIfntQQ7yEiWY8R5zVTA",
 		status: "cancelled",
 		details: {
 			iin: "45672557",
-			last4: "1111",
+			last4: "2146",
 			expiry: [25, 6],
-			holder: "Hej",
+			holder: " Dnata Travel Holdings ",
 		},
 		history: [
 			{
 				type: "card",
+				status: "created",
+				created: "2025-05-12T15:10:28.020Z",
+			},
+			{
+				type: "card",
 				status: "cancelled",
-				created: "2025-05-20T10:45:29.134Z",
+				created: "2025-05-16T10:45:51.599Z",
 			},
 		],
 		limit: ["GBP", 0],
 		rules: [],
-		spent: ["GBP", 477.74],
+		spent: ["GBP", 0],
 	},
 	{
-		id: "zzzyPGA",
-		created: "2025-05-18T10:30:34.853Z",
-		organization: "hej",
-		realm: "test",
-		account: "123",
+		id: "zzzyPJ06g6zxJkM5",
+		created: "2025-05-11T14:20:50.937Z",
+		organization: "dnatatravel",
+		realm: "uk",
+		account: "Y8R5zVTA",
 		preset: "p2p-visa-idx-140",
 		scheme: "visa",
-		reference: "zzzyPGA",
+		reference: "zzzyPJ06g6zxJkM5Y8R5zVTA",
 		status: "cancelled",
 		details: {
 			iin: "45672557",
-			last4: "1111",
+			last4: "3592",
 			expiry: [25, 6],
-			holder: "Hej",
+			holder: " Dnata Travel Holdings ",
 		},
 		history: [
 			{
 				type: "card",
-				status: "cancelled",
-				created: "2025-05-21T10:30:45.005Z",
+				status: "created",
+				created: "2025-05-11T14:20:50.937Z",
 			},
-		],
-		limit: ["GBP", 0],
-		rules: [],
-		spent: ["GBP", 421.98],
-	},
-	{
-		id: "zzzyPGA0",
-		created: "2025-05-19T10:30:34.853Z",
-		organization: "hej",
-		realm: "test",
-		account: "456",
-		preset: "p2p-visa-idx-140",
-		scheme: "visa",
-		reference: "zzzyPGA0",
-		status: "cancelled",
-		details: {
-			iin: "45672555",
-			last4: "1111",
-			expiry: [25, 6],
-			holder: "Hej",
-		},
-		history: [
 			{
 				type: "card",
 				status: "cancelled",
-				created: "2025-05-19T10:30:45.005Z",
+				created: "2025-05-16T10:45:44.476Z",
 			},
 		],
 		limit: ["GBP", 0],
 		rules: [],
-		spent: ["GBP", 421.98],
+		spent: ["GBP", 0],
 	},
 ]
+
+// const cards: pax2pay.Card[] = [
+// 	{
+// 		id: "zzzyP",
+// 		created: "2025-04-18T11:01:53.919Z",
+// 		organization: "hej",
+// 		realm: "test",
+// 		account: "123",
+// 		preset: "p2p-visa-idx-140",
+// 		scheme: "visa",
+// 		reference: "zzzyP",
+// 		status: "cancelled",
+// 		details: {
+// 			iin: "45672557",
+// 			last4: "1111",
+// 			expiry: [25, 6],
+// 			holder: "Hej",
+// 		},
+// 		history: [
+// 			{
+// 				type: "card",
+// 				status: "cancelled",
+// 				created: "2025-05-20T11:01:59.349Z",
+// 			},
+// 		],
+// 		limit: ["GBP", 0],
+// 		rules: [],
+// 		spent: ["GBP", 414.15],
+// 	},
+// 	{
+// 		id: "zzzyPG",
+// 		created: "2025-05-19T10:45:19.568Z",
+// 		organization: "hej",
+// 		realm: "test",
+// 		account: "123",
+// 		preset: "p2p-visa-idx-140",
+// 		scheme: "visa",
+// 		reference: "zzzyPG",
+// 		status: "cancelled",
+// 		details: {
+// 			iin: "45672557",
+// 			last4: "1111",
+// 			expiry: [25, 6],
+// 			holder: "Hej",
+// 		},
+// 		history: [
+// 			{
+// 				type: "card",
+// 				status: "cancelled",
+// 				created: "2025-05-20T10:45:29.134Z",
+// 			},
+// 		],
+// 		limit: ["GBP", 0],
+// 		rules: [],
+// 		spent: ["GBP", 477.74],
+// 	},
+// 	{
+// 		id: "zzzyPGA",
+// 		created: "2025-05-18T10:30:34.853Z",
+// 		organization: "hej",
+// 		realm: "test",
+// 		account: "123",
+// 		preset: "p2p-visa-idx-140",
+// 		scheme: "visa",
+// 		reference: "zzzyPGA",
+// 		status: "cancelled",
+// 		details: {
+// 			iin: "45672557",
+// 			last4: "1111",
+// 			expiry: [25, 6],
+// 			holder: "Hej",
+// 		},
+// 		history: [
+// 			{
+// 				type: "card",
+// 				status: "cancelled",
+// 				created: "2025-05-21T10:30:45.005Z",
+// 			},
+// 		],
+// 		limit: ["GBP", 0],
+// 		rules: [],
+// 		spent: ["GBP", 421.98],
+// 	},
+// 	{
+// 		id: "zzzyPGA0",
+// 		created: "2025-05-19T10:30:34.853Z",
+// 		organization: "hej",
+// 		realm: "test",
+// 		account: "456",
+// 		preset: "p2p-visa-idx-140",
+// 		scheme: "visa",
+// 		reference: "zzzyPGA0",
+// 		status: "cancelled",
+// 		details: {
+// 			iin: "45672555",
+// 			last4: "1111",
+// 			expiry: [25, 6],
+// 			holder: "Hej",
+// 		},
+// 		history: [
+// 			{
+// 				type: "card",
+// 				status: "cancelled",
+// 				created: "2025-05-19T10:30:45.005Z",
+// 			},
+// 		],
+// 		limit: ["GBP", 0],
+// 		rules: [],
+// 		spent: ["GBP", 421.98],
+// 	},
+// ]
