@@ -111,6 +111,7 @@ export namespace rows {
 			"Total Number of Cards",
 			"Total Number of Active Cards",
 			"Total Number of Accounts",
+			"Total Number of Active Accounts",
 			"Number of Accounts - International Enabled",
 			"Payments Transactions Declined for Insufficient Funds - Number",
 		] as const
