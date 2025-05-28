@@ -34,12 +34,6 @@ export namespace Cards {
 
 				// Total number of cards in range
 				const iinCardsWithinRange = iinCards.filter((card, i) => {
-					console.log(i, card.created, "typeof card.created: ", typeof card.created, range.start, range.end)
-					console.log(
-						i,
-						isoly.DateTime.getDate(card.created) >= range.start,
-						isoly.DateTime.getDate(card.created) <= range.end
-					)
 					return (
 						isoly.DateTime.getDate(card.created) >= range.start && isoly.DateTime.getDate(card.created) <= range.end
 					)
