@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { Card } from "../../../Card"
 import { Iin } from "./Iin"
+import { NonMonthly } from "./NonMonthly"
 
 export type Cards = Record<
 	| "Total Number of Cards"
@@ -20,7 +21,7 @@ export namespace Cards {
 			"Total Number of Active Accounts": {},
 		}
 	}
-	export function report(previous: Cards, cards: Card[], range: { start: isoly.Date; end: isoly.Date }): Cards {
+	export function report(previous: NonMonthly, cards: Card[], range: { start: isoly.Date; end: isoly.Date }): Cards {
 		const result = previous
 		for (const iin of Iin.values)
 			if (iin !== "totalIdx") {
@@ -32,14 +33,25 @@ export namespace Cards {
 						accounts)
 
 				// Total number of cards in range
-				const iinCardsWithinRange = iinCards.filter(card => card.created >= range.start && card.created <= range.end)
+				const iinCardsWithinRange = iinCards.filter((card, i) => {
+					console.log(i, card.created, range.start, range.end)
+					console.log(
+						i,
+						isoly.DateTime.getDate(card.created) >= range.start,
+						isoly.DateTime.getDate(card.created) <= range.end
+					)
+					return (
+						isoly.DateTime.getDate(card.created) >= range.start && isoly.DateTime.getDate(card.created) <= range.end
+					)
+				})
 				iinCardsWithinRange.length > 0 && (result["Total Number of Cards"][iin] = iinCardsWithinRange.length)
 
 				// Total number of active cards at end of range
 				const activeCards = iinCardsWithinRange.filter(
 					card =>
-						card.history.some(history => history.status == "cancelled" && history.created > range.end) ||
-						!card.history.some(history => history.status == "cancelled")
+						card.history.some(
+							history => history.status == "cancelled" && isoly.DateTime.getDate(history.created) > range.end
+						) || !card.history.some(history => history.status == "cancelled")
 				)
 				activeCards.length > 0 && (result["Total Number of Active Cards"][iin] = activeCards.length)
 
