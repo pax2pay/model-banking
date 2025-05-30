@@ -1,23 +1,16 @@
 import { Transaction } from "../../../Transaction"
 import { rows } from "../rows"
+import { Cards } from "./Cards"
 import { Iin } from "./Iin"
 
-export type NonMonthly = Record<
-	| "Total Number of Cards"
-	| "Total Number of Active Cards"
-	| "Total Number of Accounts"
-	| "Number of Accounts - International Enabled"
-	| "Payments Transactions Declined for Insufficient Funds - Number",
-	Partial<Record<Iin, number>>
->
+export type NonMonthly = {
+	"Payments Transactions Declined for Insufficient Funds - Number": Partial<Record<Iin, number>>
+} & Cards
 export namespace NonMonthly {
 	export function empty(): NonMonthly {
 		return {
-			"Number of Accounts - International Enabled": {},
 			"Payments Transactions Declined for Insufficient Funds - Number": {},
-			"Total Number of Accounts": {},
-			"Total Number of Active Cards": {},
-			"Total Number of Cards": {},
+			...Cards.empty(),
 		}
 	}
 	export function update(previous: NonMonthly, transaction: Transaction.CardTransaction): NonMonthly {
