@@ -313,9 +313,11 @@ export namespace Transaction {
 		balance: { actual: number; reserved: number; available: number },
 		state: Rule.State.Evaluated
 	): Transaction {
+		const amount = Amount.fromState(state)
+		refund.exchange && (amount.exchange = refund.exchange)
 		return {
 			...Transaction.PreTransaction.Incoming.fromRefund(refund, card),
-			amount: Amount.fromState(state),
+			amount,
 			type: "card",
 			direction: "inbound",
 			organization: account.organization,
