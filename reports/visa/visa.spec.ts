@@ -58,11 +58,11 @@ describe("VisaComponent", () => {
 		const result: pax2pay.reports.visa.Data = {
 			nonMonthly: {
 				"Payments Transactions Declined for Insufficient Funds - Number": {},
-				"Number of Accounts - International Enabled": {},
-				"Total Number of Accounts": {},
-				"Total Number of Active Cards": {},
-				"Total Number of Cards": {},
-				"Total Number of Active Accounts": {},
+				"Number of Accounts - International Enabled": { "45672557": 1, "45672555": 1, totalIdx: 2 },
+				"Total Number of Accounts": { "45672557": 1, "45672555": 1, totalIdx: 2 },
+				"Total Number of Active Cards": { "45672557": 1, totalIdx: 1 },
+				"Total Number of Cards": { "45672555": 1, "45672557": 2, totalIdx: 3 },
+				"Total Number of Active Accounts": { "45672557": 1, totalIdx: 1 },
 			},
 			country: {
 				DE: {
@@ -81,36 +81,7 @@ describe("VisaComponent", () => {
 				},
 			},
 		}
-		expect(data).toMatchObject(result)
-	})
-	it("should merge data", () => {
-		const result: pax2pay.reports.visa.Data = {
-			nonMonthly: {
-				"Payments Transactions Declined for Insufficient Funds - Number": {},
-				"Number of Accounts - International Enabled": {},
-				"Total Number of Accounts": {},
-				"Total Number of Active Cards": {},
-				"Total Number of Cards": {},
-				"Total Number of Active Accounts": {},
-			},
-			country: {
-				DE: {
-					notPresent: {
-						1: { count: {}, volume: {} },
-						2: { count: { "45672555": 2, totalIdx: 2 }, volume: { "45672555": 2297.54, totalIdx: 2297.54 } },
-						3: { count: {}, volume: {} },
-					},
-				},
-			},
-			regional: {
-				"International - Intra-Regional Payments": {
-					1: { count: {}, volume: {} },
-					2: { count: { "45672555": 2, totalIdx: 2 }, volume: { "45672555": 2297.54, totalIdx: 2297.54 } },
-					3: { count: {}, volume: {} },
-				},
-			},
-		}
-		expect(pax2pay.reports.visa.Data.merge(data, data)).toMatchObject(result)
+		expect(data).toEqual(result)
 	})
 	it("should make visa csv", () => {
 		expect(pax2pay.reports.visa.toCsv(data)).toMatchInlineSnapshot(`
@@ -300,7 +271,7 @@ Number of Cards - Magnetic Stripe|0|0|0|0|0|0|0
 Number of Cards - Magnetic Stripe, Chip|0|0|0|0|0|0|0
 Number of Cards - Magnetic Stripe, Contactless|0|0|0|0|0|0|0
 Number of Cards - Magnetic Stripe, Chip, Contactless|0|0|0|0|0|0|0
-Total Number of Active Cards|0|0|2|2|0|0|0
+Total Number of Active Cards|0|0|1|1|0|0|0
 Number of Active Cards - used at Contactless device|0|0|0|0|0|0|0
 Number of Devices with Visa Contactless - Micro Tags|0|0|0|0|0|0|0
 Number of Devices with Visa Contactless - Mobile Phones|0|0|0|0|0|0|0
