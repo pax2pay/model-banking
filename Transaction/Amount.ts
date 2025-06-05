@@ -5,6 +5,18 @@ import { Exchange } from "./Exchange"
 
 export interface Amount {
 	original: number
+	/* 
+	authorized: {
+		net: number
+		charge: number
+		total: number
+	}
+	captured: {
+		net: number
+		charge: number
+		total: number
+	}
+	*/
 	charge: number
 	total: number
 	exchange?: Exchange
