@@ -1,6 +1,7 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Supplier } from "Supplier"
 import { Balances } from "../Balances"
 import { Rail } from "../Rail"
 import { Rule } from "../Rule"
@@ -14,6 +15,7 @@ export interface Account extends Account.Creatable {
 	organization: string
 	balances: Balances
 	rails: Rail.Address[]
+	addresses?: Record<string, Rail.Address> & { supplier: Supplier }
 	counterparts?: Record<string, Rail.Address>
 	key?: string
 	rules?: Rule[]
