@@ -15,7 +15,7 @@ export interface Account extends Account.Creatable {
 	organization: string
 	balances: Balances
 	rails: Rail.Address[]
-	addresses?: Record<string, Rail.Address> & { supplier: Supplier }
+	addresses?: Account.Addresses
 	counterparts?: Record<string, Rail.Address>
 	key?: string
 	rules?: Rule[]
@@ -25,6 +25,13 @@ export namespace Account {
 	export import Creatable = AccountCreatable
 	export import Status = AccountStatus
 	export import History = AccountHistory
+	export type Addresses = Record<string, Rail.Address> & { supplier: Supplier }
+	export namespace Addresses {
+		export const type = isly.intersection<Addresses, Record<string, Rail.Address>, { supplier: Supplier }>(
+			isly.record(isly.string(), Rail.Address.type),
+			isly.object({ supplier: Supplier.type })
+		)
+	}
 	export type Legacy = Omit<Account, "status">
 	export function fromLegacy(maybeLegacy: Legacy | Account, status?: Account.Status): Account {
 		return { ...maybeLegacy, status: status ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" }) }
@@ -35,6 +42,7 @@ export namespace Account {
 		organization: isly.string(),
 		balances: Balances.type,
 		rails: Rail.Address.type.array(),
+		addresses: Account.Addresses.type.optional(),
 		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.type).optional(),
 		key: isly.string().optional(),
 		rules: Rule.type.array().optional(),
