@@ -1,4 +1,5 @@
 import { gracely } from "gracely"
+import { isoly } from "isoly"
 import { http } from "cloudly-http"
 import { Card } from "../Card"
 import { Settlement } from "../Settlement"
@@ -15,9 +16,12 @@ export class Settlements {
 	async list(options?: {
 		limit?: number
 		cursor?: string
+		date?: isoly.Date
 	}): Promise<(Settlement[] & { cursor?: string }) | gracely.Error> {
 		return this.client.get<Settlement[] & { cursor?: string | undefined }>(
-			`/settlement${options?.cursor ? `?cursor=${options.cursor}` : ""}`,
+			`/settlement${options?.cursor && !options.date ? `?cursor=${options.cursor}` : ""}${
+				options?.date ? `?date=${options.date}` : ""
+			}`,
 			options?.limit ? { limit: options?.limit.toString() } : {}
 		)
 	}
