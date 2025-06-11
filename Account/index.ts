@@ -1,10 +1,10 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Supplier } from "Supplier"
 import { Balances } from "../Balances"
 import { Rail } from "../Rail"
 import { Rule } from "../Rule"
+import { Supplier } from "../Supplier"
 import { Creatable as AccountCreatable } from "./Creatable"
 import { History as AccountHistory } from "./History"
 import { Status as AccountStatus } from "./Status"
@@ -25,7 +25,7 @@ export namespace Account {
 	export import Creatable = AccountCreatable
 	export import Status = AccountStatus
 	export import History = AccountHistory
-	export type Addresses = Record<string, Rail.Address> & { supplier: Supplier }
+	export type Addresses = { supplier: Supplier } & Record<string, Rail.Address>
 	export namespace Addresses {
 		export const type = isly.intersection<Addresses, Record<string, Rail.Address>, { supplier: Supplier }>(
 			isly.record(isly.string(), Rail.Address.type),
