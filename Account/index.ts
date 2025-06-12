@@ -4,7 +4,7 @@ import { isly } from "isly"
 import { Balances } from "../Balances"
 import { Rail } from "../Rail"
 import { Rule } from "../Rule"
-import { Supplier } from "../Supplier"
+import { Supplier as AccountSupplier } from "../Supplier"
 import { Creatable as AccountCreatable } from "./Creatable"
 import { History as AccountHistory } from "./History"
 import { Status as AccountStatus } from "./Status"
@@ -15,7 +15,8 @@ export interface Account extends Account.Creatable {
 	organization: string
 	balances: Balances
 	rails: Rail.Address[]
-	addresses?: Account.Addresses
+	details?: Account.Details
+	supplier?: Account.Supplier
 	counterparts?: Record<string, Rail.Address>
 	key?: string
 	rules?: Rule[]
@@ -25,11 +26,12 @@ export namespace Account {
 	export import Creatable = AccountCreatable
 	export import Status = AccountStatus
 	export import History = AccountHistory
-	export type Addresses = { supplier: Supplier } & Record<string, Rail.Address>
+	export type Details = { supplier: AccountSupplier; addresses: Rail.Address[] }
+	export type Supplier = { name: AccountSupplier; addresses: Rail.Address[] }
 	export namespace Addresses {
-		export const type = isly.intersection<Addresses, Record<string, Rail.Address>, { supplier: Supplier }>(
+		export const type = isly.intersection<Details, Record<string, Rail.Address>, { supplier: Details }>(
 			isly.record(isly.string(), Rail.Address.type),
-			isly.object({ supplier: Supplier.type })
+			isly.object({ supplier: AccountSupplier.type })
 		)
 	}
 	export type Legacy = Omit<Account, "status">
@@ -42,7 +44,7 @@ export namespace Account {
 		organization: isly.string(),
 		balances: Balances.type,
 		rails: Rail.Address.type.array(),
-		addresses: Account.Addresses.type.optional(),
+		supplier: Account.Addresses.type.optional(),
 		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.type).optional(),
 		key: isly.string().optional(),
 		rules: Rule.type.array().optional(),
