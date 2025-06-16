@@ -24,7 +24,7 @@ export interface Card {
 	account: string
 	preset: CardPreset
 	scheme: CardScheme
-	reference?: string
+	reference: string
 	details: {
 		iin: string
 		last4: string
@@ -49,7 +49,7 @@ export namespace Card {
 		account: isly.string(),
 		preset: CardPreset.type,
 		scheme: CardScheme.type,
-		reference: isly.string().optional(),
+		reference: isly.string(),
 		details: isly.object({
 			iin: isly.string(),
 			last4: isly.string(),
@@ -74,7 +74,7 @@ export namespace Card {
 			account: isly2.string().rename("Account").describe("Account identifier."),
 			preset: CardPreset.type2,
 			scheme: CardScheme.type2,
-			reference: isly2.string().optional().rename("Reference").describe("Reference to external system."),
+			reference: isly2.string().rename("Reference").describe("Reference to external system."),
 			details: isly2.object<Card["details"]>({
 				iin: isly2.string().rename("Iin").describe("First 6-8 numbers of the pan."),
 				last4: isly2.string().rename("Last4").describe("Last four digits of pan."),
