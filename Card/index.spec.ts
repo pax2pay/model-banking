@@ -2,7 +2,7 @@ import { isoly } from "isoly"
 import { pax2pay } from "../index"
 
 const now = isoly.DateTime.now()
-const optional: string[] = ["reference", "meta", "number"]
+const optional: string[] = ["meta", "number"]
 const Card: pax2pay.Card = {
 	id: "example",
 	created: now,
@@ -12,13 +12,7 @@ const Card: pax2pay.Card = {
 	preset: "p2p-mc-200",
 	scheme: "mastercard",
 	reference: "example",
-	details: {
-		iin: "example",
-		last4: "example",
-		expiry: [24, 12],
-		holder: "example",
-		token: "example",
-	},
+	details: { iin: "example", last4: "example", expiry: [24, 12], holder: "example", token: "example" },
 	limit: ["GBP", 2000],
 	spent: ["GBP", 300],
 	status: "active",
