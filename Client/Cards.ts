@@ -13,26 +13,9 @@ export class Cards {
 	async create(card: Card.Creatable): Promise<Card | gracely.Error> {
 		return this.client.post<Card>("/card", card)
 	}
-	async list(options?: {
-		start?: string
-		end?: string
-		limit?: string
-		cursor?: string
-		prefix?: string
-	}): Promise<(Card[] & { cursor?: string | undefined }) | gracely.Error> {
-		// I mean it's supposed to return Card.Static
-		const search =
-			options?.start && options?.end
-				? `?start=${options?.start}&end=${options?.end}`
-				: options?.start
-				? `?start=${options?.start}`
-				: options?.end
-				? `?end=${options?.end}`
-				: ""
-		return this.client.get<Card[] & { cursor?: string | undefined }>(
-			`/card${search}`,
-			options && (({ start, end, ...headers }) => headers)(options)
-		)
+	async list(options?: { limit?: string; cursor?: string }): Promise<(Card[] & { cursor?: string }) | gracely.Error> {
+		const search = options && "?" + http.Search.stringify(options)
+		return this.client.get<Card[] & { cursor?: string }>(`/card${search ? search : ""}`)
 	}
 	async update(id: string, card: Card.Changeable): Promise<Card | gracely.Error> {
 		return this.client.patch<Card>(`/card/${id}`, card)
