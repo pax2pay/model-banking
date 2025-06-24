@@ -19,11 +19,11 @@ export class Transactions {
 		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
 	}
 	async list(
-		options?: TransactionListOptions
+		options?: Transactions.ListOptions
 	): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
 		const query = Object.entries({
 			...(options?.cursor ? { cursor: options.cursor } : {}),
-			...(!options?.query ? {} : options?.query == "review" ? { status: "review" } : { order: options?.query }),
+			...(!options?.order ? {} : options?.order == "review" ? { status: "review" } : { order: options?.order }),
 			...(options?.dateRange ?? {}),
 		})
 			.map(([k, v]) => `${k}=${v}`)
@@ -53,15 +53,16 @@ export class Transactions {
 		return this.client.get<Transaction.Statistics>(`/transaction/statistics${query}`)
 	}
 }
-
-export type TransactionListOptions = {
-	account?: string
-	limit?: number
-	cursor?: string
-	query?: "created" | "changed" | "review"
-	dateRange?: isoly.DateRange
-	rail?: pax2pay.Rail
-	organization?: string
-	status?: Transaction.Status
-	type?: Transaction.Types
+export namespace Transactions {
+	export type ListOptions = {
+		account?: string
+		limit?: number
+		cursor?: string
+		order?: "created" | "changed" | "review"
+		dateRange?: isoly.DateRange
+		rail?: pax2pay.Rail
+		organization?: string
+		status?: Transaction.Status
+		type?: Transaction.Types
+	}
 }
