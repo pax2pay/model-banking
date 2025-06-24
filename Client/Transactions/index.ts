@@ -1,6 +1,7 @@
 import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { http } from "cloudly-http"
+import { pax2pay } from "index"
 import { Card } from "../../Card"
 import { Operation } from "../../Operation"
 import { Rule } from "../../Rule"
@@ -17,13 +18,9 @@ export class Transactions {
 	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
 		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
 	}
-	async list(options?: {
-		account?: string
-		limit?: number
-		cursor?: string
-		query?: "created" | "changed" | "review"
-		dateRange?: isoly.DateRange
-	}): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
+	async list(
+		options?: TransactionListOptions
+	): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
 		const query = Object.entries({
 			...(options?.cursor ? { cursor: options.cursor } : {}),
 			...(!options?.query ? {} : options?.query == "review" ? { status: "review" } : { order: options?.query }),
@@ -55,4 +52,16 @@ export class Transactions {
 		const query = "?" + http.Search.stringify({ ...queries, ...range })
 		return this.client.get<Transaction.Statistics>(`/transaction/statistics${query}`)
 	}
+}
+
+export type TransactionListOptions = {
+	account?: string
+	limit?: number
+	cursor?: string
+	query?: "created" | "changed" | "review"
+	dateRange?: isoly.DateRange
+	rail?: pax2pay.Rail
+	organization?: string
+	status?: Transaction.Status
+	type?: Transaction.Types
 }
