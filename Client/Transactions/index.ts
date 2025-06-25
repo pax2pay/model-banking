@@ -30,9 +30,6 @@ export class Transactions {
 		type?: Transaction.Types
 	}): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
 		const path = `/transaction`
-		// const rawQuery: Record<string, string> | undefined = options
-		// 	? Object.entries(options).reduce((r, [k, v]) => (v ? { ...r, [k]: v.toString() } : r), {})
-		// 	: undefined
 		const query = options ? http.Search.stringify({ ...options }) : undefined
 		return await this.client.get<Transaction[] & { cursor?: string | undefined }>(
 			path + (query && "?" + query),
