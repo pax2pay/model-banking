@@ -3,6 +3,7 @@ import { isoly } from "isoly"
 import { http } from "cloudly-http"
 import { Card } from "../../Card"
 import { Operation } from "../../Operation"
+import { Rail } from "../../Rail"
 import { Rule } from "../../Rule"
 import { Supplier } from "../../Supplier"
 import { Transaction } from "../../Transaction"
@@ -21,17 +22,18 @@ export class Transactions {
 		account?: string
 		limit?: number
 		cursor?: string
-		query?: "created" | "changed" | "review"
-		dateRange?: isoly.DateRange
+		start?: isoly.DateTime
+		end?: isoly.DateTime
+		currency?: string
+		organization?: string
+		rail?: Rail
+		type?: Transaction.Types
 	}): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
-		const query = Object.entries({
-			...(options?.cursor ? { cursor: options.cursor } : {}),
-			...(!options?.query ? {} : options?.query == "review" ? { status: "review" } : { order: options?.query }),
-			...(options?.dateRange ?? {}),
-		})
-			.map(([k, v]) => `${k}=${v}`)
-			.join("&")
-		const path = options?.account ? `/account/${options.account}/transaction` : `/transaction`
+		const path = `/transaction`
+		// const rawQuery: Record<string, string> | undefined = options
+		// 	? Object.entries(options).reduce((r, [k, v]) => (v ? { ...r, [k]: v.toString() } : r), {})
+		// 	: undefined
+		const query = options ? http.Search.stringify({ ...options }) : undefined
 		return await this.client.get<Transaction[] & { cursor?: string | undefined }>(
 			path + (query && "?" + query),
 			options?.limit ? { limit: options?.limit.toString() } : {}
