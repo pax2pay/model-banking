@@ -1,7 +1,6 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Identifier } from "../Identifier"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 import { Report } from "../Report"
@@ -10,6 +9,7 @@ import { Settlement } from "../Settlement"
 import { Amount as TransactionAmount } from "./Amount"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Exchange as TransactionExchange } from "./Exchange"
+import { Identifier as TransactionIdentifier } from "./Identifier"
 import { Note as TransactionNote } from "./Note"
 import { PreTransaction as TransactionPreTransaction } from "./PreTransaction"
 import { Reference as TransactionReference } from "./Reference"
@@ -44,6 +44,7 @@ export interface Transaction {
 	state?: Rule.State
 }
 export namespace Transaction {
+	export import Identifier = TransactionIdentifier
 	export import Exchange = TransactionExchange
 	export import Amount = TransactionAmount
 	export const types = ["card", "internal", "external", "system"] as const

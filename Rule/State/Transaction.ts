@@ -1,5 +1,4 @@
 import { isoly } from "isoly"
-import { Identifier } from "../../Identifier"
 import { Transaction as ModelTransaction } from "../../Transaction"
 import type { Rule } from "../index"
 
@@ -38,7 +37,7 @@ export namespace Transaction {
 				: [transaction.amount, transaction.amount]
 		return {
 			...transaction,
-			id: "id" in transaction ? transaction.id : Identifier.generate(),
+			id: "id" in transaction ? transaction.id : ModelTransaction.Identifier.generate(),
 			stage,
 			kind,
 			amount: Math.abs(typeof amount == "number" ? amount : amount.total),
@@ -58,7 +57,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...transaction,
-			id: "id" in transaction ? transaction.id : Identifier.generate(),
+			id: "id" in transaction ? transaction.id : ModelTransaction.Identifier.generate(),
 			stage,
 			kind,
 			amount: Math.abs(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.total),
