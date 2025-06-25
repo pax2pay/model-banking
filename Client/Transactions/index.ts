@@ -18,23 +18,24 @@ export class Transactions {
 	async create(account: string, transaction: Transaction.Creatable): Promise<Transaction | gracely.Error> {
 		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
 	}
-	async list(options?: {
-		account?: string
-		limit?: number
-		cursor?: string
-		start?: isoly.DateTime
-		end?: isoly.DateTime
-		currency?: string
-		organization?: string
-		rail?: Rail
-		type?: Transaction.Types
-	}): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
+	async list(
+		options?:
+			| {
+					account?: string
+					limit?: number
+					cursor?: string
+					start?: isoly.DateTime
+					end?: isoly.DateTime
+					currency?: string
+					organization?: string
+					rail?: Rail
+					type?: Transaction.Types
+			  }
+			| string
+	): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
 		const path = `/transaction`
-		const query = options ? http.Search.stringify({ ...options }) : undefined
-		return await this.client.get<Transaction[] & { cursor?: string | undefined }>(
-			path + (query && "?" + query),
-			options?.limit ? { limit: options?.limit.toString() } : {}
-		)
+		const query = !options ? undefined : typeof options == "string" ? options : http.Search.stringify({ ...options })
+		return await this.client.get<Transaction[] & { cursor?: string | undefined }>(path + (query && "?" + query))
 	}
 	async fetch(transaction: string, account?: string): Promise<Transaction | gracely.Error> {
 		return this.client.get<Transaction>(
