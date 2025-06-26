@@ -33,9 +33,10 @@ export class Transactions {
 			  }
 			| string
 	): Promise<(Transaction[] & { cursor?: string | undefined }) | gracely.Error> {
-		const path = `/transaction`
 		const query = !options ? undefined : typeof options == "string" ? options : http.Search.stringify({ ...options })
-		return await this.client.get<Transaction[] & { cursor?: string | undefined }>(path + (query && "?" + query))
+		return await this.client.get<Transaction[] & { cursor?: string | undefined }>(
+			"/transaction" + (query ? "?" + query : "")
+		)
 	}
 	async fetch(transaction: string, account?: string): Promise<Transaction | gracely.Error> {
 		return this.client.get<Transaction>(
