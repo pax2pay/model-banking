@@ -1,19 +1,24 @@
 import { isoly } from "isoly"
-import { Password } from "./Password"
+import { Identity as UserIdentity } from "./Identity"
+import { JWT as UserJWT } from "./JWT"
+import { Password as UserPassword } from "./Password"
 import { Permission } from "./Permission"
 
 export interface User {
 	email: string
-	password: Password
+	// password: User.Password
 	permission: Permission
 	changed: isoly.DateTime
 	created: isoly.DateTime
 }
 export namespace User {
-	export function fromCreatable(email: string, permission: Permission, password: Password): User {
+	export import Identity = UserIdentity
+	export import JWT = UserJWT
+	export import Password = UserPassword
+	export function fromCreatable(email: string, permission: Permission, password: User.Password): User {
 		return {
 			email,
-			password,
+			// password,
 			permission,
 			changed: isoly.DateTime.now(),
 			created: isoly.DateTime.now(),
