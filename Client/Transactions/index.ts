@@ -70,7 +70,7 @@ export namespace Transactions {
 		})
 		export function parse(query: string | http.Request["search"]): Query {
 			if (typeof query == "string")
-				query = http.Search.parse(query.replace("?", ""))
+				query = query ? http.Search.parse(query.replace("?", "")) : {} // search.parse does not support empty string
 			return type.prune(query) ?? {}
 		}
 	}
