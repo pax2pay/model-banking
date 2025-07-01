@@ -68,10 +68,10 @@ export namespace Transactions {
 			rail: Rail.type2.optional(),
 			type: isly.string("value", ...Transaction.types).optional(),
 		})
-		export function parse(query: string | http.Request["search"]): Query | undefined {
+		export function parse(query: string | http.Request["search"]): Query {
 			if (typeof query == "string")
 				query = http.Search.parse(query.replace("?", ""))
-			return type.prune(query)
+			return type.prune(query) ?? {}
 		}
 	}
 }
