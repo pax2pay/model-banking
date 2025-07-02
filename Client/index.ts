@@ -13,7 +13,7 @@ import { Processor } from "./Processor"
 import { Reports } from "./Reports"
 import { Rules } from "./Rules"
 import { Settlements } from "./Settlements"
-import { Transactions } from "./Transactions"
+import { Transactions as ClientTransactions } from "./Transactions"
 import { Treasury } from "./Treasury"
 import { Version } from "./Version"
 
@@ -30,7 +30,7 @@ export class Client {
 	readonly logs: Logs
 	readonly rules: Rules
 	readonly settlements: Settlements
-	readonly transactions: Transactions
+	readonly transactions: ClientTransactions
 	readonly treasury: Treasury
 	readonly flags: Labels
 	readonly groups: Labels
@@ -60,7 +60,7 @@ export class Client {
 		this.logs = new Logs(this.client)
 		this.rules = new Rules(this.client)
 		this.settlements = new Settlements(this.client)
-		this.transactions = new Transactions(this.client)
+		this.transactions = new ClientTransactions(this.client)
 		this.treasury = new Treasury(this.client)
 		this.flags = new Labels(this.client, "flag")
 		this.groups = new Labels(this.client, "group")
@@ -95,4 +95,7 @@ export class Client {
 		const result: Client = new Client(httpClient)
 		return result
 	}
+}
+export namespace Client {
+	export import Transactions = ClientTransactions
 }
