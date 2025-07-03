@@ -1,25 +1,27 @@
 import { isoly } from "isoly"
+import { isly } from "isly"
+import { Access as UserAccess } from "./Access"
 import { Identity as UserIdentity } from "./Identity"
 import { JWT as UserJWT } from "./JWT"
 import { Password as UserPassword } from "./Password"
-import { Permission } from "./Permission"
 
 export interface User {
 	email: string
 	// password: User.Password
-	permission: Permission
+	access: User.Access
 	changed: isoly.DateTime
 	created: isoly.DateTime
 }
 export namespace User {
+	export import Access = UserAccess
 	export import Identity = UserIdentity
 	export import JWT = UserJWT
 	export import Password = UserPassword
-	export function fromCreatable(email: string, permission: Permission, password: User.Password): User {
+	export function fromCreatable(email: string, access: Access): User {
 		return {
 			email,
 			// password,
-			permission,
+			access,
 			changed: isoly.DateTime.now(),
 			created: isoly.DateTime.now(),
 		}
@@ -32,12 +34,15 @@ export namespace User {
 	export interface Invite {
 		id: string
 		email: string
-		permission: Permission
+		access: Access
 	}
 	export namespace Invite {
 		export interface Creatable {
 			email: string
-			permission: Permission
+			access: Access
+		}
+		export namespace Creatable {
+			export const type = isly.object<Creatable>({ email: isly.string(), access: Access.type })
 		}
 	}
 }

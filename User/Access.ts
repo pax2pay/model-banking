@@ -2,16 +2,16 @@ import { isly } from "isly"
 import { typedly } from "typedly"
 import { Realm } from "../Realm"
 
-export type Permission = Partial<Record<Realm, Permission.Privilege>>
-export namespace Permission {
-	/** read < write < developer < admin */
-	export type Privilege = Partial<Record<Privilege.Collection, Privilege.Level>>
-	export namespace Privilege {
-		export function check(constraint: Privilege, privilege: Privilege): boolean {
+/** read < write < developer < admin */
+export type Access = Partial<Record<Realm, Access.Permission>> & { user?: Access.Permission.Level }
+export namespace Access {
+	export type Permission = Partial<Record<Permission.Collection, Permission.Level>>
+	export namespace Permission {
+		export function check(constraint: Permission, privilege: Permission): boolean {
 			return typedly.Object.entries(constraint).every(
 				([collection, level]) =>
-					Privilege.Level.get(privilege[collection]) >= Privilege.Level.get(level) ||
-					Privilege.Level.get(privilege["*"]) >= Privilege.Level.get(level)
+					Permission.Level.get(privilege[collection]) >= Permission.Level.get(level) ||
+					Permission.Level.get(privilege["*"]) >= Permission.Level.get(level)
 			)
 		}
 		export type Level = typeof Level.values[number]
@@ -40,13 +40,14 @@ export namespace Permission {
 				"settlement",
 				"transaction",
 				"treasury",
+				"user",
 				"*",
 			] as const
 			export const type = isly.string(values)
 		}
+		export const type = isly.record<Permission>(Collection.type, Level.type)
 	}
-	export const type = isly.record<Permission>(
-		Realm.type,
-		isly.record<Privilege>(Privilege.Collection.type, Privilege.Level.type)
-	)
+	export const type = isly
+		.object({ user: Access.Permission.Level.type.optional() })
+		.extend(isly.record<Access>(Realm.type, Permission.type))
 }

@@ -1,5 +1,5 @@
 import { authly } from "authly"
-import { Realm } from "Realm"
+import { Realm } from "../../Realm"
 import { Payload as JWTPayload } from "./Payload"
 import { Signer as JWTSigner } from "./Signer"
 
