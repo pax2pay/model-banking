@@ -1,13 +1,13 @@
 import { authly } from "authly"
 import { isly } from "isly"
 import { Realm } from "../../Realm"
-import { Permission } from "../Permission"
+import { Access } from "../Access"
 
 export type Payload = Payload.LongTerm | Payload.ShortTerm
 export namespace Payload {
 	export interface Creatable {
 		sub: string
-		permission: Permission
+		permission: Access.Permission
 		realm: Realm
 	}
 	export interface Base extends authly.Payload {
@@ -15,7 +15,7 @@ export namespace Payload {
 		iat: number
 		iss: string
 		sub: string
-		permission: Permission
+		permission: Access.Permission
 		realm: Realm
 	}
 	export namespace Base {
@@ -24,7 +24,7 @@ export namespace Payload {
 			iat: isly.number(),
 			iss: isly.string(),
 			sub: isly.string(),
-			permission: Permission.type,
+			permission: Access.Permission.type,
 			realm: Realm.type,
 		})
 	}

@@ -1,34 +1,32 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
 import { Realm } from "../Realm"
+import { Access } from "./Access"
 import { JWT } from "./JWT"
-import { Permission } from "./Permission"
 
 export class Identity {
 	get realm(): Realm {
 		return this.payload.realm
 	}
-	#verySecret = "----------------------------"
 	constructor(private readonly payload: JWT.Payload, private readonly jwt: string) {}
 
-	authenticate(constraint: Permission.Privilege | Permission.Privilege[]): Identity | gracely.Error {
+	authenticate(constraint: Access.Permission | Access.Permission[]): Identity | gracely.Error {
 		let allowed: boolean
 		if (Array.isArray(constraint))
 			allowed = constraint.some(c => this.authenticate(c))
-		else {
-			const privilege = this.payload.permission[this.realm]
-			allowed = !!privilege && Permission.Privilege.check(constraint, privilege)
-		}
+		else
+			allowed = Access.Permission.check(constraint, this.payload.permission)
 		return allowed ? this : gracely.client.forbidden()
 	}
 
 	static async open(
 		header: http.Request.Header,
-		whitelist?: JWT.Whitelist,
-		key?: string
+		options: { whitelist?: JWT.Whitelist; key?: string }
 	): Promise<Identity | gracely.Error> {
 		const jwt = header.authorization?.startsWith("Bearer ") ? header.authorization.replace("Bearer ", "") : undefined
-		const payload = jwt ? await JWT.open({ public: key ?? Identity.key }, whitelist).verify(jwt) : undefined
+		const payload = jwt
+			? await JWT.open({ public: options.key ?? Identity.key }, options.whitelist).verify(jwt)
+			: undefined
 		return jwt && payload ? new Identity(payload, jwt) : gracely.client.unauthorized()
 	}
 }
