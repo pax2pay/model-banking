@@ -14,6 +14,7 @@ import { Operation as CardOperation } from "./Operation"
 import { Preset as CardPreset } from "./Preset"
 import { Scheme as CardScheme } from "./Scheme"
 import { Stack as CardStack } from "./Stack"
+import { Statistics as CardStatistics } from "./Statistics"
 
 export interface Card {
 	id: string
@@ -103,6 +104,7 @@ export namespace Card {
 	export import Operation = CardOperation
 	export import Scheme = CardScheme
 	export import Stack = CardStack
+	export import Statistics = CardStatistics
 	const csvMap: Record<string, (card: Card) => string | number | undefined> = {
 		id: card => card.id,
 		created: card => readableDate(card.created),
