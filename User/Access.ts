@@ -1,9 +1,13 @@
 import { isly } from "isly"
 import { typedly } from "typedly"
-import { Realm } from "../Realm"
 
 /** read < write < developer < admin */
-export type Access = Partial<Record<Realm, Access.Permission>> & { user?: Access.Permission.Level }
+export interface Access {
+	uk?: Access.Permission
+	eea?: Access.Permission
+	test?: Access.Permission
+	"*"?: { user?: Access.Permission.Level }
+}
 export namespace Access {
 	export type Permission = Partial<Record<Permission.Collection, Permission.Level>>
 	export namespace Permission {
@@ -47,7 +51,10 @@ export namespace Access {
 		}
 		export const type = isly.record<Permission>(Collection.type, Level.type)
 	}
-	export const type = isly
-		.object({ user: Access.Permission.Level.type.optional() })
-		.extend(isly.record<Access>(Realm.type, Permission.type))
+	export const type = isly.object({
+		uk: Access.Permission.type.optional(),
+		eea: Access.Permission.type.optional(),
+		test: Access.Permission.type.optional(),
+		"*": isly.object({ user: Access.Permission.Level.type.optional() }).optional(),
+	})
 }

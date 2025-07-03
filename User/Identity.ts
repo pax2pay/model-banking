@@ -19,6 +19,7 @@ export class Identity {
 		return allowed ? this : gracely.client.forbidden()
 	}
 
+	/** Key will default to production jwt verification key */
 	static async open(
 		header: http.Request.Header,
 		options: { whitelist?: JWT.Whitelist; key?: string }
