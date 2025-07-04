@@ -8,7 +8,7 @@ import { type as ruleType } from "../Rule/type"
 import { Expiry } from "./Expiry"
 import { Meta } from "./Meta"
 import { Preset } from "./Preset"
-import { Restrictions } from "./Restrictions"
+import { Restriction } from "./Restriction"
 
 export interface Creatable {
 	account: string
@@ -22,7 +22,7 @@ export interface Creatable {
 	rules?: Rule[]
 	meta?: Meta
 	key?: isoly.Date | string
-	restrictions?: Restrictions
+	restricted?: { to?: Restriction }
 }
 
 export namespace Creatable {
@@ -30,25 +30,19 @@ export namespace Creatable {
 		account: isly.string(),
 		number: isly.string().optional(),
 		preset: Preset.type,
-		details: isly.object({
-			expiry: Expiry.type,
-			holder: isly.string(),
-		}),
+		details: isly.object({ expiry: Expiry.type, holder: isly.string() }),
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		rules: ruleType.array().optional(),
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 		key: isly.string().optional(),
-		restrictions: Restrictions.type.optional(),
+		restricted: isly.object<Required<Creatable>["restricted"]>({ to: Restriction.type.optional() }).optional(),
 	})
 	export const type2 = isly2.object<Creatable>({
 		account: isly2.string().rename("Account").describe("The account id the card was created on."),
 		number: isly2.string().optional().rename("Number").describe("The card identifier of the user of the api."),
 		preset: Preset.type2,
 		details: isly2
-			.object({
-				expiry: Expiry.type2,
-				holder: isly2.string(),
-			})
+			.object({ expiry: Expiry.type2, holder: isly2.string() })
 			.rename("Details")
 			.describe("The card details, the information that will be displayed on the card."),
 		limit: isly2
@@ -63,7 +57,8 @@ export namespace Creatable {
 			.describe("Card rules that applies to authorizations made with the card."),
 		meta: isly2.from("Meta", Meta.is).optional(),
 		key: isly2.string().optional(),
-		restrictions: Restrictions.type2
+		restricted: isly2
+			.object<Required<Creatable>["restricted"]>({ to: Restriction.type2.optional() })
 			.optional()
 			.rename("Restrictions")
 			.describe("Set of restrictions that apply to the card."),

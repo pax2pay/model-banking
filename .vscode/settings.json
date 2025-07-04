@@ -26,16 +26,22 @@
 	"typescript.format.enable": false,
 	"cSpell.words": [
 		"addendee",
+		"algerie",
+		"alitalia",
 		"authly",
+		"avianca",
 		"bacs",
 		"clearbank",
 		"cloudly",
 		"cryptly",
+		"easyjet",
 		"emoney",
+		"etihad",
 		"fasterpayments",
 		"Fetchable",
 		"fincrime",
 		"flagly",
+		"flydubai",
 		"formdata",
 		"funder",
 		"gracely",
@@ -43,7 +49,9 @@
 		"isly",
 		"isoly",
 		"langly",
+		"lingus",
 		"marqeta",
+		"mccs",
 		"paramly",
 		"paxair",
 		"paxgiro",
@@ -61,6 +69,7 @@
 		"upcheck",
 		"uply",
 		"userwidgets",
-		"utily"
+		"utily",
+		"wizz"
 	]
 }

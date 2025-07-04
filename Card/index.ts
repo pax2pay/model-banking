@@ -12,7 +12,7 @@ import { Expiry as CardExpiry } from "./Expiry"
 import { Meta as CardMeta } from "./Meta"
 import { Operation as CardOperation } from "./Operation"
 import { Preset as CardPreset } from "./Preset"
-import { Restrictions as CardRestrictions } from "./Restrictions"
+import { Restriction as CardRestriction } from "./Restriction"
 import { Scheme as CardScheme } from "./Scheme"
 import { Stack as CardStack } from "./Stack"
 
@@ -39,7 +39,7 @@ export interface Card {
 	history: CardOperation[]
 	rules: Rule[]
 	meta?: CardMeta
-	restrictions?: CardRestrictions
+	restricted?: { to?: CardRestriction }
 }
 export namespace Card {
 	export import Creatable = CardCreatable
@@ -50,7 +50,7 @@ export namespace Card {
 	export import Operation = CardOperation
 	export import Scheme = CardScheme
 	export import Stack = CardStack
-	export import Restrictions = CardRestrictions
+	export import Restriction = CardRestriction
 	export const type = isly.object<Card>({
 		id: isly.string(),
 		number: isly.string().optional(),
@@ -74,7 +74,7 @@ export namespace Card {
 		history: isly.array(CardOperation.type),
 		rules: ruleType.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
-		restrictions: CardRestrictions.type.optional(),
+		restricted: isly.object<Required<Card>["restricted"]>({ to: CardRestriction.type.optional() }).optional(),
 	})
 	export const type2: isly2.Object<Card> = isly2
 		.object<Card>({
@@ -104,7 +104,8 @@ export namespace Card {
 				.rename("Rules")
 				.describe("Card rules that applies to authorizations made with the card."),
 			meta: isly2.from("Card.Meta", CardMeta.is).optional().rename("Meta").describe("Additional card information."),
-			restrictions: CardRestrictions.type2
+			restricted: isly2
+				.object<Required<Card>["restricted"]>({ to: CardRestriction.type2.optional() })
 				.optional()
 				.rename("Restrictions")
 				.describe("Set of restrictions that apply to the card."),
