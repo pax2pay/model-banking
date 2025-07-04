@@ -13,7 +13,7 @@ describe("JWT", () => {
 	})
 	it("signs a token and verifies", async () => {
 		const shortTerm = await jwt.sign?.({
-			permission: { "*": "read" },
+			permission: { "*": "read", user: "read" },
 			realm: "test",
 			sub: "Test",
 		})
