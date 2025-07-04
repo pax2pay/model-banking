@@ -8,6 +8,7 @@ import { type as ruleType } from "../Rule/type"
 import { Expiry } from "./Expiry"
 import { Meta } from "./Meta"
 import { Preset } from "./Preset"
+import { Restrictions } from "./Restrictions"
 
 export interface Creatable {
 	account: string
@@ -21,6 +22,7 @@ export interface Creatable {
 	rules?: Rule[]
 	meta?: Meta
 	key?: isoly.Date | string
+	restrictions?: Restrictions
 }
 
 export namespace Creatable {
@@ -36,6 +38,7 @@ export namespace Creatable {
 		rules: ruleType.array().optional(),
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 		key: isly.string().optional(),
+		restrictions: Restrictions.type.optional(),
 	})
 	export const type2 = isly2.object<Creatable>({
 		account: isly2.string().rename("Account").describe("The account id the card was created on."),
@@ -60,5 +63,9 @@ export namespace Creatable {
 			.describe("Card rules that applies to authorizations made with the card."),
 		meta: isly2.from("Meta", Meta.is).optional(),
 		key: isly2.string().optional(),
+		restrictions: Restrictions.type2
+			.optional()
+			.rename("Restrictions")
+			.describe("Set of restrictions that apply to the card."),
 	})
 }
