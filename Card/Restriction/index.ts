@@ -16,7 +16,10 @@ export namespace Restriction {
 			.rename("Merchants")
 			.describe("List of merchants that the card can be used with."),
 	})
-	export function check(restrictions: Restriction, transaction: Transaction.Creatable.CardTransaction): boolean {
+	export function check(
+		restrictions: Restriction,
+		transaction: Transaction.Creatable.CardTransaction | Transaction.PreTransaction.Authorization
+	): boolean {
 		let result: boolean = true
 		if (restrictions.merchants?.length)
 			result = restrictions.merchants.some(merchant => Merchant.check(merchant, transaction))

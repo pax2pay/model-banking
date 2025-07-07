@@ -48,7 +48,10 @@ export namespace Merchant {
 	] as const
 	export const type = isly.string<Merchant>(values)
 	export const type2 = isly2.string<Merchant>("value", ...values)
-	export type Checker = (merchant: Merchant, transaction: Transaction.Creatable.CardTransaction) => boolean
+	export type Checker = (
+		merchant: Merchant,
+		transaction: Transaction.Creatable.CardTransaction | Transaction.PreTransaction.Authorization
+	) => boolean
 	export type Attribute = { mccs: string[]; checkers?: Checker[] }
 	export const attributes: Record<Merchant, Attribute> = {
 		"united airlines": { mccs: ["3000"] },
@@ -92,7 +95,10 @@ export namespace Merchant {
 		"ethiopian airlines": { mccs: ["3294"] },
 		"wizz air": { mccs: ["3301"] },
 	}
-	export function check(merchant: Merchant, transaction: Transaction.Creatable.CardTransaction): boolean {
+	export function check(
+		merchant: Merchant,
+		transaction: Transaction.Creatable.CardTransaction | Transaction.PreTransaction.Authorization
+	): boolean {
 		const attribute = Merchant.attributes[merchant]
 		return (
 			attribute.mccs.some(mcc => transaction.counterpart.merchant.category == mcc) ||
