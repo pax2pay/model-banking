@@ -10,6 +10,13 @@ export namespace Payload {
 		permission: Access.Permission
 		realm: Realm
 	}
+	export namespace Creatable {
+		export const type = isly.object<Creatable>({
+			sub: isly.string(),
+			permission: Access.Permission.type,
+			realm: Realm.type,
+		})
+	}
 	export interface Base extends authly.Payload {
 		aud: string
 		iat: number
@@ -32,13 +39,13 @@ export namespace Payload {
 		id: string
 	}
 	export namespace LongTerm {
-		export const type = Base.type.extend({ id: isly.string() })
+		export const type = Base.type.extend<LongTerm>({ id: isly.string() })
 	}
 	export interface ShortTerm extends Base {
 		exp: number
 	}
 	export namespace ShortTerm {
-		export const type = Base.type.extend({ exp: isly.number() })
+		export const type = Base.type.extend<ShortTerm>({ exp: isly.number() })
 	}
 
 	export const configuration = {

@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Realm } from "../Realm"
 import { Access as UserAccess } from "./Access"
 import { Identity as UserIdentity } from "./Identity"
 import { JWT as UserJWT } from "./JWT"
@@ -33,12 +34,16 @@ export namespace User {
 			},
 		}
 	}
+	export function toJWTPayloadCreatable(user: User, realm: Realm): User.JWT.Payload.Creatable {
+		return {
+			sub: user.email,
+			permission: { ...(user.access[realm] ?? {}), ...(user.access["*"] ?? {}) },
+			realm,
+		}
+	}
 	export interface Creatable {
 		invite: string
-		password: {
-			new: string
-			repeat: string
-		}
+		password: Password.Creatable
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
