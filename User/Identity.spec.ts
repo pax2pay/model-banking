@@ -12,10 +12,7 @@ describe("Identity", () => {
 			realm: "test",
 			sub: "Test",
 		})
-		const identity = await pax2pay.User.Identity.open(
-			{ authorization: `Bearer ${token}` },
-			{ whitelist, key: key.public }
-		)
+		const identity = await pax2pay.User.Identity.open(`Bearer ${token}`, { whitelist, key: key.public })
 		if (!gracely.Error.is(identity)) {
 			expect(identity.authenticate({ card: "read" })).instanceOf(pax2pay.User.Identity)
 			expect(identity.authenticate({ card: "write" })).haveOwnProperty("status", 403)
@@ -43,17 +40,11 @@ describe("Identity", () => {
 			expect(identity).instanceOf(pax2pay.User.Identity)
 	})
 	it("Identifies a user from a whitelisted long term jwt", async () => {
-		const identity = await pax2pay.User.Identity.open(
-			{ authorization: `Bearer ${whitelisted.token}` },
-			{ whitelist, key: key.public }
-		)
+		const identity = await pax2pay.User.Identity.open(`Bearer ${whitelisted.token}`, { whitelist, key: key.public })
 		expect(identity).instanceOf(pax2pay.User.Identity)
 	})
 	it("Identifies a user from a non whitelisted long term jwt", async () => {
-		const identity = await pax2pay.User.Identity.open(
-			{ authorization: `Bearer ${nonWhitelisted.token}` },
-			{ whitelist, key: key.public }
-		)
+		const identity = await pax2pay.User.Identity.open(`Bearer ${nonWhitelisted.token}`, { whitelist, key: key.public })
 		expect(identity).haveOwnProperty("status", 401)
 	})
 })

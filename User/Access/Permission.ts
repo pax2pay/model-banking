@@ -24,7 +24,7 @@ export namespace Permission {
 			write: 2,
 			developer: 3,
 			admin: 4,
-		}
+		} as const
 	}
 	export type Collection = typeof Collection.values[number]
 	export namespace Collection {
