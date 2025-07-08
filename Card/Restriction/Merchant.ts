@@ -16,8 +16,8 @@ export namespace Merchant {
 	): boolean {
 		const attribute: Attribute = merchants[merchant]
 		let result: boolean
-		if ("unambiguousMcc" in attribute)
-			result = attribute.unambiguousMcc == transaction.counterpart.merchant.category
+		if ("unambiguousMcc" in attribute && attribute.unambiguousMcc == transaction.counterpart.merchant.category)
+			result = true
 		else if ("contains" in attribute && "mccs" in attribute)
 			result =
 				attribute.mccs.some(mcc => mcc == transaction.counterpart.merchant.category) &&
