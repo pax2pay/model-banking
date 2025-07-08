@@ -12,9 +12,9 @@ describe.skip("Card.Restrictions.merchants", () => {
 		expect(parsed.map(m => Merchant.type.is(m)).every(m => m == true)).toBe(true)
 		fs.writeFileSync(
 			"./Card/Restriction/merchants/index.ts",
-			`// from: https://github.com/pax2pay/merchant-categoriser\n// using: https://onlineyamltools.com/convert-yaml-to-json\nexport const merchants = ` +
-				JSON.stringify(parsed, null, 2) +
-				" as const",
+			`// from: https://github.com/pax2pay/merchant-categoriser\n// using: https://onlineyamltools.com/convert-yaml-to-json\nexport const merchants = {` +
+				parsed.map(p => `"${p?.name}": ${JSON.stringify(p, null, 2)}`) +
+				"} as const",
 			"utf-8"
 		)
 	})

@@ -139,16 +139,6 @@
 		]
 	},
 	{
-		"name": "IH Hotels",
-		"mccs": [
-			7011
-		],
-		"category": "Lodging",
-		"startsWith": [
-			"IH Hotels"
-		]
-	},
-	{
 		"name": "Ibis Hotels",
 		"mccs": [
 			7011,
