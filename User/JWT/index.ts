@@ -2,6 +2,7 @@ import { authly } from "authly"
 import { Realm } from "../../Realm"
 import { Payload as JWTPayload } from "./Payload"
 import { Signer as JWTSigner } from "./Signer"
+import { whitelist as JWTwhitelist } from "./whitelist"
 
 export class JWT {
 	#verifier?: authly.Verifier<JWT.Payload>
@@ -40,11 +41,12 @@ export class JWT {
 	}
 
 	static open(key?: { private?: string; public?: string }, whitelist?: JWT.Whitelist): JWT {
-		return new this({ private: key?.private, public: key?.public ?? JWT.key }, whitelist)
+		return new this({ private: key?.private, public: key?.public ?? JWT.key }, whitelist ?? JWT.whitelist)
 	}
 }
 export namespace JWT {
 	export import Signer = JWTSigner
+	export const whitelist = JWTwhitelist
 	export type Whitelist = Partial<Record<Realm, Payload.LongTerm[]>>
 	export async function unpack(token: string): Promise<JWT.Payload | undefined> {
 		const algorithm = authly.Algorithm.RS256(undefined)
