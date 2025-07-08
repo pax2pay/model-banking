@@ -3,9 +3,9 @@ import { isly } from "isly2"
 export interface Merchant {
 	name: string
 	unambiguousMcc?: string
-	mccs?: string[]
-	startsWith?: string[]
-	contains?: string[]
+	mccs?: Readonly<string[]>
+	startsWith?: Readonly<string[]>
+	contains?: Readonly<string[]>
 }
 export namespace Merchant {
 	export const type = isly.object<Merchant>({
