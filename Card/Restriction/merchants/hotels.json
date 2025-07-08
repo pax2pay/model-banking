@@ -1,0 +1,262 @@
+[
+	{
+		"name": "Best Western",
+		"unambiguousMcc": 3502,
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"BEST WESTERN",
+			"BW HOTEL",
+			"B.WESTERN",
+			"B.W."
+		]
+	},
+	{
+		"name": "Una Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"UNAH"
+		]
+	},
+	{
+		"name": "Unaway Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"UNAW"
+		]
+	},
+	{
+		"name": "Albergo - Lodging",
+		"mccs": [
+			6513,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"ALBERGO"
+		]
+	},
+	{
+		"name": "Leonardo Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"LEONARDO HOTEL"
+		]
+	},
+	{
+		"name": "Hotel Mercure",
+		"unambiguousMcc": 3579,
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"MERCURE"
+		]
+	},
+	{
+		"name": "NH Hotels & Resorts",
+		"mccs": [
+			7011,
+			5812,
+			4722
+		],
+		"category": "Lodging",
+		"startsWith": "NH"
+	},
+	{
+		"name": "Novotel Hotels",
+		"unambiguousMcc": 3642,
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"NOVOTEL"
+		]
+	},
+	{
+		"name": "AC Hotels",
+		"mccs": [
+			7011,
+			3509,
+			5812,
+			3719
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"AC Hotel"
+		]
+	},
+	{
+		"name": "Marriott Hotels",
+		"mccs": [
+			7011,
+			3509,
+			3513,
+			6513,
+			3690,
+			3740
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"MARRIOTT"
+		]
+	},
+	{
+		"name": "Sheraton Hotels and Resorts",
+		"mccs": [
+			7011,
+			3509,
+			3503,
+			6513,
+			5812
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"SHERATON"
+		]
+	},
+	{
+		"name": "IH Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"IH Hotels"
+		]
+	},
+	{
+		"name": "IH Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"IH Hotels"
+		]
+	},
+	{
+		"name": "Ibis Hotels",
+		"mccs": [
+			7011,
+			3533,
+			3501,
+			6513,
+			3672
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"IBIS"
+		]
+	},
+	{
+		"name": "Hyatt Hotels & Resorts",
+		"mccs": [
+			7011,
+			3640,
+			3812,
+			6513,
+			4722,
+			3751
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"HYATT"
+		]
+	},
+	{
+		"name": "Hilton Hotels & Resorts",
+		"mccs": [
+			7011,
+			3604,
+			3504,
+			3535,
+			5812,
+			6513,
+			7399,
+			3833,
+			3692,
+			3665,
+			4722
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"HILTON"
+		]
+	},
+	{
+		"name": "Holiday Inn",
+		"mccs": [
+			7011,
+			3501,
+			5812,
+			3637,
+			6513,
+			3655
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"HOLIDAY INN"
+		]
+	},
+	{
+		"name": "Four Seasons",
+		"unambiguousMcc": 3543,
+		"mccs": [
+			7011,
+			3543,
+			6513,
+			3501,
+			4411
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"FOUR SEASONS",
+			"FOURSEASONS"
+		]
+	},
+	{
+		"name": "DoubleTree by Hilton",
+		"mccs": [
+			7011,
+			3692,
+			3504,
+			3535,
+			6513,
+			5813
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"DOUBLETREE",
+			"DOUBLE TREE"
+		]
+	},
+	{
+		"name": "Crowne Plaza Hotels",
+		"mccs": [
+			7011,
+			6513,
+			3750,
+			3501,
+			3504,
+			3655
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"CROWNE PLAZA"
+		]
+	}
+]

@@ -1,0 +1,957 @@
+[
+	{
+		"name": "Ryanair",
+		"unambiguousMcc": 3246,
+		"category": "Flight"
+	},
+	{
+		"name": "Easyjet",
+		"unambiguousMcc": 3245,
+		"category": "Flight"
+	},
+	{
+		"name": "WizzAir",
+		"unambiguousMcc": 3301,
+		"mccs": [
+			4511,
+			3835
+		],
+		"category": "Flight",
+		"contains": "wizz"
+	},
+	{
+		"name": "Aer Lingus",
+		"unambiguousMcc": 3043,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"AER LINGUS",
+			"AERLINGUS"
+		]
+	},
+	{
+		"name": "Air Malta",
+		"unambiguousMcc": 3028,
+		"category": "Flight"
+	},
+	{
+		"name": "Vueling",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": "vueling"
+	},
+	{
+		"name": "Jet2",
+		"mccs": [
+			4511,
+			4722
+		],
+		"category": "Flight",
+		"contains": "jet2",
+		"startsWith": [
+			"JET 2"
+		]
+	},
+	{
+		"name": "Eurowings",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": "Eurowings"
+	},
+	{
+		"name": "Turkish Air",
+		"unambiguousMcc": 3047,
+		"category": "Flight"
+	},
+	{
+		"name": "TAP",
+		"unambiguousMcc": 3035,
+		"category": "Flight"
+	},
+	{
+		"name": "Pegasus",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"pegasus",
+			"flypegasus"
+		]
+	},
+	{
+		"name": "Royal Air Maroc",
+		"unambiguousMcc": 3048,
+		"category": "Flight"
+	},
+	{
+		"name": "Qatar Air",
+		"unambiguousMcc": 3136,
+		"category": "Flight"
+	},
+	{
+		"name": "Blue Island",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": "blue island"
+	},
+	{
+		"name": "KLM",
+		"unambiguousMcc": 3010,
+		"category": "Flight"
+	},
+	{
+		"name": "Iberia",
+		"unambiguousMcc": 3102,
+		"category": "Flight"
+	},
+	{
+		"name": "Emirates",
+		"unambiguousMcc": 3026,
+		"category": "Flight"
+	},
+	{
+		"name": "Aegean Airlines",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": "aegean"
+	},
+	{
+		"name": "TUI",
+		"mccs": 4722,
+		"category": "Flight",
+		"startsWith": "tui"
+	},
+	{
+		"name": "United Airlines",
+		"unambiguousMcc": 3000,
+		"category": "Flight"
+	},
+	{
+		"name": "Cathay Pacific Airlines",
+		"unambiguousMcc": 3099,
+		"category": "Flight"
+	},
+	{
+		"name": "Air Serbia",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"Air Serbia"
+		]
+	},
+	{
+		"name": "Copa Air",
+		"unambiguousMcc": 3219,
+		"category": "Flight"
+	},
+	{
+		"name": "Bamboo Airways",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": "bamboo"
+	},
+	{
+		"name": "Latam Airlines",
+		"unambiguousMcc": 3052,
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"latam",
+			"lan airlines",
+			"lan airline"
+		]
+	},
+	{
+		"name": "flydubai",
+		"unambiguousMcc": 3070,
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"FLYDUBAI"
+		]
+	},
+	{
+		"name": "Condor",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": "condor"
+	},
+	{
+		"name": "Transavia",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"transavia"
+		]
+	},
+	{
+		"name": "Austrian Air",
+		"unambiguousMcc": 3051,
+		"category": "Flight"
+	},
+	{
+		"name": "Alitalia",
+		"unambiguousMcc": 3013,
+		"category": "Flight"
+	},
+	{
+		"name": "APG Airlines",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"apg airlines"
+		]
+	},
+	{
+		"name": "Iceland Air",
+		"unambiguousMcc": 3050,
+		"category": "Flight"
+	},
+	{
+		"name": "FlyOne",
+		"mccs": [
+			5411,
+			4511
+		],
+		"category": "Flight",
+		"startsWith": "flyone"
+	},
+	{
+		"name": "Avianca",
+		"unambiguousMcc": 3039,
+		"category": "Flight"
+	},
+	{
+		"name": "Brussels Airlines",
+		"unambiguousMcc": 3029,
+		"category": "Flight"
+	},
+	{
+		"name": "Saudia",
+		"unambiguousMcc": 3014,
+		"category": "Flight"
+	},
+	{
+		"name": "Aeromexico",
+		"unambiguousMcc": 3076,
+		"category": "Flight"
+	},
+	{
+		"name": "Gulf Air",
+		"unambiguousMcc": 3040,
+		"category": "Flight"
+	},
+	{
+		"name": "Ethiopian Airlines",
+		"unambiguousMcc": 3294,
+		"category": "Flight"
+	},
+	{
+		"name": "Egypt Air",
+		"unambiguousMcc": 3037,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"egypt"
+		]
+	},
+	{
+		"name": "Albawings",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"albawings"
+		]
+	},
+	{
+		"name": "Iberojet",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"Iberojet",
+			"EVELOP"
+		]
+	},
+	{
+		"name": "Norwegian Air",
+		"unambiguousMcc": 3211,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"norwegian"
+		]
+	},
+	{
+		"name": "Vistara",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"vistara",
+			"airvistara",
+			"TATA SIA AIR"
+		]
+	},
+	{
+		"name": "Air Greenland",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"air greenlan"
+		]
+	},
+	{
+		"name": "Sky Express",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": "sky express"
+	},
+	{
+		"name": "Air Canada",
+		"unambiguousMcc": 3009,
+		"category": "Flight"
+	},
+	{
+		"name": "Philippine Airlines",
+		"unambiguousMcc": 3022,
+		"category": "Flight"
+	},
+	{
+		"name": "South African Airlink",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"south african"
+		]
+	},
+	{
+		"name": "Air Benelux",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"airbenelux"
+		]
+	},
+	{
+		"name": "Tunisair",
+		"unambiguousMcc": 3049,
+		"category": "Flight"
+	},
+	{
+		"name": "Lufthansa",
+		"unambiguousMcc": 3008,
+		"category": "Flight"
+	},
+	{
+		"name": "Corendon Airlines",
+		"category": "Flight",
+		"mccs": 4511,
+		"contains": "CORENDON"
+	},
+	{
+		"name": "Uganda Airlines",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": "uganda airlines"
+	},
+	{
+		"name": "Freebird Airlines",
+		"mccs": [
+			4511,
+			7399
+		],
+		"category": "Flight",
+		"contains": [
+			"freebirdairline"
+		]
+	},
+	{
+		"name": "Kenya Airway",
+		"unambiguousMcc": 3295,
+		"category": "Flight"
+	},
+	{
+		"name": "Kuwait Air",
+		"unambiguousMcc": 3038,
+		"category": "Flight"
+	},
+	{
+		"name": "British Airways",
+		"unambiguousMcc": 3005,
+		"category": "Flight"
+	},
+	{
+		"name": "Czech Airlines",
+		"unambiguousMcc": 3217,
+		"category": "Flight"
+	},
+	{
+		"name": "LOT Polish Airlines",
+		"unambiguousMcc": 3182,
+		"category": "Flight"
+	},
+	{
+		"name": "Volotea",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"Volotea"
+		]
+	},
+	{
+		"name": "Flybe",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"flybe"
+		]
+	},
+	{
+		"name": "Bulgaria Air",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"bulgaria air"
+		]
+	},
+	{
+		"name": "SAS",
+		"unambiguousMcc": 3016,
+		"mccs": [
+			4121
+		],
+		"category": "Flight",
+		"startsWith": [
+			"sas",
+			"SCANDINAVIAN"
+		]
+	},
+	{
+		"name": "Qantas",
+		"unambiguousMcc": 3012,
+		"category": "Flight"
+	},
+	{
+		"name": "Air India",
+		"unambiguousMcc": 3020,
+		"category": "Flight"
+	},
+	{
+		"name": "Air Europa",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"air europa"
+		]
+	},
+	{
+		"name": "Royal Jordanian",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"royal jord",
+			"ALIA - THE",
+			"ALIA-THE"
+		]
+	},
+	{
+		"name": "Virgin Atlantic",
+		"unambiguousMcc": 3144,
+		"category": "Flight"
+	},
+	{
+		"name": "FlexFlight",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"flexflight"
+		]
+	},
+	{
+		"name": "Rwandair",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"RWANDAIR"
+		]
+	},
+	{
+		"name": "Hahn Air",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": [
+			"hahn air"
+		]
+	},
+	{
+		"name": "American Air",
+		"unambiguousMcc": 3001,
+		"category": "Flight"
+	},
+	{
+		"name": "Pakistan International Airlines",
+		"unambiguousMcc": 3024,
+		"category": "Flight"
+	},
+	{
+		"name": "Singapore Airlines",
+		"unambiguousMcc": 3075,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"singapore"
+		]
+	},
+	{
+		"name": "Delta Air Lines",
+		"unambiguousMcc": 3058,
+		"category": "Flight"
+	},
+	{
+		"name": "Croatia Airlines",
+		"unambiguousMcc": 3088,
+		"category": "Flight"
+	},
+	{
+		"name": "Air Asia",
+		"mccs": [
+			4511,
+			4722
+		],
+		"category": "Flight",
+		"startsWith": [
+			"airasia",
+			"air asia",
+			"AIRASIA FLIGHT"
+		]
+	},
+	{
+		"name": "Hawaiian Airlines",
+		"unambiguousMcc": 3196,
+		"category": "Flight"
+	},
+	{
+		"name": "Oman Air",
+		"unambiguousMcc": 3183,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"oman air",
+			"omanair"
+		]
+	},
+	{
+		"name": "Etihad Air",
+		"unambiguousMcc": 3034,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": "etihad"
+	},
+	{
+		"name": "Middle East Airlines",
+		"unambiguousMcc": 3175,
+		"category": "Flight"
+	},
+	{
+		"name": "Logan Air",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": "loganair"
+	},
+	{
+		"name": "Aurigny",
+		"mccs": 4511,
+		"category": "Flight",
+		"contains": "aurigny"
+	},
+	{
+		"name": "Eastern Airways",
+		"mccs": 4511,
+		"category": "Flight",
+		"startsWith": "eastern airw"
+	},
+	{
+		"name": "Sun Express",
+		"mccs": 4511,
+		"category": "Flight",
+		"contains": "sunexpress"
+	},
+	{
+		"name": "Spirit Air",
+		"unambiguousMcc": 3260,
+		"category": "Flight"
+	},
+	{
+		"name": "Air France",
+		"unambiguousMcc": 3007,
+		"category": "Flight"
+	},
+	{
+		"name": "Malaysia Airlines",
+		"unambiguousMcc": 3100,
+		"category": "Flight"
+	},
+	{
+		"name": "Finnair",
+		"unambiguousMcc": 3042,
+		"category": "Flight"
+	},
+	{
+		"name": "Swiss Air",
+		"unambiguousMcc": 3015,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"swiss"
+		]
+	},
+	{
+		"name": "Air China",
+		"unambiguousMcc": 3261,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"Air Chin"
+		]
+	},
+	{
+		"name": "ANA AIR",
+		"unambiguousMcc": 3161,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"A.N.A AIR",
+			"A.N.A. AIR"
+		]
+	},
+	{
+		"name": "AE BSP",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"AE BSP"
+		]
+	},
+	{
+		"name": "Thai Airways",
+		"unambiguousMcc": 3077,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"Thai Airways",
+			"ThaiAirways"
+		]
+	},
+	{
+		"name": "Jet Blue",
+		"unambiguousMcc": 3174,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"JET AIRWAYS",
+			"JetBlue",
+			"Jet Blue"
+		]
+	},
+	{
+		"name": "WestJet",
+		"unambiguousMcc": 3180,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"WESTJET AIRWAYS",
+			"WESTJET AIRLINES",
+			"Westjet"
+		]
+	},
+	{
+		"name": "Aerolineas",
+		"unambiguousMcc": 3030,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"AEROLINEAS"
+		]
+	},
+	{
+		"name": "Air Seoul",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"AIR SEOUL"
+		]
+	},
+	{
+		"name": "Azerbaijan Airlines",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"AZERBAIJAN"
+		]
+	},
+	{
+		"name": "Air Dolomiti",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"Air Dolomiti"
+		]
+	},
+	{
+		"name": "Bangkok Airways",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"BANGKOK AIRW"
+		]
+	},
+	{
+		"name": "China Airlines",
+		"unambiguousMcc": 3078,
+		"category": "Flight",
+		"startsWith": [
+			"CHINA AIR"
+		]
+	},
+	{
+		"name": "China Eastern Airlines",
+		"unambiguousMcc": 3206,
+		"category": "Flight",
+		"startsWith": [
+			"CHINAEAST"
+		]
+	},
+	{
+		"name": "EVA Air",
+		"unambiguousMcc": 3084,
+		"category": "Flight",
+		"mccs": [
+			4511
+		],
+		"startsWith": [
+			"EVA AIR"
+		]
+	},
+	{
+		"name": "Jetstar Airways",
+		"unambiguousMcc": 3079,
+		"category": "Flight",
+		"startsWith": [
+			"JETSTAR"
+		]
+	},
+	{
+		"name": "KM Malta Airlines",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"KM MALTA"
+		]
+	},
+	{
+		"name": "ITA Airways",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"Airita"
+		]
+	},
+	{
+		"name": "China Southern Airlines",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"China south"
+		]
+	},
+	{
+		"name": "World2fly",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"World 2 fly",
+			"world2fly"
+		]
+	},
+	{
+		"name": "Sata Denmark",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"Sata Denmark",
+			"SataDenmark"
+		]
+	},
+	{
+		"name": "Air Baltic",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"Air Baltic",
+			"Airbaltic"
+		]
+	},
+	{
+		"name": "AJet",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"AJET"
+		]
+	},
+	{
+		"name": "FlyNorse",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"FLYNORSE"
+		]
+	},
+	{
+		"name": "Hainan Air",
+		"unambiguousMcc": 3168,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"HAINAN"
+		]
+	},
+	{
+		"name": "Sichuan Airlines",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"SICHUAN AIRL"
+		]
+	},
+	{
+		"name": "Korean Air",
+		"unambiguousMcc": 3082,
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"KOREAN AIR"
+		]
+	},
+	{
+		"name": "GOL Airlines",
+		"unambiguousMcc": 3247,
+		"category": "Flight",
+		"startsWith": [
+			"GOL AIR"
+		]
+	},
+	{
+		"name": "Azul Brazilian Airlines",
+		"unambiguousMcc": 3300,
+		"category": "Flight",
+		"startsWith": [
+			"AZUL AIR"
+		]
+	},
+	{
+		"name": "FlySafair",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"FlySafair"
+		]
+	},
+	{
+		"name": "Air Mauritius",
+		"unambiguousMcc": 3298,
+		"category": "Flight",
+		"startsWith": [
+			"AIRMAURITIUS"
+		]
+	},
+	{
+		"name": "Alaska Airlines",
+		"unambiguousMcc": 3256,
+		"category": "Flight",
+		"startsWith": [
+			"ALASKA AIR"
+		]
+	},
+	{
+		"name": "Allegiant Air",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"ALLEGNT AIR",
+			"ALLEGNT*AIR"
+		]
+	},
+	{
+		"name": "Plus Ultra Líneas Aéreas",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"PLUS ULTRA"
+		]
+	}
+]
