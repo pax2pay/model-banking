@@ -1,0 +1,139 @@
+[
+	{
+		"name": "PARKWING",
+		"mccs": [
+			4582
+		],
+		"category": "Airports and Terminals",
+		"startsWith": [
+			"PARKWING"
+		]
+	},
+	{
+		"name": "Albergo - Food and drinks",
+		"mccs": [
+			5812
+		],
+		"category": "Food and drinks",
+		"startsWith": [
+			"ALBERGO"
+		]
+	},
+	{
+		"name": "Amtrak",
+		"mccs": [
+			4112
+		],
+		"category": "Alternative Transportation",
+		"startsWith": [
+			"AMTRAK"
+		]
+	},
+	{
+		"name": "Italo Treno",
+		"mccs": [
+			4112
+		],
+		"category": "Alternative Transportation",
+		"contains": [
+			"ITALOTRENO"
+		]
+	},
+	{
+		"name": "ILSA WEB",
+		"mccs": [
+			4112
+		],
+		"category": "Advertising",
+		"contains": [
+			"ILSA WEB"
+		]
+	},
+	{
+		"name": "Rail Ninja",
+		"mccs": [
+			4722,
+			4789
+		],
+		"category": "Alternative Transportation",
+		"startsWith": [
+			"RailNinja"
+		]
+	},
+	{
+		"name": "Irish Rail",
+		"mccs": [
+			4789,
+			4112
+		],
+		"category": "Alternative Transportation",
+		"startsWith": [
+			"IRISH RAIL"
+		]
+	},
+	{
+		"name": "Österreichische Bundesbahnen",
+		"mccs": [
+			4111
+		],
+		"category": "Alternative Transportation",
+		"startsWith": [
+			"OEBB"
+		]
+	},
+	{
+		"name": "Rail Europe",
+		"mccs": [
+			4722
+		],
+		"category": "Alternative Transportation",
+		"startsWith": [
+			"RAIL EUROPE"
+		]
+	},
+	{
+		"name": "Via Rail Canada",
+		"mccs": [
+			4112
+		],
+		"category": "Alternative Transportation",
+		"startsWith": [
+			"VIA RAIL"
+		]
+	},
+	{
+		"name": "Direct Ferries",
+		"mccs": [
+			4111,
+			4411
+		],
+		"category": "Alternative Transportation",
+		"startsWith": [
+			"DIRECTF"
+		]
+	},
+	{
+		"name": "Booking.com",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"startsWith": [
+			"BKG*"
+		]
+	},
+	{
+		"name": "Advertising",
+		"mccs": [
+			7311,
+			5818
+		],
+		"contains": [
+			"FACEBK",
+			"google *ad",
+			"googleadwords",
+			"facebook"
+		],
+		"category": "Advertising"
+	}
+]
