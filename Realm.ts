@@ -15,18 +15,14 @@ export namespace Realm {
 	export function toString(): string {
 		return realms.toString().replaceAll(",", ", ") + "."
 	}
-	export const currency: Record<Realm, isoly.Currency> = {
-		test: "EUR",
-		uk: "GBP",
-		eea: "EUR",
-	}
+	export const currency: Record<Realm, isoly.Currency> = { test: "EUR", uk: "GBP", eea: "EUR" }
 	export const suppliers: Record<Realm, modelSupplier[]> = {
-		test: ["paxgiro", "paxgiroCredit"],
+		test: ["paxgiro", "bankingcircle", "paxgiroCredit"],
 		uk: ["clearbank"],
 		eea: [],
 	}
 	export interface Suppliers extends Record<Realm, modelSupplier[]> {
-		test: ["paxgiro", "paxgiroCredit"]
+		test: ["paxgiro", "bankingcircle", "paxgiroCredit"]
 		uk: ["clearbank"]
 		eea: []
 	}
