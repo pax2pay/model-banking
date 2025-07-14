@@ -5,16 +5,16 @@ import { User } from "../../User"
 export class Invites {
 	constructor(private readonly client: http.Client) {}
 
-	async create(creatable: User.Invite.Creatable): Promise<User | gracely.Error> {
-		return await this.client.post<User>("/user/invite", creatable)
+	async create(creatable: User.Invite.Creatable): Promise<User.Invite | gracely.Error> {
+		return await this.client.post<User.Invite>("/user/invite", creatable)
 	}
-	async fetch(identifier: string): Promise<User | gracely.Error> {
-		return await this.client.get<User>(`/user/invite/${identifier}`)
+	async fetch(identifier: string): Promise<User.Invite | gracely.Error> {
+		return await this.client.get<User.Invite>(`/user/invite/${identifier}`)
 	}
-	async list(): Promise<User[] | gracely.Error> {
-		return await this.client.get<User[]>("/user/invite")
+	async list(): Promise<User.Invite[] | gracely.Error> {
+		return await this.client.get<User.Invite[]>("/user/invite")
 	}
-	async remove(identifier: string): Promise<User | gracely.Error> {
-		return await this.client.delete<User>(`/user/invite/:${identifier}`)
+	async remove(identifier: string): Promise<User.Invite | gracely.Error> {
+		return await this.client.delete<User.Invite>(`/user/invite/:${identifier}`)
 	}
 }
