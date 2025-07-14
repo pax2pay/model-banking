@@ -29,6 +29,7 @@ export namespace Permission {
 	export type Collection = typeof Collection.values[number]
 	export namespace Collection {
 		export const values = [
+			"*",
 			"account",
 			"card",
 			"log",
@@ -39,7 +40,6 @@ export namespace Permission {
 			"transaction",
 			"treasury",
 			"user",
-			"*",
 		] as const
 		export const type = isly.string(values)
 	}
