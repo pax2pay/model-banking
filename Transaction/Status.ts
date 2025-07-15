@@ -19,6 +19,7 @@ export namespace Status {
 		"invalid request",
 		"expired",
 		"denied",
+		"merchant lock violation",
 	] as const
 	export type Reason = typeof reasons[number]
 	export const Reason = isly.string<Reason>(reasons)
