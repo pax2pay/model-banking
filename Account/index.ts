@@ -4,8 +4,8 @@ import { isly } from "isly"
 import { Balances } from "../Balances"
 import { Rail } from "../Rail"
 import { Rule } from "../Rule"
-import { Supplier } from "../Supplier"
 import { Creatable as AccountCreatable } from "./Creatable"
+import { Details as AccountDetails } from "./Details"
 import { History as AccountHistory } from "./History"
 import { Status as AccountStatus } from "./Status"
 
@@ -25,10 +25,7 @@ export namespace Account {
 	export import Creatable = AccountCreatable
 	export import Status = AccountStatus
 	export import History = AccountHistory
-	export type Details = { supplier: Supplier; addresses: Rail.Address[] }
-	export namespace Details {
-		export const type = isly.object<Details>({ supplier: Supplier.type, addresses: Rail.Address.type.array() })
-	}
+	export import Details = AccountDetails
 	export type Legacy = Omit<Account, "status">
 	export function fromLegacy(maybeLegacy: Legacy | Account, status?: Account.Status): Account {
 		return { ...maybeLegacy, status: status ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" }) }
