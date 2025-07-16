@@ -15,6 +15,6 @@ export class Invites {
 		return await this.client.get<User.Invite[]>("/user/invite")
 	}
 	async remove(identifier: string): Promise<User.Invite | gracely.Error> {
-		return await this.client.delete<User.Invite>(`/user/invite/:${identifier}`)
+		return await this.client.delete<User.Invite>(`/user/invite/${identifier}`)
 	}
 }
