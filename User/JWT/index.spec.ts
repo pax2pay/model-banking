@@ -15,7 +15,7 @@ describe("JWT", () => {
 		const shortTerm = await jwt.sign?.({
 			permission: { "*": "read", user: "read" },
 			realm: "test",
-			sub: "Test",
+			sub: "test@test.com",
 		})
 		expect(shortTerm && (await jwt.verify(shortTerm))).toBeTruthy()
 		expect(shortTerm && (await jwt.unpack(shortTerm))).toBeTruthy()
