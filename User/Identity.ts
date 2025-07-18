@@ -8,7 +8,7 @@ export class Identity {
 	get realm(): Realm {
 		return this.payload.realm
 	}
-	constructor(public readonly payload: JWT.Payload) {}
+	constructor(public readonly payload: JWT.Payload, public readonly jwt: string) {}
 
 	authenticate(constraint: Access.Permission | Access.Permission[]): Identity | gracely.Error {
 		let allowed: boolean
@@ -26,7 +26,7 @@ export class Identity {
 	): Promise<Identity | gracely.Error> {
 		const jwt = authorization?.startsWith("Bearer ") ? authorization.replace("Bearer ", "") : undefined
 		const payload = jwt ? await JWT.open({ public: options.key }, options.whitelist).verify(jwt) : undefined
-		return jwt && payload ? new Identity(payload) : gracely.client.unauthorized()
+		return jwt && payload ? new Identity(payload, jwt) : gracely.client.unauthorized()
 	}
 }
 export namespace Identity {}
