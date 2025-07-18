@@ -1,4 +1,5 @@
 import { gracely } from "gracely"
+import { authly } from "authly"
 import { http } from "cloudly-http"
 import { User } from "../../User"
 import { Invites } from "./Invites"
@@ -18,6 +19,11 @@ export class Users {
 	}
 	async list(): Promise<User[] | gracely.Error> {
 		return await this.client.get<User[]>("/user")
+	}
+	async login(email: string, password: string): Promise<User | gracely.Error> {
+		return await this.client.get<User>(`/user/me`, {
+			authorization: `Basic ${authly.Base64.encode(email + ":" + password, "standard", "=")}`,
+		})
 	}
 	async remove(email: string): Promise<User | gracely.Error> {
 		return await this.client.delete<User>(`/user/${email}`)
