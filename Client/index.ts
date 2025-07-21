@@ -7,6 +7,7 @@ import { Cards } from "./Cards"
 import { Exchanges } from "./Exchanges"
 import { Labels } from "./Labels"
 import { Logs } from "./Logs"
+import { Me } from "./Me"
 import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
 import { Processor } from "./Processor"
@@ -28,6 +29,7 @@ export class Client {
 	readonly flags: Labels
 	readonly groups: Labels
 	readonly logs: Logs
+	readonly me: Me
 	readonly operations: Operations
 	readonly organizations: Organizations
 	readonly processors: Processor
@@ -59,6 +61,7 @@ export class Client {
 		this.flags = new Labels(this.client, "flag")
 		this.groups = new Labels(this.client, "group")
 		this.logs = new Logs(this.client)
+		this.me = new Me(this.client)
 		this.operations = new Operations(this.client)
 		this.organizations = new Organizations(this.client)
 		this.processors = new Processor(this.client)
