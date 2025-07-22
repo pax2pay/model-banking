@@ -21,11 +21,7 @@ export namespace Data {
 		cards: Card[],
 		range: { start: isoly.Date; end: isoly.Date }
 	): Data {
-		const result: Data = {
-			regional: {},
-			nonMonthly: NonMonthly.empty(),
-			country: {},
-		}
+		const result: Data = { regional: {}, nonMonthly: NonMonthly.empty(), country: {} }
 		for (const transaction of transactions) {
 			result.nonMonthly = NonMonthly.update(result.nonMonthly, transaction)
 			result.regional = Regional.update(result.regional, transaction)

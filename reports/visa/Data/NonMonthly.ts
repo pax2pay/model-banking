@@ -8,10 +8,7 @@ export type NonMonthly = {
 } & Cards
 export namespace NonMonthly {
 	export function empty(): NonMonthly {
-		return {
-			"Payments Transactions Declined for Insufficient Funds - Number": {},
-			...Cards.empty(),
-		}
+		return { "Payments Transactions Declined for Insufficient Funds - Number": {}, ...Cards.empty() }
 	}
 	export function update(previous: NonMonthly, transaction: Transaction.CardTransaction): NonMonthly {
 		const result = previous
