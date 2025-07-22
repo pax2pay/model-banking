@@ -1,4 +1,5 @@
 import { isoly } from "isoly"
+import { typedly } from "typedly"
 import { Card } from "../../../Card"
 import { Iin } from "./Iin"
 import { NonMonthly } from "./NonMonthly"
@@ -31,7 +32,6 @@ export namespace Cards {
 				accounts > 0 &&
 					(result["Number of Accounts - International Enabled"][iin] = result["Total Number of Accounts"][iin] =
 						accounts)
-
 				// Total number of cards in range
 				const iinCardsWithinRange = iinCards.filter((card, i) => {
 					return (
@@ -39,7 +39,6 @@ export namespace Cards {
 					)
 				})
 				iinCardsWithinRange.length > 0 && (result["Total Number of Cards"][iin] = iinCardsWithinRange.length)
-
 				// Total number of active cards at end of range
 				const activeCards = iinCardsWithinRange.filter(
 					card =>
@@ -48,20 +47,17 @@ export namespace Cards {
 						) || !card.history.some(history => history.status == "cancelled")
 				)
 				activeCards.length > 0 && (result["Total Number of Active Cards"][iin] = activeCards.length)
-
 				// Total number of customers who have active Visa card(s) at the end of the quarter
 				const accountsWithActive = new Set(activeCards.map(card => card.account)).size
 				accountsWithActive > 0 && (result["Total Number of Active Accounts"][iin] = accountsWithActive)
 			}
-
-		// All iin numbers are summed up to totalIdx
-		for (const iin of Object.keys(result))
-			if (iin !== "Payments Transactions Declined for Insufficient Funds - Number")
-				result[iin as keyof Cards]["totalIdx"] = Object.values(result[iin as keyof Cards]).reduce(
-					(sum, value) => sum + (value ?? 0),
+		// All idx iin numbers are summed up to totalIdx
+		for (const key of typedly.Object.keys(result))
+			if (key !== "Payments Transactions Declined for Insufficient Funds - Number")
+				result[key]["totalIdx"] = typedly.Object.entries(result[key]).reduce(
+					(r, [iin, value]) => r + (Iin.Idx.type.is(iin) && value ? value : 0),
 					0
 				)
-
 		return result
 	}
 }
