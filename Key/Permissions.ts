@@ -48,18 +48,24 @@ export namespace Permissions {
 	}
 	export function from(permission: User.Access.Permission): Permissions | true {
 		let result: Permissions | true = {}
-		if (permission["*"])
-			result =
-				User.Access.Permission.Level.get(permission["*"]) >= 2
-					? true
-					: {
-							["*"]: {
-								org: { view: true },
-								user: User.Access.Permission.Level.get(permission["user"]) >= 2 || { view: true },
-								app: { view: true },
-							},
-					  }
+		if (User.Access.Permission.Level.get(permission["*"]) >= 2)
+			result = true
 		else {
+			if (permission["*"])
+				result = {
+					accounts: { view: true },
+					cards: { view: true },
+					logs: { view: true },
+					operations: { view: true },
+					organizations: { view: true },
+					rules: { view: true },
+					settlements: { view: true },
+					transactions: { view: true },
+					treasury: { view: true },
+					org: { view: true },
+					user: User.Access.Permission.Level.get(permission["user"]) >= 2 || { view: true },
+					app: { view: true },
+				}
 			if (permission["account"])
 				result.accounts = User.Access.Permission.Level.get(permission["account"]) >= 2 || {
 					view: true,
