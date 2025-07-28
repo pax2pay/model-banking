@@ -26,7 +26,10 @@ export namespace Key {
 			audience: payload.aud,
 			email: payload.sub,
 			realm: payload.realm,
-			permissions: { [payload.realm + "-*"]: Permissions.from(payload.permission) },
+			permissions: {
+				[payload.realm + "-*"]: Permissions.from(payload.permission),
+				...(payload.permission.user ? { ["*"]: true } : {}),
+			},
 			expires: payload.exp ? isoly.DateTime.create(payload.exp) : isoly.DateTime.nextYear(isoly.DateTime.now(), 10),
 			issued: isoly.DateTime.create(payload.iat),
 			issuer: payload.iss,

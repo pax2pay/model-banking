@@ -67,7 +67,7 @@ export class Identity<T extends Identity.Require = never> {
 			const realms = Identity.getRealms(verified.permissions)
 			const identity = new Identity(
 				verified,
-				(realms?.length == 1 ? realms[0] : header.realm) as Realm,
+				((realms?.length == 1 ? realms[0] : header.realm) ?? verified.realm) as Realm,
 				(verified.organization ?? header.organization) as string
 			)
 			const requirement = (
@@ -97,7 +97,7 @@ export class Identity<T extends Identity.Require = never> {
 		}
 		return result
 	}
-	static async verify(authorization: string | undefined, key: string): Promise<Key | undefined> {
+	static async verify(authorization: string | undefined, key: string = publicKey): Promise<Key | undefined> {
 		const verifier = userwidgets.User.Key.Verifier.create<Key>(key)
 		const jwt = User.JWT.open({ public: key })
 		const unpacked = authorization ? await jwt.unpack(authorization) : undefined
