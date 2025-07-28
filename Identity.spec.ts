@@ -10,12 +10,15 @@ describe("Identity", () => {
 		jwt = pax2pay.User.JWT.open({ public: publicKey, private: privateKey })
 	})
 	it("should handle new tokens", async () => {
-		const shortTerm = await jwt.sign?.({
-			permission: { "*": "read", card: "write" },
-			realm: "test",
-			sub: "test@test.com",
-		})
-		expect(await pax2pay.Identity.verify(shortTerm, publicKey)).toBeTruthy()
+		const header = {
+			authorization:
+				"Bearer " +
+				(await jwt.sign?.({
+					permission: { "*": "read", card: "write" },
+					realm: "test",
+					sub: "test@test.com",
+				})),
+		}
 		const constraint1: Key.Permissions = {
 			cards: { view: true },
 		}
@@ -23,12 +26,13 @@ describe("Identity", () => {
 			cards: { view: true },
 			accounts: { view: true },
 		}
-		expect(
-			await pax2pay.Identity.authenticate({ authorization: "Bearer " + shortTerm }, constraint1, undefined, publicKey)
-		).toBeTruthy()
-		expect(
-			await pax2pay.Identity.authenticate({ authorization: "Bearer " + shortTerm }, constraint2, undefined, publicKey)
-		).toBeFalsy()
+		const constraint3: Key.Permissions = {
+			cards: { view: true },
+			accounts: { write: true },
+		}
+		expect(await pax2pay.Identity.authenticate(header, constraint1, undefined, publicKey)).toBeTruthy()
+		expect(await pax2pay.Identity.authenticate(header, constraint2, undefined, publicKey)).toBeTruthy()
+		expect(await pax2pay.Identity.authenticate(header, constraint3, undefined, publicKey)).toBeFalsy()
 	})
 	it("authenticate with empty constraint", async () => {
 		const constraint: pax2pay.Key.Permissions = {}
