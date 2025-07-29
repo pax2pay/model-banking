@@ -48,7 +48,7 @@ export namespace User {
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
 			invite: isly.string(),
-			password: isly.object({ new: isly.string(), repeat: isly.string() }),
+			password: Password.Creatable.type,
 		})
 	}
 	export interface Invite {

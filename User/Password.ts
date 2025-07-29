@@ -9,11 +9,13 @@ export interface Password {
 }
 export namespace Password {
 	export interface Creatable {
+		current?: string
 		new: string
 		repeat: string
 	}
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
+			current: isly.string().optional(),
 			new: isly.string(),
 			repeat: isly.string(),
 		})
@@ -22,6 +24,8 @@ export namespace Password {
 		let result: Awaited<ReturnType<typeof create>>
 		if (creatable.new !== creatable.repeat)
 			result = gracely.client.forbidden("The new password and the repeated password do not match.")
+		else if (creatable.new.length < 8)
+			result = gracely.client.forbidden("The new password must be at least 8 characters long.")
 		else if (!pepper)
 			result = gracely.server.backendFailure("The password cannot be created without a pepper.")
 		else
