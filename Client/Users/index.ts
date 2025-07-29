@@ -22,9 +22,6 @@ export class Users {
 	async remove(email: string): Promise<User | gracely.Error> {
 		return await this.client.delete<User>(`/user/${email}`)
 	}
-	async updatePassword(email: string, creatable: User.Password.Creatable): Promise<User | gracely.Error> {
-		return await this.client.put<User>(`/user/${email}/password`, creatable)
-	}
 	async updateAccess(email: string, access: User.Access): Promise<User | gracely.Error> {
 		return await this.client.put<User>(`/user/${email}/access`, access)
 	}
