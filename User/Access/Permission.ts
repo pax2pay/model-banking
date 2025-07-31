@@ -9,7 +9,7 @@ export namespace Permission {
 		return typedly.Object.entries(constraint).every(
 			([collection, level]) =>
 				Permission.Level.get(privilege[collection]) >= Permission.Level.get(level) ||
-				Permission.Level.get(privilege["*"]) >= Permission.Level.get(level)
+				(collection != "user" && Permission.Level.get(privilege["*"]) >= Permission.Level.get(level))
 		)
 	}
 	export type Level = typeof Level.values[number]
