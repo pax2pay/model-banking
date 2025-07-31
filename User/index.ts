@@ -4,7 +4,6 @@ import { Realm } from "../Realm"
 import { Access as UserAccess } from "./Access"
 import { Identity as UserIdentity } from "./Identity"
 import { JWT as UserJWT } from "./JWT"
-import { Me as UserMe } from "./Me"
 import { Password as UserPassword } from "./Password"
 
 export interface User {
@@ -20,7 +19,6 @@ export namespace User {
 	export import Access = UserAccess
 	export import Identity = UserIdentity
 	export import JWT = UserJWT
-	export import Me = UserMe
 	export import Password = UserPassword
 	export function fromInvite(invite: Invite): User {
 		const now = isoly.DateTime.now()
