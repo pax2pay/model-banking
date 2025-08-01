@@ -3,8 +3,8 @@ import { typedly } from "typedly"
 
 export type Permission = Partial<Record<Permission.Collection, Permission.Level>>
 export namespace Permission {
-	export type Realm = Omit<Permission, "user">
-	export type Global = Pick<Permission, "user">
+	export type Realm = Record<Permission.Collection.Realm, Permission.Level>
+	export type Global = Record<Permission.Collection.Global, Permission.Level>
 	export function check(constraint: Permission, privilege: Permission): boolean {
 		return typedly.Object.entries(constraint).every(
 			([collection, level]) =>
@@ -28,19 +28,26 @@ export namespace Permission {
 	}
 	export type Collection = typeof Collection.values[number]
 	export namespace Collection {
-		export const values = [
-			"*",
-			"account",
-			"card",
-			"log",
-			"operation",
-			"organization",
-			"rule", // realm rules
-			"settlement",
-			"transaction",
-			"treasury",
-			"user",
-		] as const
+		export type Realm = typeof Realm.values[number]
+		export namespace Realm {
+			export const values = [
+				"*",
+				"account",
+				"card",
+				"log",
+				"operation",
+				"organization",
+				"rule", // realm rules
+				"settlement",
+				"transaction",
+				"treasury",
+			] as const
+		}
+		export type Global = typeof Global.values[number]
+		export namespace Global {
+			export const values = ["user"] as const
+		}
+		export const values = [...Realm.values, ...Global.values] as const
 		export const type = isly.string(values)
 	}
 	export const type = isly.record<Permission>(Collection.type, Level.type)
