@@ -32,7 +32,6 @@ export namespace Permission {
 		export namespace Realm {
 			export const values = [
 				"*",
-				"account",
 				"card",
 				"log",
 				"operation",

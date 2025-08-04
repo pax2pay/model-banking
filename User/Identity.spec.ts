@@ -8,7 +8,7 @@ describe("Identity", () => {
 	})
 	it("Identifies a user from a jwt", async () => {
 		const token = await jwt.sign?.({
-			permission: { card: "read", account: "write", organization: "developer", transaction: "admin" },
+			permission: { card: "read", organization: "developer", transaction: "admin" },
 			realm: "test",
 			sub: "Test",
 		})
@@ -18,10 +18,6 @@ describe("Identity", () => {
 			expect(identity.authenticate({ card: "write" })).haveOwnProperty("status", 403)
 			expect(identity.authenticate({ card: "developer" })).haveOwnProperty("status", 403)
 			expect(identity.authenticate({ card: "admin" })).haveOwnProperty("status", 403)
-			expect(identity.authenticate({ account: "read" })).instanceOf(pax2pay.User.Identity)
-			expect(identity.authenticate({ account: "write" })).instanceOf(pax2pay.User.Identity)
-			expect(identity.authenticate({ account: "developer" })).haveOwnProperty("status", 403)
-			expect(identity.authenticate({ account: "admin" })).haveOwnProperty("status", 403)
 			expect(identity.authenticate({ organization: "read" })).instanceOf(pax2pay.User.Identity)
 			expect(identity.authenticate({ organization: "write" })).instanceOf(pax2pay.User.Identity)
 			expect(identity.authenticate({ organization: "developer" })).instanceOf(pax2pay.User.Identity)

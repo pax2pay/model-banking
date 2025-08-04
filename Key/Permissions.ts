@@ -75,10 +75,6 @@ export namespace Permissions {
 					user: User.Access.Permission.Level.get(permission["user"]) >= 2 || { view: true },
 					app: { view: true },
 				}
-			if (permission["account"])
-				result.accounts = User.Access.Permission.Level.get(permission["account"]) >= 2 || {
-					view: true,
-				}
 			if (permission["card"])
 				result.cards = User.Access.Permission.Level.get(permission["card"]) >= 2 || {
 					view: true,
