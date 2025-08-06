@@ -7,6 +7,7 @@ export namespace Supplier {
 	export const type = isly.string<Supplier>(names)
 	export const currencies: Record<Supplier, isoly.Currency[]> = {
 		clearbank: ["GBP"],
+		bankingcircle: ["EUR", "GBP", "USD", "DKK", "CHF", "PLN", "SEK", "HUF"],
 		paxgiro: ["GBP", "SEK", "USD", "EUR"],
 		paxgiroCredit: ["GBP", "SEK", "USD", "EUR"],
 	}
