@@ -9,6 +9,7 @@ export interface Amount {
 	total: number
 	exchange?: Exchange
 }
+
 export namespace Amount {
 	export const type = isly.object<Amount>({
 		original: isly.number(),

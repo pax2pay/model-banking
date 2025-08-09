@@ -19,8 +19,21 @@ import { Status as TransactionStatus } from "./Status"
 export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
-	amount: Transaction.Amount
-	charge?: number
+	amount: number
+	breakdown: {
+		authorized: {
+			original: number // principal
+			charge?: { exchange: number; ryanair: number; total: number }
+			total: number
+		}
+		captured: {
+			// captures: Capture[]
+			original: number // principal
+			charge?: { exchange: number; ryanair: number; total: number }
+			total: number
+		}
+		captures: Capture[]
+	}
 	description: string
 	organization: string
 	accountId: string
@@ -42,6 +55,37 @@ export interface Transaction {
 	notes: Transaction.Note[]
 	risk?: number
 	state?: Rule.State
+}
+export interface Capture {
+	id: string
+	timestamp: isoly.DateTime
+	original: number
+	charge?: {
+		exchange: number
+		ryanair: number
+		total: number
+	}
+	total: number
+}
+/*
+amount: number
+
+created amount
+Charge amount with granularity at creation
+Charge amount with granularity at completion
+completion amount
+*/
+export interface Amount2 {
+	initial: {
+		requested: number
+		charge: number
+		total: number
+	}
+	finalized: {
+		requested: number
+		charge: number
+		total: number
+	}
 }
 export namespace Transaction {
 	export import Identifier = TransactionIdentifier
