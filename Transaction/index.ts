@@ -8,7 +8,7 @@ import type { Rule } from "../Rule"
 import { Settlement } from "../Settlement"
 import { Amount as TransactionAmount } from "./Amount"
 import { Creatable as TransactionCreatable } from "./Creatable"
-import { Exchange as TransactionExchange } from "./Exchange"
+import { Exchange, Exchange as TransactionExchange } from "./Exchange"
 import { Identifier as TransactionIdentifier } from "./Identifier"
 import { Note as TransactionNote } from "./Note"
 import { PreTransaction as TransactionPreTransaction } from "./PreTransaction"
@@ -19,20 +19,19 @@ import { Status as TransactionStatus } from "./Status"
 export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
-	amount: number
-	breakdown: {
-		authorized: {
-			original: number // principal
-			charge?: { exchange: number; ryanair: number; total: number }
+	amount: {
+		exchange?: Exchange
+		reserved: {
+			subtotal: number
+			charges?: {type: }[]
 			total: number
 		}
-		captured: {
-			// captures: Capture[]
-			original: number // principal
-			charge?: { exchange: number; ryanair: number; total: number }
+		processed: {
+			events: Event[]
+			subtotal: number
+			charges?: {type: }[]
 			total: number
 		}
-		captures: Capture[]
 	}
 	description: string
 	organization: string
@@ -56,37 +55,8 @@ export interface Transaction {
 	risk?: number
 	state?: Rule.State
 }
-export interface Capture {
-	id: string
-	timestamp: isoly.DateTime
-	original: number
-	charge?: {
-		exchange: number
-		ryanair: number
-		total: number
-	}
-	total: number
-}
-/*
-amount: number
 
-created amount
-Charge amount with granularity at creation
-Charge amount with granularity at completion
-completion amount
-*/
-export interface Amount2 {
-	initial: {
-		requested: number
-		charge: number
-		total: number
-	}
-	finalized: {
-		requested: number
-		charge: number
-		total: number
-	}
-}
+
 export namespace Transaction {
 	export import Identifier = TransactionIdentifier
 	export import Exchange = TransactionExchange

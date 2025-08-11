@@ -4,10 +4,33 @@ import type { Rule } from "../Rule"
 import { Exchange } from "./Exchange"
 
 export interface Amount {
-	original: number
-	charge: number
-	total: number
 	exchange?: Exchange
+	reserved: {
+		subtotal: number
+		charge?: { charges: Charge[]; total: number }
+		total: number
+	}
+	processed: {
+		events: Event[]
+		subtotal: number
+		charge?: { charges: Charge[]; total: number }
+		total: number
+	}
+}
+export interface Event {
+	id: string
+	timestamp: isoly.DateTime
+	subtotal: number
+	charge?: {
+		exchange: number
+		total: number
+	}
+	total: number
+}
+export interface Charge {
+	type: "exchange" | "merchant markup"
+	description?: string
+	amount: number
 }
 
 export namespace Amount {
