@@ -8,7 +8,7 @@ import type { Rule } from "../Rule"
 import { Settlement } from "../Settlement"
 import { Amount as TransactionAmount } from "./Amount"
 import { Creatable as TransactionCreatable } from "./Creatable"
-import { Exchange as TransactionExchange } from "./Exchange"
+import { Exchange, Exchange as TransactionExchange } from "./Exchange"
 import { Identifier as TransactionIdentifier } from "./Identifier"
 import { Note as TransactionNote } from "./Note"
 import { PreTransaction as TransactionPreTransaction } from "./PreTransaction"
@@ -19,8 +19,20 @@ import { Status as TransactionStatus } from "./Status"
 export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
-	amount: Transaction.Amount
-	charge?: number
+	amount: {
+		exchange?: Exchange
+		reserved: {
+			subtotal: number
+			charges?: {type: }[]
+			total: number
+		}
+		processed: {
+			events: Event[]
+			subtotal: number
+			charges?: {type: }[]
+			total: number
+		}
+	}
 	description: string
 	organization: string
 	accountId: string
@@ -43,6 +55,8 @@ export interface Transaction {
 	risk?: number
 	state?: Rule.State
 }
+
+
 export namespace Transaction {
 	export import Identifier = TransactionIdentifier
 	export import Exchange = TransactionExchange

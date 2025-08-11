@@ -3,7 +3,7 @@ import { isly } from "isly"
 export type Status = Status.Success | [Status.Fail, Status.Reason]
 export namespace Status {
 	// DEPRECATED: "created"
-	export const successes = ["created", "review", "processing", "finalized"] as const
+	export const successes = ["created", "review", "processing", "finalized"] as const // "captured"
 	export type Success = typeof successes[number]
 	export const Success = isly.string<Success>(successes)
 	export const failures = ["rejected", "cancelled"] as const
