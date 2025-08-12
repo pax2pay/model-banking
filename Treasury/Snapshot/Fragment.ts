@@ -6,7 +6,7 @@ import { Account } from "../Account"
 
 export interface Fragment {
 	warnings: Warning.Snapshot[]
-	emoney: Balance.Extended
+	emoney: Balance.Extended & { total?: number }
 	counterbalance: Fragment.Counterbalance
 	fiat: {
 		safe: number
