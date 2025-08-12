@@ -10,4 +10,8 @@ export interface Fiat {
 	type: "safeguarded" | "unsafe" | "other" | "buffer"
 	balances: Balance
 	warnings?: Warning.Snapshot[]
+	counterbalance?: Balance
+	conditions?: { minimum?: Balance }
+	label?: string
+	reference?: string
 }
