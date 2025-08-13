@@ -46,6 +46,7 @@ export class Transactions {
 }
 export namespace Transactions {
 	export interface Query {
+		id?: string
 		account?: string
 		limit?: number
 		cursor?: string
@@ -58,6 +59,7 @@ export namespace Transactions {
 	}
 	export namespace Query {
 		export const type = isly.object({
+			id: isly.string().optional(),
 			account: isly.string().optional(),
 			limit: isly.number().optional(),
 			cursor: isly.string().optional(),
