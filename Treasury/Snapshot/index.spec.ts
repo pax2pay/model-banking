@@ -1,32 +1,34 @@
 import { pax2pay } from "../../index"
 
 describe("Treasury.Snapshot", () => {
-	it("fragment.is", () => {
-		expect(pax2pay.Treasury.Snapshot.Fragment.type.is(fragment)).toBeTruthy()
+	it("is", () => {
+		expect(pax2pay.Treasury.Snapshot.type.is(snapshot)).toBeTruthy()
 	})
 	it("is", () => {
 		expect(pax2pay.Treasury.Snapshot.type.is(snapshot)).toBeTruthy()
 	})
-	it("sum fragment counterbalance accounts", () => {
-		const accounts: pax2pay.Treasury.Snapshot.Fragment.Counterbalance[string]["account"] = {
+	it("sum snapshot counterbalance accounts", () => {
+		const accounts: pax2pay.Treasury.Snapshot.Counterbalance[string]["account"] = {
 			id1: { amount: 5 },
 			id2: { amount: 5 },
 			id3: { amount: -5 },
 		}
-		expect(pax2pay.Treasury.Snapshot.Fragment.Counterbalance.sum("USD", accounts)).toEqual(5)
+		expect(pax2pay.Treasury.Snapshot.Counterbalance.sum("USD", accounts)).toEqual(5)
 	})
 	it("sum validate counterbalance", () => {
-		const counterbalance: pax2pay.Treasury.Snapshot.Fragment.Counterbalance = {
+		const counterbalance: pax2pay.Treasury.Snapshot.Counterbalance = {
 			"safe-01": {
 				total: 5,
 				account: { id1: { amount: 5 }, id2: { amount: 5 }, id3: { amount: -5 } },
 			},
 		}
-		expect(pax2pay.Treasury.Snapshot.Fragment.Counterbalance.validate("USD", counterbalance)).toEqual(true)
+		expect(pax2pay.Treasury.Snapshot.Counterbalance.validate("USD", counterbalance)).toEqual(true)
 	})
-	it("validate fragment", () => {
-		const fragment: pax2pay.Treasury.Snapshot.Fragment = {
+	it("validate snapshot", () => {
+		const snapshot: pax2pay.Treasury.Snapshot = {
 			warnings: [],
+			supplier: "paxgiro",
+			currency: "GBP",
 			fiat: { safe: 23846.03, unsafe: 0, total: 23846.03, other: 0, buffer: 0, accounts: [] },
 			emoney: { actual: 23846.03 },
 			counterbalance: {
@@ -34,10 +36,12 @@ describe("Treasury.Snapshot", () => {
 				"credit-01": { total: -5, account: { id2: { amount: -5 } } },
 			},
 		}
-		expect(pax2pay.Treasury.Snapshot.Fragment.validate("GBP", fragment)).toEqual(true)
+		expect(pax2pay.Treasury.Snapshot.validate(snapshot)).toEqual(true)
 	})
 })
-const fragment: pax2pay.Treasury.Snapshot.Fragment = {
+const snapshot: pax2pay.Treasury.Snapshot = {
+	supplier: "paxgiro",
+	currency: "GBP",
 	emoney: { actual: 2 },
 	counterbalance: {
 		"safe-01": { total: 5, account: { id1: { amount: 5 } } },
@@ -46,4 +50,3 @@ const fragment: pax2pay.Treasury.Snapshot.Fragment = {
 	fiat: { safe: 1, unsafe: 1, total: 1, other: 1, buffer: 1, accounts: [] },
 	warnings: [],
 }
-const snapshot: pax2pay.Treasury.Snapshot = { GBP: fragment }
