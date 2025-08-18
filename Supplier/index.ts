@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Realm } from "../Realm"
 
 export type Supplier = typeof Supplier.names[number]
 export namespace Supplier {
@@ -10,5 +11,10 @@ export namespace Supplier {
 		bankingcircle: ["EUR", "GBP", "USD", "DKK", "CHF", "PLN", "SEK", "HUF"],
 		paxgiro: ["GBP", "SEK", "USD", "EUR"],
 		paxgiroCredit: ["GBP", "SEK", "USD", "EUR"],
+	}
+	export const realm: Record<Realm, Supplier[]> = {
+		eea: [],
+		test: ["paxgiro", "paxgiroCredit"],
+		uk: ["bankingcircle", "clearbank"],
 	}
 }
