@@ -1,12 +1,13 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Supplier } from "../Supplier"
 import { Amount } from "./Amount"
 
 export interface Total {
 	expected: Amount
-	outcome?: Amount
-	collected?: { transactions: { net: string; fee?: string; charge: string } }
-	settled?: Total.Settled
+	outcome?: Partial<Record<Supplier, Amount>>
+	collected?: Partial<Record<Supplier, { transactions: { net: string; fee?: string; charge: string } }>>
+	settled?: Partial<Record<Supplier, Total.Settled>>
 }
 export namespace Total {
 	export type Settled = {
