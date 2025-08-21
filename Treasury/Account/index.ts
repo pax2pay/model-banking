@@ -15,7 +15,7 @@ export interface Account {
 	created: isoly.DateTime
 	label: string
 	realm: Realm
-	supplier: Supplier | "external"
+	supplier: Supplier
 	reference: string
 	currencies: isoly.Currency[]
 	type: AccountCategory
