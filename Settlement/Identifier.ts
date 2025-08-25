@@ -9,6 +9,9 @@ export namespace Identifier {
 	export function getCharacter(identifier: Identifier): Card.Stack.Character {
 		return identifier.substring(8, 9) as Card.Stack.Character
 	}
+	export function getCycle(identifier: Identifier): number {
+		return +identifier.substring(9)
+	}
 	export function toProcessor(identifier: Identifier): Card.Stack | undefined {
 		return Card.Stack.Character.toStack(getCharacter(identifier))
 	}

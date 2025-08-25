@@ -14,10 +14,11 @@ export namespace Preset {
 		"p2p-visa-idx-140",
 		"p2p-visa-idx-160",
 		"p2p-visa-idx-200",
-		"test-pg-200",
 		"test-pg-150",
+		"test-pg-200",
 		"test-ta-pg-200",
 		"test-ta-mc-200",
+		"test-ta-pg-bc-200",
 		"p2p-diners-175",
 		"p2p-diners-200",
 	] as const
@@ -36,9 +37,10 @@ export namespace Preset {
 		"p2p-visa-idx-200": "uk-visa-tpl-marqeta",
 		"p2p-diners-175": "uk-diners-dpg",
 		"p2p-diners-200": "uk-diners-dpg",
+		"test-pg-150": "test-paxgiro",
 		"test-pg-200": "test-paxgiro",
 		"test-ta-mc-200": "test-tpl-paxgiro",
 		"test-ta-pg-200": "test-tpl-paxgiro",
-		"test-pg-150": "test-paxgiro",
+		"test-ta-pg-bc-200": "test-tpl-paxgiro",
 	}
 }
