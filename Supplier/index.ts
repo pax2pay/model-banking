@@ -1,6 +1,5 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Card } from "../Card"
 import { Realm } from "../Realm"
 
 export type Supplier = typeof Supplier.names[number]
