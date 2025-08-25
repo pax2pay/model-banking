@@ -4,7 +4,8 @@ import { isly } from "isly"
 export type Amount = {
 	net: number
 	fee: {
-		other: number
+		interchange: number
+		scheme: number
 	}
 }
 export namespace Amount {

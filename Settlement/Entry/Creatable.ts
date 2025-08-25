@@ -19,8 +19,12 @@ export namespace Creatable {
 		acquirer: Acquirer
 		reference: string
 		batch: Batch
-		fee: Fee
-		amount: Amount
+		// fee: Fee
+		// amount: Amount
+		amount: {
+			net: number
+			fee: { scheme: number; interchange: number }
+		}
 		settlement: SettlementIdentifier
 		exchange?: Exchange
 	}
