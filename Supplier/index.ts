@@ -31,7 +31,7 @@ export namespace Supplier {
 			"p2p-diners-175",
 			"p2p-diners-200",
 		],
-		bankingcircle: ["test-pg-bc-200"],
+		bankingcircle: ["test-ta-pg-bc-200"],
 		paxgiroCredit: [],
 	}
 }
