@@ -9,7 +9,7 @@ export interface Contact {
 	address: Contact.Addresses
 	email: string
 	name: Contact.Name
-	phone: ContactPhone
+	phone: Contact.Phone
 	owners?: Contact.Name[]
 }
 export namespace Contact {
