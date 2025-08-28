@@ -12,7 +12,7 @@ import { Status } from "./Status"
 import { Total as SettlementTotal } from "./Total"
 import { Totals as SettlementTotals } from "./Totals"
 
-export interface Settlement extends Omit<Settlement.Creatable, "count"> {
+export interface Settlement extends Settlement.Creatable {
 	id: SettlementIdentifier | string // string is deprecated and there for legacy reasons
 	by?: string
 	created: isoly.DateTime
