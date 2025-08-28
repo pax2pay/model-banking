@@ -22,12 +22,6 @@ export namespace Organization {
 		contact: OrganizationContact.type.optional(),
 		groups: isly.string().array().optional(),
 	})
-	export type Changeable = OrganizationChangeable
-	export const Changeable = OrganizationChangeable
-	export type Contact = OrganizationContact
-	export const Contact = OrganizationContact
-	export namespace Contact {
-		export type Address = OrganizationContact.Address
-		export type Addresses = OrganizationContact.Addresses
-	}
+	export import Changeable = OrganizationChangeable
+	export import Contact = OrganizationContact
 }
