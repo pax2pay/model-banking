@@ -8,7 +8,7 @@ export interface Creatable {
 	processor: Card.Stack
 	references?: string[] //File name
 	batch: Batch
-	expectedCount?: number
+	count?: number
 }
 
 export namespace Creatable {
@@ -17,6 +17,6 @@ export namespace Creatable {
 		processor: Card.Stack.type,
 		references: isly.string().array().optional(),
 		batch: Batch.type,
-		expectedCount: isly.number().optional(),
+		count: isly.number().optional(),
 	})
 }
