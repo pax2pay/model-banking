@@ -8,12 +8,10 @@ export type Transaction = ModelTransaction.Creatable.Resolved & {
 	stage: "finalize" | "initiate"
 	amount: number
 	type: ModelTransaction.Types
-	risk?: number
 	original: {
 		currency: isoly.Currency
 		total: number
 		amount: number
-		charge?: { current: number; total: number }
 	}
 }
 export namespace Transaction {
@@ -27,12 +25,8 @@ export namespace Transaction {
 			"state" in transaction
 				? [
 						transaction.state?.transaction.original.amount ?? transaction.amount,
-						isoly.Currency.subtract(
-							transaction.currency,
-							transaction.state?.transaction.original.total ??
-								(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.total),
-							stage === "finalize" ? transaction.state?.transaction.original.charge?.total ?? 0 : 0
-						),
+						transaction.state?.transaction.original.total ??
+							(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.total),
 				  ]
 				: [transaction.amount, transaction.amount]
 		return {

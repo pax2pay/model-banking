@@ -102,40 +102,13 @@ export namespace Transaction {
 		)
 		return {
 			original: typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
-			charge: stateAmount?.charge ?? 0,
+			charge: { exchange: stateAmount?.charge?.exchange, merchant: stateAmount?.charge?.merchant },
 			total: changes.available ?? reserved ?? 0,
 			exchange: state?.transaction.exchange ?? state?.authorization?.exchange,
 		}
 	}
 	export interface Legacy extends Omit<Transaction, "amount"> {
 		amount: number
-	}
-	export namespace Legacy {
-		export const type = Transaction.type.omit<"amount">(["amount"]).extend<Legacy>({ amount: isly.number() })
-	}
-	export function fromLegacy(transaction: Transaction | Legacy): Transaction {
-		return {
-			...transaction,
-			...(typeof transaction.amount == "number"
-				? {
-						amount: {
-							original:
-								transaction.state?.transaction.original.amount ??
-								isoly.Currency.subtract(transaction.currency, transaction.amount, transaction.charge ?? 0),
-							charge: transaction.state?.transaction.original.charge?.total ?? transaction.charge ?? 0,
-							total: transaction.state?.transaction.original.total ?? transaction.amount,
-						},
-				  }
-				: { amount: transaction.amount }),
-		}
-	}
-	export function toLegacy(transaction: Transaction | Legacy): Legacy {
-		return {
-			...transaction,
-			...(typeof transaction.amount == "number"
-				? { amount: transaction.amount }
-				: { amount: transaction.amount.total }),
-		}
 	}
 	export type Event = Omit<Transaction, "state">
 	export namespace Event {
@@ -188,8 +161,6 @@ export namespace Transaction {
 			oldFlags: [],
 			notes: state.notes,
 			state,
-			risk: state.transaction.risk,
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function system(
@@ -200,7 +171,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...creatable,
-			amount: { original: creatable.amount, charge: 0, total: creatable.amount },
+			amount: { original: creatable.amount, total: creatable.amount },
 			type: getType(creatable.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -226,7 +197,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...creatable,
-			amount: { original: 0, charge: 0, total: 0 },
+			amount: { original: 0, total: 0 },
 			type: getType(creatable.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -260,7 +231,7 @@ export namespace Transaction {
 				name: account.name,
 				organization: account.organization,
 			},
-			amount: { original: 0, charge: 0, total: 0 },
+			amount: { original: 0, total: 0 },
 			type: "internal",
 			direction: "inbound",
 			organization: account.organization,
@@ -302,8 +273,6 @@ export namespace Transaction {
 			oldFlags: [],
 			notes: state.notes,
 			state,
-			risk: state.transaction.risk,
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function fromRefund(
@@ -330,7 +299,6 @@ export namespace Transaction {
 			flags: [],
 			oldFlags: [],
 			notes: [],
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function isIdentifier(value: string | any): value is string {

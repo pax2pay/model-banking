@@ -4,8 +4,7 @@ import { isly as isly2 } from "isly2"
 import { Amount } from "../Amount"
 import { Realm } from "../Realm"
 import { Report } from "../Report"
-import type { Rule } from "../Rule"
-import { type as ruleType } from "../Rule/type"
+import { Rule } from "../Rule"
 import { Changeable as CardChangeable } from "./Changeable"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Expiry as CardExpiry } from "./Expiry"
@@ -72,7 +71,7 @@ export namespace Card {
 		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		status: isly.union(isly.string("active"), isly.string("cancelled")),
 		history: isly.array(CardOperation.type),
-		rules: ruleType.array(),
+		rules: Rule.type.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 		restricted: isly.object<Required<Card>["restricted"]>({ to: CardRestriction.type.optional() }).optional(),
 	})
@@ -99,7 +98,7 @@ export namespace Card {
 			status: isly2.string("value", ["active", "cancelled"]).rename("Status").describe("Current card status."),
 			history: CardOperation.type2.array().rename("History").describe("Card operation history."),
 			rules: isly2
-				.from("Rule", ruleType.is)
+				.from("Rule", Rule.type.is)
 				.array()
 				.rename("Rules")
 				.describe("Card rules that applies to authorizations made with the card."),
