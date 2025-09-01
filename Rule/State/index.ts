@@ -54,7 +54,7 @@ export namespace State {
 		return {
 			data,
 			account: Account.from(account, address, transactions, days),
-			transaction: Transaction.from(account.name, transaction, kind, stage),
+			transaction: Transaction.from(account, transaction, kind, stage),
 			authorization: Authorization.from(transaction),
 			card,
 			organization,
@@ -78,7 +78,7 @@ export namespace State {
 		return {
 			data,
 			account: Account.from(account, address, transactions, days),
-			transaction: Transaction.from(account.name, transaction, type[transaction.type], "initiate"),
+			transaction: Transaction.from(account, transaction, type[transaction.type], "initiate"),
 			card: card ? Card.from(card, card.statistics) : undefined,
 			organization,
 		}

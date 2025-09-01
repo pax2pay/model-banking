@@ -352,7 +352,7 @@ const cards: pax2pay.Card[] = [
 ]
 const transactions: pax2pay.Transaction.CardTransaction[] = [
 	{
-		amount: { original: -1148.77, charge: 0, total: -1148.77 },
+		amount: { original: -1148.77, total: -1148.77 },
 		currency: "GBP",
 		description: "authorization duck airline",
 		counterpart: {
@@ -397,11 +397,10 @@ const transactions: pax2pay.Transaction.CardTransaction[] = [
 		flags: [],
 		oldFlags: [],
 		notes: [],
-		charge: 0,
 		transacted: "2025-02-11T10:44:24.384Z",
 	},
 	{
-		amount: { original: -1148.77, charge: 0, total: -1148.77 },
+		amount: { original: -1148.77, total: -1148.77 },
 		currency: "GBP",
 		description: "authorization duck airline",
 		counterpart: {
@@ -446,7 +445,6 @@ const transactions: pax2pay.Transaction.CardTransaction[] = [
 		flags: [],
 		oldFlags: [],
 		notes: [],
-		charge: 0,
 		transacted: "2025-02-11T10:44:24.384Z",
 	},
 ]

@@ -28,7 +28,6 @@ export namespace Transaction {
 		posted: "value.posted",
 		transacted: "value.transacted",
 		by: "value.by",
-		charge: { selector: "value.charge", transform: "string" },
 		actualBalance: { selector: "value.balance.actual", transform: "string" },
 		reservedBalance: { selector: "value.balance.reserved", transform: "string" },
 		availableBalance: { selector: "value.balance.available", transform: "string" },
@@ -69,7 +68,6 @@ export namespace Transaction {
 		oldFlags: "value.oldFlags",
 		notes: { selector: "value.notes", transform: "stringify" },
 		risk: { selector: "value.risk", transform: "string" },
-		state: { selector: "value.state", transform: "stringify" },
 	}
 	export type Fields = keyof typeof mapping
 	export const schema: listener.BigQueryApi.BaseField<Fields>[] = [
@@ -95,7 +93,6 @@ export namespace Transaction {
 		{ name: "posted", type: "TIMESTAMP" },
 		{ name: "transacted", type: "TIMESTAMP", mode: "NULLABLE" },
 		{ name: "by", type: "STRING", mode: "NULLABLE" },
-		{ name: "charge", type: "NUMERIC", mode: "NULLABLE" },
 		{ name: "actualBalance", type: "NUMERIC" },
 		{ name: "reservedBalance", type: "NUMERIC" },
 		{ name: "availableBalance", type: "NUMERIC" },

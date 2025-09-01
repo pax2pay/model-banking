@@ -20,7 +20,6 @@ export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
 	amount: Transaction.Amount
-	charge?: number
 	description: string
 	organization: string
 	accountId: string
@@ -61,7 +60,6 @@ export namespace Transaction {
 		counterpart: isly.fromIs("Rail.Address", Rail.Address.type.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		amount: Amount.type,
-		charge: isly.number().optional(),
 		description: isly.string(),
 		organization: isly.string(),
 		accountId: isly.string(),
@@ -102,47 +100,26 @@ export namespace Transaction {
 		)
 		return {
 			original: typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
-			charge: stateAmount?.charge ?? 0,
+			charge: stateAmount?.charge,
 			total: changes.available ?? reserved ?? 0,
 			exchange: state?.transaction.exchange ?? state?.authorization?.exchange,
 		}
 	}
 	export interface Legacy extends Omit<Transaction, "amount"> {
-		amount: number
-	}
-	export namespace Legacy {
-		export const type = Transaction.type.omit<"amount">(["amount"]).extend<Legacy>({ amount: isly.number() })
-	}
-	export function fromLegacy(transaction: Transaction | Legacy): Transaction {
-		return {
-			...transaction,
-			...(typeof transaction.amount == "number"
-				? {
-						amount: {
-							original:
-								transaction.state?.transaction.original.amount ??
-								isoly.Currency.subtract(transaction.currency, transaction.amount, transaction.charge ?? 0),
-							charge: transaction.state?.transaction.original.charge?.total ?? transaction.charge ?? 0,
-							total: transaction.state?.transaction.original.total ?? transaction.amount,
-						},
-				  }
-				: { amount: transaction.amount }),
-		}
-	}
-	export function toLegacy(transaction: Transaction | Legacy): Legacy {
-		return {
-			...transaction,
-			...(typeof transaction.amount == "number"
-				? { amount: transaction.amount }
-				: { amount: transaction.amount.total }),
-		}
+		amount: number | { original: number; total: number; charge?: number; exchange?: Transaction.Exchange }
 	}
 	export type Event = Omit<Transaction, "state">
 	export namespace Event {
 		export const type = Transaction.type.omit(["state"])
 
 		export function from(transaction: Transaction): Event {
-			return (({ state, ...event }) => event)(transaction)
+			return (({ state, amount, ...event }) => ({
+				...event,
+				amount: {
+					...amount,
+					charge: Amount.Charge.total(event.currency, amount.charges),
+				},
+			}))(transaction)
 		}
 	}
 	export function fromCreatable(
@@ -188,8 +165,6 @@ export namespace Transaction {
 			oldFlags: [],
 			notes: state.notes,
 			state,
-			risk: state.transaction.risk,
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function system(
@@ -200,7 +175,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...creatable,
-			amount: { original: creatable.amount, charge: 0, total: creatable.amount },
+			amount: { original: creatable.amount, total: creatable.amount },
 			type: getType(creatable.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -226,7 +201,7 @@ export namespace Transaction {
 	): Transaction {
 		return {
 			...creatable,
-			amount: { original: 0, charge: 0, total: 0 },
+			amount: { original: 0, total: 0 },
 			type: getType(creatable.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -260,7 +235,7 @@ export namespace Transaction {
 				name: account.name,
 				organization: account.organization,
 			},
-			amount: { original: 0, charge: 0, total: 0 },
+			amount: { original: 0, total: 0 },
 			type: "internal",
 			direction: "inbound",
 			organization: account.organization,
@@ -302,8 +277,6 @@ export namespace Transaction {
 			oldFlags: [],
 			notes: state.notes,
 			state,
-			risk: state.transaction.risk,
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function fromRefund(
@@ -330,7 +303,6 @@ export namespace Transaction {
 			flags: [],
 			oldFlags: [],
 			notes: [],
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function isIdentifier(value: string | any): value is string {
@@ -352,12 +324,7 @@ export namespace Transaction {
 	}
 	export function getType(counterpart: Rail.Address, accountName: string): Types {
 		let result: Types
-		if (
-			accountName.startsWith("settlement-") ||
-			accountName.startsWith("fee-") ||
-			accountName.startsWith("charge-") ||
-			accountName.startsWith("net-")
-		)
+		if (accountName.startsWith("settlement-") || accountName.startsWith("fee-") || accountName.startsWith("net-"))
 			result = "system"
 		else if (counterpart.type == "internal")
 			result = "internal"

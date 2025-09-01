@@ -5,7 +5,7 @@ import { Amount } from "./Amount"
 export interface Total {
 	expected: Amount
 	outcome?: Amount
-	collected?: { transactions: { net: string; fee?: string; charge: string } }
+	collected?: { transactions: { net: string; fee?: string } }
 	settled?: Total.Settled
 }
 export namespace Total {
@@ -22,7 +22,6 @@ export namespace Total {
 				transactions: isly.object<Required<Total>["collected"]["transactions"]>({
 					net: isly.string(),
 					fee: isly.string().optional(),
-					charge: isly.string(),
 				}),
 			})
 			.optional(),
@@ -52,7 +51,6 @@ export namespace Total {
 			result.collected = {
 				transactions: {
 					net: addend.collected?.transactions.net ?? result.collected?.transactions.net ?? "",
-					charge: addend.collected?.transactions.charge ?? result.collected?.transactions.charge ?? "",
 				},
 			}
 		if (result.settled || addend.settled)

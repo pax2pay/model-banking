@@ -4,7 +4,6 @@ export type Counterbalance = {
 	minted: Partial<Record<Counterbalance.Source, number>>
 	burned: Partial<Record<Counterbalance.Sink, number>>
 	internal?: Partial<Record<string, number>>
-	charge?: number
 }
 export namespace Counterbalance {
 	export type Source = string
@@ -15,7 +14,6 @@ export namespace Counterbalance {
 		minted: isly.record<Counterbalance["minted"]>(Source, isly.number()),
 		burned: isly.record<Counterbalance["burned"]>(Sink, isly.number()),
 		internal: isly.record<Required<Counterbalance>["internal"]>(isly.string(), isly.number()).optional(),
-		charge: isly.number().optional(),
 	})
 	export type Link = Source | Sink
 	export const Link = isly.string()

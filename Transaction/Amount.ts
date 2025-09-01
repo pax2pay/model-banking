@@ -5,14 +5,31 @@ import { Exchange } from "./Exchange"
 
 export interface Amount {
 	original: number
-	charge: number
+	charge?: number //Legacy
+	charges?: Amount.Charge[]
 	total: number
 	exchange?: Exchange
 }
 export namespace Amount {
+	export interface Charge {
+		amount: number
+		type: "merchant" | "exchange"
+		destination: { account: string }
+	}
+	export namespace Charge {
+		export const type = isly.object<Charge>({
+			amount: isly.number(),
+			type: isly.string(["merchant", "exchange"]),
+			destination: isly.object({ account: isly.string() }),
+		})
+		export function total(currency: isoly.Currency, charges: Charge[] = []): number {
+			return charges.reduce((r, c) => isoly.Currency.add(currency, r, c.amount), 0)
+		}
+	}
 	export const type = isly.object<Amount>({
 		original: isly.number(),
-		charge: isly.number(),
+		charge: isly.number().optional(),
+		charges: Charge.type.array().optional(),
 		total: isly.number(),
 		exchange: Exchange.type.optional(),
 	})
@@ -22,17 +39,16 @@ export namespace Amount {
 			: 1
 		return {
 			original: sign * state.transaction.original.amount,
-			charge: sign * (state.transaction.original.charge?.total ?? 0),
+			charges: state.transaction.original.charges,
 			total: sign * state.transaction.original.total,
 			exchange: state?.transaction.exchange ?? state.authorization?.exchange,
 		}
 	}
-
 	export function change(
 		currency: isoly.Currency,
 		amount: Amount,
 		change: number,
-		type: Exclude<keyof Amount, "total" | "exchange">
+		type: Exclude<keyof Amount, "total" | "exchange" | "charge" | "charges">
 	): Amount {
 		amount[type] = isoly.Currency.add(currency, amount[type], change)
 		amount.total = isoly.Currency.add(currency, amount.total, change)

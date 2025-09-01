@@ -87,7 +87,7 @@ export namespace Settlement {
 					expected: totalToAmount(currency, expected),
 					...(outcome ? { outcome: totalToAmount(currency, outcome) } : {}),
 					...(collected
-						? { collected: { ...totalToAmount(currency, collected), transactions: { net: "", fee: "", charge: "" } } } //TODO: Find transactions?
+						? { collected: { ...totalToAmount(currency, collected), transactions: { net: "", fee: "" } } } //TODO: Find transactions?
 						: {}),
 					...(settled ? { settled: { net: settled.paid[currency] ?? 0, transactions: settled.transactions } } : {}), //Find transactions?
 				}

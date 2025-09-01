@@ -29,7 +29,7 @@ namespace Test {
 		organization: organization.code,
 		counterpart: { type: "internal", identifier: "target12" },
 		currency: "USD",
-		amount: { original: -100, reserved: 0, charge: 0, total: -100 },
+		amount: { original: -100, total: -100 },
 		posted: "2023-08-07T09:25:11.296Z",
 		description: "internal transaction",
 		account: {

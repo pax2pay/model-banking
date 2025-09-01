@@ -1,4 +1,5 @@
 import { isoly } from "isoly"
+import { Account as ModelAccount } from "../../Account"
 import { Transaction as ModelTransaction } from "../../Transaction"
 import type { Rule } from "../index"
 
@@ -8,44 +9,35 @@ export type Transaction = ModelTransaction.Creatable.Resolved & {
 	stage: "finalize" | "initiate"
 	amount: number
 	type: ModelTransaction.Types
-	risk?: number
 	original: {
 		currency: isoly.Currency
+		charge?: { current: number; total: number } //Legacy
+		charges?: ModelTransaction.Amount.Charge[]
 		total: number
 		amount: number
-		charge?: { current: number; total: number }
 	}
 }
 export namespace Transaction {
 	export function from(
-		accountName: string,
+		account: ModelAccount,
 		transaction: ModelTransaction.Creatable.Resolved | ModelTransaction,
 		kind: Rule.Base.Kind,
 		stage: "finalize" | "initiate"
 	): Transaction {
-		const [amount, total] =
-			"state" in transaction
-				? [
-						transaction.state?.transaction.original.amount ?? transaction.amount,
-						isoly.Currency.subtract(
-							transaction.currency,
-							transaction.state?.transaction.original.total ??
-								(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.total),
-							stage === "finalize" ? transaction.state?.transaction.original.charge?.total ?? 0 : 0
-						),
-				  ]
-				: [transaction.amount, transaction.amount]
+		const charges = ModelAccount.Charge.evaluate(account.charges, transaction)
+		const amount = Math.abs(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original)
 		return {
 			...transaction,
 			id: "id" in transaction ? transaction.id : ModelTransaction.Identifier.generate(),
 			stage,
 			kind,
-			amount: Math.abs(typeof amount == "number" ? amount : amount.total),
-			type: ModelTransaction.getType(transaction.counterpart, accountName),
+			amount,
+			type: ModelTransaction.getType(transaction.counterpart, account.name),
 			original: {
 				currency: transaction.currency,
-				amount: Math.abs(typeof amount == "number" ? amount : amount.original),
-				total: Math.abs(typeof total == "number" ? total : total.total),
+				charges,
+				amount,
+				total: isoly.Currency.add(transaction.currency, amount, ModelAccount.Charge.sum(charges, transaction.currency)),
 			},
 		}
 	}

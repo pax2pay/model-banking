@@ -77,7 +77,7 @@ export namespace Changes {
 		export type Counterbalance = `${isoly.DateTime}-${CounterbalanceOperation.Link}`
 		export function getBalanceType(key: string): string {
 			let result = ""
-			if (key.includes("net") || key.includes("fee") || key.includes("charge"))
+			if (key.includes("net") || key.includes("fee"))
 				result = "collecting"
 			else if (key.toLowerCase().includes("reserved") || key === "available")
 				result = "balance"
@@ -100,25 +100,17 @@ export namespace Changes {
 			export const type = isly.string<Balance>(values)
 		}
 	}
-	export function fromCapture(settlement: string, amounts: { net: number; fee: number; charge?: number }): Changes {
+	export function fromCapture(settlement: string, amounts: { net: number; fee: number }): Changes {
 		return {
 			[`${settlement}-net`]: { type: "add" as const, amount: amounts.net, status: "pending" as const },
 			[`${settlement}-fee`]: { type: "add" as const, amount: amounts.fee, status: "pending" as const },
-			...(amounts.charge && {
-				[`${settlement}-charge`]: { type: "add" as const, amount: amounts.charge, status: "pending" as const },
-			}),
 		}
 	}
-	export function fromRefund(
-		settlement: string,
-		refund: Settlement.Entry.Creatable.Refund,
-		charge: number | undefined,
-		sum: Sum
-	): Changes {
+	export function fromRefund(refund: Settlement.Entry.Creatable.Refund, sum: Sum): Changes {
 		const currency = refund.amount[0]
 		const fee = Math.abs(refund.fee.other[currency] ?? 0)
 		const net = Math.abs(refund.amount[1])
-		const available = isoly.Currency.subtract(currency, isoly.Currency.add(currency, fee, net), charge ?? 0)
+		const available = isoly.Currency.add(currency, fee, net)
 		return {
 			available: { type: available > 0 ? "add" : "subtract", amount: Math.abs(available), status: "pending" },
 			["reserved-incoming"]: {
@@ -126,9 +118,6 @@ export namespace Changes {
 				amount: sum["reserved-incoming"] ?? 0,
 				status: "pending",
 			},
-			...(charge && {
-				[`${settlement}-charge`]: { type: "add" as const, amount: charge, status: "pending" as const },
-			}),
 		}
 	}
 }
