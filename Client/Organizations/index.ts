@@ -18,7 +18,7 @@ export class Organizations {
 	}): Promise<(Organization[] & { cursor?: string | undefined }) | gracely.Error> {
 		return this.client.get<Organization[] & { cursor?: string | undefined }>(`/organization`, options)
 	}
-	async create(organization: Organization): Promise<Organization | gracely.Error> {
+	async create(organization: Organization.Creatable): Promise<Organization | gracely.Error> {
 		return this.client.post<Organization>(`/organization`, organization)
 	}
 	async update(id: string, changeable: Organization.Changeable): Promise<Organization | gracely.Error> {
