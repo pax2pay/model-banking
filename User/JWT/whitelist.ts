@@ -13,4 +13,19 @@ export const whitelist: JWT.Whitelist = {
 			sub: "Test",
 		},
 	],
+	uk: [
+		{
+			iss: "pax2pay",
+			iat: 1756819776,
+			aud: "https://banking.pax2pay.app",
+			id: "CcDi3PUCw4suTL0h",
+			sub: "poms",
+			permission: {
+				card: "write",
+				organization: "write",
+				transaction: "write",
+			},
+			realm: "uk",
+		},
+	],
 }
