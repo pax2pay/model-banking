@@ -11,6 +11,7 @@ export interface Organization {
 	code: string
 	realm: Realm
 	rules: Rule[]
+	status: "active" | "inactive"
 	contact?: Organization.Contact
 	groups?: string[]
 }
@@ -23,6 +24,7 @@ export namespace Organization {
 		code: isly.string(new RegExp(/^[A-Za-z0-9\-_]+$/)),
 		realm: Realm.type,
 		rules: ruleType.array(),
+		status: isly.string(["active", "inactive"]),
 		contact: Contact.type.optional(),
 		groups: isly.string().array().optional(),
 	})
