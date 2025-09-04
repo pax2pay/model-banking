@@ -5,7 +5,7 @@ import { Exchange } from "./Exchange"
 
 export interface Amount {
 	original: number
-	charge?: number //Legacy
+	charge: number //Legacy
 	charges?: Amount.Charge[]
 	total: number
 	exchange?: Exchange
@@ -28,7 +28,7 @@ export namespace Amount {
 	}
 	export const type = isly.object<Amount>({
 		original: isly.number(),
-		charge: isly.number().optional(),
+		charge: isly.number(),
 		charges: Charge.type.array().optional(),
 		total: isly.number(),
 		exchange: Exchange.type.optional(),
@@ -39,6 +39,7 @@ export namespace Amount {
 			: 1
 		return {
 			original: sign * state.transaction.original.amount,
+			charge: sign * (state.transaction.original.charge?.total ?? 0),
 			charges: state.transaction.original.charges,
 			total: sign * state.transaction.original.total,
 			exchange: state?.transaction.exchange ?? state.authorization?.exchange,
