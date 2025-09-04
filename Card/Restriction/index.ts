@@ -22,7 +22,7 @@ export namespace Restriction {
 	): boolean {
 		let result: boolean = true
 		if (restrictions.merchants?.length)
-			result = restrictions.merchants.some(merchant => Merchant.check(merchant, transaction))
+			result = restrictions.merchants.some(merchant => Merchant.check(merchant, transaction.counterpart))
 		return result
 	}
 }

@@ -4,6 +4,7 @@ import { isly } from "isly"
 import { Balances } from "../Balances"
 import { Rail } from "../Rail"
 import { Rule } from "../Rule"
+import { Charge as AccountCharge } from "./Charge"
 import { Creatable as AccountCreatable } from "./Creatable"
 import { Details as AccountDetails } from "./Details"
 import { History as AccountHistory } from "./History"
@@ -18,10 +19,12 @@ export interface Account extends Account.Creatable {
 	details?: Account.Details
 	counterparts?: Record<string, Rail.Address>
 	key?: string
+	charges?: AccountCharge[]
 	rules?: Rule[]
 	status: Account.Status
 }
 export namespace Account {
+	export import Charge = AccountCharge
 	export import Creatable = AccountCreatable
 	export import Status = AccountStatus
 	export import History = AccountHistory
@@ -39,6 +42,7 @@ export namespace Account {
 		details: Details.type.optional(),
 		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.type).optional(),
 		key: isly.string().optional(),
+		charges: AccountCharge.type.array().optional(),
 		rules: Rule.type.array().optional(),
 		status: AccountStatus.type,
 	})
