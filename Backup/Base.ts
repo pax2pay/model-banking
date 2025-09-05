@@ -16,7 +16,7 @@ export type Base<T> = {
 export namespace Base {
 	export type Action = typeof Action.values[number]
 	export namespace Action {
-		export const values = ["created", "updated", "cancelled", "removed"] as const
+		export const values = ["created", "updated", "cancelled", "removed", "inactivated"] as const
 	}
 	export type Data = { realm?: Realm; organization?: string; account?: string; isError?: true; meta?: any }
 	export type Create<T, B extends Base<T>, D extends Data = Record<string, never>> = (...args: [T, Action, D?]) => B
