@@ -47,6 +47,7 @@ export namespace Audit {
 			| "create"
 			| "remove"
 			| "update"
+			| "inactivate"
 		route: "create"
 		clearbank: "assessmentFailed" | "validationFailed"
 	}
