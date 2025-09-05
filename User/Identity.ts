@@ -1,5 +1,4 @@
 import { gracely } from "gracely"
-import { storage } from "cloudly-storage"
 import { Realm } from "../Realm"
 import { Access } from "./Access"
 import { JWT } from "./JWT"
@@ -22,10 +21,10 @@ export class Identity {
 	/** Key will default to production jwt verification key */
 	static async open(
 		authorization: string | undefined,
-		options?: { jwtStore?: storage.KeyValueStore<JWT>; key?: string }
+		options?: { get?: (id: string) => Promise<JWT.Payload.LongTerm | undefined>; key?: string }
 	): Promise<Identity | gracely.Error> {
 		const jwt = authorization?.startsWith("Bearer ") ? authorization.replace("Bearer ", "") : undefined
-		const payload = jwt ? await JWT.open({ public: options?.key }, options?.jwtStore).verify(jwt) : undefined
+		const payload = jwt ? await JWT.open({ public: options?.key }, options?.get).verify(jwt) : undefined
 		return jwt && payload ? new Identity(payload, jwt) : gracely.client.unauthorized()
 	}
 }
