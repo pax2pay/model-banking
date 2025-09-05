@@ -113,7 +113,9 @@ export class Identity<T extends Identity.Require = never> {
 		return [
 			...new Set(
 				Object.keys(permissions).flatMap(code =>
-					code.split("-")[0] == "*" ? Realm.realms : Realm.type.get(code.split("-")[0]) ?? []
+					code.split("-").length > 1 && code.split("-")[0] == "*"
+						? Realm.realms
+						: Realm.type.get(code.split("-")[0]) ?? []
 				)
 			),
 		]
