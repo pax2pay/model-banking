@@ -1,29 +1,39 @@
+import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../Card"
 import { Transaction } from "../Transaction"
 
-export type Charge = {
+export interface Charge extends Charge.Creatable {
 	id: string
-	destination: { account: string }
-	rate: number // rate: 0.01 for 1%
-	applies: {
-		to: {
-			merchants: Card.Restriction.Merchant[]
-		}
-	}
 }
 export namespace Charge {
-	export const type = isly.object<Charge>({
-		id: isly.string(),
-		destination: isly.object({ account: isly.string() }),
-		rate: isly.number(),
-		applies: isly.object({
-			to: isly.object<Charge["applies"]["to"]>({
-				merchants: Card.Restriction.Merchant.type.array(),
+	export interface Creatable {
+		destination: { account: string }
+		rate: number // rate: 0.01 for 1%
+		applies: {
+			to: {
+				merchants: Card.Restriction.Merchant[]
+			}
+		}
+	}
+	export namespace Creatable {
+		export const type = isly.object<Creatable>({
+			destination: isly.object({ account: isly.string() }),
+			rate: isly.number(),
+			applies: isly.object({
+				to: isly.object<Creatable["applies"]["to"]>({
+					merchants: Card.Restriction.Merchant.type.array(),
+				}),
 			}),
-		}),
+		})
+	}
+	export const type = Creatable.type.extend<Charge>({
+		id: isly.string(),
 	})
+	export function fromCreatable(creatable: Creatable): Charge {
+		return { ...creatable, id: cryptly.Identifier.generate(16) }
+	}
 	export function evaluate(
 		charges: Charge[] = [],
 		transaction: Transaction.Creatable.Resolved | Transaction
