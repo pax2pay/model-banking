@@ -89,9 +89,10 @@ export namespace Transaction {
 		state: isly.any().optional(),
 	})
 	export function amountFromOperations(
-		transaction: Transaction | Transaction.Creatable,
+		transaction: Transaction,
 		operations: Operation[],
-		state?: Rule.State
+		state?: Rule.State,
+		charges?: Amount.Charge[]
 	): Amount {
 		const stateAmount = state && Amount.fromState(state)
 		const changes = Operation.sum(operations)
@@ -103,6 +104,7 @@ export namespace Transaction {
 		return {
 			original: typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
 			charge: stateAmount?.charge ?? 0,
+			charges,
 			total: changes.available ?? reserved ?? 0,
 			exchange: state?.transaction.exchange ?? state?.authorization?.exchange,
 		}
@@ -152,6 +154,7 @@ export namespace Transaction {
 		account: { id: string; name: string; organization: string; address: Rail.Address },
 		balance: { actual: number; reserved: number; available: number },
 		operation: Operation | Status.Reason,
+		charges: Amount.Charge[],
 		by: string | undefined
 	): Transaction {
 		const status: Status =
@@ -171,7 +174,7 @@ export namespace Transaction {
 			: "fasterpayments"
 		return {
 			...creatable,
-			amount: Amount.fromState(state),
+			amount: Amount.fromState(state, charges),
 			type: getType(creatable.counterpart, account.name),
 			direction: "outbound",
 			organization: account.organization,

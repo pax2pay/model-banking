@@ -1,3 +1,7 @@
+import { isoly } from "isoly"
+import { Account } from "../../Account"
+import type { Rail } from "../../Rail"
+import type { Transaction } from "../../Transaction"
 import { Creatable as EntryCreatable } from "./Creatable"
 import { Failed as EntryFailed } from "./Failed"
 import { fromCreatable } from "./fromCreatable"
@@ -19,4 +23,16 @@ export namespace Entry {
 	export import Summary = EntrySummary
 	export const type = entryType
 	export const from = fromCreatable
+	export function charge(
+		charges: Account.Charge[] = [],
+		counterpart: Rail.Address.Card.Counterpart,
+		capture: Creatable.Capture
+	): Transaction.Amount.Charge[] {
+		return Account.Charge.evaluate(
+			charges,
+			counterpart,
+			capture.amount[0],
+			isoly.Currency.add(capture.amount[0], capture.amount[1], capture.fee.other[capture.amount[0]] ?? 0)
+		)
+	}
 }

@@ -2,7 +2,14 @@ import { pax2pay } from "../index"
 
 describe("Account.Charge", () => {
 	it("should charge", () => {
-		expect(pax2pay.Account.Charge.evaluate(charges, transaction.ryanair)).toMatchInlineSnapshot(`
+		expect(
+			pax2pay.Account.Charge.evaluate(
+				charges,
+				transaction.ryanair.counterpart,
+				transaction.ryanair.currency,
+				transaction.ryanair.amount
+			)
+		).toMatchInlineSnapshot(`
 			[
 			  {
 			    "amount": 2.5,
@@ -15,7 +22,14 @@ describe("Account.Charge", () => {
 		`)
 	})
 	it("should not charge", () => {
-		expect(pax2pay.Account.Charge.evaluate(charges, transaction.noCharge)).toMatchInlineSnapshot(`[]`)
+		expect(
+			pax2pay.Account.Charge.evaluate(
+				charges,
+				transaction.noCharge.counterpart,
+				transaction.noCharge.currency,
+				transaction.noCharge.amount
+			)
+		).toMatchInlineSnapshot(`[]`)
 	})
 })
 const charges: pax2pay.Account.Charge[] = [
