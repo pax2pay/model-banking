@@ -67,7 +67,7 @@ export class Identity<T extends Identity.Require = never> {
 			const realms = Identity.getRealms(verified.permissions)
 			const identity = new Identity(
 				verified,
-				((realms?.length == 1 ? realms[0] : header.realm) ?? verified.realm) as Realm,
+				((realms.length == 1 ? realms[0] : header.realm) ?? verified.realm) as Realm,
 				(verified.organization ?? header.organization) as string
 			)
 			const requirement = (
@@ -113,7 +113,9 @@ export class Identity<T extends Identity.Require = never> {
 		return [
 			...new Set(
 				Object.keys(permissions).flatMap(code =>
-					code.split("-")[0] == "*" ? Realm.realms : Realm.type.get(code.split("-")[0]) ?? []
+					code.split("-").length > 1 && code.split("-")[0] == "*"
+						? Realm.realms
+						: Realm.type.get(code.split("-")[0]) ?? []
 				)
 			),
 		]
