@@ -12,7 +12,6 @@ export type Transaction = ModelTransaction.Creatable.Resolved & {
 	risk?: number
 	original: {
 		currency: isoly.Currency
-		charges?: ModelTransaction.Amount.Charge[]
 		total: number
 		amount: number
 		charge?: { current: number; total: number } //Legacy
@@ -25,7 +24,6 @@ export namespace Transaction {
 		kind: Rule.Base.Kind,
 		stage: "finalize" | "initiate"
 	): Transaction {
-		const charges = ModelAccount.Charge.evaluate(account.charges, transaction)
 		const amount = Math.abs(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original)
 		return {
 			...transaction,
@@ -36,9 +34,8 @@ export namespace Transaction {
 			type: ModelTransaction.getType(transaction.counterpart, account.name),
 			original: {
 				currency: transaction.currency,
-				charges,
 				amount,
-				total: isoly.Currency.add(transaction.currency, amount, ModelAccount.Charge.sum(charges, transaction.currency)),
+				total: amount,
 			},
 		}
 	}

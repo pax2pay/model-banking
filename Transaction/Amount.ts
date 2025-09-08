@@ -33,15 +33,16 @@ export namespace Amount {
 		total: isly.number(),
 		exchange: Exchange.type.optional(),
 	})
-	export function fromState(state: Rule.State): Amount {
+	export function fromState(state: Rule.State, charges?: Charge[]): Amount {
 		const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
 			? -1
 			: 1
+		const charge = Amount.Charge.total(state.transaction.original.currency, charges)
 		return {
 			original: sign * state.transaction.original.amount,
 			charge: sign * (state.transaction.original.charge?.total ?? 0),
-			charges: state.transaction.original.charges,
-			total: sign * state.transaction.original.total,
+			charges,
+			total: sign * isoly.Currency.add(state.transaction.original.currency, state.transaction.original.total, charge),
 			exchange: state?.transaction.exchange ?? state.authorization?.exchange,
 		}
 	}
