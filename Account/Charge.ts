@@ -39,19 +39,19 @@ export namespace Charge {
 		transaction: Transaction.Creatable.Resolved | Transaction
 	): Transaction.Amount.Charge[] {
 		const result: Transaction.Amount.Charge[] = []
-		for (const charge of charges)
-			if ("merchant" in transaction.counterpart)
-				for (const merchant of charge.applies.to.merchants)
-					if (Card.Restriction.Merchant.check(merchant, transaction.counterpart))
-						result.push({
-							destination: charge.destination,
-							type: "merchant",
-							amount: isoly.Currency.multiply(
-								transaction.currency,
-								typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
-								charge.rate
-							),
-						})
+		const counterpart = "merchant" in transaction.counterpart ? transaction.counterpart : undefined
+		if (counterpart)
+			for (const charge of charges)
+				if (charge.applies.to.merchants.some(merchant => Card.Restriction.Merchant.check(merchant, counterpart)))
+					result.push({
+						destination: charge.destination,
+						type: "merchant",
+						amount: isoly.Currency.multiply(
+							transaction.currency,
+							typeof transaction.amount == "number" ? transaction.amount : -transaction.amount.original,
+							charge.rate
+						),
+					})
 		return result
 	}
 	export function sum(charges: Transaction.Amount.Charge[], currency: isoly.Currency): number {
