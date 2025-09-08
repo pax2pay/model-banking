@@ -3,7 +3,7 @@ import { pax2pay } from "../index"
 // cSpell:disable
 describe("Settlement", () => {
 	it("compile", () => {
-		const result = pax2pay.Settlement.compile(settlement, entries.map(pax2pay.Settlement.Entry.fromLegacy))
+		const result = pax2pay.Settlement.compile(settlement, entries)
 		expect(result.totals.GBP?.outcome?.net).toEqual(settlement.totals.GBP?.expected.net)
 		expect(result.entries.count).toBe(2)
 		expect(result.entries.failed?.count).toBe(1)
@@ -158,85 +158,70 @@ describe("Settlement", () => {
 		})
 	})
 })
-
-const authorization1: pax2pay.Authorization = {
-	status: "approved",
-	id: "ahgt3817",
-	card: {
-		id: "string",
-		token: "string",
-		iin: "12341234",
-		last4: "1234",
-	},
-	created: "2023-08-07T09:25:11.296Z",
-	amount: ["GBP", 200],
-	merchant: {
-		name: "Merchant",
-		id: "abcd1234",
-		category: "4511",
-		address: "Streetname 1, 12345 Towncity",
-		city: "CityTown",
-		zip: "12345",
-		country: "KP",
-	},
-	acquirer: {
-		id: "2345erty",
-		number: "1351858913568",
-		country: "GB",
-	},
-	account: "1234",
-	reference: "ahgt3817",
-	description: "golf trip",
-}
-const authorization2: pax2pay.Authorization = {
-	status: "other",
-	id: "ahgt3817",
-	card: {
-		id: "string",
-		token: "string",
-		iin: "12341234",
-		last4: "1234",
-	},
-	created: "2023-08-07T09:25:11.296Z",
-	amount: ["GBP", 250],
-	merchant: {
-		name: "Merchant",
-		id: "abcd1234",
-		category: "4511",
-		address: "Streetname 1, 12345 Towncity",
-		city: "CityTown",
-		zip: "12345",
-		country: "KP",
-	},
-	acquirer: {
-		id: "2345erty",
-		number: "1351858913568",
-		country: "GB",
-	},
-	account: "1234",
-	reference: "ahgt3817",
-	description: "golf trip",
-}
-const entries: pax2pay.Settlement.Entry.Legacy[] = [
+const entries: pax2pay.Settlement.Entry[] = [
 	{
-		status: "succeeded",
 		type: "capture",
-		authorization: authorization1,
+		created: "2025-09-08T12:38:55.290Z",
+		card: {
+			type: "card",
+			scheme: "mastercard",
+			id: "string",
+			iin: "12341234",
+			last4: "1234",
+			expiry: [34, 12],
+			holder: "unknown",
+		},
+		status: "succeeded",
+		transaction: { id: "unknown", posted: "", description: "" },
+		account: "unknown",
+		approvalCode: "unknown",
+		merchant: {
+			name: "Merchant",
+			id: "abcd1234",
+			category: "4511",
+			address: "Streetname 1, 12345 Towncity",
+			city: "CityTown",
+			zip: "12345",
+			country: "KP",
+		},
+		acquirer: { id: "2345erty", number: "1351858913568", country: "GB" },
 		reference: "string",
-		settlement: "20241202a1",
 		batch: "20241202",
-		fee: { other: { [authorization1.amount[0]]: authorization1.amount[1] * 0.01 } },
-		amount: authorization1.amount,
+		fee: { other: { GBP: 2 } },
+		amount: ["GBP", 200],
+		settlement: "20241202a1",
 	},
 	{
-		status: "succeeded",
 		type: "capture",
-		authorization: authorization2,
+		created: "2025-09-08T12:38:55.291Z",
+		card: {
+			type: "card",
+			scheme: "mastercard",
+			id: "string",
+			iin: "12341234",
+			last4: "1234",
+			expiry: [34, 12],
+			holder: "unknown",
+		},
+		status: "succeeded",
+		transaction: { id: "unknown", posted: "", description: "" },
+		account: "unknown",
+		approvalCode: "unknown",
+		merchant: {
+			name: "Merchant",
+			id: "abcd1234",
+			category: "4511",
+			address: "Streetname 1, 12345 Towncity",
+			city: "CityTown",
+			zip: "12345",
+			country: "KP",
+		},
+		acquirer: { id: "2345erty", number: "1351858913568", country: "GB" },
 		reference: "string",
-		settlement: "20241202a1",
 		batch: "20241202",
-		fee: { other: { [authorization2.amount[0]]: authorization2.amount[1] * 0.01 } },
-		amount: authorization2.amount,
+		fee: { other: { GBP: 2.5 } },
+		amount: ["GBP", 250],
+		settlement: "20241202a1",
 	},
 	{
 		status: "failed",
