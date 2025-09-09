@@ -22,8 +22,12 @@ export namespace Total {
 		}
 		export const type = isly.object<Collected>({ transactions: isly.union(Transaction.type, Transaction.type.array()) })
 	}
-	export type Settled = { net: number; transactions: string[] }
-	export const Settled = isly.object<Settled>({ net: isly.number(), transactions: isly.string().array() })
+	export type Settled = { net: number; transactions: string[]; fee?: string }
+	export const Settled = isly.object<Settled>({
+		net: isly.number(),
+		transactions: isly.string().array(),
+		fee: isly.string().optional(),
+	})
 	export const type = isly.object<Total>({
 		expected: Amount.type,
 		outcome: Amount.type.optional(),
