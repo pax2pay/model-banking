@@ -47,7 +47,7 @@ export namespace Charge {
 				result.push({
 					destination: charge.destination,
 					type: "merchant",
-					amount: isoly.Currency.multiply(currency, amount, charge.rate),
+					amount: -isoly.Currency.multiply(currency, amount, charge.rate),
 				})
 		return result
 	}

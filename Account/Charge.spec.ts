@@ -12,7 +12,7 @@ describe("Account.Charge", () => {
 		).toMatchInlineSnapshot(`
 			[
 			  {
-			    "amount": 2.5,
+			    "amount": -2.5,
 			    "destination": {
 			      "account": "abcd1234",
 			    },
