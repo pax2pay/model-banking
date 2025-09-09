@@ -1,30 +1,33 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Supplier } from "../Supplier"
 import { Amount } from "./Amount"
 
 export interface Total {
 	expected: Amount
 	outcome?: Amount
-	collected?: { transactions: { net: string; fee?: string } }
+	collected?: Total.Collected
 	settled?: Total.Settled
 }
 export namespace Total {
-	export type Settled = {
-		net: number
-		transactions: string[]
+	export type Collected = { transactions: Collected.Transaction | Collected.Transaction[] }
+	export namespace Collected {
+		export type Transaction = { net: string; fee?: string; supplier?: Supplier }
+		export namespace Transaction {
+			export const type = isly.object<Transaction>({
+				net: isly.string(),
+				fee: isly.string().optional(),
+				supplier: Supplier.type.optional(),
+			})
+		}
+		export const type = isly.object<Collected>({ transactions: isly.union(Transaction.type, Transaction.type.array()) })
 	}
+	export type Settled = { net: number; transactions: string[] }
 	export const Settled = isly.object<Settled>({ net: isly.number(), transactions: isly.string().array() })
 	export const type = isly.object<Total>({
 		expected: Amount.type,
 		outcome: Amount.type.optional(),
-		collected: isly
-			.object<Required<Total>["collected"]>({
-				transactions: isly.object<Required<Total>["collected"]["transactions"]>({
-					net: isly.string(),
-					fee: isly.string().optional(),
-				}),
-			})
-			.optional(),
+		collected: Collected.type.optional(),
 		settled: Settled.optional(),
 	})
 	export function create(): Total {
@@ -49,7 +52,8 @@ export namespace Total {
 			result.outcome = Amount.add(currency, result.outcome ?? { net: 0, fee: { other: 0 } }, addend.outcome ?? {})
 		if (result.collected || addend.collected)
 			result.collected = {
-				transactions: { net: addend.collected?.transactions.net ?? result.collected?.transactions.net ?? "" },
+				// TODO: FIXME
+				transactions: [], //{ net: addend.collected?.transactions.net ?? result.collected?.transactions.net ?? "" },
 			}
 		if (result.settled || addend.settled)
 			result.settled = {
