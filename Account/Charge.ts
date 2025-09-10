@@ -33,7 +33,7 @@ export namespace Charge {
 		id: isly.string(),
 	})
 	export function fromCreatable(creatable: Creatable): Charge {
-		return { ...creatable, id: cryptly.Identifier.generate(16) }
+		return { ...creatable, id: cryptly.Identifier.generate(4) }
 	}
 	export function evaluate(
 		charges: Charge[] = [],
