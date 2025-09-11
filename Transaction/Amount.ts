@@ -40,7 +40,7 @@ export namespace Amount {
 		const charge = Amount.Charge.total(state.transaction.original.currency, charges)
 		return {
 			original: sign * state.transaction.original.amount,
-			charge: sign * (state.transaction.original.charge?.total ?? 0),
+			charge: 0,
 			charges,
 			total: isoly.Currency.add(state.transaction.original.currency, sign * state.transaction.original.total, charge),
 			exchange: state?.transaction.exchange ?? state.authorization?.exchange,

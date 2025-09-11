@@ -20,7 +20,6 @@ export interface Transaction {
 	counterpart: Rail.Address & { code?: string }
 	currency: isoly.Currency
 	amount: Transaction.Amount
-	charge?: number
 	description: string
 	organization: string
 	accountId: string
@@ -61,7 +60,6 @@ export namespace Transaction {
 		counterpart: isly.fromIs("Rail.Address", Rail.Address.type.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		amount: Amount.type,
-		charge: isly.number().optional(),
 		description: isly.string(),
 		organization: isly.string(),
 		accountId: isly.string(),
@@ -94,7 +92,6 @@ export namespace Transaction {
 		state?: Rule.State,
 		charges?: Amount.Charge[]
 	): Amount {
-		const stateAmount = state && Amount.fromState(state)
 		const changes = Operation.sum(operations)
 		const reserved = isoly.Currency.add(
 			transaction.currency,
@@ -103,7 +100,7 @@ export namespace Transaction {
 		)
 		return {
 			original: typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
-			charge: stateAmount?.charge ?? 0,
+			charge: 0,
 			charges,
 			total: changes.available ?? reserved ?? 0,
 			exchange: state?.transaction.exchange ?? state?.authorization?.exchange,
@@ -121,10 +118,8 @@ export namespace Transaction {
 			...(typeof transaction.amount == "number"
 				? {
 						amount: {
-							original:
-								transaction.state?.transaction.original.amount ??
-								isoly.Currency.subtract(transaction.currency, transaction.amount, transaction.charge ?? 0),
-							charge: transaction.state?.transaction.original.charge?.total ?? transaction.charge ?? 0,
+							original: transaction.state?.transaction.original.amount ?? transaction.amount,
+							charge: 0,
 							total: transaction.state?.transaction.original.total ?? transaction.amount,
 						},
 				  }
@@ -191,8 +186,6 @@ export namespace Transaction {
 			oldFlags: [],
 			notes: state.notes,
 			state,
-			risk: state.transaction.risk,
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function system(
@@ -305,8 +298,6 @@ export namespace Transaction {
 			oldFlags: [],
 			notes: state.notes,
 			state,
-			risk: state.transaction.risk,
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function fromRefund(
@@ -333,7 +324,6 @@ export namespace Transaction {
 			flags: [],
 			oldFlags: [],
 			notes: [],
-			...(state.transaction.original.charge && { charge: state.transaction.original.charge.total }),
 		}
 	}
 	export function isIdentifier(value: string | any): value is string {
@@ -355,12 +345,7 @@ export namespace Transaction {
 	}
 	export function getType(counterpart: Rail.Address, accountName: string): Types {
 		let result: Types
-		if (
-			accountName.startsWith("settlement-") ||
-			accountName.startsWith("fee-") ||
-			accountName.startsWith("charge-") ||
-			accountName.startsWith("net-")
-		)
+		if (accountName.startsWith("settlement-") || accountName.startsWith("fee-") || accountName.startsWith("net-"))
 			result = "system"
 		else if (counterpart.type == "internal")
 			result = "internal"
