@@ -38,7 +38,8 @@ export class Identity<T extends Identity.Require = never> {
 		requires?: T,
 		key?: string,
 		output?: "undefined",
-		notify?: Identity.Notify
+		notify?: Identity.Notify,
+		get?: (id: string) => Promise<User.JWT.Payload.LongTerm | undefined>
 	): Promise<Identity<T> | undefined>
 	static async authenticate<T extends Identity.Require = Record<string, never>>(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
@@ -46,7 +47,8 @@ export class Identity<T extends Identity.Require = never> {
 		requires?: T,
 		key?: string,
 		output?: "error",
-		notify?: Identity.Notify
+		notify?: Identity.Notify,
+		get?: (id: string) => Promise<User.JWT.Payload.LongTerm | undefined>
 	): Promise<Identity<T> | gracely.Error>
 	static async authenticate<T extends Identity.Require = Record<string, never>>(
 		header: { authorization?: string | undefined; realm?: Realm; organization?: string },
@@ -54,13 +56,14 @@ export class Identity<T extends Identity.Require = never> {
 		requires?: T,
 		key: string = publicKey,
 		output: "error" | "undefined" = "undefined",
-		notify?: Identity.Notify
+		notify?: Identity.Notify,
+		get?: (id: string) => Promise<User.JWT.Payload.LongTerm | undefined>
 	): Promise<Identity<T> | (gracely.Error | undefined)> {
 		let result: Identity<T> | gracely.Error | undefined
 		const authorization = header.authorization?.startsWith("Bearer ")
 			? header.authorization.replace("Bearer ", "")
 			: undefined
-		const verified = await Identity.verify(authorization, key)
+		const verified = await Identity.verify(authorization, key, get)
 		if (!verified)
 			output !== "undefined" && (result = gracely.client.unauthorized())
 		else {
@@ -97,9 +100,13 @@ export class Identity<T extends Identity.Require = never> {
 		}
 		return result
 	}
-	static async verify(authorization: string | undefined, key: string = publicKey): Promise<Key | undefined> {
+	static async verify(
+		authorization: string | undefined,
+		key: string = publicKey,
+		get?: (id: string) => Promise<User.JWT.Payload.LongTerm | undefined>
+	): Promise<Key | undefined> {
 		const verifier = userwidgets.User.Key.Verifier.create<Key>(key)
-		const jwt = User.JWT.open({ public: key })
+		const jwt = User.JWT.open({ public: key }, get)
 		const unpacked = authorization ? await jwt.unpack(authorization) : undefined
 		let verified: Key | undefined
 		if (User.JWT.Payload.type.is(unpacked) && authorization) {

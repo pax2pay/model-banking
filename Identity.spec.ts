@@ -5,8 +5,16 @@ import { Key } from "./Key"
 import { User } from "./User"
 
 let jwt: User.JWT
+let args: [undefined, string, "undefined", undefined, (id: string) => Promise<User.JWT.Payload.LongTerm>]
 describe("Identity", () => {
 	beforeAll(() => {
+		args = [
+			undefined,
+			publicKey,
+			"undefined",
+			undefined,
+			(id: string) => Promise.resolve(true as any as User.JWT.Payload.LongTerm),
+		]
 		jwt = pax2pay.User.JWT.open({ public: publicKey, private: privateKey })
 	})
 	it("should handle new tokens", async () => {
@@ -30,9 +38,9 @@ describe("Identity", () => {
 			cards: { view: true },
 			accounts: { write: true },
 		}
-		expect(await pax2pay.Identity.authenticate(header, constraint1, undefined, publicKey)).toBeTruthy()
-		expect(await pax2pay.Identity.authenticate(header, constraint2, undefined, publicKey)).toBeTruthy()
-		expect(await pax2pay.Identity.authenticate(header, constraint3, undefined, publicKey)).toBeFalsy()
+		expect(await pax2pay.Identity.authenticate(header, constraint1, ...args)).toBeTruthy()
+		expect(await pax2pay.Identity.authenticate(header, constraint2, ...args)).toBeTruthy()
+		expect(await pax2pay.Identity.authenticate(header, constraint3, ...args)).toBeFalsy()
 	})
 	it("authenticate with empty constraint", async () => {
 		const constraint: pax2pay.Key.Permissions = {}
