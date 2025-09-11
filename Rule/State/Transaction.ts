@@ -9,12 +9,10 @@ export type Transaction = ModelTransaction.Creatable.Resolved & {
 	stage: "finalize" | "initiate"
 	amount: number
 	type: ModelTransaction.Types
-	risk?: number
 	original: {
 		currency: isoly.Currency
 		total: number
 		amount: number
-		charge?: { current: number; total: number } //Legacy
 	}
 }
 export namespace Transaction {

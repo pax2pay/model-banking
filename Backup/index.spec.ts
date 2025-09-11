@@ -8,6 +8,7 @@ namespace Test {
 	export const identifiers = { source, version, realm }
 	export const organization: pax2pay.Organization = {
 		realm: "test",
+		status: "active",
 		code: "organization-id",
 		name: "Acme Inc.",
 		rules: [],
@@ -29,7 +30,7 @@ namespace Test {
 		organization: organization.code,
 		counterpart: { type: "internal", identifier: "target12" },
 		currency: "USD",
-		amount: { original: -100, reserved: 0, charge: 0, total: -100 },
+		amount: { original: -100, charge: 0, total: -100 },
 		posted: "2023-08-07T09:25:11.296Z",
 		description: "internal transaction",
 		account: {

@@ -28,7 +28,6 @@ export namespace Transaction {
 		posted: "value.posted",
 		transacted: "value.transacted",
 		by: "value.by",
-		charge: { selector: "value.charge", transform: "string" },
 		actualBalance: { selector: "value.balance.actual", transform: "string" },
 		reservedBalance: { selector: "value.balance.reserved", transform: "string" },
 		availableBalance: { selector: "value.balance.available", transform: "string" },
