@@ -1,6 +1,13 @@
 // from: https://github.com/pax2pay/merchant-categoriser
 // using: https://onlineyamltools.com/convert-yaml-to-json
 export const merchants = {
+	//GENERATED MANUALLY
+	splitmyfare: {
+		name: "split my fare",
+		mccs: ["4112"],
+		startsWith: ["Split My Fare"],
+	},
+	//GENERATED AUTOMATICALLY
 	ryanair: {
 		name: "ryanair",
 		unambiguousMcc: "3246",
