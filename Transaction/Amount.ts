@@ -42,7 +42,7 @@ export namespace Amount {
 			original: sign * state.transaction.original.amount,
 			charge: sign * (state.transaction.original.charge?.total ?? 0),
 			charges,
-			total: sign * isoly.Currency.add(state.transaction.original.currency, state.transaction.original.total, charge),
+			total: isoly.Currency.add(state.transaction.original.currency, sign * state.transaction.original.total, charge),
 			exchange: state?.transaction.exchange ?? state.authorization?.exchange,
 		}
 	}
