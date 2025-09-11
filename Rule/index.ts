@@ -35,7 +35,11 @@ export namespace Rule {
 			flag: [],
 		}
 		const notes: Note[] = []
-		const evaluated = Other.evaluate(rules, state, macros)
+		const evaluated = Other.evaluate(
+			rules.filter(rule => Base.Kind.is(state.transaction.kind, rule, state.organization?.groups, state.card?.preset)),
+			state,
+			macros
+		)
 		notes.push(...evaluated.notes)
 		outcomes.flag.push(...evaluated.outcomes.flag)
 		outcomes.review.push(...evaluated.outcomes.review)
