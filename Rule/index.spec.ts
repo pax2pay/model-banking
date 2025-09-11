@@ -131,13 +131,6 @@ function getState(
 	kind: pax2pay.Rule.Kind
 ): pax2pay.Rule.State {
 	return pax2pay.Rule.State.from(
-		{
-			countries: { eea: ["AD"], sanctioned: ["AD"], risk: { high: ["AD"], mediumHigh: ["AD"] } },
-			merchant: {
-				known: [],
-				categories: { payment: [], crypto: [], gambling: [], travel: [], specialist: [], media: [], sabre: [] },
-			},
-		},
 		account,
 		{ type: "card", iin: "111111", scheme: "visa", last4: "1234", id: "", expiry: [25, 12], holder: "" },
 		{

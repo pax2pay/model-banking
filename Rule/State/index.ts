@@ -7,13 +7,11 @@ import type { Rule } from "../index"
 import { Account as StateAccount } from "./Account"
 import { Authorization as StateAuthorization } from "./Authorization"
 import { Card as StateCard } from "./Card"
-import { Data as StateData } from "./Data"
 import { Organization as StateOrganization } from "./Organization"
 import { Partial as StatePartial } from "./Partial"
 import { Transaction as StateTransaction } from "./Transaction"
 
 export interface State {
-	data: State.Data
 	account: State.Account
 	transaction: State.Transaction
 	authorization?: State.Authorization
@@ -27,7 +25,6 @@ export namespace State {
 	export import Account = StateAccount
 	export import Transaction = StateTransaction
 	export import Organization = StateOrganization
-	export type Data = StateData
 	export type Outcome = typeof Outcome.values[number]
 	export namespace Outcome {
 		export const values = ["approve", "reject", "review"] as const
@@ -40,7 +37,6 @@ export namespace State {
 		notes: ModelTransaction.Note[]
 	}
 	export function from(
-		data: Data,
 		account: ModelAccount,
 		address: Rail.Address,
 		transactions: Account.Transactions,
@@ -52,7 +48,6 @@ export namespace State {
 		organization?: Organization
 	): State {
 		return {
-			data,
 			account: Account.from(account, address, transactions, days),
 			transaction: Transaction.from(account, transaction, kind, stage),
 			authorization: Authorization.from(transaction),
@@ -66,7 +61,6 @@ export namespace State {
 		outgoing: "outbound",
 	}
 	export function fromPreTransaction(
-		data: Data,
 		account: ModelAccount,
 		address: Rail.Address,
 		transactions: Account.Transactions,
@@ -76,7 +70,6 @@ export namespace State {
 		organization?: Organization
 	): State {
 		return {
-			data,
 			account: Account.from(account, address, transactions, days),
 			transaction: Transaction.from(account, transaction, type[transaction.type], "initiate"),
 			card: card ? Card.from(card, card.statistics) : undefined,
