@@ -16,7 +16,7 @@ export interface Base {
 export namespace Base {
 	export type Kind = typeof Kind.values[number]
 	export namespace Kind {
-		export const values = ["authorization", "outbound", "inbound", "capture", "refund"] as const
+		export const values = ["authorization", "outbound", "inbound"] as const
 		export const type = isly.string<Kind>(values)
 		export const type2 = isly2
 			.string<Kind>("value", ...values)
