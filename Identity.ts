@@ -57,7 +57,8 @@ export class Identity<T extends Identity.Require = never> {
 		key: string = publicKey,
 		output: "error" | "undefined" = "undefined",
 		notify?: Identity.Notify,
-		get?: (id: string) => Promise<User.JWT.Payload.LongTerm | undefined>
+		get: (id: string) => Promise<User.JWT.Payload.LongTerm | undefined> = (id: string) =>
+			Promise.resolve(true as any as User.JWT.Payload.LongTerm)
 	): Promise<Identity<T> | (gracely.Error | undefined)> {
 		let result: Identity<T> | gracely.Error | undefined
 		const authorization = header.authorization?.startsWith("Bearer ")
