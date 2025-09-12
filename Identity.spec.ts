@@ -5,8 +5,16 @@ import { Key } from "./Key"
 import { User } from "./User"
 
 let jwt: User.JWT
+let args: [undefined, string, "undefined", undefined, (id: string) => Promise<User.JWT.Payload.LongTerm>]
 describe("Identity", () => {
 	beforeAll(() => {
+		args = [
+			undefined,
+			publicKey,
+			"undefined",
+			undefined,
+			(id: string) => Promise.resolve(true as any as User.JWT.Payload.LongTerm),
+		]
 		jwt = pax2pay.User.JWT.open({ public: publicKey, private: privateKey })
 	})
 	it("should handle new tokens", async () => {
@@ -30,9 +38,9 @@ describe("Identity", () => {
 			cards: { view: true },
 			accounts: { write: true },
 		}
-		expect(await pax2pay.Identity.authenticate(header, constraint1, undefined, publicKey)).toBeTruthy()
-		expect(await pax2pay.Identity.authenticate(header, constraint2, undefined, publicKey)).toBeTruthy()
-		expect(await pax2pay.Identity.authenticate(header, constraint3, undefined, publicKey)).toBeFalsy()
+		expect(await pax2pay.Identity.authenticate(header, constraint1, ...args)).toBeTruthy()
+		expect(await pax2pay.Identity.authenticate(header, constraint2, ...args)).toBeTruthy()
+		expect(await pax2pay.Identity.authenticate(header, constraint3, ...args)).toBeFalsy()
 	})
 	it("authenticate with empty constraint", async () => {
 		const constraint: pax2pay.Key.Permissions = {}
@@ -145,12 +153,13 @@ describe("Identity", () => {
 		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(["test"])
 	})
 	it("get realms several realms", async () => {
-		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`test-*`]: ["finance"] })
-		expect(pax2pay.Identity.getRealms(permissionsRealm)).toEqual(["test"])
+		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`test-*`]: ["finance"], [`uk-*`]: ["finance"] })
+		expect(pax2pay.Identity.getRealms(permissionsRealm)).toEqual(["test", "uk"])
 		const permissionsOrganization = pax2pay.Key.Roles.resolve({
 			[`test-${orgCode}`]: ["finance"],
+			[`uk-${orgCode}`]: ["finance"],
 		})
-		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(["test"])
+		expect(pax2pay.Identity.getRealms(permissionsOrganization)).toEqual(["test", "uk"])
 	})
 	it("get realms all realms", async () => {
 		const permissionsRealm = pax2pay.Key.Roles.resolve({ [`*-*`]: ["finance"] })
@@ -164,6 +173,19 @@ describe("Identity", () => {
 			cards: { view: true },
 		}
 		const identity = await pax2pay.Identity.authenticate(header, constraint, { realm: true }, publicKey)
+		expect(identity?.realm).toEqual("test")
+	})
+	it("realm from new token", async () => {
+		const header = {
+			authorization:
+				"Bearer " +
+				(await jwt.sign?.({
+					permission: { "*": "developer" },
+					realm: "test",
+					sub: "test@test.com",
+				})),
+		}
+		const identity = await pax2pay.Identity.authenticate(header, {}, { realm: true }, publicKey)
 		expect(identity?.realm).toEqual("test")
 	})
 })
