@@ -24,7 +24,7 @@ export class Organizations {
 	async update(id: string, changeable: Organization.Changeable): Promise<Organization | gracely.Error> {
 		return this.client.patch<Organization>(`/organization/${id}`, changeable)
 	}
-	async inactivate(id: string): Promise<Organization | gracely.Error> {
-		return this.client.delete<Organization>(`/organization/${id}`, { organization: id })
+	async inactivate(organization: string): Promise<Organization | gracely.Error> {
+		return this.client.delete<Organization>(`/organization/${organization}`, { organization })
 	}
 }
