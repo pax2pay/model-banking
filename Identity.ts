@@ -37,6 +37,7 @@ export class Identity<T extends Identity.Require = never> {
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		key?: string,
+		get?: (id: string) => Promise<User.JWT.Payload.LongTerm | undefined>,
 		output?: "undefined",
 		notify?: Identity.Notify
 	): Promise<Identity<T> | undefined>
@@ -45,6 +46,7 @@ export class Identity<T extends Identity.Require = never> {
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		key?: string,
+		get?: (id: string) => Promise<User.JWT.Payload.LongTerm | undefined>,
 		output?: "error",
 		notify?: Identity.Notify
 	): Promise<Identity<T> | gracely.Error>
@@ -53,6 +55,7 @@ export class Identity<T extends Identity.Require = never> {
 		constraint: Key.Permissions | Key.Permissions[],
 		requires?: T,
 		key: string = publicKey,
+		get?: (id: string) => Promise<User.JWT.Payload.LongTerm | undefined>,
 		output: "error" | "undefined" = "undefined",
 		notify?: Identity.Notify
 	): Promise<Identity<T> | (gracely.Error | undefined)> {
@@ -60,14 +63,15 @@ export class Identity<T extends Identity.Require = never> {
 		const authorization = header.authorization?.startsWith("Bearer ")
 			? header.authorization.replace("Bearer ", "")
 			: undefined
-		const verified = await Identity.verify(authorization, key)
+		const verified = await Identity.verify(authorization, key, get)
 		if (!verified)
 			output !== "undefined" && (result = gracely.client.unauthorized())
 		else {
 			const realms = Identity.getRealms(verified.permissions)
 			const identity = new Identity(
 				verified,
-				((realms?.length == 1 ? realms[0] : header.realm) ?? verified.realm) as Realm,
+				((realms.length == 1 ? realms[0] : header.realm && realms.includes(header.realm) ? header.realm : undefined) ??
+					verified.realm) as Realm,
 				(verified.organization ?? header.organization) as string
 			)
 			const requirement = (
@@ -97,9 +101,13 @@ export class Identity<T extends Identity.Require = never> {
 		}
 		return result
 	}
-	static async verify(authorization: string | undefined, key: string = publicKey): Promise<Key | undefined> {
+	static async verify(
+		authorization: string | undefined,
+		key: string = publicKey,
+		get?: (id: string) => Promise<User.JWT.Payload.LongTerm | undefined>
+	): Promise<Key | undefined> {
 		const verifier = userwidgets.User.Key.Verifier.create<Key>(key)
-		const jwt = User.JWT.open({ public: key })
+		const jwt = User.JWT.open({ public: key }, get)
 		const unpacked = authorization ? await jwt.unpack(authorization) : undefined
 		let verified: Key | undefined
 		if (User.JWT.Payload.type.is(unpacked) && authorization) {
@@ -109,11 +117,31 @@ export class Identity<T extends Identity.Require = never> {
 			verified = await verifier.verify(authorization)
 		return verified
 	}
+	static async getRealm(header: Identity.Header, key: string = publicKey): Promise<Realm | undefined> {
+		let result: Realm | undefined
+		const authorization = header.authorization?.startsWith("Bearer ")
+			? header.authorization.replace("Bearer ", "")
+			: undefined
+		const jwt = User.JWT.open({ public: key })
+		const unpacked = authorization ? await jwt.unpack(authorization) : undefined
+		if (User.JWT.Payload.type.is(unpacked))
+			result = unpacked.realm
+		else {
+			const verified = await userwidgets.User.Key.Verifier.create<Key>(key).verify(authorization)
+			const realms = verified && Identity.getRealms(verified.permissions)
+			result =
+				realms &&
+				(realms.length == 1 ? realms[0] : header.realm && realms.includes(header.realm) ? header.realm : undefined)
+		}
+		return result
+	}
 	static getRealms(permissions: Key.Permissions): Realm[] {
 		return [
 			...new Set(
 				Object.keys(permissions).flatMap(code =>
-					code.split("-")[0] == "*" ? Realm.realms : Realm.type.get(code.split("-")[0]) ?? []
+					code.split("-").length > 1 && code.split("-")[0] == "*"
+						? Realm.realms
+						: Realm.type.get(code.split("-")[0]) ?? []
 				)
 			),
 		]
