@@ -15,6 +15,6 @@ export namespace Supplier {
 	export const realm: Record<Realm, Supplier[]> = {
 		eea: [],
 		test: ["paxgiro", "bankingcircle"],
-		uk: ["clearbank"],
+		uk: ["clearbank", "bankingcircle"],
 	}
 }

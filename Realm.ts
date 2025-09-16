@@ -23,7 +23,7 @@ export namespace Realm {
 	}
 	export interface Suppliers extends Record<Realm, modelSupplier[]> {
 		test: ["paxgiro", "bankingcircle", "paxgiroCredit"]
-		uk: ["clearbank"]
+		uk: ["clearbank", "bankingcircle"]
 		eea: []
 	}
 	export type Supplier<P extends keyof Suppliers> = Pick<Suppliers, P>[P][number]
