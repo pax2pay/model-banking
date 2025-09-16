@@ -1,13 +1,15 @@
 import { flagly } from "flagly"
 import { userwidgets } from "@userwidgets/model"
+import { storage } from "cloudly-storage"
 import { pax2pay } from "./index"
 import { Key } from "./Key"
 import { User } from "./User"
 
 let jwt: User.JWT
-const get = (id: string) => Promise.resolve(true as any as User.JWT.Payload.LongTerm)
+let store: storage.KeyValueStore<pax2pay.User.JWT.Payload.LongTerm>
 describe("Identity", () => {
 	beforeAll(() => {
+		store = storage.KeyValueStore.Json.create<pax2pay.User.JWT.Payload.LongTerm>()
 		jwt = pax2pay.User.JWT.open({ public: publicKey, private: privateKey })
 	})
 	it("should handle new tokens", async () => {
@@ -32,13 +34,13 @@ describe("Identity", () => {
 			accounts: { write: true },
 		}
 		expect(
-			await pax2pay.Identity.authenticate(header, constraint1, undefined, publicKey, "undefined", undefined, get)
+			await pax2pay.Identity.authenticate(header, constraint1, undefined, publicKey, "undefined", undefined, store)
 		).toBeTruthy()
 		expect(
-			await pax2pay.Identity.authenticate(header, constraint2, undefined, publicKey, "undefined", undefined, get)
+			await pax2pay.Identity.authenticate(header, constraint2, undefined, publicKey, "undefined", undefined, store)
 		).toBeTruthy()
 		expect(
-			await pax2pay.Identity.authenticate(header, constraint3, undefined, publicKey, "undefined", undefined, get)
+			await pax2pay.Identity.authenticate(header, constraint3, undefined, publicKey, "undefined", undefined, store)
 		).toBeFalsy()
 	})
 	it("authenticate with empty constraint", async () => {
@@ -59,7 +61,7 @@ describe("Identity", () => {
 			publicKey,
 			"error",
 			undefined,
-			get
+			store
 		)
 		expect(identity).toStrictEqual({
 			status: 401,
@@ -83,10 +85,10 @@ describe("Identity", () => {
 		const header1 = await createHeader({ [`test-*`]: ["finance"] }, "test", orgCode)
 		const header2 = await createHeader({ [`test-${orgCode}`]: ["finance"] }, "test", orgCode)
 		expect(
-			await pax2pay.Identity.authenticate(header1, constraint, undefined, publicKey, "error", undefined, get)
+			await pax2pay.Identity.authenticate(header1, constraint, undefined, publicKey, "error", undefined, store)
 		).toBeTruthy()
 		expect(
-			await pax2pay.Identity.authenticate(header2, constraint, undefined, publicKey, "error", undefined, get)
+			await pax2pay.Identity.authenticate(header2, constraint, undefined, publicKey, "error", undefined, store)
 		).toStrictEqual({
 			error: undefined,
 			reason: undefined,
@@ -151,7 +153,7 @@ describe("Identity", () => {
 		expect(await pax2pay.Identity.authenticate(header2, constraint, undefined, publicKey)).toBeTruthy()
 		expect(await pax2pay.Identity.authenticate(header3, constraint, undefined, publicKey)).toBeFalsy()
 		expect(
-			await pax2pay.Identity.authenticate(header3, constraint, undefined, publicKey, "error", undefined, get)
+			await pax2pay.Identity.authenticate(header3, constraint, undefined, publicKey, "error", undefined, store)
 		).toStrictEqual({
 			error: undefined,
 			reason: undefined,

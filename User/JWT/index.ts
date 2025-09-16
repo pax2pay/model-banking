@@ -1,4 +1,5 @@
 import { authly } from "authly"
+import { storage } from "cloudly-storage"
 import { Payload as JWTPayload } from "./Payload"
 import { Signer as JWTSigner } from "./Signer"
 
@@ -20,7 +21,7 @@ export class JWT {
 	}
 	private constructor(
 		private readonly key?: { public?: string; private?: string },
-		private readonly get?: (id: string) => Promise<JWT.Payload.LongTerm | undefined>
+		private readonly store?: storage.KeyValueStore<JWT.Payload.LongTerm>
 	) {}
 
 	async verify(token: string): Promise<JWT.Payload | undefined> {
@@ -28,7 +29,7 @@ export class JWT {
 		delete verified?.token
 		return JWT.Payload.type.is(verified) &&
 			verified?.iss == JWT.Payload.configuration.iss &&
-			(verified.exp || (verified.id && (await this.get?.(verified.id as string))))
+			(verified.exp || (verified.id && (await this.store?.get(verified.id as string))))
 			? verified
 			: undefined
 	}
@@ -38,11 +39,8 @@ export class JWT {
 		return unpacked
 	}
 
-	static open(
-		key?: { private?: string; public?: string },
-		get?: (id: string) => Promise<JWT.Payload.LongTerm | undefined>
-	): JWT {
-		return new this({ private: key?.private, public: key?.public ?? JWT.key }, get)
+	static open(key?: { private?: string; public?: string }, store?: storage.KeyValueStore<JWT.Payload.LongTerm>): JWT {
+		return new this({ private: key?.private, public: key?.public ?? JWT.key }, store)
 	}
 }
 export namespace JWT {

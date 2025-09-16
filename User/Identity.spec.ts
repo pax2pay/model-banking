@@ -1,10 +1,13 @@
 import { gracely } from "gracely"
+import { storage } from "cloudly-storage"
 import { pax2pay } from "../index"
 
 let jwt: pax2pay.User.JWT
-const get = (id: string) => Promise.resolve(whitelist.find(e => e.id === id))
+let store: storage.KeyValueStore<pax2pay.User.JWT.Payload.LongTerm>
 describe("Identity", () => {
 	beforeAll(async () => {
+		store = storage.KeyValueStore.Json.create<pax2pay.User.JWT.Payload.LongTerm>()
+		store.set(whitelisted.id, whitelist[0])
 		jwt = pax2pay.User.JWT.open(key)
 	})
 	it("Identifies a user from a jwt", async () => {
@@ -13,7 +16,7 @@ describe("Identity", () => {
 			realm: "test",
 			sub: "Test",
 		})
-		const identity = await pax2pay.User.Identity.open(`Bearer ${token}`, { get, key: key.public })
+		const identity = await pax2pay.User.Identity.open(`Bearer ${token}`, { store, key: key.public })
 		if (!gracely.Error.is(identity)) {
 			expect(identity.authenticate({ card: "read" })).instanceOf(pax2pay.User.Identity)
 			expect(identity.authenticate({ card: "write" })).haveOwnProperty("status", 403)
@@ -37,11 +40,11 @@ describe("Identity", () => {
 			expect(identity).instanceOf(pax2pay.User.Identity)
 	})
 	it("Identifies a user from a whitelisted long term jwt", async () => {
-		const identity = await pax2pay.User.Identity.open(`Bearer ${whitelisted.token}`, { get, key: key.public })
+		const identity = await pax2pay.User.Identity.open(`Bearer ${whitelisted.token}`, { store, key: key.public })
 		expect(identity).instanceOf(pax2pay.User.Identity)
 	})
 	it("Identifies a user from a non whitelisted long term jwt", async () => {
-		const identity = await pax2pay.User.Identity.open(`Bearer ${nonWhitelisted.token}`, { get, key: key.public })
+		const identity = await pax2pay.User.Identity.open(`Bearer ${nonWhitelisted.token}`, { store, key: key.public })
 		expect(identity).haveOwnProperty("status", 401)
 	})
 })
