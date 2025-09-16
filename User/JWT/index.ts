@@ -29,7 +29,7 @@ export class JWT {
 		delete verified?.token
 		return JWT.Payload.type.is(verified) &&
 			verified?.iss == JWT.Payload.configuration.iss &&
-			(verified.exp || (verified.id && (await this.store?.get(verified.id as string))))
+			(verified.exp || (verified.id && (await this.store?.get(verified.id as string).then(s => s?.value))))
 			? verified
 			: undefined
 	}
