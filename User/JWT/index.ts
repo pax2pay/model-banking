@@ -1,8 +1,7 @@
 import { authly } from "authly"
-import { Realm } from "../../Realm"
+import { storage } from "cloudly-storage"
 import { Payload as JWTPayload } from "./Payload"
 import { Signer as JWTSigner } from "./Signer"
-import { whitelist as JWTwhitelist } from "./whitelist"
 
 export class JWT {
 	#verifier?: authly.Verifier<JWT.Payload>
@@ -22,7 +21,7 @@ export class JWT {
 	}
 	private constructor(
 		private readonly key?: { public?: string; private?: string },
-		readonly whitelist?: JWT.Whitelist
+		private readonly store?: storage.KeyValueStore<JWT.Payload.LongTerm>
 	) {}
 
 	async verify(token: string): Promise<JWT.Payload | undefined> {
@@ -30,7 +29,7 @@ export class JWT {
 		delete verified?.token
 		return JWT.Payload.type.is(verified) &&
 			verified?.iss == JWT.Payload.configuration.iss &&
-			(verified.exp || (verified.id && this.whitelist?.[verified.realm]?.some(e => e.id === verified.id)))
+			(verified.exp || (verified.id && (await this.store?.get(verified.id as string).then(s => s?.value))))
 			? verified
 			: undefined
 	}
@@ -40,14 +39,12 @@ export class JWT {
 		return unpacked
 	}
 
-	static open(key?: { private?: string; public?: string }, whitelist?: JWT.Whitelist): JWT {
-		return new this({ private: key?.private, public: key?.public ?? JWT.key }, whitelist ?? JWT.whitelist)
+	static open(key?: { private?: string; public?: string }, store?: storage.KeyValueStore<JWT.Payload.LongTerm>): JWT {
+		return new this({ private: key?.private, public: key?.public ?? JWT.key }, store)
 	}
 }
 export namespace JWT {
 	export import Signer = JWTSigner
-	export const whitelist = JWTwhitelist
-	export type Whitelist = Partial<Record<Realm, Payload.LongTerm[]>>
 	export async function unpack(token: string): Promise<JWT.Payload | undefined> {
 		const algorithm = authly.Algorithm.RS256(undefined)
 		const verifier = algorithm ? authly.Verifier.create<JWT.Payload>(algorithm) : undefined
