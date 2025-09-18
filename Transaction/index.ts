@@ -345,7 +345,13 @@ export namespace Transaction {
 	}
 	export function getType(counterpart: Rail.Address, accountName: string): Types {
 		let result: Types
-		if (accountName.startsWith("settlement-") || accountName.startsWith("fee-") || accountName.startsWith("net-"))
+		if (
+			accountName.startsWith("settlement-") ||
+			accountName.startsWith("fee-") ||
+			accountName.startsWith("net-") ||
+			accountName.startsWith("interchange-") ||
+			accountName.startsWith("collect-")
+		)
 			result = "system"
 		else if (counterpart.type == "internal")
 			result = "internal"
