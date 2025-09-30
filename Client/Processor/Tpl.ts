@@ -1,7 +1,7 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
 import { storage } from "cloudly-storage"
-import { pax2pay } from "index"
+import { pax2pay } from "../../index"
 import { reports } from "../../reports"
 
 export class Tpl {
