@@ -89,7 +89,6 @@ export namespace Transaction {
 	export function amountFromOperations(
 		transaction: Transaction,
 		operations: Operation[],
-		state?: Rule.State,
 		charges?: Amount.Charge[]
 	): Amount {
 		const changes = Operation.sum(operations)
@@ -103,7 +102,7 @@ export namespace Transaction {
 			charge: 0,
 			charges,
 			total: changes.available ?? reserved ?? 0,
-			exchange: state?.transaction.exchange ?? state?.authorization?.exchange,
+			exchange: transaction.amount.exchange,
 		}
 	}
 	export interface Legacy extends Omit<Transaction, "amount"> {
