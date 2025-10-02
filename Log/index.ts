@@ -59,10 +59,10 @@ export namespace Log {
 		locations?: LogLocations
 	): void {
 		const configuration = { collection, realm, resource, requireEntries }
-		if (Log.Message.Configuration.type.is(configuration))
+		if (Log.Message.Configuration.type.is(configuration)) {
 			console.log(configuration)
-		if (Log.Locations.type.is(locations))
 			console.log(Log.Entry.Message.to("Locations", locations, resource))
+		}
 	}
 	export function log(message: string, data?: any, resource?: string): void {
 		console.log(Log.Entry.Message.to(message, data, resource))
