@@ -6,10 +6,10 @@ export namespace fx {
 		created: isoly.DateTime
 		expires: isoly.DateTime
 		to: { amount: number; currency: isoly.Currency }
-		markup: number
 		rate: {
+			base: number
+			markup: number
 			effective: number
-			reference: number
 		}
 	}
 	export namespace Quote {
