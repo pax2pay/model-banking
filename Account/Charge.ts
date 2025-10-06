@@ -14,7 +14,9 @@ export namespace Charge {
 		rate: number // rate: 0.01 for 1%
 		applies: {
 			to: {
-				merchants: Card.Restriction.Merchant[]
+				presets?: Card.Preset[]
+				merchants?: Card.Restriction.Merchant[]
+				fx?: boolean
 			}
 		}
 	}
@@ -24,7 +26,9 @@ export namespace Charge {
 			rate: isly.number(),
 			applies: isly.object({
 				to: isly.object<Creatable["applies"]["to"]>({
-					merchants: Card.Restriction.Merchant.type.array(),
+					presets: Card.Preset.type.array().optional(),
+					merchants: Card.Restriction.Merchant.type.array().optional(),
+					fx: isly.boolean().optional(),
 				}),
 			}),
 		})
