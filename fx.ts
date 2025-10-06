@@ -1,10 +1,11 @@
 import { isoly } from "isoly"
 
 export namespace fx {
-	export interface Quote extends Quote.Creatable {
+	export interface Quote {
 		id: string
 		created: isoly.DateTime
 		expires: isoly.DateTime
+		from: { currency: isoly.Currency; amount: number }
 		to: { amount: number; currency: isoly.Currency }
 		rate: {
 			base: number
@@ -14,8 +15,10 @@ export namespace fx {
 	}
 	export namespace Quote {
 		export interface Creatable {
-			from: { currency: isoly.Currency; amount: number }
-			to: { currency: isoly.Currency }
+			type: "sell" | "buy"
+			from: isoly.Currency
+			to: isoly.Currency
+			amount: number
 		}
 	}
 }
