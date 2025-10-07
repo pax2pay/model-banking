@@ -22,6 +22,7 @@ export interface Account {
 	conditions?: { minimum?: Balance }
 	rail: Rail.Address[]
 	balance: Balance
+	description?: string
 }
 export namespace Account {
 	export const type = isly.object<Account>({
@@ -36,6 +37,7 @@ export namespace Account {
 		conditions: AccountConditions.type,
 		rail: Rail.Address.type.array(),
 		balance: Balance.type,
+		description: isly.string().optional(),
 	})
 	export type Listable = Account & { transactions: Transaction[] }
 	export import Storable = AccountStorable
