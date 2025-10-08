@@ -17,21 +17,19 @@ export function fromCreatable(
 		reasons.push(`gracely error: ${JSON.stringify(transaction)}`)
 	else if (typeof transaction == "string")
 		reasons.push(transaction || "No reason provided.")
-	else if (transaction.status != "finalized")
+	else if (transaction.status != "finalized" && transaction.status != "processing")
 		reasons.push(`Transaction ${transaction.id} on account ${transaction.accountId} unable to be finalized.`)
 	if (reasons.length > 0)
 		result = { status: "failed", reason: reasons.join("\n"), ...creatable, created }
-	else
+	else {
+		const cardTransaction = transaction as Transaction.CardTransaction
 		result = {
 			status: "succeeded",
 			...(creatable as Creatable.Known),
 			created,
-			card: (transaction as Transaction.CardTransaction).account,
-			transaction: {
-				id: (transaction as Transaction.CardTransaction).id,
-				posted: (transaction as Transaction.CardTransaction).posted,
-				description: (transaction as Transaction.CardTransaction).description,
-			},
+			card: cardTransaction.account,
+			transaction: { id: cardTransaction.id, posted: cardTransaction.posted, description: cardTransaction.description },
 		}
+	}
 	return result
 }
