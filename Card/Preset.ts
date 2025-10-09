@@ -23,7 +23,7 @@ export namespace Preset {
 		"test-ta-pg-bc-200",
 	] as const
 	export const type = isly.string<Preset>(names)
-	export const type2 = isly2
+	export const type2: isly2.Type<Preset> = isly2
 		.string<Preset>("value", ...names)
 		.rename("Preset")
 		.describe("Card configuration (iin/scheme/interchange).")

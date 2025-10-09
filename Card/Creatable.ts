@@ -37,7 +37,7 @@ export namespace Creatable {
 		key: isly.string().optional(),
 		restricted: isly.object<Required<Creatable>["restricted"]>({ to: Restriction.type.optional() }).optional(),
 	})
-	export const type2 = isly2.object<Creatable>({
+	export const type2: isly2.Type<Creatable> = isly2.object<Creatable>({
 		account: isly2.string().rename("Account").describe("The account id the card was created on."),
 		number: isly2.string().optional().rename("Number").describe("The card identifier of the user of the api."),
 		preset: Preset.type2,

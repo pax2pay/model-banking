@@ -5,7 +5,7 @@ export type Scheme = typeof Scheme.schemes[number]
 export namespace Scheme {
 	export const schemes = ["mastercard", "diners", "visa"] as const
 	export const type = isly.string<Scheme>(schemes)
-	export const type2 = isly2
+	export const type2: isly2.Type<Scheme> = isly2
 		.string<Scheme>("value", ...schemes)
 		.rename("Scheme")
 		.describe("Card scheme.")

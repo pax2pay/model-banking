@@ -15,7 +15,7 @@ export namespace Changeable {
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()).optional(),
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 	})
-	export const type2: isly2.Object<Changeable> = isly2
+	export const type2: isly2.Type<Changeable> = isly2
 		.object<Changeable>({
 			limit: isly2
 				.tuple(isoly2.Currency.type, isly2.number())

@@ -76,7 +76,7 @@ export namespace Card {
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 		restricted: isly.object<Required<Card>["restricted"]>({ to: CardRestriction.type.optional() }).optional(),
 	})
-	export const type2: isly2.Object<Card> = isly2
+	export const type2: isly2.Type<Card> = isly2
 		.object<Card>({
 			id: isly2.string().rename("Id").describe("Unique 16 character base 64 identifier."),
 			number: isly2.string().optional().rename("Number").describe("Api users identifier."),
