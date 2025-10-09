@@ -2,7 +2,6 @@ import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../Card"
-import type { Rail } from "../Rail"
 import { Transaction } from "../Transaction"
 
 export interface Charge extends Charge.Creatable {
@@ -41,18 +40,33 @@ export namespace Charge {
 	}
 	export function evaluate(
 		charges: Charge[] = [],
-		counterpart: Rail.Address.Card.Counterpart,
-		currency: isoly.Currency,
-		amount: number
+		creatable: Transaction.Creatable.CardTransaction,
+		preset: Card.Preset
 	): Transaction.Amount.Charge[] {
 		const result: Transaction.Amount.Charge[] = []
-		for (const charge of charges)
-			if (charge.applies.to.merchants.some(merchant => Card.Restriction.Merchant.check(merchant, counterpart)))
+		for (const charge of charges) {
+			const chargeThisPreset =
+				!charge.applies.to.presets ||
+				charge.applies.to.presets.length === 0 ||
+				charge.applies.to.presets?.includes(preset)
+			const chargeResult = {
+				destination: charge.destination,
+				amount: -isoly.Currency.multiply(creatable.currency, creatable.amount, charge.rate),
+			}
+			if (
+				chargeThisPreset &&
+				charge.applies.to.merchants?.some(merchant => Card.Restriction.Merchant.check(merchant, creatable.counterpart))
+			)
 				result.push({
-					destination: charge.destination,
+					...chargeResult,
 					type: "merchant",
-					amount: -isoly.Currency.multiply(currency, amount, charge.rate),
 				})
+			if (chargeThisPreset && charge.applies.to.fx && creatable.exchange)
+				result.push({
+					...chargeResult,
+					type: "exchange",
+				})
+		}
 		return result
 	}
 	export function sum(charges: Transaction.Amount.Charge[], currency: isoly.Currency): number {
