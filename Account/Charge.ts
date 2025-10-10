@@ -1,8 +1,8 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Rail } from "pax2pay"
 import { Card } from "../Card"
-import type { Rail } from "../Rail"
 import { Transaction } from "../Transaction"
 
 export interface Charge extends Charge.Creatable {
@@ -14,7 +14,9 @@ export namespace Charge {
 		rate: number // rate: 0.01 for 1%
 		applies: {
 			to: {
-				merchants: Card.Restriction.Merchant[]
+				presets?: Card.Preset[]
+				merchants?: Card.Restriction.Merchant[]
+				fx?: boolean
 			}
 		}
 	}
@@ -24,7 +26,9 @@ export namespace Charge {
 			rate: isly.number(),
 			applies: isly.object({
 				to: isly.object<Creatable["applies"]["to"]>({
-					merchants: Card.Restriction.Merchant.type.array(),
+					presets: Card.Preset.type.array().optional(),
+					merchants: Card.Restriction.Merchant.type.array().optional(),
+					fx: isly.boolean().optional(),
 				}),
 			}),
 		})
@@ -39,16 +43,29 @@ export namespace Charge {
 		charges: Charge[] = [],
 		counterpart: Rail.Address.Card.Counterpart,
 		currency: isoly.Currency,
-		amount: number
+		amount: number,
+		preset?: Card.Preset,
+		exchange?: Transaction.Exchange
 	): Transaction.Amount.Charge[] {
 		const result: Transaction.Amount.Charge[] = []
-		for (const charge of charges)
-			if (charge.applies.to.merchants.some(merchant => Card.Restriction.Merchant.check(merchant, counterpart)))
-				result.push({
-					destination: charge.destination,
-					type: "merchant",
-					amount: -isoly.Currency.multiply(currency, amount, charge.rate),
-				})
+		for (const charge of charges) {
+			const chargeThisPreset =
+				!charge.applies.to.presets ||
+				charge.applies.to.presets.length === 0 ||
+				!preset ||
+				charge.applies.to.presets?.includes(preset)
+			const chargeBase = {
+				destination: charge.destination,
+				amount: -isoly.Currency.multiply(currency, amount, charge.rate),
+			}
+			if (
+				chargeThisPreset &&
+				charge.applies.to.merchants?.some(merchant => Card.Restriction.Merchant.check(merchant, counterpart))
+			)
+				result.push({ ...chargeBase, type: "merchant" })
+			if (chargeThisPreset && charge.applies.to.fx && exchange)
+				result.push({ ...chargeBase, type: "exchange" })
+		}
 		return result
 	}
 	export function sum(charges: Transaction.Amount.Charge[], currency: isoly.Currency): number {
