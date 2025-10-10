@@ -1,5 +1,5 @@
 import { isoly } from "isoly"
-import { Card } from "Card"
+import { Preset } from "Card/Preset"
 import { isly } from "isly"
 import { Account } from "../Account"
 import { Rail } from "../Rail"
@@ -37,12 +37,15 @@ export namespace Creatable {
 			reference: isly.object<{ reference: string }>({ reference: isly.string() }),
 			approvalCode: isly.string().optional(),
 		})
-		export function charge(
-			charges: Account.Charge[],
-			creatable: CardTransaction,
-			preset: Card.Preset
-		): Amount.Charge[] {
-			return Account.Charge.evaluate(charges, creatable, preset)
+		export function charge(charges: Account.Charge[], creatable: CardTransaction, preset: Preset): Amount.Charge[] {
+			return Account.Charge.evaluate(
+				charges,
+				creatable.counterpart,
+				creatable.currency,
+				creatable.amount,
+				preset,
+				creatable.exchange
+			)
 		}
 	}
 }
