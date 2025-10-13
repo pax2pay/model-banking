@@ -24,8 +24,8 @@ export namespace fx {
 		export namespace Creatable {
 			export const type = isly.object<Creatable>({
 				type: isly.string(["sell", "buy"]),
-				from: isly.fromIs("isoly.Currency", isoly.Currency.is),
-				to: isly.fromIs("isoly.Currency", isoly.Currency.is),
+				from: isly.string(isoly.Currency.values),
+				to: isly.string(isoly.Currency.values),
 				amount: isly.number(),
 			})
 		}
