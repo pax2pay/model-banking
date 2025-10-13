@@ -2,8 +2,38 @@ import { pax2pay } from "../index"
 
 describe("Account.Charge", () => {
 	it("should charge merchant", () => {
-		expect(pax2pay.Account.Charge.evaluate(charges.merchant, transaction.ryanair, "test-ta-pg-200"))
-			.toMatchInlineSnapshot(`
+		expect(
+			pax2pay.Account.Charge.evaluate(
+				charges.merchant,
+				transaction.ryanair.counterpart,
+				transaction.ryanair.currency,
+				transaction.ryanair.amount,
+				undefined,
+				transaction.ryanair.exchange
+			)
+		).toMatchInlineSnapshot(`
+			[
+			  {
+			    "amount": -2.5,
+			    "destination": {
+			      "account": "abcd1234",
+			    },
+			    "type": "merchant",
+			  },
+			]
+		`)
+	})
+	it("should charge merchant", () => {
+		expect(
+			pax2pay.Account.Charge.evaluate(
+				charges.merchantPreset,
+				transaction.ryanair.counterpart,
+				transaction.ryanair.currency,
+				transaction.ryanair.amount,
+				"test-ta-pg-200",
+				transaction.ryanair.exchange
+			)
+		).toMatchInlineSnapshot(`
 			[
 			  {
 			    "amount": -2.5,
@@ -16,7 +46,38 @@ describe("Account.Charge", () => {
 		`)
 	})
 	it("should charge fx", () => {
-		expect(pax2pay.Account.Charge.evaluate(charges.fx, transaction.fxCharge, "test-ta-pg-200")).toMatchInlineSnapshot(`
+		expect(
+			pax2pay.Account.Charge.evaluate(
+				charges.fx,
+				transaction.fxCharge.counterpart,
+				transaction.fxCharge.currency,
+				transaction.fxCharge.amount,
+				undefined,
+				transaction.fxCharge.exchange
+			)
+		).toMatchInlineSnapshot(`
+			[
+			  {
+			    "amount": -2.5,
+			    "destination": {
+			      "account": "abcd1234",
+			    },
+			    "type": "exchange",
+			  },
+			]
+		`)
+	})
+	it("should charge fx with preset", () => {
+		expect(
+			pax2pay.Account.Charge.evaluate(
+				charges.fxPreset,
+				transaction.fxCharge.counterpart,
+				transaction.fxCharge.currency,
+				transaction.fxCharge.amount,
+				"test-ta-pg-200",
+				transaction.fxCharge.exchange
+			)
+		).toMatchInlineSnapshot(`
 			[
 			  {
 			    "amount": -2.5,
@@ -30,7 +91,26 @@ describe("Account.Charge", () => {
 	})
 	it("should not charge", () => {
 		expect(
-			pax2pay.Account.Charge.evaluate(charges.merchantFx, transaction.noCharge, "test-ta-pg-200")
+			pax2pay.Account.Charge.evaluate(
+				charges.merchant,
+				transaction.noCharge.counterpart,
+				transaction.noCharge.currency,
+				transaction.noCharge.amount,
+				undefined,
+				transaction.noCharge.exchange
+			)
+		).toMatchInlineSnapshot(`[]`)
+	})
+	it("should not charge", () => {
+		expect(
+			pax2pay.Account.Charge.evaluate(
+				charges.fx,
+				transaction.noCharge.counterpart,
+				transaction.noCharge.currency,
+				transaction.noCharge.amount,
+				undefined,
+				transaction.noCharge.exchange
+			)
 		).toMatchInlineSnapshot(`[]`)
 	})
 })
@@ -43,7 +123,6 @@ const charges: Record<string, pax2pay.Account.Charge[]> = {
 			applies: {
 				to: {
 					merchants: ["ryanair"],
-					fx: true,
 				},
 			},
 		},
@@ -73,7 +152,7 @@ const charges: Record<string, pax2pay.Account.Charge[]> = {
 			},
 		},
 	],
-	merchantFx: [
+	merchantPreset: [
 		{
 			id: "abcd1234",
 			destination: { account: "abcd1234" },
@@ -81,7 +160,7 @@ const charges: Record<string, pax2pay.Account.Charge[]> = {
 			applies: {
 				to: {
 					merchants: ["ryanair"],
-					fx: true,
+					presets: ["test-ta-pg-200"],
 				},
 			},
 		},
