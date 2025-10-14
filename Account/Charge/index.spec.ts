@@ -104,12 +104,29 @@ describe("Account.Charge", () => {
 				transaction.fxCharge.counterpart,
 				transaction.fxCharge.currency,
 				transaction.fxCharge.amount,
-				"test-pg-200",
+				"test-ta-pg-200",
 				transaction.fxCharge.exchange
 			)
-		).toMatchInlineSnapshot(`
-			[]
-		`)
+		).toMatchInlineSnapshot(`[
+  {
+    "amount": -2.5,
+    "charge": {
+      "applies": {
+        "to": {
+          "fx": true,
+          "presets": [
+            "test-ta-pg-200",
+          ],
+        },
+      },
+      "destination": {
+        "account": "abcd1234",
+      },
+      "id": "abcd1234",
+      "rate": 0.025,
+    },
+  },
+]`)
 	})
 	it("should not charge merchant", () => {
 		expect(

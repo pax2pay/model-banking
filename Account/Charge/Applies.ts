@@ -44,12 +44,10 @@ export namespace Applies {
 		preset?: Card.Preset,
 		exchange?: Transaction.Exchange
 	): boolean {
-		// const fx = Fx.evaluate(applies.to.fx, exchange)
 		const result =
 			Presets.evaluate(applies.to.presets, preset) &&
 			Fx.evaluate(applies.to.fx, exchange) &&
 			Merchant.evaluate(applies.to.merchants, counterpart)
-		// console.log("result", result)
 		return result
 	}
 }
