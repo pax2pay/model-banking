@@ -1,7 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Acquirer } from "../../Acquirer"
-import { Exchange } from "../../Authorization/Exchange"
 import { Merchant } from "../../Merchant"
 import { Rail } from "../../Rail"
 import type { Transaction } from "../../Transaction"
@@ -9,7 +8,7 @@ import type { Transaction } from "../../Transaction"
 export interface Authorization {
 	card: string
 	account: string
-	exchange?: Exchange
+	exchange?: Transaction.Exchange
 	acquirer: Acquirer
 	description: string
 	approvalCode?: string
@@ -62,7 +61,7 @@ export namespace Authorization {
 	export const type = isly.object<Authorization>({
 		card: isly.string(),
 		account: isly.string(),
-		exchange: Exchange.type.optional(),
+		exchange: isly.any().optional(),
 		acquirer: Acquirer.type,
 		description: isly.string(),
 		approvalCode: isly.string().optional(),

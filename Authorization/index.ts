@@ -5,7 +5,6 @@ import { Acquirer } from "../Acquirer"
 import { Amount } from "../Amount"
 import { Merchant } from "../Merchant"
 import { Transaction } from "../Transaction"
-import { Exchange as AuthorizationExchange } from "./Exchange"
 import { Status as AuthorizationStatus } from "./Status"
 
 export interface Authorization {
@@ -15,7 +14,7 @@ export interface Authorization {
 	reference: string
 	approvalCode?: string
 	amount: Amount
-	exchange?: AuthorizationExchange
+	exchange?: Transaction.Exchange
 	card: {
 		id: string
 		token?: string
@@ -33,7 +32,6 @@ export interface Authorization {
 	description: string
 }
 export namespace Authorization {
-	export import Exchange = AuthorizationExchange
 	export import Status = AuthorizationStatus
 	export const type = isly.object<Authorization>({
 		id: isly.fromIs("Authorization.id", cryptly.Identifier.is),
@@ -45,7 +43,7 @@ export namespace Authorization {
 				description: isly.string(),
 			})
 			.optional(),
-		exchange: AuthorizationExchange.type.optional(),
+		exchange: Transaction.Exchange.type.optional(),
 		card: isly.object<Authorization["card"]>({
 			id: isly.string(),
 			token: isly.string().optional(),
