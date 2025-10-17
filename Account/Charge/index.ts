@@ -1,31 +1,16 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
-import { isly } from "isly"
-import type { Card } from "../../Card"
+import { Card } from "../../Card"
 import type { Rail } from "../../Rail"
 import type { Transaction } from "../../Transaction"
-import { Applies } from "./Applies"
+import { Fx as ChargeFx } from "./Fx"
+import { Merchant as ChargeMerchant } from "./Merchant"
 
-export interface Charge extends Charge.Creatable {
-	id: string
-}
+export type Charge = ChargeMerchant | ChargeFx
 export namespace Charge {
-	export interface Creatable {
-		destination: { account: string }
-		rate: number // rate: 0.01 for 1%
-		applies: Applies
-	}
-	export namespace Creatable {
-		export const type = isly.object<Creatable>({
-			destination: isly.object({ account: isly.string() }),
-			rate: isly.number(),
-			applies: Applies.type,
-		})
-	}
-	export const type = Creatable.type.extend<Charge>({
-		id: isly.string(),
-	})
-	export function fromCreatable(creatable: Creatable): Charge {
+	export import Merchant = ChargeMerchant
+	export import Fx = ChargeFx
+	export function fromCreatable(creatable: ChargeMerchant.Creatable | ChargeFx.Creatable): Charge {
 		return { ...creatable, id: cryptly.Identifier.generate(4) }
 	}
 	export function evaluate(
@@ -37,11 +22,16 @@ export namespace Charge {
 		exchange?: Transaction.Exchange
 	): Transaction.Amount.Charge[] {
 		const result: Transaction.Amount.Charge[] = []
-		for (const charge of charges)
-			if (Applies.evaluate(charge.applies, counterpart, preset, exchange))
+		for (const charge of charges) {
+			const chargeThisPreset = !!preset && charge.applies.to.presets?.includes(preset)
+			if (charge.type === "merchant" && chargeThisPreset && Merchant.evaluate(charge.applies.to.merchants, counterpart))
 				result.push(toTransactionAmountCharge(currency, amount, charge))
+			if (charge.type === "fx" && chargeThisPreset && exchange)
+				result.push(toTransactionAmountCharge(currency, amount, charge))
+		}
 		return result
 	}
+
 	function toTransactionAmountCharge(
 		currency: isoly.Currency,
 		amount: number,
