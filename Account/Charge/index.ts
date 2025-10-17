@@ -23,9 +23,10 @@ export namespace Charge {
 	): Transaction.Amount.Charge[] {
 		const result: Transaction.Amount.Charge[] = []
 		for (const charge of charges) {
-			if (charge.type === "merchant" && Merchant.evaluate(charge, counterpart, preset))
+			const chargeThisPreset = !!preset && charge.applies.to.presets?.includes(preset)
+			if (charge.type === "merchant" && chargeThisPreset && Merchant.evaluate(charge.applies.to.merchants, counterpart))
 				result.push(toTransactionAmountCharge(currency, amount, charge))
-			if (charge.type === "fx" && exchange)
+			if (charge.type === "fx" && chargeThisPreset && exchange)
 				result.push(toTransactionAmountCharge(currency, amount, charge))
 		}
 		return result
