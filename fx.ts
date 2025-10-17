@@ -8,10 +8,18 @@ export namespace fx {
 		expires: isoly.DateTime
 		from: { amount: number; currency: isoly.Currency }
 		to: { amount: number; currency: isoly.Currency }
-		rate: {
-			base: number
+		bid: {
+			markup: number // percent
+			price: { base: number; effective: number } // "price" = `${from.currency} per ${to.currency}`
+			volume: { base: number; effective: number } // "volume" = `${to.currency} per ${from.currency}`
+		}
+		// For transparency, probably not needed? "ask" = what you would get back if you reversed the trade
+		// Why we might need this: "base" is not a reference/spot rate, it's Banking Circle's bid/ask rates.
+		// Accurate and relevant spot rates are hard to get, would require another service call and cost time.
+		ask: {
 			markup: number
-			effective: number
+			price: { base: number; effective: number } // "price" = `${to.currency} per ${from.currency}`
+			volume: { base: number; effective: number } // "volume" = `${from.currency} per ${to.currency}`
 		}
 	}
 	export namespace Quote {
