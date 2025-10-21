@@ -1,7 +1,6 @@
 import { isly } from "isly"
 import { Rail } from "pax2pay"
 import { Card } from "../../Card"
-import { Charge } from "../Charge"
 
 export interface Merchant extends Merchant.Creatable {
 	id: string
@@ -35,13 +34,9 @@ export namespace Merchant {
 		id: isly.string(),
 	})
 	export function evaluate(
-		charge: Charge.Merchant,
-		counterpart: Rail.Address.Card.Counterpart,
-		preset?: Card.Preset
+		merchants: Card.Restriction.Merchant[] = [],
+		counterpart: Rail.Address.Card.Counterpart
 	): boolean {
-		const { presets, merchants } = charge.applies.to
-		const chargePreset: boolean =
-			presets === undefined || presets.length === 0 || (!!preset && presets.includes(preset))
-		return chargePreset && merchants.some(merchant => Card.Restriction.Merchant.check(merchant, counterpart))
+		return merchants.some(merchant => Card.Restriction.Merchant.check(merchant, counterpart))
 	}
 }

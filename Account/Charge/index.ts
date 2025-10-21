@@ -22,15 +22,19 @@ export namespace Charge {
 		exchange?: Transaction.Exchange
 	): Transaction.Amount.Charge[] {
 		const result: Transaction.Amount.Charge[] = []
-		for (const charge of charges) {
-			if (charge.type === "merchant" && Merchant.evaluate(charge, counterpart, preset))
+		for (const charge of charges)
+			if (
+				((charge.type === "merchant" && Merchant.evaluate(charge.applies.to.merchants, counterpart)) ||
+					(charge.type === "fx" && exchange)) &&
+				chargeThisPreset(charge.applies.to.presets, preset)
+			)
 				result.push(toTransactionAmountCharge(currency, amount, charge))
-			if (charge.type === "fx" && exchange)
-				result.push(toTransactionAmountCharge(currency, amount, charge))
-		}
+
 		return result
 	}
-
+	function chargeThisPreset(presets: Card.Preset[] = [], preset: Card.Preset | undefined): boolean {
+		return presets.length === 0 || (!!preset && presets.includes(preset))
+	}
 	function toTransactionAmountCharge(
 		currency: isoly.Currency,
 		amount: number,

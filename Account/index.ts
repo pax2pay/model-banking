@@ -42,7 +42,7 @@ export namespace Account {
 		details: Details.type.optional(),
 		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.type).optional(),
 		key: isly.string().optional(),
-		charges: AccountCharge.type.array().optional(),
+		charges: isly.union(AccountCharge.Fx.type, AccountCharge.Merchant.type).array().optional(),
 		rules: Rule.type.array().optional(),
 		status: AccountStatus.type,
 	})

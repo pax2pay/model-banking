@@ -19,7 +19,7 @@ export namespace Amount {
 	export namespace Charge {
 		export const type = isly.object<Charge>({
 			amount: isly.number(),
-			charge: AccountCharge.type,
+			charge: isly.union(AccountCharge.Fx.type, AccountCharge.Merchant.type),
 		})
 		export function total(currency: isoly.Currency, charges: Charge[] = []): number {
 			return charges.reduce((r, c) => isoly.Currency.add(currency, r, c.amount), 0)
