@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { Account } from "../Account"
 import { Realm } from "../Realm"
 import { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
@@ -14,6 +15,7 @@ export interface Organization {
 	status: "active" | "inactive"
 	contact?: Organization.Contact
 	groups?: string[]
+	fx?: Account.Fx
 }
 export namespace Organization {
 	export import Creatable = OrganizationCreatable
@@ -27,5 +29,6 @@ export namespace Organization {
 		status: isly.string(["active", "inactive"]),
 		contact: Contact.type.optional(),
 		groups: isly.string().array().optional(),
+		fx: Account.Fx.type.optional(),
 	})
 }

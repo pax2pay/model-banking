@@ -7,6 +7,7 @@ import { Rule } from "../Rule"
 import { Charge as AccountCharge } from "./Charge"
 import { Creatable as AccountCreatable } from "./Creatable"
 import { Details as AccountDetails } from "./Details"
+import { Fx as AccountFx } from "./Fx"
 import { History as AccountHistory } from "./History"
 import { Status as AccountStatus } from "./Status"
 
@@ -22,10 +23,12 @@ export interface Account extends Account.Creatable {
 	charges?: AccountCharge[]
 	rules?: Rule[]
 	status: Account.Status
+	fx?: Account.Fx
 }
 export namespace Account {
 	export import Charge = AccountCharge
 	export import Creatable = AccountCreatable
+	export import Fx = AccountFx
 	export import Status = AccountStatus
 	export import History = AccountHistory
 	export import Details = AccountDetails
@@ -45,6 +48,7 @@ export namespace Account {
 		charges: AccountCharge.type.array().optional(),
 		rules: Rule.type.array().optional(),
 		status: AccountStatus.type,
+		fx: AccountFx.type.optional(),
 	})
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
 		return cryptly.Identifier.is(value, 8)
