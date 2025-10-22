@@ -23,7 +23,7 @@ export interface Account extends Account.Creatable {
 	charges?: AccountCharge[]
 	rules?: Rule[]
 	status: Account.Status
-	fx?: Account.Fx
+	fx?: AccountFx
 }
 export namespace Account {
 	export import Charge = AccountCharge
