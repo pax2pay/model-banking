@@ -10,11 +10,7 @@ export namespace fx {
 		fixed: Quote.Fixed
 		from: { amount: number; currency: isoly.Currency }
 		to: { amount: number; currency: isoly.Currency }
-		rate: {
-			base: number
-			markup: number
-			effective: number
-		}
+		rate: { base: number; markup: number; effective: number }
 	}
 	export namespace Quote {
 		export type Fixed = typeof Fixed.values[number]
