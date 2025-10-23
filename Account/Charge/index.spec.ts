@@ -1,41 +1,11 @@
+import { Account } from "Account"
 import { pax2pay } from "../../index"
 
 describe("Account.Charge", () => {
 	it("should charge merchant", () => {
 		expect(
 			pax2pay.Account.Charge.evaluate(
-				charges.merchant,
-				transaction.ryanair.counterpart,
-				transaction.ryanair.currency,
-				transaction.ryanair.amount,
-				undefined,
-				transaction.ryanair.exchange
-			)
-		).toMatchInlineSnapshot(`[
-  {
-    "amount": -2.5,
-    "charge": {
-      "applies": {
-        "to": {
-          "merchants": [
-            "ryanair",
-          ],
-        },
-      },
-      "destination": {
-        "account": "abcd1234",
-      },
-      "id": "abcd1234",
-      "rate": 0.025,
-    },
-  },
-]`)
-	})
-
-	it("should charge merchant with preset", () => {
-		expect(
-			pax2pay.Account.Charge.evaluate(
-				charges.merchantPreset,
+				charges,
 				transaction.ryanair.counterpart,
 				transaction.ryanair.currency,
 				transaction.ryanair.amount,
@@ -43,95 +13,95 @@ describe("Account.Charge", () => {
 				transaction.ryanair.exchange
 			)
 		).toMatchInlineSnapshot(`
-			[
-			  {
-			    "amount": -2.5,
-			    "charge": {
-			      "applies": {
-			        "to": {
-			          "merchants": [
-			            "ryanair",
-			          ],
-			          "presets": [
-			            "test-ta-pg-200",
-			          ],
-			        },
-			      },
+			{
+			  "amount": -2.5,
+			  "charge": {
+			    "merchant": {
+			      "amount": -2.5,
 			      "destination": {
 			        "account": "abcd1234",
 			      },
-			      "id": "abcd1234",
-			      "rate": 0.025,
-			    },
-			  },
-			]
-		`)
-	})
-	it("should charge fx", () => {
-		expect(
-			pax2pay.Account.Charge.evaluate(
-				charges.fx,
-				transaction.fxCharge.counterpart,
-				transaction.fxCharge.currency,
-				transaction.fxCharge.amount,
-				undefined,
-				transaction.fxCharge.exchange
-			)
-		).toMatchInlineSnapshot(`
-			[
-			  {
-			    "amount": -2.5,
-			    "charge": {
-			      "applies": {
-			        "to": {
-			          "fx": true,
+			      "merchants": {
+			        "lufthansa": {
+			          "default": 0,
+			          "test-ta-pg-200": 0.025,
+			        },
+			        "ryanair": {
+			          "default": 0.01,
+			          "test-ta-pg-200": 0.025,
 			        },
 			      },
-			      "destination": {
-			        "account": "abcd1234",
-			      },
-			      "id": "abcd1234",
-			      "rate": 0.025,
 			    },
 			  },
-			]
+			}
 		`)
 	})
-	it("should charge fx with preset", () => {
+	it("should charge for fx", () => {
 		expect(
 			pax2pay.Account.Charge.evaluate(
-				charges.fxPreset,
+				charges,
 				transaction.fxCharge.counterpart,
 				transaction.fxCharge.currency,
 				transaction.fxCharge.amount,
 				"test-ta-pg-200",
 				transaction.fxCharge.exchange
 			)
-		).toMatchInlineSnapshot(`[
-  {
-    "amount": -2.5,
-    "charge": {
-      "applies": {
-        "to": {
-          "fx": true,
-          "presets": [
-            "test-ta-pg-200",
-          ],
-        },
-      },
-      "destination": {
-        "account": "abcd1234",
-      },
-      "id": "abcd1234",
-      "rate": 0.025,
-    },
-  },
-]`)
+		).toMatchInlineSnapshot(`
+			{
+			  "amount": -2.5,
+			  "charge": {
+			    "fx": {
+			      "amount": -2.5,
+			      "default": 0.1,
+			      "test-ta-pg-200": 0.025,
+			    },
+			  },
+			}
+		`)
 	})
-	it("should not charge merchant", () => {
+	it("should charge for merchant and fx at default rate", () => {
 		expect(
 			pax2pay.Account.Charge.evaluate(
-				charges.merchant,
+				charges,
+				transaction.ryanair.counterpart,
+				transaction.ryanair.currency,
+				transaction.ryanair.amount,
+				"test-ta-mc-200",
+				transaction.fxCharge.exchange
+			)
+		).toMatchInlineSnapshot(`
+			{
+			  "amount": -11,
+			  "charge": {
+			    "fx": {
+			      "amount": -10,
+			      "default": 0.1,
+			      "test-ta-pg-200": 0.025,
+			    },
+			    "merchant": {
+			      "amount": -1,
+			      "destination": {
+			        "account": "abcd1234",
+			      },
+			      "merchants": {
+			        "lufthansa": {
+			          "default": 0,
+			          "test-ta-pg-200": 0.025,
+			        },
+			        "ryanair": {
+			          "default": 0.01,
+			          "test-ta-pg-200": 0.025,
+			        },
+			      },
+			    },
+			  },
+			}
+		`)
+	})
+	it("should not charge", () => {
+		expect(
+			pax2pay.Account.Charge.evaluate(
+				charges,
 				transaction.noCharge.counterpart,
 				transaction.noCharge.currency,
 				transaction.noCharge.amount,
@@ -139,73 +109,25 @@ describe("Account.Charge", () => {
 				transaction.noCharge.exchange
 			)
 		).toMatchInlineSnapshot(`
-			[]
+			{
+			  "amount": 0,
+			  "charge": {},
+			}
 		`)
-	})
-	it("should not charge fx", () => {
-		expect(
-			pax2pay.Account.Charge.evaluate(
-				charges.fx,
-				transaction.noCharge.counterpart,
-				transaction.noCharge.currency,
-				transaction.noCharge.amount,
-				"test-ta-pg-200",
-				transaction.noCharge.exchange
-			)
-		).toMatchInlineSnapshot(`[]`)
 	})
 })
-export const charges: Record<string, pax2pay.Account.Charge[]> = {
-	merchant: [
-		{
-			id: "abcd1234",
-			destination: { account: "abcd1234" },
-			rate: 0.025,
-			applies: {
-				to: {
-					merchants: ["ryanair"],
-				},
-			},
+export const charges: Account.Charge = {
+	fx: {
+		"test-ta-pg-200": 0.025,
+		default: 0.1,
+	},
+	merchant: {
+		destination: { account: "abcd1234" },
+		merchants: {
+			ryanair: { "test-ta-pg-200": 0.025, default: 0.01 },
+			lufthansa: { "test-ta-pg-200": 0.025, default: 0 },
 		},
-	],
-	fx: [
-		{
-			id: "abcd1234",
-			destination: { account: "abcd1234" },
-			rate: 0.025,
-			applies: {
-				to: {
-					fx: true,
-				},
-			},
-		},
-	],
-	fxPreset: [
-		{
-			id: "abcd1234",
-			destination: { account: "abcd1234" },
-			rate: 0.025,
-			applies: {
-				to: {
-					fx: true,
-					presets: ["test-ta-pg-200"],
-				},
-			},
-		},
-	],
-	merchantPreset: [
-		{
-			id: "abcd1234",
-			destination: { account: "abcd1234" },
-			rate: 0.025,
-			applies: {
-				to: {
-					merchants: ["ryanair"],
-					presets: ["test-ta-pg-200"],
-				},
-			},
-		},
-	],
+	},
 }
 export const transaction: Record<string, pax2pay.Transaction.Creatable.CardTransaction> = {
 	ryanair: {
@@ -240,7 +162,7 @@ export const transaction: Record<string, pax2pay.Transaction.Creatable.CardTrans
 		reference: { reference: "1234567890" },
 		counterpart: {
 			type: "card",
-			merchant: { name: "RYANAIR", category: "3246", address: "", city: "", country: "AD", zip: "", id: "merchant1" },
+			merchant: { name: "Paxair", category: "1234", address: "", city: "", country: "AD", zip: "", id: "merchant1" },
 			acquirer: { id: "acquirer1", number: "1234567890", retrievalReferenceNumber: "1234567890" },
 		},
 		currency: "EUR",
