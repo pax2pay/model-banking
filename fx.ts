@@ -43,4 +43,17 @@ export namespace fx {
 			export const type = isly.union<Creatable, From, To>(From.type, To.type)
 		}
 	}
+	export const type = isly.object<Quote>({
+		id: isly.string(),
+		created: isly.string(),
+		expires: isly.string(),
+		account: isly.object<Quote["account"]>({
+			id: isly.string(),
+			fx: isly.object<Quote["account"]["fx"]>({ markup: isly.number() }),
+		}),
+		fixed: Quote.Fixed.type,
+		from: isly.object<Quote["from"]>({ amount: isly.number(), currency: isly.string(isoly.Currency.values) }),
+		to: isly.object<Quote["to"]>({ amount: isly.number(), currency: isly.string(isoly.Currency.values) }),
+		rate: isly.object<Quote["rate"]>({ base: isly.number(), markup: isly.number(), effective: isly.number() }),
+	})
 }
