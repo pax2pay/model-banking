@@ -19,7 +19,7 @@ export interface Account extends Account.Creatable {
 	details?: Account.Details
 	counterparts?: Record<string, Rail.Address>
 	key?: string
-	charges?: AccountCharge[]
+	charges?: AccountCharge
 	rules?: Rule[]
 	status: Account.Status
 }
@@ -42,7 +42,7 @@ export namespace Account {
 		details: Details.type.optional(),
 		counterparts: isly.record<Record<string, Rail.Address>>(isly.string(), Rail.Address.type).optional(),
 		key: isly.string().optional(),
-		charges: isly.union(AccountCharge.Fx.type, AccountCharge.Merchant.type).array().optional(),
+		charges: AccountCharge.type.optional(),
 		rules: Rule.type.array().optional(),
 		status: AccountStatus.type,
 	})
