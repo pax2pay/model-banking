@@ -17,7 +17,7 @@ describe("Account.Charge.Merchant", () => {
 			  "destination": {
 			    "account": "abcd1234",
 			  },
-			  "merchant": {
+			  "merchants": {
 			    "lufthansa": {
 			      "default": 0,
 			      "test-ta-pg-200": 0.025,
@@ -45,7 +45,7 @@ describe("Account.Charge.Merchant", () => {
 			  "destination": {
 			    "account": "abcd1234",
 			  },
-			  "merchant": {
+			  "merchants": {
 			    "lufthansa": {
 			      "default": 0,
 			      "test-ta-pg-200": 0.025,
