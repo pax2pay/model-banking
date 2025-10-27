@@ -1,8 +1,8 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Charge as AccountCharge } from "../Account/Charge"
-import type { Rule } from "../Rule"
-import { Exchange } from "./Exchange"
+import type { Rule } from "../../Rule"
+import { Exchange } from "../Exchange"
+import { Charge as AmountCharge } from "./Charge"
 
 export interface Amount {
 	original: number
@@ -12,22 +12,7 @@ export interface Amount {
 	exchange?: Exchange
 }
 export namespace Amount {
-	export interface Charge {
-		amount: number
-		charge: AccountCharge
-	}
-	export namespace Charge {
-		export interface Fx extends AccountCharge.Fx {
-			amount: number
-		}
-		export interface Merchant extends AccountCharge.Merchant {
-			amount: number
-		}
-		export const type = isly.object<Charge>({
-			amount: isly.number(),
-			charge: AccountCharge.type,
-		})
-	}
+	export import Charge = AmountCharge
 	export const type = isly.object<Amount>({
 		original: isly.number(),
 		charge: isly.number(),
@@ -39,6 +24,8 @@ export namespace Amount {
 		const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
 			? -1
 			: 1
+		console.log("charges", charges)
+
 		return {
 			original: sign * state.transaction.original.amount,
 			charge: 0,
@@ -46,7 +33,11 @@ export namespace Amount {
 			total: isoly.Currency.add(
 				state.transaction.original.currency,
 				sign * state.transaction.original.total,
-				charges?.amount ?? 0
+				isoly.Currency.add(
+					state.transaction.original.currency,
+					charges?.fx?.amount ?? 0,
+					charges?.merchant?.amount ?? 0
+				)
 			),
 			exchange: state?.transaction.exchange ?? state.authorization?.exchange,
 		}
@@ -61,4 +52,18 @@ export namespace Amount {
 		amount.total = isoly.Currency.add(currency, amount.total, change)
 		return amount
 	}
+}
+
+const charge: Amount.Charge = {
+	merchant: {
+		amount: 2,
+		merchant: "lufthansa",
+		rate: 0.02,
+		preset: "default",
+	},
+	fx: {
+		amount: 1,
+		preset: "test-ta-pg-200",
+		rate: 0.01,
+	},
 }

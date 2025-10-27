@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Card } from "../../Card"
+import type { Card } from "../../Card"
 import type { Rail } from "../../Rail"
 import type { Transaction } from "../../Transaction"
 import { Fx as ChargeFx } from "./Fx"
@@ -24,11 +24,8 @@ export namespace Charge {
 		const fx = charges.fx && ChargeFx.evaluate(charges.fx, currency, amount, preset, exchange)
 
 		return {
-			amount: isoly.Currency.add(currency, merchant?.amount ?? 0, fx?.amount ?? 0),
-			charge: {
-				...(merchant && { merchant }),
-				...(fx && { fx }),
-			},
+			...(merchant && { merchant }),
+			...(fx && { fx }),
 		}
 	}
 }

@@ -10,17 +10,8 @@ describe("Account.Charge.Fx", () => {
 		expect(Fx.evaluate(charge, "EUR", 100, "test-ta-mc-200", exchange)).toMatchInlineSnapshot(`
 			{
 			  "amount": -1,
-			  "default": 0.01,
-			  "test-ta-pg-200": 0.025,
-			}
-		`)
-	})
-	it("charge should apply to transaction with default rate", () => {
-		expect(Fx.evaluate(charge, "EUR", 100, "test-ta-mc-200", exchange)).toMatchInlineSnapshot(`
-			{
-			  "amount": -1,
-			  "default": 0.01,
-			  "test-ta-pg-200": 0.025,
+			  "preset": "default",
+			  "rate": 0.01,
 			}
 		`)
 	})
@@ -28,8 +19,17 @@ describe("Account.Charge.Fx", () => {
 		expect(Fx.evaluate(charge, "EUR", 100, "test-ta-pg-200", exchange)).toMatchInlineSnapshot(`
 			{
 			  "amount": -2.5,
-			  "default": 0.01,
-			  "test-ta-pg-200": 0.025,
+			  "preset": "test-ta-pg-200",
+			  "rate": 0.025,
+			}
+		`)
+	})
+	it("charge should apply to transaction with preset rate", () => {
+		expect(Fx.evaluate(charge, "EUR", 100, "test-ta-pg-200", exchange)).toMatchInlineSnapshot(`
+			{
+			  "amount": -2.5,
+			  "preset": "test-ta-pg-200",
+			  "rate": 0.025,
 			}
 		`)
 	})

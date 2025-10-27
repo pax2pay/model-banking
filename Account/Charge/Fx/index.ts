@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { Card } from "../../../Card"
-import { Transaction } from "../../../Transaction"
+import { Amount } from "../../../Transaction/Amount"
+import { Exchange } from "../../../Transaction/Exchange"
 import { Preset } from "../Preset"
 
 export type Fx = Preset
@@ -12,18 +13,14 @@ export namespace Fx {
 		currency: isoly.Currency,
 		amount: number,
 		preset: Card.Preset,
-		exchange?: Transaction.Exchange
-	): Transaction.Amount.Charge.Fx | undefined {
-		let result: number | undefined = undefined
+		exchange?: Exchange
+	): Amount.Charge.Fx | undefined {
+		const result: Partial<Amount.Charge.Fx> = {}
 		if (exchange) {
-			const rate = charge[preset] ? { [preset]: charge[preset] } : { default: charge.default }
-			rate && (result = -isoly.Currency.multiply(currency, amount, Object.values(rate)[0]))
+			result.preset = charge[preset] ? preset : "default"
+			result.rate = charge[result.preset] ?? 0
+			result.rate && (result.amount = -isoly.Currency.multiply(currency, amount, result.rate))
 		}
-		return result
-			? {
-					...charge,
-					amount: result,
-			  }
-			: undefined
+		return Amount.Charge.Fx.type.is(result) ? result : undefined
 	}
 }

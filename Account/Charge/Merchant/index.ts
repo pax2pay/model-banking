@@ -2,7 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../../../Card"
 import { Rail } from "../../../Rail"
-import { Transaction } from "../../../Transaction"
+import { Amount } from "../../../Transaction/Amount"
 import { Preset } from "../Preset"
 
 export interface Merchant {
@@ -23,18 +23,15 @@ export namespace Merchant {
 		amount: number,
 		counterpart: Rail.Address.Card.Counterpart,
 		preset: Card.Preset
-	): Transaction.Amount.Charge.Merchant | undefined {
-		let result: number | undefined = undefined
+	): Amount.Charge.Merchant | undefined {
+		const result: Partial<Amount.Charge.Merchant> = {}
 		const merchant = Card.Restriction.Merchant.resolve(counterpart)
 		if (merchant) {
-			const rate = charge.merchants?.[merchant]?.[preset] ?? charge.merchants?.[merchant]?.default
-			rate && (result = -isoly.Currency.multiply(currency, amount, rate))
+			result.merchant = merchant
+			result.preset = charge.merchants?.[merchant]?.[preset] ? preset : "default"
+			result.rate = charge.merchants?.[merchant]?.[result.preset]
+			result.rate && (result.amount = -isoly.Currency.multiply(currency, amount, result.rate))
 		}
-		return result
-			? {
-					...charge,
-					amount: result,
-			  }
-			: undefined
+		return Amount.Charge.Merchant.type.is(result) ? result : undefined
 	}
 }

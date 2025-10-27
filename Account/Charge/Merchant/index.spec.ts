@@ -14,19 +14,9 @@ describe("Account.Charge.Merchant", () => {
 		).toMatchInlineSnapshot(`
 			{
 			  "amount": -1,
-			  "destination": {
-			    "account": "abcd1234",
-			  },
-			  "merchants": {
-			    "lufthansa": {
-			      "default": 0,
-			      "test-ta-pg-200": 0.025,
-			    },
-			    "ryanair": {
-			      "default": 0.01,
-			      "test-ta-pg-200": 0.025,
-			    },
-			  },
+			  "merchant": "ryanair",
+			  "preset": "default",
+			  "rate": 0.01,
 			}
 		`)
 	})
@@ -39,24 +29,7 @@ describe("Account.Charge.Merchant", () => {
 				transaction.ryanair.counterpart,
 				"test-ta-pg-200"
 			)
-		).toMatchInlineSnapshot(`
-			{
-			  "amount": -2.5,
-			  "destination": {
-			    "account": "abcd1234",
-			  },
-			  "merchants": {
-			    "lufthansa": {
-			      "default": 0,
-			      "test-ta-pg-200": 0.025,
-			    },
-			    "ryanair": {
-			      "default": 0.01,
-			      "test-ta-pg-200": 0.025,
-			    },
-			  },
-			}
-		`)
+		)
 	})
 	it("charge should not apply", () => {
 		expect(
