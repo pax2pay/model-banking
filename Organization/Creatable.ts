@@ -1,8 +1,8 @@
 import { isly } from "isly"
-import { Fx } from "../Account/Fx"
 import { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
 import { Contact } from "./Contact"
+import { Fx } from "./Fx"
 
 export interface Creatable {
 	name: string

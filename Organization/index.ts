@@ -1,11 +1,11 @@
 import { isly } from "isly"
-import { Fx } from "../Account/Fx"
 import { Realm } from "../Realm"
 import { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
 import { Changeable as OrganizationChangeable } from "./Changeable"
 import { Contact as OrganizationContact } from "./Contact"
 import { Creatable as OrganizationCreatable } from "./Creatable"
+import { Fx as OrganizationFx } from "./Fx"
 
 export interface Organization {
 	name: string
@@ -15,12 +15,13 @@ export interface Organization {
 	status: "active" | "inactive"
 	contact?: Organization.Contact
 	groups?: string[]
-	fx?: Fx
+	fx?: OrganizationFx
 }
 export namespace Organization {
 	export import Creatable = OrganizationCreatable
 	export import Changeable = OrganizationChangeable
 	export import Contact = OrganizationContact
+	export import Fx = OrganizationFx
 	export const type = isly.object<Organization>({
 		name: isly.string(),
 		code: isly.string(new RegExp(/^[A-Za-z0-9\-_]+$/)),
@@ -29,6 +30,6 @@ export namespace Organization {
 		status: isly.string(["active", "inactive"]),
 		contact: Contact.type.optional(),
 		groups: isly.string().array().optional(),
-		fx: Fx.type.optional(),
+		fx: OrganizationFx.type.optional(),
 	})
 }
