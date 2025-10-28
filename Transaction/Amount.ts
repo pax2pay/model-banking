@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Charge as AccountCharge } from "../Account/Charge"
 import type { Rule } from "../Rule"
 import { Exchange } from "./Exchange"
 
@@ -13,14 +14,12 @@ export interface Amount {
 export namespace Amount {
 	export interface Charge {
 		amount: number
-		type: "merchant" | "exchange"
-		destination: { account: string }
+		charge: AccountCharge
 	}
 	export namespace Charge {
 		export const type = isly.object<Charge>({
 			amount: isly.number(),
-			type: isly.string(["merchant", "exchange"]),
-			destination: isly.object({ account: isly.string() }),
+			charge: AccountCharge.type,
 		})
 		export function total(currency: isoly.Currency, charges: Charge[] = []): number {
 			return charges.reduce((r, c) => isoly.Currency.add(currency, r, c.amount), 0)

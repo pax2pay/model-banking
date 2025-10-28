@@ -397,7 +397,6 @@ const transactions: pax2pay.Transaction.CardTransaction[] = [
 		flags: [],
 		oldFlags: [],
 		notes: [],
-		charge: 0,
 		transacted: "2025-02-11T10:44:24.384Z",
 	},
 	{
@@ -446,7 +445,6 @@ const transactions: pax2pay.Transaction.CardTransaction[] = [
 		flags: [],
 		oldFlags: [],
 		notes: [],
-		charge: 0,
 		transacted: "2025-02-11T10:44:24.384Z",
 	},
 ]

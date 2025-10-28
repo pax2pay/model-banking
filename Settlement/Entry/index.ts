@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { Account } from "../../Account"
+import { Preset } from "../../Card/Preset"
 import type { Rail } from "../../Rail"
 import type { Transaction } from "../../Transaction"
 import { Creatable as EntryCreatable } from "./Creatable"
@@ -26,13 +27,16 @@ export namespace Entry {
 	export function charge(
 		charges: Account.Charge[] = [],
 		counterpart: Rail.Address.Card.Counterpart,
-		capture: Creatable.Capture
+		capture: Creatable.Capture,
+		preset?: Preset
 	): Transaction.Amount.Charge[] {
 		return Account.Charge.evaluate(
 			charges,
 			counterpart,
 			capture.amount[0],
-			isoly.Currency.add(capture.amount[0], capture.amount[1], capture.fee.other[capture.amount[0]] ?? 0)
+			isoly.Currency.add(capture.amount[0], capture.amount[1], capture.fee.other[capture.amount[0]] ?? 0),
+			preset,
+			capture.exchange
 		)
 	}
 }
