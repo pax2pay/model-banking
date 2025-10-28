@@ -28,8 +28,7 @@ export namespace Merchant {
 		const merchant = Card.Restriction.Merchant.resolve(counterpart)
 		if (merchant) {
 			result.merchant = merchant
-			const presetOrDefault = preset ? preset : "default"
-			result.preset = charge.merchants?.[merchant]?.[presetOrDefault] ? presetOrDefault : "default"
+			result.preset = preset && charge.merchants?.[merchant]?.[preset] ? preset : "default"
 			result.destination = charge.destination
 			result.rate = charge.merchants?.[merchant]?.[result.preset]
 			result.rate && (result.amount = -isoly.Currency.multiply(currency, amount, result.rate))

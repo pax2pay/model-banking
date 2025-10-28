@@ -32,11 +32,7 @@ export namespace Amount {
 			total: isoly.Currency.add(
 				state.transaction.original.currency,
 				sign * state.transaction.original.total,
-				isoly.Currency.add(
-					state.transaction.original.currency,
-					charges?.fx?.amount ?? 0,
-					charges?.merchant?.amount ?? 0
-				)
+				Amount.Charge.total(state.transaction.original.currency, charges ?? {})
 			),
 			exchange: state?.transaction.exchange ?? state.authorization?.exchange,
 		}

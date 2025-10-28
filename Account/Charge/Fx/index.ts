@@ -17,9 +17,8 @@ export namespace Fx {
 	): Amount.Charge.Fx | undefined {
 		const result: Partial<Amount.Charge.Fx> = {}
 		if (exchange) {
-			const presetOrDefault = preset ? preset : "default"
-			result.preset = charge[presetOrDefault] ? presetOrDefault : "default"
-			result.rate = charge[result.preset] ?? 0
+			result.preset = preset && charge[preset] ? preset : "default"
+			result.rate = charge[result.preset]
 			result.rate && (result.amount = -isoly.Currency.multiply(currency, amount, result.rate))
 		}
 		return Amount.Charge.Fx.type.is(result) ? result : undefined
