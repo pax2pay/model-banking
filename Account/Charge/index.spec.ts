@@ -16,6 +16,9 @@ describe("Account.Charge", () => {
 			{
 			  "merchant": {
 			    "amount": -2.5,
+			    "destination": {
+			      "account": "abcd1234",
+			    },
 			    "merchant": "ryanair",
 			    "preset": "test-ta-pg-200",
 			    "rate": 0.025,
@@ -62,6 +65,9 @@ describe("Account.Charge", () => {
 			  },
 			  "merchant": {
 			    "amount": -1,
+			    "destination": {
+			      "account": "abcd1234",
+			    },
 			    "merchant": "ryanair",
 			    "preset": "default",
 			    "rate": 0.01,

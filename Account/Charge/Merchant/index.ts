@@ -30,6 +30,7 @@ export namespace Merchant {
 			result.merchant = merchant
 			const presetOrDefault = preset ? preset : "default"
 			result.preset = charge.merchants?.[merchant]?.[presetOrDefault] ? presetOrDefault : "default"
+			result.destination = charge.destination
 			result.rate = charge.merchants?.[merchant]?.[result.preset]
 			result.rate && (result.amount = -isoly.Currency.multiply(currency, amount, result.rate))
 		}
