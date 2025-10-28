@@ -12,16 +12,16 @@ export namespace Charge {
 	export import Fx = ChargeFx
 	export const type = isly.object<Charge>({ merchant: ChargeMerchant.type, fx: ChargeFx.type })
 	export function evaluate(
-		charges: Charge,
 		counterpart: Rail.Address.Card.Counterpart,
 		currency: isoly.Currency,
 		amount: number,
 		preset: Card.Preset,
+		charges?: Charge,
 		exchange?: Transaction.Exchange
 	): Transaction.Amount.Charge {
 		const merchant =
-			charges.merchant && ChargeMerchant.evaluate(charges.merchant, currency, amount, counterpart, preset)
-		const fx = charges.fx && ChargeFx.evaluate(charges.fx, currency, amount, preset, exchange)
+			charges?.merchant && ChargeMerchant.evaluate(charges.merchant, currency, amount, counterpart, preset)
+		const fx = charges?.fx && ChargeFx.evaluate(charges.fx, currency, amount, preset, exchange)
 
 		return {
 			...(merchant && { merchant }),

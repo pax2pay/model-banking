@@ -5,33 +5,20 @@ describe("Account.Charge", () => {
 	it("should charge merchant", () => {
 		expect(
 			pax2pay.Account.Charge.evaluate(
-				charges,
 				transaction.ryanair.counterpart,
 				transaction.ryanair.currency,
 				transaction.ryanair.amount,
 				"test-ta-pg-200",
+				charges,
 				transaction.ryanair.exchange
 			)
 		).toMatchInlineSnapshot(`
 			{
-			  "amount": -2.5,
-			  "charge": {
-			    "merchant": {
-			      "amount": -2.5,
-			      "destination": {
-			        "account": "abcd1234",
-			      },
-			      "merchants": {
-			        "lufthansa": {
-			          "default": 0,
-			          "test-ta-pg-200": 0.025,
-			        },
-			        "ryanair": {
-			          "default": 0.01,
-			          "test-ta-pg-200": 0.025,
-			        },
-			      },
-			    },
+			  "merchant": {
+			    "amount": -2.5,
+			    "merchant": "ryanair",
+			    "preset": "test-ta-pg-200",
+			    "rate": 0.025,
 			  },
 			}
 		`)
@@ -39,22 +26,19 @@ describe("Account.Charge", () => {
 	it("should charge for fx", () => {
 		expect(
 			pax2pay.Account.Charge.evaluate(
-				charges,
 				transaction.fxCharge.counterpart,
 				transaction.fxCharge.currency,
 				transaction.fxCharge.amount,
 				"test-ta-pg-200",
+				charges,
 				transaction.fxCharge.exchange
 			)
 		).toMatchInlineSnapshot(`
 			{
-			  "amount": -2.5,
-			  "charge": {
-			    "fx": {
-			      "amount": -2.5,
-			      "default": 0.1,
-			      "test-ta-pg-200": 0.025,
-			    },
+			  "fx": {
+			    "amount": -2.5,
+			    "preset": "test-ta-pg-200",
+			    "rate": 0.025,
 			  },
 			}
 		`)
@@ -62,38 +46,25 @@ describe("Account.Charge", () => {
 	it("should charge for merchant and fx at default rate", () => {
 		expect(
 			pax2pay.Account.Charge.evaluate(
-				charges,
 				transaction.ryanair.counterpart,
 				transaction.ryanair.currency,
 				transaction.ryanair.amount,
 				"test-ta-mc-200",
+				charges,
 				transaction.fxCharge.exchange
 			)
 		).toMatchInlineSnapshot(`
 			{
-			  "amount": -11,
-			  "charge": {
-			    "fx": {
-			      "amount": -10,
-			      "default": 0.1,
-			      "test-ta-pg-200": 0.025,
-			    },
-			    "merchant": {
-			      "amount": -1,
-			      "destination": {
-			        "account": "abcd1234",
-			      },
-			      "merchants": {
-			        "lufthansa": {
-			          "default": 0,
-			          "test-ta-pg-200": 0.025,
-			        },
-			        "ryanair": {
-			          "default": 0.01,
-			          "test-ta-pg-200": 0.025,
-			        },
-			      },
-			    },
+			  "fx": {
+			    "amount": -10,
+			    "preset": "default",
+			    "rate": 0.1,
+			  },
+			  "merchant": {
+			    "amount": -1,
+			    "merchant": "ryanair",
+			    "preset": "default",
+			    "rate": 0.01,
 			  },
 			}
 		`)
@@ -101,19 +72,14 @@ describe("Account.Charge", () => {
 	it("should not charge", () => {
 		expect(
 			pax2pay.Account.Charge.evaluate(
-				charges,
 				transaction.noCharge.counterpart,
 				transaction.noCharge.currency,
 				transaction.noCharge.amount,
 				"test-ta-pg-200",
+				charges,
 				transaction.noCharge.exchange
 			)
-		).toMatchInlineSnapshot(`
-			{
-			  "amount": 0,
-			  "charge": {},
-			}
-		`)
+		).toMatchInlineSnapshot(`{}`)
 	})
 })
 export const charges: Account.Charge = {

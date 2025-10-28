@@ -24,7 +24,6 @@ export namespace Amount {
 		const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
 			? -1
 			: 1
-		console.log("charges", charges)
 
 		return {
 			original: sign * state.transaction.original.amount,

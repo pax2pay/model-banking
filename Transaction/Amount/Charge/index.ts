@@ -1,3 +1,4 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../../../Card"
 
@@ -31,6 +32,9 @@ export namespace Charge {
 			merchant: Card.Restriction.Merchant.type,
 			preset: isly.union(Card.Preset.type, isly.string("default")),
 		})
+	}
+	export function total(currency: isoly.Currency, charges: Charge): number {
+		return isoly.Currency.add(currency, charges.fx?.amount ?? 0, charges.merchant?.amount ?? 0)
 	}
 	export const type = isly.object<Charge>({
 		merchant: Charge.Merchant.type.optional(),
