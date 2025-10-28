@@ -29,6 +29,9 @@ describe("Transaction.Amount", () => {
 			  "charges": {
 			    "merchant": {
 			      "amount": -1,
+			      "destination": {
+			        "account": "abcd1234",
+			      },
 			      "merchant": "ryanair",
 			      "preset": "test-ta-pg-200",
 			      "rate": 0.01,
@@ -81,6 +84,9 @@ describe("Transaction.Amount", () => {
 			    },
 			    "merchant": {
 			      "amount": -1,
+			      "destination": {
+			        "account": "abcd1234",
+			      },
 			      "merchant": "ryanair",
 			      "preset": "test-ta-pg-200",
 			      "rate": 0.01,
@@ -111,6 +117,7 @@ const charges: pax2pay.Transaction.Amount.Charge = {
 		merchant: "ryanair",
 		rate: 0.01,
 		preset: "test-ta-pg-200",
+		destination: { account: "abcd1234" },
 	},
 }
 

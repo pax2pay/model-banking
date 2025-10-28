@@ -12,12 +12,13 @@ export namespace Fx {
 		charge: Fx,
 		currency: isoly.Currency,
 		amount: number,
-		preset: Card.Preset,
+		preset?: Card.Preset,
 		exchange?: Exchange
 	): Amount.Charge.Fx | undefined {
 		const result: Partial<Amount.Charge.Fx> = {}
 		if (exchange) {
-			result.preset = charge[preset] ? preset : "default"
+			const presetOrDefault = preset ? preset : "default"
+			result.preset = charge[presetOrDefault] ? presetOrDefault : "default"
 			result.rate = charge[result.preset] ?? 0
 			result.rate && (result.amount = -isoly.Currency.multiply(currency, amount, result.rate))
 		}

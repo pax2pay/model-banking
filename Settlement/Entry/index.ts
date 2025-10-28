@@ -27,7 +27,7 @@ export namespace Entry {
 	export function charge(
 		counterpart: Rail.Address.Card.Counterpart,
 		capture: Creatable.Capture,
-		preset: Preset,
+		preset?: Preset,
 		charges?: Account.Charge
 	): Transaction.Amount.Charge {
 		return Account.Charge.evaluate(

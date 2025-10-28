@@ -59,6 +59,7 @@ const charge: Amount.Charge = {
 		merchant: "lufthansa",
 		rate: 0.02,
 		preset: "default",
+		destination: { account: "efgh5678" },
 	},
 	fx: {
 		amount: 1,

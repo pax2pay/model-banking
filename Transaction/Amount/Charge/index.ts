@@ -24,6 +24,7 @@ export namespace Charge {
 		rate: number
 		merchant: Card.Restriction.Merchant
 		preset: Card.Preset | "default"
+		destination: { account: string }
 	}
 	export namespace Merchant {
 		export const type = isly.object<Merchant>({
@@ -31,6 +32,9 @@ export namespace Charge {
 			rate: isly.number(),
 			merchant: Card.Restriction.Merchant.type,
 			preset: isly.union(Card.Preset.type, isly.string("default")),
+			destination: isly.object({
+				account: isly.string(),
+			}),
 		})
 	}
 	export function total(currency: isoly.Currency, charges: Charge): number {

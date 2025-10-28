@@ -22,13 +22,14 @@ export namespace Merchant {
 		currency: isoly.Currency,
 		amount: number,
 		counterpart: Rail.Address.Card.Counterpart,
-		preset: Card.Preset
+		preset?: Card.Preset
 	): Amount.Charge.Merchant | undefined {
 		const result: Partial<Amount.Charge.Merchant> = {}
 		const merchant = Card.Restriction.Merchant.resolve(counterpart)
 		if (merchant) {
 			result.merchant = merchant
-			result.preset = charge.merchants?.[merchant]?.[preset] ? preset : "default"
+			const presetOrDefault = preset ? preset : "default"
+			result.preset = charge.merchants?.[merchant]?.[presetOrDefault] ? presetOrDefault : "default"
 			result.rate = charge.merchants?.[merchant]?.[result.preset]
 			result.rate && (result.amount = -isoly.Currency.multiply(currency, amount, result.rate))
 		}

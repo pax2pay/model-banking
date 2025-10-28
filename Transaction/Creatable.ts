@@ -37,7 +37,7 @@ export namespace Creatable {
 			reference: isly.object<{ reference: string }>({ reference: isly.string() }),
 			approvalCode: isly.string().optional(),
 		})
-		export function charge(creatable: CardTransaction, preset: Preset, charges: Account.Charge): Amount.Charge {
+		export function charge(creatable: CardTransaction, preset: Preset, charges?: Account.Charge): Amount.Charge {
 			return Account.Charge.evaluate(
 				creatable.counterpart,
 				creatable.currency,

@@ -15,7 +15,7 @@ export namespace Charge {
 		counterpart: Rail.Address.Card.Counterpart,
 		currency: isoly.Currency,
 		amount: number,
-		preset: Card.Preset,
+		preset?: Card.Preset,
 		charges?: Charge,
 		exchange?: Transaction.Exchange
 	): Transaction.Amount.Charge {
