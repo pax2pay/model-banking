@@ -1,7 +1,7 @@
 import { isly } from "isly"
 import { Amount } from "../Amount"
 
-export type Exchange = {
+export interface Exchange {
 	rate: number
 	to?: Amount
 	from?: Amount
