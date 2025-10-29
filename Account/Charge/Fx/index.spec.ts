@@ -1,5 +1,5 @@
-import { Exchange } from "Transaction/Exchange"
 import { pax2pay } from "../../../index"
+import { Exchange } from "../../../Transaction/Exchange"
 import { Fx } from "./index"
 
 describe("Account.Charge.Fx", () => {

@@ -48,18 +48,3 @@ export namespace Amount {
 		return amount
 	}
 }
-
-const charge: Amount.Charge = {
-	merchant: {
-		amount: 2,
-		merchant: "lufthansa",
-		rate: 0.02,
-		preset: "default",
-		destination: { account: "efgh5678" },
-	},
-	fx: {
-		amount: 1,
-		preset: "test-ta-pg-200",
-		rate: 0.01,
-	},
-}
