@@ -43,7 +43,7 @@ export namespace Charge {
 	export function total(currency: isoly.Currency, charges: Charge): number {
 		return isoly.Currency.add(currency, charges.fx?.amount ?? 0, charges.merchant?.amount ?? 0)
 	}
-	export function transactionsFromCharge(
+	export function toTransactions(
 		charge: Charge,
 		account: string,
 		id: string,
@@ -54,11 +54,11 @@ export namespace Charge {
 		fx: ChargeTransaction | undefined
 	} {
 		const merchant =
-			charge.merchant && transactionFromCharge(charge.merchant, account, id, currency, fxCollectAccount, "merchant")
-		const fx = charge.fx && transactionFromCharge(charge.fx, account, id, currency, fxCollectAccount, "fx")
+			charge.merchant && toTransaction(charge.merchant, account, id, currency, fxCollectAccount, "merchant")
+		const fx = charge.fx && toTransaction(charge.fx, account, id, currency, fxCollectAccount, "fx")
 		return { merchant, fx }
 	}
-	function transactionFromCharge(
+	function toTransaction(
 		charge: Charge.Merchant | Charge.Fx,
 		account: string,
 		id: string,

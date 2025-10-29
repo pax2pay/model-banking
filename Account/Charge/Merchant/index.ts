@@ -24,15 +24,19 @@ export namespace Merchant {
 		counterpart: Rail.Address.Card.Counterpart,
 		preset?: Card.Preset
 	): Amount.Charge.Merchant | undefined {
-		const result: Partial<Amount.Charge.Merchant> = {}
+		let result: Amount.Charge.Merchant | undefined
 		const merchant = Card.Restriction.Merchant.resolve(counterpart)
 		if (merchant) {
-			result.merchant = merchant
-			result.preset = preset && charge.merchants?.[merchant]?.[preset] ? preset : "default"
-			result.destination = charge.destination
-			result.rate = charge.merchants?.[merchant]?.[result.preset]
-			result.rate && (result.amount = -isoly.Currency.multiply(currency, amount, result.rate))
+			const chargePreset = preset && charge.merchants?.[merchant]?.[preset] ? preset : "default"
+			const chargeRate = charge.merchants?.[merchant]?.[chargePreset] ?? 0
+			result = {
+				merchant,
+				preset: chargePreset,
+				destination: charge.destination,
+				rate: chargeRate,
+				amount: -isoly.Currency.multiply(currency, amount, chargeRate),
+			}
 		}
-		return Amount.Charge.Merchant.type.is(result) ? result : undefined
+		return result
 	}
 }
