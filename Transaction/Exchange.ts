@@ -1,18 +1,17 @@
 import { isly } from "isly"
 import { Amount } from "../Amount"
 
-export type Exchange = Exchange.From | Exchange.To
+export type Exchange = {
+	rate: number
+	to?: Amount
+	from?: Amount
+	quote?: string
+}
 export namespace Exchange {
-	export interface From {
-		rate: number
-		from: Amount
-	}
-	export const From = isly.object<From>({ rate: isly.number(), from: Amount.type })
-	export interface To {
-		rate: number
-		to: Amount
-		quote: string
-	}
-	export const To = isly.object<To>({ rate: isly.number(), to: Amount.type, quote: isly.string() })
-	export const type = isly.union<Exchange, From, To>(From, To)
+	export const type = isly.object<Exchange>({
+		rate: isly.number(),
+		to: Amount.type.optional(),
+		from: Amount.type.optional(),
+		quote: isly.string().optional(),
+	})
 }
