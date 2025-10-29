@@ -1,47 +1,39 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Charge as AccountCharge } from "../Account/Charge"
-import type { Rule } from "../Rule"
-import { Exchange } from "./Exchange"
+import type { Rule } from "../../Rule"
+import { Exchange } from "../Exchange"
+import { Charge as AmountCharge } from "./Charge"
 
 export interface Amount {
 	original: number
 	charge: number //Legacy
-	charges?: Amount.Charge[]
+	charges?: Amount.Charge
 	total: number
 	exchange?: Exchange
 }
 export namespace Amount {
-	export interface Charge {
-		amount: number
-		charge: AccountCharge
-	}
-	export namespace Charge {
-		export const type = isly.object<Charge>({
-			amount: isly.number(),
-			charge: AccountCharge.type,
-		})
-		export function total(currency: isoly.Currency, charges: Charge[] = []): number {
-			return charges.reduce((r, c) => isoly.Currency.add(currency, r, c.amount), 0)
-		}
-	}
+	export import Charge = AmountCharge
 	export const type = isly.object<Amount>({
 		original: isly.number(),
 		charge: isly.number(),
-		charges: Charge.type.array().optional(),
+		charges: Amount.Charge.type.optional(),
 		total: isly.number(),
 		exchange: Exchange.type.optional(),
 	})
-	export function fromState(state: Rule.State, charges?: Charge[]): Amount {
+	export function fromState(state: Rule.State, charges?: Charge): Amount {
 		const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
 			? -1
 			: 1
-		const charge = Amount.Charge.total(state.transaction.original.currency, charges)
+
 		return {
 			original: sign * state.transaction.original.amount,
 			charge: 0,
 			charges,
-			total: isoly.Currency.add(state.transaction.original.currency, sign * state.transaction.original.total, charge),
+			total: isoly.Currency.add(
+				state.transaction.original.currency,
+				sign * state.transaction.original.total,
+				Amount.Charge.total(state.transaction.original.currency, charges ?? {})
+			),
 			exchange: state?.transaction.exchange ?? state.authorization?.exchange,
 		}
 	}

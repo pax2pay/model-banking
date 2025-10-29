@@ -1,15 +1,18 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
 import { Organization } from "../../Organization"
+import { Fx } from "./Fx"
 import { Groups } from "./Groups"
 import { Rules } from "./Rules"
 
 export class Organizations {
 	readonly Rules: Rules
 	readonly groups: Groups
+	readonly fx: Fx
 	constructor(private readonly client: http.Client) {
 		this.Rules = new Rules(this.client)
 		this.groups = new Groups(this.client)
+		this.fx = new Fx(this.client)
 	}
 
 	async list(options?: {

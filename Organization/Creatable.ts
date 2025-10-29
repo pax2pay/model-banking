@@ -2,6 +2,7 @@ import { isly } from "isly"
 import { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
 import { Contact } from "./Contact"
+import { Fx } from "./Fx"
 
 export interface Creatable {
 	name: string
@@ -9,6 +10,7 @@ export interface Creatable {
 	rules?: Rule[]
 	contact?: Contact.Creatable
 	groups?: string[]
+	fx?: Fx
 }
 export namespace Creatable {
 	export const type = isly.object<Creatable>({
@@ -17,5 +19,6 @@ export namespace Creatable {
 		rules: ruleType.array().optional(),
 		contact: Contact.Creatable.type.optional(),
 		groups: isly.string().array().optional(),
+		fx: Fx.type.optional(),
 	})
 }

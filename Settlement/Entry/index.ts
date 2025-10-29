@@ -25,17 +25,17 @@ export namespace Entry {
 	export const type = entryType
 	export const from = fromCreatable
 	export function charge(
-		charges: Account.Charge[] = [],
 		counterpart: Rail.Address.Card.Counterpart,
 		capture: Creatable.Capture,
-		preset?: Preset
-	): Transaction.Amount.Charge[] {
+		preset?: Preset,
+		charges?: Account.Charge
+	): Transaction.Amount.Charge {
 		return Account.Charge.evaluate(
-			charges,
 			counterpart,
 			capture.amount[0],
 			isoly.Currency.add(capture.amount[0], capture.amount[1], capture.fee.other[capture.amount[0]] ?? 0),
 			preset,
+			charges,
 			capture.exchange
 		)
 	}
