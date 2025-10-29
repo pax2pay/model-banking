@@ -6,8 +6,9 @@ export namespace Exchange {
 	export interface From {
 		rate: number
 		from: Amount
+		quote?: string
 	}
-	export const From = isly.object<From>({ rate: isly.number(), from: Amount.type })
+	export const From = isly.object<From>({ rate: isly.number(), from: Amount.type, quote: isly.string().optional() })
 	export interface To {
 		rate: number
 		to: Amount
