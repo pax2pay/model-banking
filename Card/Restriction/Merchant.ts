@@ -27,4 +27,13 @@ export namespace Merchant {
 			result = false
 		return result
 	}
+	export function resolve(counterpart: Rail.Address.Card.Counterpart): Merchant | undefined {
+		let result: Merchant | undefined
+		for (const merchant of values)
+			if (check(merchant, counterpart)) {
+				result = merchant
+				break
+			}
+		return result
+	}
 }

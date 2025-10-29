@@ -89,7 +89,7 @@ export namespace Transaction {
 	export function amountFromOperations(
 		transaction: Transaction,
 		operations: Operation[],
-		charges?: Amount.Charge[]
+		charges?: Amount.Charge
 	): Amount {
 		const changes = Operation.sum(operations)
 		const reserved = isoly.Currency.add(
@@ -148,8 +148,8 @@ export namespace Transaction {
 		account: { id: string; name: string; organization: string; address: Rail.Address },
 		balance: { actual: number; reserved: number; available: number },
 		operation: Operation | Status.Reason,
-		charges: Amount.Charge[],
-		by: string | undefined
+		charges?: Amount.Charge,
+		by?: string
 	): Transaction {
 		const status: Status =
 			typeof operation == "string"
