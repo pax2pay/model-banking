@@ -39,7 +39,7 @@ export namespace Charge {
 			}),
 		})
 	}
-	export type ChargeTransaction = PreTransaction.Incoming & { counterpart: Rail.Address.Internal }
+	export type ChargeTransaction = PreTransaction.Incoming & { account: Rail.Address.Internal }
 	export function total(currency: isoly.Currency, charges: Charge): number {
 		return isoly.Currency.add(currency, charges.fx?.amount ?? 0, charges.merchant?.amount ?? 0)
 	}
