@@ -10,7 +10,7 @@ export type Charge = { merchant?: Charge.Merchant; fx?: Charge.Fx }
 export namespace Charge {
 	export import Merchant = ChargeMerchant
 	export import Fx = ChargeFx
-	export const type = isly.object<Charge>({ merchant: ChargeMerchant.type, fx: ChargeFx.type })
+	export const type = isly.object<Charge>({ merchant: ChargeMerchant.type.optional(), fx: ChargeFx.type.optional() })
 	export function evaluate(
 		counterpart: Rail.Address.Card.Counterpart,
 		currency: isoly.Currency,
