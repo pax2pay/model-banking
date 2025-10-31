@@ -104,6 +104,25 @@ describe("Transaction.Amount", () => {
 			}
 		`)
 	})
+	it("should include fx quote charge", () => {
+		const fromQuote: pax2pay.fx.Quote = {
+			account: { id: "", fx: { markup: 0.1 } },
+			created: "",
+			expires: "",
+			fixed: "from",
+			from: { currency: "EUR", amount: 100 },
+			to: { currency: "GBP", amount: 72.3 },
+			id: "fxId",
+			rate: { base: 0.8, effective: 0.7272727, markup: 0.1 },
+		}
+		expect(pax2pay.Transaction.Amount.fromState(state, undefined, fromQuote)).toEqual({
+			charge: 0,
+			charges: { fx: { amount: 9.62, preset: "default", rate: 0.1 } },
+			exchange: { from: ["GBP", 100], rate: 1 },
+			original: -100,
+			total: -100,
+		})
+	})
 })
 
 const charges: pax2pay.Transaction.Amount.Charge = {

@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Charge } from "./Transaction/Amount/Charge"
 
 export namespace fx {
 	export interface Quote {
@@ -41,6 +42,14 @@ export namespace fx {
 				})
 			}
 			export const type = isly.union<Creatable, From, To>(From.type, To.type)
+		}
+		export function toCharge(quote: Quote): Charge {
+			const withoutMarkup = isoly.Currency.round(
+				isoly.Currency.divide(quote.to.currency, quote.to.amount, quote.rate.base),
+				quote.from.currency
+			)
+			const charge = isoly.Currency.subtract(quote.from.currency, quote.from.amount, withoutMarkup)
+			return { fx: { amount: charge, preset: "default", rate: quote.rate.markup } }
 		}
 	}
 	export const type = isly.object<Quote>({
