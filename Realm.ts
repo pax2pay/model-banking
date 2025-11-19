@@ -19,13 +19,13 @@ export namespace Realm {
 	export const suppliers: Record<Realm, modelSupplier[]> = {
 		test: ["paxgiro", "bankingcircle", "paxgiroCredit"],
 		uk: ["clearbank", "bankingcircle"],
-		uguk: ["bankingcircle"],
+		uguk: [],
 		eea: [],
 	}
 	export interface Suppliers extends Record<Realm, modelSupplier[]> {
 		test: ["paxgiro", "bankingcircle", "paxgiroCredit"]
 		uk: ["clearbank", "bankingcircle"]
-		uguk: ["bankingcircle"]
+		uguk: []
 		eea: []
 	}
 	export type Supplier<P extends keyof Suppliers> = Pick<Suppliers, P>[P][number]
