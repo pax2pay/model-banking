@@ -20,6 +20,7 @@ export namespace Address {
 	export const realm: Record<Realm, string[]> = {
 		test: ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"],
 		uk: ["internal", "iban", "scan", "card"],
+		uguk: ["internal", "iban", "scan", "card"],
 		eea: ["internal", "iban", "scan", "card"],
 	}
 	export const values = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
