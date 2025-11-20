@@ -16,6 +16,6 @@ export namespace Supplier {
 		eea: [],
 		test: ["paxgiro", "bankingcircle"],
 		uk: ["clearbank", "bankingcircle"],
-		uguk: [],
+		uguk: ["bankingcircle"],
 	}
 }
