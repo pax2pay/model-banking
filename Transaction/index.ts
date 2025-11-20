@@ -1,6 +1,7 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { fx } from "../fx"
 import { Operation } from "../Operation"
 import { Rail } from "../Rail"
 import { Report } from "../Report"
@@ -149,7 +150,8 @@ export namespace Transaction {
 		balance: { actual: number; reserved: number; available: number },
 		operation: Operation | Status.Reason,
 		charges?: Amount.Charge,
-		by?: string
+		by?: string,
+		quote?: fx.Quote
 	): Transaction {
 		const status: Status =
 			typeof operation == "string"
@@ -168,7 +170,7 @@ export namespace Transaction {
 			: "fasterpayments"
 		return {
 			...creatable,
-			amount: Amount.fromState(state, charges),
+			amount: Amount.fromState(state, charges, quote),
 			type: getType(creatable.counterpart, account.name),
 			direction: "outbound",
 			organization: account.organization,
