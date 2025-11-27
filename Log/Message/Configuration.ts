@@ -1,22 +1,16 @@
 import { TraceLog } from "@cloudflare/workers-types"
-import { isly } from "isly"
+import * as z from "zod"
 import { Realm } from "../../Realm"
 
-export interface Configuration {
-	realm: Realm
-	collection: string
-	resource?: string
-	requireEntries?: boolean
-}
 export namespace Configuration {
-	export const type = isly.object<Configuration>({
-		realm: Realm.type,
-		collection: isly.string(),
-		resource: isly.string().optional(),
-		requireEntries: isly.boolean().optional(),
+	export const type = z.object({
+		realm: Realm.zodType,
+		collection: z.string(),
+		resource: z.string().optional(),
+		requireEntries: z.boolean().optional(),
 	})
 	export function fromTraceLog(trace: TraceLog | undefined): Configuration | undefined {
-		return trace && Configuration.type.is(trace.message[0])
+		return trace && Configuration.type.safeParse(trace.message[0]).success
 			? {
 					realm: trace.message[0].realm,
 					collection: trace.message[0].collection,
@@ -26,3 +20,4 @@ export namespace Configuration {
 			: undefined
 	}
 }
+export type Configuration = z.infer<typeof Configuration.type>

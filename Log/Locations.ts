@@ -1,17 +1,11 @@
-import { isly } from "isly"
+import * as z from "zod"
 
-export interface Locations {
-	cfConnectionIp?: string
-	cfIpCountry?: string
-	datacenter?: string
-	country?: string
-}
 export namespace Locations {
-	export const type = isly.object<Locations>({
-		cfConnectionIp: isly.string().optional(),
-		cfIpCountry: isly.string().optional(),
-		datacenter: isly.string().optional(),
-		country: isly.string().optional(),
+	export const type = z.object({
+		cfConnectionIp: z.string().optional(),
+		cfIpCountry: z.string().optional(),
+		datacenter: z.string().optional(),
+		country: z.string().optional(),
 	})
 	export function getLocations(request: any): Locations | undefined {
 		const locations = {
@@ -20,6 +14,7 @@ export namespace Locations {
 			datacenter: request.cf?.colo,
 			country: request.cf?.country,
 		}
-		return type.is(locations) ? locations : undefined
+		return type.safeParse(locations).success ? locations : undefined
 	}
 }
+export type Locations = z.infer<typeof Locations.type>
