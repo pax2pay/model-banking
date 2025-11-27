@@ -1,17 +1,12 @@
-import { isly } from "isly"
+import * as z from "zod"
 
-export interface Entry {
-	message: string
-	data?: any
-}
 export namespace Entry {
-	export type Message = Entry & { resource?: string }
-	export const type = isly.object<Entry>({
-		message: isly.string(),
-		data: isly.any().optional(),
+	export const type = z.object({
+		message: z.string(),
+		data: z.any().optional(),
 	})
 	export namespace Message {
-		export const type = Entry.type.extend<Message>({ resource: isly.string().optional() })
+		export const type = z.object({ ...Entry.type.shape, resource: z.string().optional() })
 		export function to(message: string, data: any | undefined, resource: string | undefined): Entry.Message {
 			const result: Entry.Message = { message }
 			resource && (result.resource = resource)
@@ -19,4 +14,6 @@ export namespace Entry {
 			return result
 		}
 	}
+	export type Message = z.infer<typeof Message.type>
 }
+export type Entry = z.infer<typeof Entry.type>

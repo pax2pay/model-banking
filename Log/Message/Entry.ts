@@ -1,20 +1,15 @@
 import { TraceLog } from "@cloudflare/workers-types"
-import { isly } from "isly"
+import * as z from "zod"
 import type { Log } from "../index"
 
-export interface Entry {
-	message: string
-	resource?: string
-	data?: any
-}
 export namespace Entry {
-	export const type = isly.object<Entry>({
-		message: isly.string(),
-		resource: isly.string().optional(),
-		data: isly.any().optional(),
+	export const type = z.object({
+		message: z.string(),
+		resource: z.string().optional(),
+		data: z.any().optional(),
 	})
 	export function fromEventLogs(trace: TraceLog): { entry: Log.Entry; resource: Log["resource"] } | undefined {
-		return Entry.type.is(trace.message[0])
+		return Entry.type.safeParse(trace.message[0]).success
 			? {
 					entry: {
 						message: trace.message[0].message,
@@ -25,3 +20,4 @@ export namespace Entry {
 			: undefined
 	}
 }
+export type Entry = z.infer<typeof Entry.type>
