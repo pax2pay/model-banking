@@ -1,4 +1,3 @@
-import { userwidgets } from "@userwidgets/model"
 import { pax2pay } from "../index"
 
 namespace Test {
@@ -95,12 +94,26 @@ namespace Test {
 		flags: [],
 		action: "review",
 	}
-	export const user: userwidgets.User = {
-		name: { first: "Dag", last: "Vag" },
+	export const user: pax2pay.User = {
 		email: "user-id@example.com",
 		created: "2023-08-07T09:25:11.296Z",
-		modified: "2023-08-07T09:25:11.296Z",
-		permissions: '{"*":true}',
+		changed: "2023-08-07T09:25:11.296Z",
+		access: {
+			test: {
+				"*": "read",
+				card: "read",
+				log: "read",
+				operation: "read",
+				organization: "read",
+				rule: "read",
+				settlement: "read",
+				transaction: "read",
+				treasury: "read",
+			},
+		},
+		password: {
+			changed: "2023-08-07T09:25:11.296Z",
+		},
 	}
 	export const card: pax2pay.Card = {
 		id: "card-id",

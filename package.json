@@ -57,7 +57,6 @@
 		"vitest": "3.2.4"
 	},
 	"dependencies": {
-		"@userwidgets/model": "0.8.32",
 		"authly": "^3.1.2",
 		"cloudly-http": "^0.1.7",
 		"cloudly-storage": "^0.10.16",
