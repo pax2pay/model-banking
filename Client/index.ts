@@ -1,5 +1,4 @@
 import { gracely } from "gracely"
-import { userwidgets } from "@userwidgets/model"
 import { http } from "cloudly-http"
 import { Accounts } from "./Accounts"
 import { Audit } from "./Audit"
@@ -73,8 +72,6 @@ export class Client {
 		this.users = new Users(this.client)
 		this.version = new Version(this.client)
 	}
-	readonly userwidgets = (server: string, application: string) =>
-		new userwidgets.ClientCollection(new http.Client(server), { application })
 	onUnauthorized?: (client: Client) => Promise<boolean>
 
 	static create(server: string, key?: string): Client {
