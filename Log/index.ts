@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { TraceItem } from "@cloudflare/workers-types"
-import * as z from "zod"
+import { zod } from "zod"
 import { Identifier } from "../Identifier"
 import { Realm } from "../Realm"
 import { Entry as LogEntry } from "./Entry"
@@ -11,14 +11,14 @@ export namespace Log {
 	export import Message = LogMessage
 	export import Entry = LogEntry
 	export import Locations = LogLocations
-	export const type = z.object({
-		id: Identifier.zodType,
-		realm: Realm.zodType,
-		script: z.string().optional(),
-		collection: z.string(),
-		resource: z.string().optional(),
+	export const type = zod.object({
+		id: Identifier.typeZod,
+		realm: Realm.typeZod,
+		script: zod.string().optional(),
+		collection: zod.string(),
+		resource: zod.string().optional(),
 		entries: Log.Entry.type.array(),
-		created: z.iso.datetime({ offset: true }),
+		created: zod.iso.datetime({ offset: true }),
 	})
 	export function fromEvents(events: TraceItem[]): Log[] {
 		const result: Log[] = []
@@ -65,4 +65,4 @@ export namespace Log {
 		console.error(Log.Entry.Message.to(message, data, resource))
 	}
 }
-export type Log = z.infer<typeof Log.type>
+export type Log = zod.infer<typeof Log.type>

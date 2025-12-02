@@ -1,11 +1,11 @@
-import * as z from "zod"
+import { zod } from "zod"
 
 export namespace Locations {
-	export const type = z.object({
-		cfConnectionIp: z.string().optional(),
-		cfIpCountry: z.string().optional(),
-		datacenter: z.string().optional(),
-		country: z.string().optional(),
+	export const type = zod.object({
+		cfConnectionIp: zod.string().optional(),
+		cfIpCountry: zod.string().optional(),
+		datacenter: zod.string().optional(),
+		country: zod.string().optional(),
 	})
 	export function getLocations(request: any): Locations | undefined {
 		const locations = {
@@ -17,4 +17,4 @@ export namespace Locations {
 		return type.safeParse(locations).success ? locations : undefined
 	}
 }
-export type Locations = z.infer<typeof Locations.type>
+export type Locations = zod.infer<typeof Locations.type>

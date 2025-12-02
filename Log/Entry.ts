@@ -1,12 +1,12 @@
-import * as z from "zod"
+import { zod } from "zod"
 
 export namespace Entry {
-	export const type = z.object({
-		message: z.string(),
-		data: z.any().optional(),
+	export const type = zod.object({
+		message: zod.string(),
+		data: zod.any().optional(),
 	})
 	export namespace Message {
-		export const type = z.object({ ...Entry.type.shape, resource: z.string().optional() })
+		export const type = zod.object({ ...Entry.type.shape, resource: zod.string().optional() })
 		export function to(message: string, data: any | undefined, resource: string | undefined): Entry.Message {
 			const result: Entry.Message = { message }
 			resource && (result.resource = resource)
@@ -14,6 +14,6 @@ export namespace Entry {
 			return result
 		}
 	}
-	export type Message = z.infer<typeof Message.type>
+	export type Message = zod.infer<typeof Message.type>
 }
-export type Entry = z.infer<typeof Entry.type>
+export type Entry = zod.infer<typeof Entry.type>
