@@ -14,4 +14,7 @@ export namespace zodHelper {
 			return zod.object(schema)
 		}
 	}
+	export function is<T>(type: zod.ZodType<T>, value: unknown): value is T {
+		return type.safeParse(value).success
+	}
 }
