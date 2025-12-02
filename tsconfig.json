@@ -32,8 +32,7 @@
 		"**/*.spec.ts",
 	],
 	"files": [
-		"index.ts",
-		"./zod.ts"
+		"index.ts"
 	],
 	"typeAcquisition": {
 		"enable": true
