@@ -11,7 +11,7 @@ export namespace Message {
 		traces: TraceLog[]
 	): Pick<Log, "realm" | "collection" | "resource" | "entries"> | undefined {
 		const configuration: Configuration | undefined = Message.Configuration.fromTraceLog(
-			traces.find(trace => Message.Configuration.type.is(trace.message[0]))
+			traces.find(trace => Message.Configuration.type.safeParse(trace.message[0]).success)
 		)
 		const result: Pick<Log, "realm" | "collection" | "resource" | "entries"> | undefined = configuration
 			? {
