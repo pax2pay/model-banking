@@ -40,15 +40,10 @@ export namespace User {
 			realm,
 		}
 	}
-	export interface Creatable {
-		invite: string
-		password: Password.Creatable
-	}
+	export type Creatable = zod.infer<typeof Creatable.typeZod>
 	export namespace Creatable {
-		export const type = isly.object<Creatable>({
-			invite: isly.string(),
-			password: Password.Creatable.type,
-		})
+		export const type = isly.object<Creatable>({ invite: isly.string(), password: Password.Creatable.type })
+		export const typeZod = zod.object({ invite: zod.string(), password: Password.Creatable.typeZod })
 	}
 	export interface Invite {
 		id: string
