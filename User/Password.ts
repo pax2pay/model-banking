@@ -2,18 +2,20 @@ import { cryptly } from "cryptly"
 import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "zod"
 
 export interface Password {
 	hash: cryptly.Password.Hash
 	changed: isoly.DateTime
 }
 export namespace Password {
-	export interface Creatable {
-		current?: string
-		new: string
-		repeat: string
-	}
+	export type Creatable = zod.infer<typeof Creatable.typeZod>
 	export namespace Creatable {
+		export const typeZod = zod.object({
+			current: zod.string().optional(),
+			new: zod.string(),
+			repeat: zod.string(),
+		})
 		export const type = isly.object<Creatable>({
 			current: isly.string().optional(),
 			new: isly.string(),

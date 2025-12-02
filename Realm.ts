@@ -1,13 +1,15 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { isly as isly2 } from "isly2"
+import { zod } from "zod"
 import { Supplier as modelSupplier } from "./Supplier"
 
-export type Realm = typeof Realm.realms[number]
+export type Realm = zod.infer<typeof Realm.typeZod>
 
 export namespace Realm {
 	export const realms = ["test", "uk", "uguk", "eea"] as const
 	export const type = isly.string<Realm>(realms)
+	export const typeZod = zod.enum(realms)
 	export const type2 = isly2
 		.string<Realm>("value", ...realms)
 		.rename("Realm")

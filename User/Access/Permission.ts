@@ -1,7 +1,8 @@
 import { isly } from "isly"
 import { typedly } from "typedly"
+import { zod } from "zod"
 
-export type Permission = Partial<Record<Permission.Collection, Permission.Level>>
+export type Permission = zod.infer<typeof Permission.typeZod>
 export namespace Permission {
 	export type Realm = Record<Permission.Collection.Realm, Permission.Level>
 	export type Global = Record<Permission.Collection.Global, Permission.Level>
@@ -12,9 +13,10 @@ export namespace Permission {
 				(collection != "user" && Permission.Level.get(privilege["*"]) >= Permission.Level.get(level))
 		)
 	}
-	export type Level = typeof Level.values[number]
+	export type Level = zod.infer<typeof Level.typeZod>
 	export namespace Level {
 		export const values = ["read", "write", "developer", "admin"] as const
+		export const typeZod = zod.enum(values)
 		export const type = isly.string(values)
 		export function get(level: Level | undefined): number {
 			return level ? value[level] : 0
@@ -26,7 +28,7 @@ export namespace Permission {
 			admin: 4,
 		} as const
 	}
-	export type Collection = typeof Collection.values[number]
+	export type Collection = zod.infer<typeof Collection.typeZod>
 	export namespace Collection {
 		export type Realm = typeof Realm.values[number]
 		export namespace Realm {
@@ -47,7 +49,9 @@ export namespace Permission {
 			export const values = ["user"] as const
 		}
 		export const values = [...Realm.values, ...Global.values] as const
+		export const typeZod = zod.enum(values)
 		export const type = isly.string(values)
 	}
 	export const type = isly.record<Permission>(Collection.type, Level.type)
+	export const typeZod = zod.partialRecord(Collection.typeZod, Level.typeZod)
 }

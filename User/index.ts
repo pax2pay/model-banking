@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "zod"
 import { Realm } from "../Realm"
 import { Access as UserAccess } from "./Access"
 import { Identity as UserIdentity } from "./Identity"
@@ -55,11 +56,9 @@ export namespace User {
 		access: Access
 	}
 	export namespace Invite {
-		export interface Creatable {
-			email: string
-			access: Access
-		}
+		export type Creatable = zod.infer<typeof Creatable.typeZod>
 		export namespace Creatable {
+			export const typeZod = zod.object({ email: zod.string(), access: zod.object<Access>({}) })
 			export const type = isly.object<Creatable>({ email: isly.string(), access: Access.type })
 		}
 	}

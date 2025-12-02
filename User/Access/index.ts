@@ -1,14 +1,9 @@
 import { isly } from "isly"
+import { zod } from "zod"
 import { Permission as AccessPermission } from "./Permission"
 
 /** read < write < developer < admin */
-export interface Access {
-	uk?: Access.Permission.Realm
-	uguk?: Access.Permission.Realm
-	eea?: Access.Permission.Realm
-	test?: Access.Permission.Realm
-	"*"?: Access.Permission.Global
-}
+export type Access = zod.infer<typeof Access.typeZod>
 export namespace Access {
 	export import Permission = AccessPermission
 	export const type = isly.object({
@@ -17,5 +12,12 @@ export namespace Access {
 		eea: Access.Permission.type.optional(),
 		test: Access.Permission.type.optional(),
 		"*": isly.object({ user: Access.Permission.Level.type.optional() }).optional(),
+	})
+	export const typeZod = zod.object({
+		uk: Access.Permission.typeZod.optional(),
+		uguk: Access.Permission.typeZod.optional(),
+		eea: Access.Permission.typeZod.optional(),
+		test: Access.Permission.typeZod.optional(),
+		"*": zod.object({ user: Access.Permission.Level.typeZod.optional() }).optional(),
 	})
 }
