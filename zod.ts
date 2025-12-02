@@ -1,6 +1,6 @@
 // re-export zod so that it can be auto imported as
 // import { zod } from "zod"
-export * as zod from "./node_modules/zod"
+export * as zod from "zod"
 import * as zod from "zod/v4"
 import { $strip } from "zod/v4/core"
 
