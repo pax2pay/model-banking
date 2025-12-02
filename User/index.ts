@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "zod"
 import { Realm } from "../Realm"
+import { zod } from "../zod"
 import { Access as UserAccess } from "./Access"
 import { Identity as UserIdentity } from "./Identity"
 import { JWT as UserJWT } from "./JWT"

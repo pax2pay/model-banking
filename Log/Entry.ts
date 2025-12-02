@@ -1,4 +1,4 @@
-import { zod } from "zod"
+import { zod } from "../zod"
 
 export namespace Entry {
 	export const type = zod.object({

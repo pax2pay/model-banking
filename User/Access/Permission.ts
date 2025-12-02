@@ -1,6 +1,6 @@
 import { isly } from "isly"
 import { typedly } from "typedly"
-import { zod } from "zod"
+import { zod } from "../../zod"
 
 export type Permission = zod.infer<typeof Permission.typeZod>
 export namespace Permission {

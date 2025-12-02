@@ -1,7 +1,7 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "zod"
+import { zod } from "./zod"
 
 export type Identifier = cryptly.Identifier
 export namespace Identifier {

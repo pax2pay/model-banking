@@ -1,6 +1,6 @@
 import { isly } from "isly"
-import { zod } from "zod"
 import { Realm } from "../../Realm"
+import { zod } from "../../zod"
 import { Access } from "../Access"
 
 export type Payload = Payload.LongTerm | Payload.ShortTerm //zod.infer<typeof Payload.typeZod>
@@ -49,11 +49,7 @@ export namespace Payload {
 		export const type = Base.type.extend<ShortTerm>({ exp: isly.number() })
 		export const typeZod = Base.typeZod.extend({ exp: zod.number() })
 	}
-
-	export const configuration = {
-		aud: "https://banking.pax2pay.app",
-		iss: "pax2pay",
-	}
+	export const configuration = { aud: "https://banking.pax2pay.app", iss: "pax2pay" }
 	export const type = isly.union<Payload>(LongTerm.type, ShortTerm.type)
 	export const typeZod = zod.union([LongTerm.typeZod, ShortTerm.typeZod])
 }

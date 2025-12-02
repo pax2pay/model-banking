@@ -1,5 +1,5 @@
 import { TraceLog } from "@cloudflare/workers-types"
-import { zod } from "zod"
+import { zod } from "../../zod"
 import type { Log } from "../index"
 
 export namespace Entry {

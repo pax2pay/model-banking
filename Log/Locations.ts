@@ -1,4 +1,4 @@
-import { zod } from "zod"
+import { zod } from "../zod"
 
 export namespace Locations {
 	export const type = zod.object({

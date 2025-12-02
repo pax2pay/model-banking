@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { zod } from "zod"
+import { zod } from "../../zod"
 import { Permission as AccessPermission } from "./Permission"
 
 /** read < write < developer < admin */

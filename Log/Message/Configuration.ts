@@ -1,6 +1,6 @@
 import { TraceLog } from "@cloudflare/workers-types"
-import { zod } from "zod"
 import { Realm } from "../../Realm"
+import { zod } from "../../zod"
 
 export namespace Configuration {
 	export const type = zod.object({
