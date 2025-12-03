@@ -12,9 +12,7 @@ export interface User {
 	access: User.Access
 	changed: isoly.DateTime
 	created: isoly.DateTime
-	password: {
-		changed: isoly.DateTime
-	}
+	password: { changed: isoly.DateTime }
 }
 export namespace User {
 	export import Access = UserAccess
@@ -23,22 +21,10 @@ export namespace User {
 	export import Password = UserPassword
 	export function fromInvite(invite: Invite): User {
 		const now = isoly.DateTime.now()
-		return {
-			email: invite.email,
-			access: invite.access,
-			changed: now,
-			created: now,
-			password: {
-				changed: now,
-			},
-		}
+		return { email: invite.email, access: invite.access, changed: now, created: now, password: { changed: now } }
 	}
 	export function toJWTPayloadCreatable(user: User, realm: Realm): User.JWT.Payload.Creatable {
-		return {
-			sub: user.email,
-			permission: { ...(user.access[realm] ?? {}), ...(user.access["*"] ?? {}) },
-			realm,
-		}
+		return { sub: user.email, permission: { ...(user.access[realm] ?? {}), ...(user.access["*"] ?? {}) }, realm }
 	}
 	export type Creatable = zod.infer<typeof Creatable.typeZod>
 	export namespace Creatable {
@@ -53,7 +39,7 @@ export namespace User {
 	export namespace Invite {
 		export type Creatable = zod.infer<typeof Creatable.typeZod>
 		export namespace Creatable {
-			export const typeZod = zod.object({ email: zod.string(), access: zod.object<Access>({}) })
+			export const typeZod = zod.object({ email: zod.string(), access: Access.typeZod })
 			export const type = isly.object<Creatable>({ email: isly.string(), access: Access.type })
 		}
 	}
