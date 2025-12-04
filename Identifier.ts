@@ -1,7 +1,7 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
-import * as z from "zod"
+import { zod } from "./zod"
 
 export type Identifier = cryptly.Identifier
 export namespace Identifier {
@@ -20,5 +20,5 @@ export namespace Identifier {
 		return isoly.DateTime.create(Number(new BigUint64Array(decoded.slice(decoded.length - 8).buffer)), "milliseconds")
 	}
 	export const type = isly.fromIs("Identifier", cryptly.Identifier.is)
-	export const zodType = z.string().refine(cryptly.Identifier.is)
+	export const typeZod = zod.string().refine(cryptly.Identifier.is)
 }

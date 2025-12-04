@@ -16,7 +16,6 @@
 		"resolveJsonModule": true,
 		// "strict": true,
 		"alwaysStrict": true,
-		"baseUrl": ".",
 		"allowSyntheticDefaultImports": true,
 		"noImplicitAny": true,
 		"removeComments": true,
@@ -33,7 +32,7 @@
 		"**/*.spec.ts",
 	],
 	"files": [
-		"index.ts",
+		"index.ts"
 	],
 	"typeAcquisition": {
 		"enable": true
