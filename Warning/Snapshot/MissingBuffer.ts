@@ -5,6 +5,7 @@ import { Base } from "../Base"
 
 export interface MissingBuffer extends Base {
 	type: "missing-buffer"
+	severity?: "high"
 	currency: isoly.Currency
 	minimum: number
 	balance: number
@@ -12,6 +13,7 @@ export interface MissingBuffer extends Base {
 export namespace MissingBuffer {
 	export const type = Base.type.extend<MissingBuffer>({
 		type: isly.string("missing-buffer"),
+		severity: isly.string("high").optional(),
 		currency: isly.string(),
 		minimum: isly.number(),
 		balance: isly.number(),

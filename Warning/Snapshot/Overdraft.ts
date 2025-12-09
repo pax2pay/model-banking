@@ -4,6 +4,7 @@ import { Base } from "../Base"
 
 export interface Overdraft extends Base {
 	type: "overdraft"
+	severity?: "medium"
 	organization: string
 	currency: isoly.Currency
 }
@@ -11,6 +12,7 @@ export interface Overdraft extends Base {
 export namespace Overdraft {
 	export const type = Base.type.extend<Overdraft>({
 		type: isly.string("overdraft"),
+		severity: isly.string("medium").optional(),
 		organization: isly.string(),
 		currency: isly.fromIs("Currency", isoly.Currency.is),
 	})
