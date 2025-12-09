@@ -15,7 +15,7 @@ export interface Account extends Account.Creatable {
 	created: isoly.DateTime
 	organization: string
 	balances: Balances
-	rails: Rail.Address[]
+	rails: Rail.Address[] //Deprecated: use details.addresses
 	details?: Account.Details
 	counterparts?: Record<string, Rail.Address>
 	key?: string
