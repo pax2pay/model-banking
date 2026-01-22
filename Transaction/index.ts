@@ -87,11 +87,7 @@ export namespace Transaction {
 		risk: isly.number().optional(),
 		state: isly.any().optional(),
 	})
-	export function amountFromOperations(
-		transaction: Transaction,
-		operations: Operation[],
-		charges?: Amount.Charge
-	): Amount {
+	export function amountFromOperations(transaction: Transaction, operations: Operation[]): Amount {
 		const changes = Operation.sum(operations)
 		const reserved = isoly.Currency.add(
 			transaction.currency,
@@ -101,7 +97,7 @@ export namespace Transaction {
 		return {
 			original: typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original,
 			charge: 0,
-			charges,
+			charges: transaction.amount.charges,
 			total: changes.available ?? reserved ?? 0,
 			exchange: transaction.amount.exchange,
 		}
