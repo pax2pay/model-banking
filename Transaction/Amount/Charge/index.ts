@@ -1,8 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../../../Card"
-import { Rail } from "../../../Rail"
-import { PreTransaction } from "../../PreTransaction"
 
 export interface Charge {
 	merchant?: Charge.Merchant
@@ -39,45 +37,8 @@ export namespace Charge {
 			}),
 		})
 	}
-	export type ChargeTransaction = PreTransaction.Incoming & { account: Rail.Address.Internal }
 	export function total(currency: isoly.Currency, charges: Charge): number {
 		return isoly.Currency.add(currency, charges.fx?.amount ?? 0, charges.merchant?.amount ?? 0)
-	}
-	export function toTransactions(
-		charge: Charge,
-		account: string,
-		id: string,
-		currency: isoly.Currency,
-		fxCollectAccount: string
-	): {
-		merchant: ChargeTransaction | undefined
-		fx: ChargeTransaction | undefined
-	} {
-		const merchant =
-			charge.merchant && toTransaction(charge.merchant, account, id, currency, fxCollectAccount, "merchant")
-		const fx = charge.fx && toTransaction(charge.fx, account, id, currency, fxCollectAccount, "fx")
-		return { merchant, fx }
-	}
-	function toTransaction(
-		charge: Charge.Merchant | Charge.Fx,
-		account: string,
-		id: string,
-		currency: isoly.Currency,
-		fxCollectAccount: string,
-		type: "merchant" | "fx"
-	): ChargeTransaction {
-		const accountId = Merchant.type.is(charge) ? charge.destination.account : fxCollectAccount
-		return {
-			type: "incoming",
-			account: { type: "internal", identifier: accountId },
-			counterpart: { type: "internal", identifier: account },
-			currency: currency,
-			amount: charge.amount,
-			description: `${type} charge for transaction ${id}`,
-			posted: isoly.DateTime.now(),
-			rail: "internal",
-			reference: { reference: id, returnId: id },
-		}
 	}
 	export const type = isly.object<Charge>({
 		merchant: Charge.Merchant.type.optional(),
