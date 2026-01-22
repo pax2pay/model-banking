@@ -348,6 +348,7 @@ export namespace Transaction {
 		let result: Types
 		if (
 			accountName.startsWith("settlement-") ||
+			accountName.startsWith("settlements") ||
 			accountName.startsWith("fee-") ||
 			accountName.startsWith("net-") ||
 			accountName.startsWith("interchange-") ||
