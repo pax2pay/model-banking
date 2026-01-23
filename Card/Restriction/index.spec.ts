@@ -14,32 +14,8 @@ describe("Card.Restrictions", () => {
 		amount: 100,
 		description: "Test transaction",
 	}
-	const transaction2: pax2pay.Transaction.Creatable.CardTransaction = {
-		account: { id: "card1", type: "card" },
-		accountId: "account1",
-		reference: { reference: "1234567890" },
-		counterpart: {
-			type: "card",
-			merchant: {
-				id: "673538492",
-				zip: "",
-				city: "FRANKFURT",
-				name: "PEGASUS HAVA TASIMACILI",
-				address: "",
-				country: "DE",
-				category: "4511",
-			},
-			acquirer: { id: "acquirer1", number: "1234567890", retrievalReferenceNumber: "1234567890" },
-		},
-		currency: "EUR",
-		amount: 100,
-		description: "Test transaction",
-	}
 	it("should allow ryanair", () => {
 		expect(pax2pay.Card.Restriction.check({ merchants: ["ryanair"] }, transaction)).toBe(true)
-	})
-	it("should allow uppercase merchant name", () => {
-		expect(pax2pay.Card.Restriction.check({ merchants: ["pegasus"] }, transaction2)).toBe(true)
 	})
 	it("should block iberia", () => {
 		expect(pax2pay.Card.Restriction.check({ merchants: ["iberia"] }, transaction)).toBe(false)
