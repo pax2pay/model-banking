@@ -18,11 +18,11 @@ export namespace Merchant {
 		else if (attribute.contains && attribute.mccs)
 			result =
 				attribute.mccs.some(mcc => mcc == counterpart.merchant.category) &&
-				attribute.contains.some(n => counterpart.merchant.name.includes(n))
+				attribute.contains.some(n => counterpart.merchant.name.toLowerCase().includes(n))
 		else if (attribute.startsWith && attribute.mccs)
 			result =
 				attribute.mccs.some(mcc => mcc == counterpart.merchant.category) &&
-				attribute.startsWith.some(n => counterpart.merchant.name.startsWith(n))
+				attribute.startsWith.some(n => counterpart.merchant.name.toLowerCase().startsWith(n))
 		else
 			result = false
 		return result
