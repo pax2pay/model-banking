@@ -13,6 +13,7 @@ export interface Organization {
 	realm: Realm
 	rules: Rule[]
 	status: "active" | "inactive"
+	risk?: Organization.Risk
 	contact?: Organization.Contact
 	groups?: string[]
 	fx?: OrganizationFx
@@ -22,6 +23,10 @@ export namespace Organization {
 	export import Changeable = OrganizationChangeable
 	export import Contact = OrganizationContact
 	export import Fx = OrganizationFx
+	export type Risk = typeof Risk.values[number]
+	export namespace Risk {
+		export const values = ["low", "medium", "high"] as const
+	}
 	export const type = isly.object<Organization>({
 		name: isly.string(),
 		code: isly.string(new RegExp(/^[A-Za-z0-9\-_]+$/)),
