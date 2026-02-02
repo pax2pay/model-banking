@@ -6,6 +6,7 @@ import { Changeable as OrganizationChangeable } from "./Changeable"
 import { Contact as OrganizationContact } from "./Contact"
 import { Creatable as OrganizationCreatable } from "./Creatable"
 import { Fx as OrganizationFx } from "./Fx"
+import { Risk as OrganizationRisk } from "./Risk"
 
 export interface Organization {
 	name: string
@@ -21,18 +22,16 @@ export interface Organization {
 export namespace Organization {
 	export import Creatable = OrganizationCreatable
 	export import Changeable = OrganizationChangeable
+	export import Risk = OrganizationRisk
 	export import Contact = OrganizationContact
 	export import Fx = OrganizationFx
-	export type Risk = typeof Risk.values[number]
-	export namespace Risk {
-		export const values = ["low", "medium", "high"] as const
-	}
 	export const type = isly.object<Organization>({
 		name: isly.string(),
 		code: isly.string(new RegExp(/^[A-Za-z0-9\-_]+$/)),
 		realm: Realm.type,
 		rules: ruleType.array(),
 		status: isly.string(["active", "inactive"]),
+		risk: Organization.Risk.type.optional(),
 		contact: Contact.type.optional(),
 		groups: isly.string().array().optional(),
 		fx: OrganizationFx.type.optional(),
