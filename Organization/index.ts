@@ -14,7 +14,7 @@ export interface Organization {
 	realm: Realm
 	rules: Rule[]
 	status: "active" | "inactive"
-	risk?: Organization.Risk
+	risk: Organization.Risk
 	contact?: Organization.Contact
 	groups?: string[]
 	fx?: OrganizationFx
@@ -31,7 +31,7 @@ export namespace Organization {
 		realm: Realm.type,
 		rules: ruleType.array(),
 		status: isly.string(["active", "inactive"]),
-		risk: Organization.Risk.type.optional(),
+		risk: Organization.Risk.type,
 		contact: Contact.type.optional(),
 		groups: isly.string().array().optional(),
 		fx: OrganizationFx.type.optional(),
