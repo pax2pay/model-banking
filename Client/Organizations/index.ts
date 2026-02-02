@@ -12,6 +12,7 @@ export class Organizations {
 	readonly groups: Groups
 	readonly fx: Fx
 	constructor(private readonly client: http.Client) {
+		this.risk = new Risk(this.client)
 		this.Rules = new Rules(this.client)
 		this.groups = new Groups(this.client)
 		this.fx = new Fx(this.client)
