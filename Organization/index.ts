@@ -6,6 +6,7 @@ import { Changeable as OrganizationChangeable } from "./Changeable"
 import { Contact as OrganizationContact } from "./Contact"
 import { Creatable as OrganizationCreatable } from "./Creatable"
 import { Fx as OrganizationFx } from "./Fx"
+import { Risk as OrganizationRisk } from "./Risk"
 
 export interface Organization {
 	name: string
@@ -13,6 +14,7 @@ export interface Organization {
 	realm: Realm
 	rules: Rule[]
 	status: "active" | "inactive"
+	risk: Organization.Risk
 	contact?: Organization.Contact
 	groups?: string[]
 	fx?: OrganizationFx
@@ -20,6 +22,7 @@ export interface Organization {
 export namespace Organization {
 	export import Creatable = OrganizationCreatable
 	export import Changeable = OrganizationChangeable
+	export import Risk = OrganizationRisk
 	export import Contact = OrganizationContact
 	export import Fx = OrganizationFx
 	export const type = isly.object<Organization>({
@@ -28,6 +31,7 @@ export namespace Organization {
 		realm: Realm.type,
 		rules: ruleType.array(),
 		status: isly.string(["active", "inactive"]),
+		risk: Organization.Risk.type,
 		contact: Contact.type.optional(),
 		groups: isly.string().array().optional(),
 		fx: OrganizationFx.type.optional(),
