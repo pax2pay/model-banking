@@ -8,6 +8,7 @@ export namespace Stack {
 	export const stacks = [
 		"test-paxgiro",
 		"test-tpl-paxgiro",
+		"test-diners-clowd9",
 		"uk-diners-dpg",
 		"uk-mc-tpl-marqeta",
 		"uk-visa-tpl-marqeta",
@@ -76,6 +77,7 @@ export namespace Stack {
 			"uk-mc-tpl-marqeta": "a",
 			"uk-diners-dpg": "b",
 			"uk-visa-tpl-marqeta": "c",
+			"test-diners-clowd9": "d",
 		}
 		export function from(stack: Stack): Stack.Character {
 			return table[stack]
