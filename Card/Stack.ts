@@ -74,10 +74,10 @@ export namespace Stack {
 		const table: Record<Stack, Stack.Character> = {
 			"test-paxgiro": "z",
 			"test-tpl-paxgiro": "y",
+			"test-diners-clowd9": "x",
 			"uk-mc-tpl-marqeta": "a",
 			"uk-diners-dpg": "b",
 			"uk-visa-tpl-marqeta": "c",
-			"test-diners-clowd9": "d",
 		}
 		export function from(stack: Stack): Stack.Character {
 			return table[stack]
