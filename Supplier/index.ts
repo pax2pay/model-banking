@@ -12,9 +12,6 @@ export namespace Supplier {
 			clearbank: ["GBP"],
 			bankingcircle: ["EUR", "GBP", "USD", "DKK", "CHF", "PLN", "SEK", "HUF"],
 		},
-		uguk: {
-			bankingcircle: ["EUR", "GBP", "USD", "DKK", "CHF", "PLN", "SEK", "NOK"],
-		},
 		test: {
 			paxgiro: ["GBP", "SEK", "USD", "EUR"],
 			bankingcircle: ["EUR", "GBP", "USD", "DKK", "CHF", "PLN", "SEK", "HUF"],
@@ -24,7 +21,6 @@ export namespace Supplier {
 		eea: [],
 		test: ["paxgiro", "bankingcircle"],
 		uk: ["clearbank", "bankingcircle"],
-		uguk: ["bankingcircle"],
 	// eslint-disable-next-line prettierx/options
 	} as const satisfies Record<Realm, Supplier[]>
 }

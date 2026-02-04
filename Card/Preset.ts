@@ -42,7 +42,6 @@ export namespace Preset {
 			"p2p-visa-idx-160",
 			"p2p-visa-idx-200",
 		],
-		uguk: [],
 		eea: [],
 	}
 	export const presets: Record<Preset, Stack> = {
