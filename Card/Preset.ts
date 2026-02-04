@@ -22,6 +22,7 @@ export namespace Preset {
 		"test-ta-mc-200",
 		"test-ta-pg-200",
 		"test-ta-pg-bc-200",
+		"test-diners-175",
 	] as const
 	export const type = isly.string<Preset>(names)
 	export const type2 = isly2
@@ -29,7 +30,7 @@ export namespace Preset {
 		.rename("Preset")
 		.describe("Card configuration (iin/scheme/interchange).")
 	export const forRealm: Record<Realm, Preset[]> = {
-		test: ["test-pg-150", "test-pg-200", "test-ta-mc-200", "test-ta-pg-200", "test-ta-pg-bc-200"],
+		test: ["test-pg-150", "test-pg-200", "test-ta-mc-200", "test-ta-pg-200", "test-ta-pg-bc-200", "test-diners-175"],
 		uk: [
 			"p2p-diners-175",
 			"p2p-diners-200",
@@ -59,5 +60,6 @@ export namespace Preset {
 		"test-ta-mc-200": "test-tpl-paxgiro",
 		"test-ta-pg-200": "test-tpl-paxgiro",
 		"test-ta-pg-bc-200": "test-tpl-paxgiro",
+		"test-diners-175": "test-diners-clowd9",
 	}
 }

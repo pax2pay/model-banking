@@ -8,6 +8,7 @@ export namespace Stack {
 	export const stacks = [
 		"test-paxgiro",
 		"test-tpl-paxgiro",
+		"test-diners-clowd9",
 		"uk-diners-dpg",
 		"uk-mc-tpl-marqeta",
 		"uk-visa-tpl-marqeta",
@@ -73,6 +74,7 @@ export namespace Stack {
 		const table: Record<Stack, Stack.Character> = {
 			"test-paxgiro": "z",
 			"test-tpl-paxgiro": "y",
+			"test-diners-clowd9": "x",
 			"uk-mc-tpl-marqeta": "a",
 			"uk-diners-dpg": "b",
 			"uk-visa-tpl-marqeta": "c",
