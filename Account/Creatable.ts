@@ -5,7 +5,6 @@ export interface Creatable {
 	name: string
 	location?: Creatable.Location
 }
-
 export namespace Creatable {
 	export type Location = typeof Location.values[number]
 	export namespace Location {

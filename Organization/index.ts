@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { Type } from "../Account/Type"
 import { Realm } from "../Realm"
 import { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
@@ -18,6 +19,7 @@ export interface Organization {
 	contact?: Organization.Contact
 	groups?: string[]
 	fx?: OrganizationFx
+	type: Type
 }
 export namespace Organization {
 	export import Creatable = OrganizationCreatable
@@ -35,5 +37,9 @@ export namespace Organization {
 		contact: Contact.type.optional(),
 		groups: isly.string().array().optional(),
 		fx: OrganizationFx.type.optional(),
+		type: Type.type,
 	})
+	export function from(creatable: Creatable, realm: Realm): Organization {
+		return { ...creatable, realm, rules: creatable.rules ?? [], status: "active", type: "emoney" }
+	}
 }
