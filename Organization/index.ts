@@ -39,4 +39,7 @@ export namespace Organization {
 		fx: OrganizationFx.type.optional(),
 		type: Type.type,
 	})
+	export function from(creatable: Creatable, realm: Realm): Organization {
+		return { ...creatable, realm, rules: creatable.rules ?? [], status: "active", type: "emoney" }
+	}
 }
