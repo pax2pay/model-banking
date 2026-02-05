@@ -9,6 +9,7 @@ import { Creatable as AccountCreatable } from "./Creatable"
 import { Details as AccountDetails } from "./Details"
 import { History as AccountHistory } from "./History"
 import { Status as AccountStatus } from "./Status"
+import { Type as AccountType } from "./Type"
 
 export interface Account extends Account.Creatable {
 	id: cryptly.Identifier
@@ -22,6 +23,7 @@ export interface Account extends Account.Creatable {
 	charges?: AccountCharge
 	rules?: Rule[]
 	status: Account.Status
+	type: Account.Type
 }
 export namespace Account {
 	export import Charge = AccountCharge
@@ -29,6 +31,7 @@ export namespace Account {
 	export import Status = AccountStatus
 	export import History = AccountHistory
 	export import Details = AccountDetails
+	export import Type = AccountType
 	export type Legacy = Omit<Account, "status">
 	export function fromLegacy(maybeLegacy: Legacy | Account, status?: Account.Status): Account {
 		return { ...maybeLegacy, status: status ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" }) }

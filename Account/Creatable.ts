@@ -1,9 +1,11 @@
 import { DurableObjectLocationHint } from "@cloudflare/workers-types"
 import { isly } from "isly"
+import { Type } from "./Type"
 
 export interface Creatable {
 	name: string
 	location?: Creatable.Location
+	type?: Type
 }
 
 export namespace Creatable {
@@ -16,5 +18,9 @@ export namespace Creatable {
 		// All location hints: ["wnam", "enam", "sam", "weur", "eeur", "apac", "oc", "afr", "me"]
 		export const type = isly.string(values)
 	}
-	export const type = isly.object<Creatable>({ name: isly.string(), location: Location.type.optional() })
+	export const type = isly.object<Creatable>({
+		name: isly.string(),
+		location: Location.type.optional(),
+		type: Type.type,
+	})
 }
