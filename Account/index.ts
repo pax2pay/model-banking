@@ -32,10 +32,6 @@ export namespace Account {
 	export import History = AccountHistory
 	export import Details = AccountDetails
 	export import Type = AccountType
-	export type Legacy = Omit<Account, "status">
-	export function fromLegacy(maybeLegacy: Legacy | Account, status?: Account.Status): Account {
-		return { ...maybeLegacy, status: status ?? ("status" in maybeLegacy ? maybeLegacy.status : { mode: "active" }) }
-	}
 	export const type = Creatable.type.extend<Account>({
 		id: isly.string(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
@@ -48,6 +44,7 @@ export namespace Account {
 		charges: AccountCharge.type.optional(),
 		rules: Rule.type.array().optional(),
 		status: AccountStatus.type,
+		type: Type.type,
 	})
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
 		return cryptly.Identifier.is(value, 8)
