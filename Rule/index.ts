@@ -1,6 +1,4 @@
-import { selectively } from "selectively"
 import { isly } from "isly"
-import { Exchange } from "../Exchange"
 import type { Note } from "../Transaction/Note"
 import { Base as RuleBase } from "./Base"
 import { control as ruleControl } from "./control"
@@ -23,11 +21,7 @@ export namespace Rule {
 		export const type = isly.string<Action>(values)
 	}
 	export const type = ruleType
-	export function evaluate(
-		rules: Rule[],
-		state: RuleState,
-		macros?: Record<string, selectively.Definition>
-	): RuleState.Evaluated {
+	export function evaluate(rules: Rule[], state: RuleState): RuleState.Evaluated {
 		const outcomes: Record<Rule.Action, Rule[]> = {
 			review: [],
 			reject: [],
@@ -36,8 +30,7 @@ export namespace Rule {
 		const notes: Note[] = []
 		const evaluated = Other.evaluate(
 			rules.filter(rule => Base.Kind.is(state.transaction.kind, rule, state.organization?.groups, state.card?.preset)),
-			state,
-			macros
+			state
 		)
 		notes.push(...evaluated.notes)
 		outcomes.flag.push(...evaluated.outcomes.flag)

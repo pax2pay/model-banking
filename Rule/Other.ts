@@ -1,5 +1,4 @@
 import { isoly } from "isoly"
-import { selectively } from "selectively"
 import { isly } from "isly"
 import { isly as isly2 } from "isly2"
 import type { Note } from "../Transaction/Note"
@@ -24,8 +23,7 @@ export namespace Other {
 	export const type2: isly2.Object<Other> = Base.type2.extend<Other>({ action: Action.type2 })
 	export function evaluate(
 		rules: Other[],
-		state: State,
-		macros?: Record<string, selectively.Definition>
+		state: State
 	): { outcomes: Record<Other.Action, Other[]>; notes: Note[]; flags: Set<string> } {
 		const now = isoly.DateTime.now()
 		const result: ReturnType<typeof evaluate> = {
@@ -42,7 +40,7 @@ export namespace Other {
 			["card", "external", "internal"].some(type => type == state.transaction.type)
 		)
 			for (const rule of rules)
-				if (control(rule, state, macros)) {
+				if (control(rule, state)) {
 					result.outcomes[rule.action].push(rule)
 					result.notes.push({ author: "automatic", created: now, text: rule.name, rule })
 					rule.flags.forEach(f => result.flags.add(f))
