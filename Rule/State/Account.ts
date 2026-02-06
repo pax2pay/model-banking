@@ -3,8 +3,8 @@ import { Rail } from "../../Rail"
 
 export interface Account extends ModelAccount {
 	address: Rail.Address
-	transactions: Account.Transactions
-	days: Account.Days
+	transactions?: Account.Transactions
+	days?: Account.Days
 }
 // keep for note so we remember how to store: type Storage = Record<`statistics|currency|${isoly.Currency}`, isoly.DateTime>
 export namespace Account {
@@ -26,7 +26,7 @@ export namespace Account {
 		outgoing: { today: Today }
 		card: { today: Today }
 	}
-	export function from(account: ModelAccount, address: Rail.Address, transactions: Transactions, days: Days): Account {
-		return { ...account, address, transactions, days }
+	export function from(account: ModelAccount, address: Rail.Address): Account {
+		return { ...account, address }
 	}
 }

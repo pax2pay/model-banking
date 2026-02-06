@@ -39,8 +39,6 @@ export namespace State {
 	export function from(
 		account: ModelAccount,
 		address: Rail.Address,
-		transactions: Account.Transactions,
-		days: Account.Days,
 		transaction: ModelTransaction.Creatable.Resolved | ModelTransaction,
 		kind: Rule.Base.Kind,
 		stage: "finalize" | "initiate",
@@ -48,7 +46,7 @@ export namespace State {
 		organization?: Organization
 	): State {
 		return {
-			account: Account.from(account, address, transactions, days),
+			account: Account.from(account, address),
 			transaction: Transaction.from(account, transaction, kind, stage),
 			authorization: Authorization.from(transaction),
 			card,
@@ -63,14 +61,12 @@ export namespace State {
 	export function fromPreTransaction(
 		account: ModelAccount,
 		address: Rail.Address,
-		transactions: Account.Transactions,
-		days: Account.Days,
 		transaction: ModelTransaction.PreTransaction,
 		card?: ModelCard & { statistics: Card.Statistics },
 		organization?: Organization
 	): State {
 		return {
-			account: Account.from(account, address, transactions, days),
+			account: Account.from(account, address),
 			transaction: Transaction.from(account, transaction, type[transaction.type], "initiate"),
 			card: card ? Card.from(card, card.statistics) : undefined,
 			organization,

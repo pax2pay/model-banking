@@ -26,8 +26,7 @@ export namespace Rule {
 	export function evaluate(
 		rules: Rule[],
 		state: RuleState,
-		macros?: Record<string, selectively.Definition>,
-		table: Exchange.Rates = {}
+		macros?: Record<string, selectively.Definition>
 	): RuleState.Evaluated {
 		const outcomes: Record<Rule.Action, Rule[]> = {
 			review: [],
