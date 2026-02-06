@@ -1,6 +1,5 @@
 import { isoly } from "isoly"
 import { Balances } from "../../Balances"
-import { Counterbalances } from "../../Counterbalances"
 import { Supplier } from "../../Supplier"
 
 export interface Emoney {
@@ -9,5 +8,4 @@ export interface Emoney {
 	supplier?: Supplier
 	timestamp: isoly.DateTime
 	balances: Balances
-	counterbalances: Counterbalances
 }

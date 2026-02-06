@@ -6,7 +6,7 @@ import { Realm } from "../../Realm"
 export interface Internal {
 	type: "internal"
 	name?: string
-	identifier: cryptly.Identifier | Operation.Changes.Entry.Counterbalance
+	identifier: cryptly.Identifier
 	organization?: string
 }
 export namespace Internal {

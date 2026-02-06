@@ -10,7 +10,7 @@ const signer = pax2pay.Operation.Signer.open(keys)
 
 describe("Operation", () => {
 	it("is", () => {
-		expect(pax2pay.Operation.type.is(operation)).toBeTruthy()
+		expect(pax2pay.Operation.type.is(operation4)).toBeTruthy()
 	})
 	it("sign", async () => {
 		const operation = {
@@ -34,40 +34,15 @@ describe("Operation", () => {
 		expect(verified).toBe(true)
 	})
 	it("changes is", async () => {
-		expect(pax2pay.Operation.type.is(operation3)).toBe(true)
-	})
-	it("split", async () => {
-		expect(pax2pay.Operation.Changes.Entry.split("uk-cb-safe01-2024-03-04T15Z")).toEqual([
-			"2024-03-04T15Z",
-			"uk-cb-safe01",
-		])
-	})
-	it("split", async () => {
-		expect(pax2pay.Operation.Changes.Entry.split("test-internal-asdf-qw--2024-03-04T15Z")).toEqual([
-			"2024-03-04T15Z",
-			"test-internal-asdf-qw-",
-		])
+		expect(pax2pay.Operation.type.is(operation2)).toBe(true)
 	})
 	it("sum", () => {
-		expect(pax2pay.Operation.sum([operation, operation2, operation3, operation4])).toEqual({
+		expect(pax2pay.Operation.sum([operation2, operation4])).toEqual({
 			available: 0,
-			"fee_test-paxgiro_202333303": 0,
-			"internal-safe01-2024-03-04T15Z": 0,
 		})
 	})
-	it("sum counterbalances", () => {
-		expect(pax2pay.Operation.Changes.counterbalance(operation4.changes, "USD")).toEqual(20)
-	})
 })
-const operation: pax2pay.Operation = {
-	account: "3Lb41MlP",
-	currency: "GBP",
-	type: "collect",
-	changes: { "fee_test-paxgiro_202333303": { type: "subtract", amount: 10, status: "success", result: 0 } },
-	transaction: "zzzyRwIvXovdzVNA",
-	counter: 0,
-	created: "2023-12-05T17:26:36.977Z",
-}
+
 const operation2: pax2pay.Operation = {
 	account: "23Md_znq",
 	currency: "GBP",
@@ -77,22 +52,12 @@ const operation2: pax2pay.Operation = {
 	counter: 71,
 	created: "2024-02-14T14:47:41.472Z",
 }
-const operation3: pax2pay.Operation = {
-	account: "3Lb41MlP",
-	currency: "GBP",
-	type: "collect",
-	changes: { "internal-safe01-2024-03-04T15Z": { type: "subtract", amount: 10, status: "success", result: 0 } },
-	transaction: "zzzyRwIvXovdzVNA",
-	counter: 0,
-	created: "2023-12-05T17:26:36.977Z",
-}
+
 const operation4: pax2pay.Operation = {
 	account: "23Md_znq",
 	currency: "GBP",
 	changes: {
-		"fee_test-paxgiro_202333303": { type: "add", amount: 10, status: "success", result: 0 },
 		available: { type: "subtract", amount: 1000, status: "success", result: 71000 },
-		"internal-safe01-2024-03-04T15Z": { type: "add", amount: 10, status: "success", result: 0 },
 	},
 	type: "manual",
 	transaction: "manual",
