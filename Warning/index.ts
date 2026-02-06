@@ -17,7 +17,6 @@ export namespace Warning {
 			"overdraft",
 			"stale-fiat",
 			"missing-buffer",
-			"counterbalance",
 			"missing-emoney",
 			"missing-fiat",
 		])
