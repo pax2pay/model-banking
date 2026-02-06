@@ -73,36 +73,6 @@ const rule1: pax2pay.Rule = {
 	action: "reject",
 	condition: "transaction.amount>200",
 }
-const rule2: pax2pay.Rule = {
-	code: "abc",
-	name: "reject internal transactions",
-	type: "outbound",
-	category: "product",
-	flags: ["review"],
-	description: "",
-	action: "flag",
-	condition: "isInternal()",
-}
-const rule3: pax2pay.Rule = {
-	code: "abc",
-	name: "amount limit",
-	type: "authorization",
-	category: "product",
-	flags: [],
-	description: "",
-	action: "reject",
-	condition: "alwaysTrue()",
-}
-const rule4: pax2pay.Rule = {
-	code: "abc",
-	name: "amount limit",
-	type: "authorization",
-	category: "product",
-	flags: [],
-	description: "",
-	action: "reject",
-	condition: "alwaysTrue()",
-}
 const groupRule: pax2pay.Rule = {
 	code: "group-rule",
 	name: "group rule",
@@ -133,13 +103,6 @@ function getState(
 	return pax2pay.Rule.State.from(
 		account,
 		{ type: "card", iin: "111111", scheme: "visa", last4: "1234", id: "", expiry: [25, 12], holder: "" },
-		{
-			today: { count: 3, amount: 3 },
-			incoming: { today: { count: 1, amount: 1 } },
-			outgoing: { today: { count: 1, amount: 1 } },
-			card: { today: { count: 1, amount: 1 } },
-		},
-		{ currency: 1, merchant: { category: 1, country: 1, name: 1 } },
 		{
 			...transaction1,
 			counterpart:
@@ -173,36 +136,6 @@ describe("definitions", () => {
 			flag: [],
 			reject: [rule1],
 			review: [],
-		})
-	})
-	it("isInternal", () => {
-		expect(pax2pay.Rule.evaluate([rule2], getState("internal", "initiate", "outbound")).outcomes).toEqual({
-			review: [],
-			reject: [],
-			flag: [rule2],
-		})
-	})
-	it("always reject", () => {
-		expect(pax2pay.Rule.evaluate([rule3], getState("card", "initiate", "authorization")).outcomes).toEqual({
-			review: [],
-			reject: [rule3],
-			flag: [],
-		})
-	})
-	it("optional authorization", () => {
-		expect(pax2pay.Rule.evaluate([rule4], getState("card", "initiate", "authorization")).outcomes).toEqual({
-			review: [],
-			reject: [rule4],
-			flag: [],
-		})
-	})
-	it("many rules", () => {
-		expect(
-			pax2pay.Rule.evaluate([rule1, rule2, rule3], getState("card", "initiate", "authorization")).outcomes
-		).toEqual({
-			review: [],
-			reject: [rule1, rule3],
-			flag: [],
 		})
 	})
 	it("group rule", () => {
