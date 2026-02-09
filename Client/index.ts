@@ -11,7 +11,6 @@ import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
 import { Processor } from "./Processor"
 import { Reports } from "./Reports"
-import { Rules } from "./Rules"
 import { Settlements } from "./Settlements"
 import { Transactions as ClientTransactions } from "./Transactions"
 import { Treasury } from "./Treasury"
@@ -33,7 +32,6 @@ export class Client {
 	readonly organizations: Organizations
 	readonly processors: Processor
 	readonly reports: Reports
-	readonly rules: Rules
 	readonly settlements: Settlements
 	readonly transactions: ClientTransactions
 	readonly treasury: Treasury
@@ -65,7 +63,6 @@ export class Client {
 		this.organizations = new Organizations(this.client)
 		this.processors = new Processor(this.client)
 		this.reports = new Reports(this.client)
-		this.rules = new Rules(this.client)
 		this.settlements = new Settlements(this.client)
 		this.transactions = new ClientTransactions(this.client)
 		this.treasury = new Treasury(this.client)
