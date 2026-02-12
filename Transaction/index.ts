@@ -321,6 +321,7 @@ export namespace Transaction {
 			flags: [],
 			oldFlags: [],
 			notes: [],
+			reference: { reference: refund.reference },
 		}
 	}
 	export function isIdentifier(value: string | any): value is string {
