@@ -12,6 +12,7 @@ export namespace Creatable {
 	export interface Base {
 		card: string
 		transaction?: string
+		transactionReference?: string
 		account: string
 		approvalCode: string
 		merchant: Merchant
@@ -27,6 +28,7 @@ export namespace Creatable {
 		export const type = isly.object<Base>({
 			card: isly.string(),
 			transaction: isly.string().optional(),
+			transactionReference: isly.string().optional(),
 			account: isly.string(),
 			approvalCode: isly.string(),
 			merchant: Merchant.type,
