@@ -6,6 +6,7 @@ export interface Iban {
 	holder: string
 	institution?: string
 	transactor?: string
+	bic?: string
 }
 export namespace Iban {
 	export const currencies = ["EUR", "GBP", "SEK", "USD"] as const
@@ -16,5 +17,6 @@ export namespace Iban {
 		holder: isly.string(),
 		institution: isly.string().optional(),
 		transactor: isly.string().optional(),
+		bic: isly.string().optional(),
 	})
 }
