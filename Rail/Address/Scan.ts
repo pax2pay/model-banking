@@ -7,7 +7,7 @@ export interface Scan {
 	sort: string
 	account: string
 	holder: string
-	bic?: string
+	institution?: string
 }
 export namespace Scan {
 	export const currencies = ["GBP"] as const
@@ -17,7 +17,7 @@ export namespace Scan {
 			sort: iban.iban.substring(8, 14),
 			account: iban.iban.substring(14),
 			holder: iban.holder,
-			bic: iban.bic,
+			institution: iban.institution,
 		}
 	}
 	export const type = isly.object<Scan>({
@@ -25,6 +25,6 @@ export namespace Scan {
 		sort: isly.string(),
 		account: isly.string(),
 		holder: isly.string(),
-		bic: isly.string().optional(),
+		institution: isly.string().optional(),
 	})
 }
