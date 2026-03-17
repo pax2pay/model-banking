@@ -12,7 +12,13 @@ export interface Scan {
 export namespace Scan {
 	export const currencies = ["GBP"] as const
 	export function fromIban(iban: Iban): Scan {
-		return { type: "scan", sort: iban.iban.substring(8, 14), account: iban.iban.substring(14), holder: iban.holder }
+		return {
+			type: "scan",
+			sort: iban.iban.substring(8, 14),
+			account: iban.iban.substring(14),
+			holder: iban.holder,
+			bic: iban.bic,
+		}
 	}
 	export const type = isly.object<Scan>({
 		type: isly.string("scan"),
