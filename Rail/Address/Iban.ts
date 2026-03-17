@@ -4,7 +4,7 @@ export interface Iban {
 	type: "iban"
 	iban: string
 	holder: string
-	institution?: string
+	institution?: string // BIC
 	transactor?: string
 }
 export namespace Iban {
