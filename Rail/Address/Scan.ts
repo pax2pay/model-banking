@@ -7,7 +7,7 @@ export interface Scan {
 	sort: string
 	account: string
 	holder: string
-	institution?: string
+	institution?: string // BIC
 }
 export namespace Scan {
 	export const currencies = ["GBP"] as const
