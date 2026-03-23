@@ -51,7 +51,8 @@
 		],
 		"category": "Lodging",
 		"startsWith": [
-			"LEONARDO HOTEL"
+			"LEONARDO HOTEL",
+			"LEONARDO"
 		]
 	},
 	{
@@ -106,7 +107,6 @@
 			3509,
 			3513,
 			6513,
-			3690,
 			3740
 		],
 		"category": "Lodging",
@@ -144,12 +144,14 @@
 			7011,
 			3533,
 			3501,
-			6513,
-			3672
+			6513
 		],
 		"category": "Lodging",
 		"startsWith": [
-			"IBIS"
+			"IBIS",
+			"Hotel Ibis",
+			"HTL IBIS",
+			"ACCOR* IBIS"
 		]
 	},
 	{
@@ -207,7 +209,6 @@
 		"unambiguousMcc": 3543,
 		"mccs": [
 			7011,
-			3543,
 			6513,
 			3501,
 			4411
@@ -247,6 +248,262 @@
 		"category": "Lodging",
 		"startsWith": [
 			"CROWNE PLAZA"
+		]
+	},
+	{
+		"name": "WMM Hotel Betriebs GmbH",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"WMM"
+		]
+	},
+	{
+		"name": "the niu Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"the niu"
+		]
+	},
+	{
+		"name": "Radisson Hotels",
+		"unambiguousMcc": 3649,
+		"mccs": [
+			7011,
+			6513,
+			3586,
+			3553,
+			3583
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"Radisson"
+		]
+	},
+	{
+		"name": "ACHAT Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"ACHAT HOTEL"
+		]
+	},
+	{
+		"name": "ARCOTEL Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"ARCOTEL"
+		]
+	},
+	{
+		"name": "Gruppo UNA Hotels and Resorts",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"GRUPPOUNA"
+		]
+	},
+	{
+		"name": "B&B Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"BB *"
+		]
+	},
+	{
+		"name": "DORMERO Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"DORMERO"
+		]
+	},
+	{
+		"name": "Dorint Hotels",
+		"unambiguousMcc": 3623,
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"DORINT"
+		]
+	},
+	{
+		"name": "Schani Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"HotelSchaniDonauGmbH"
+		]
+	},
+	{
+		"name": "INNSiDE",
+		"mccs": [
+			7011,
+			3548
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"INNSIDE"
+		]
+	},
+	{
+		"name": "IntercityHotel",
+		"mccs": [
+			7011,
+			3643
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"INTERCITY HOTEL",
+			"INTERCITYHOTEL"
+		]
+	},
+	{
+		"name": "Lindner Hotels & Resorts",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"LINDNER"
+		]
+	},
+	{
+		"name": "Limehome",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"Limehome"
+		]
+	},
+	{
+		"name": "Moxy Hotels",
+		"mccs": [
+			7011,
+			3509,
+			3740
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"MOXY"
+		]
+	},
+	{
+		"name": "Roompay",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"ROOMPAY"
+		]
+	},
+	{
+		"name": "Rioca Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"RIOCA"
+		]
+	},
+	{
+		"name": "Adagio",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"Adagio"
+		]
+	},
+	{
+		"name": "Barcelo Hotel Group",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"BARCELO *"
+		]
+	},
+	{
+		"name": "Campanile Hotels",
+		"unambiguousMcc": 3672,
+		"mccs": [
+			7011,
+			3677,
+			3501
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"CAMPANILE"
+		]
+	},
+	{
+		"name": "Clayton Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"Clayton"
+		]
+	},
+	{
+		"name": "Palace Catania",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"PALACE-CATANIA"
+		]
+	},
+	{
+		"name": "Milano Verticle",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"MILANO-VERTICALE"
+		]
+	},
+	{
+		"name": "Courtyard by Marriott",
+		"unambiguousMcc": 3690,
+		"mccs": [
+			7011,
+			3509
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"COURTYARD"
 		]
 	}
 ]
