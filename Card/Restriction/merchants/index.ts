@@ -59,7 +59,7 @@ export const merchants = {
 	pegasus: {
 		name: "pegasus",
 		mccs: ["4511"],
-		startsWith: ["pegasus", "flypegasus"],
+		startsWith: ["pegasus", "PEGASUS", "Pegasus", "flypegasus"],
 	},
 	"royal air maroc": {
 		name: "royal air maroc",
@@ -605,6 +605,21 @@ export const merchants = {
 		mccs: ["4511"],
 		startsWith: ["PLUS ULTRA"],
 	},
+	"boliviana de aviacion": {
+		name: "boliviana de aviacion",
+		mccs: ["4511"],
+		startsWith: ["BOLIVIANA"],
+	},
+	"caribbean airlines": {
+		name: "caribbean airlines",
+		unambiguousMcc: "3234",
+		startsWith: ["CARIBBEAN AI"],
+	},
+	"vietnam air": {
+		name: "vietnam air",
+		mccs: ["4511"],
+		startsWith: ["VIETNAM AIR"],
+	},
 	parkwing: {
 		name: "parkwing",
 		mccs: ["4582"],
@@ -665,10 +680,35 @@ export const merchants = {
 		mccs: ["4722"],
 		startsWith: ["BKG*"],
 	},
-	advertising: {
-		name: "advertising",
+	"expedia group": {
+		name: "expedia group",
+		mccs: ["4722"],
+		startsWith: ["EG*", "Expedia"],
+	},
+	"google ads": {
+		name: "google ads",
 		mccs: ["7311", "5818"],
-		contains: ["FACEBK", "google *ad", "googleadwords", "facebook"],
+		contains: ["google ads", "google *ad", "GOOGLE*ADS", "googleadwords"],
+	},
+	"facebook ads": {
+		name: "facebook ads",
+		mccs: ["7311", "5818"],
+		contains: ["FACEBK", "facebook"],
+	},
+	"milan airport shop": {
+		name: "milan airport shop",
+		mccs: ["4582", "4111"],
+		contains: ["MILAN AIRPORTS"],
+	},
+	blacklane: {
+		name: "blacklane",
+		mccs: ["4121"],
+		startsWith: ["BLACKLANE"],
+	},
+	"visit britain gov": {
+		name: "visit britain gov",
+		mccs: ["9399"],
+		startsWith: ["UKVI"],
 	},
 	"best western": {
 		name: "best western",
@@ -694,7 +734,7 @@ export const merchants = {
 	"leonardo hotels": {
 		name: "leonardo hotels",
 		mccs: ["7011"],
-		startsWith: ["LEONARDO HOTEL"],
+		startsWith: ["LEONARDO HOTEL", "LEONARDO"],
 	},
 	"hotel mercure": {
 		name: "hotel mercure",
@@ -720,7 +760,7 @@ export const merchants = {
 	},
 	"marriott hotels": {
 		name: "marriott hotels",
-		mccs: ["7011", "3509", "3513", "6513", "3690", "3740"],
+		mccs: ["7011", "3509", "3513", "6513", "3740"],
 		startsWith: ["MARRIOTT"],
 	},
 	"sheraton hotels and resorts": {
@@ -735,8 +775,8 @@ export const merchants = {
 	},
 	"ibis hotels": {
 		name: "ibis hotels",
-		mccs: ["7011", "3533", "3501", "6513", "3672"],
-		startsWith: ["IBIS"],
+		mccs: ["7011", "3533", "3501", "6513"],
+		startsWith: ["IBIS", "Hotel Ibis", "HTL IBIS", "ACCOR* IBIS"],
 	},
 	"hyatt hotels & resorts": {
 		name: "hyatt hotels & resorts",
@@ -756,7 +796,7 @@ export const merchants = {
 	"four seasons": {
 		name: "four seasons",
 		unambiguousMcc: "3543",
-		mccs: ["7011", "3543", "6513", "3501", "4411"],
+		mccs: ["7011", "6513", "3501", "4411"],
 		startsWith: ["FOUR SEASONS", "FOURSEASONS"],
 	},
 	"doubletree by hilton": {
@@ -768,5 +808,129 @@ export const merchants = {
 		name: "crowne plaza hotels",
 		mccs: ["7011", "6513", "3750", "3501", "3504", "3655"],
 		startsWith: ["CROWNE PLAZA"],
+	},
+	"wmm hotel betriebs gmbh": {
+		name: "wmm hotel betriebs gmbh",
+		mccs: ["7011"],
+		startsWith: ["WMM"],
+	},
+	"the niu hotels": {
+		name: "the niu hotels",
+		mccs: ["7011"],
+		startsWith: ["the niu"],
+	},
+	"radisson hotels": {
+		name: "radisson hotels",
+		unambiguousMcc: "3649",
+		mccs: ["7011", "6513", "3586", "3553", "3583"],
+		startsWith: ["Radisson"],
+	},
+	"achat hotels": {
+		name: "achat hotels",
+		mccs: ["7011"],
+		startsWith: ["ACHAT HOTEL"],
+	},
+	"arcotel hotels": {
+		name: "arcotel hotels",
+		mccs: ["7011"],
+		startsWith: ["ARCOTEL"],
+	},
+	"gruppo una hotels and resorts": {
+		name: "gruppo una hotels and resorts",
+		mccs: ["7011"],
+		contains: ["GRUPPOUNA"],
+	},
+	"b&b hotels": {
+		name: "b&b hotels",
+		mccs: ["7011"],
+		startsWith: ["BB *"],
+	},
+	"dormero hotels": {
+		name: "dormero hotels",
+		mccs: ["7011"],
+		startsWith: ["DORMERO"],
+	},
+	"dorint hotels": {
+		name: "dorint hotels",
+		unambiguousMcc: "3623",
+		mccs: ["7011"],
+		startsWith: ["DORINT"],
+	},
+	"schani hotels": {
+		name: "schani hotels",
+		mccs: ["7011"],
+		startsWith: ["HotelSchaniDonauGmbH"],
+	},
+	innside: {
+		name: "innside",
+		mccs: ["7011", "3548"],
+		startsWith: ["INNSIDE"],
+	},
+	intercityhotel: {
+		name: "intercityhotel",
+		mccs: ["7011", "3643"],
+		startsWith: ["INTERCITY HOTEL", "INTERCITYHOTEL"],
+	},
+	"lindner hotels & resorts": {
+		name: "lindner hotels & resorts",
+		mccs: ["7011"],
+		startsWith: ["LINDNER"],
+	},
+	limehome: {
+		name: "limehome",
+		mccs: ["7011"],
+		startsWith: ["Limehome"],
+	},
+	"moxy hotels": {
+		name: "moxy hotels",
+		mccs: ["7011", "3509", "3740"],
+		startsWith: ["MOXY"],
+	},
+	roompay: {
+		name: "roompay",
+		mccs: ["7011"],
+		startsWith: ["ROOMPAY"],
+	},
+	"rioca hotels": {
+		name: "rioca hotels",
+		mccs: ["7011"],
+		startsWith: ["RIOCA"],
+	},
+	adagio: {
+		name: "adagio",
+		mccs: ["7011"],
+		startsWith: ["Adagio"],
+	},
+	"barcelo hotel group": {
+		name: "barcelo hotel group",
+		mccs: ["7011"],
+		startsWith: ["BARCELO *"],
+	},
+	"campanile hotels": {
+		name: "campanile hotels",
+		unambiguousMcc: "3672",
+		mccs: ["7011", "3677", "3501"],
+		startsWith: ["CAMPANILE"],
+	},
+	"clayton hotels": {
+		name: "clayton hotels",
+		mccs: ["7011"],
+		startsWith: ["Clayton"],
+	},
+	"palace catania": {
+		name: "palace catania",
+		mccs: ["7011"],
+		contains: ["PALACE-CATANIA"],
+	},
+	"milano verticle": {
+		name: "milano verticle",
+		mccs: ["7011"],
+		contains: ["MILANO-VERTICALE"],
+	},
+	"courtyard by marriott": {
+		name: "courtyard by marriott",
+		unambiguousMcc: "3690",
+		mccs: ["7011", "3509"],
+		startsWith: ["COURTYARD"],
 	},
 } as const

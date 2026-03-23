@@ -123,17 +123,65 @@
 		]
 	},
 	{
-		"name": "Advertising",
+		"name": "Expedia Group",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"startsWith": [
+			"EG*",
+			"Expedia"
+		]
+	},
+	{
+		"name": "Google Ads",
+		"mccs": [
+			7311,
+			5818
+		],
+		"contains": [
+			"google ads",
+			"google *ad",
+			"GOOGLE*ADS",
+			"googleadwords"
+		],
+		"category": "Advertising"
+	},
+	{
+		"name": "Facebook Ads",
 		"mccs": [
 			7311,
 			5818
 		],
 		"contains": [
 			"FACEBK",
-			"google *ad",
-			"googleadwords",
 			"facebook"
 		],
 		"category": "Advertising"
+	},
+	{
+		"name": "Milan Airport Shop",
+		"mccs": [
+			4582,
+			4111
+		],
+		"category": "Retail",
+		"contains": "MILAN AIRPORTS"
+	},
+	{
+		"name": "Blacklane",
+		"mccs": [
+			4121
+		],
+		"category": "Alternative Transportation",
+		"startsWith": "BLACKLANE"
+	},
+	{
+		"name": "Visit Britain Gov",
+		"mccs": [
+			9399
+		],
+		"category": "Government Services",
+		"startsWith": "UKVI"
 	}
 ]

@@ -76,6 +76,8 @@
 		"category": "Flight",
 		"startsWith": [
 			"pegasus",
+			"PEGASUS",
+			"Pegasus",
 			"flypegasus"
 		]
 	},
@@ -952,6 +954,34 @@
 		"category": "Flight",
 		"startsWith": [
 			"PLUS ULTRA"
+		]
+	},
+	{
+		"name": "Boliviana de Aviacion",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"BOLIVIANA"
+		]
+	},
+	{
+		"name": "Caribbean Airlines",
+		"unambiguousMcc": 3234,
+		"category": "Flight",
+		"startsWith": [
+			"CARIBBEAN AI"
+		]
+	},
+	{
+		"name": "Vietnam Air",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"VIETNAM AIR"
 		]
 	}
 ]
