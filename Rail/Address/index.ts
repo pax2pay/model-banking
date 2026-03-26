@@ -4,14 +4,12 @@ import { Card as AddressCard } from "./Card"
 import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
 import { PaxGiro as AddressPaxGiro } from "./PaxGiro"
-import { PaxgiroCredit as AddressPaxgiroCredit } from "./PaxgiroCredit"
 import { Route as AddressRoute } from "./Route"
 import { Scan as AddressScan } from "./Scan"
 
 export type Address =
 	| AddressCard
 	| AddressCard.Counterpart
-	| AddressPaxgiroCredit
 	| AddressIban
 	| AddressInternal
 	| AddressPaxGiro
@@ -55,9 +53,6 @@ export namespace Address {
 			case "card":
 				result = "id" in Address ? `${Address.type}-${Address.id}` : `${Address.type}-merchant-${Address.merchant.id}`
 				break
-			case "paxgiro-credit":
-				result = `${Address.type}-${Address.reference}`
-				break
 		}
 		return result
 	}
@@ -79,16 +74,12 @@ export namespace Address {
 			case "card":
 				result = "id" in Address ? `${Address.type}-${Address.id}` : `${Address.type}-merchant-${Address.merchant.id}`
 				break
-			case "paxgiro-credit":
-				result = `${Address.type}-${Address.reference}`
-				break
 		}
 		return result
 	}
 	export const type = isly.union<Address>(
 		AddressCard.type,
 		AddressCard.Counterpart.type,
-		AddressPaxgiroCredit.type,
 		AddressIban.type,
 		AddressInternal.type,
 		AddressPaxGiro.type,
@@ -100,6 +91,5 @@ export namespace Address {
 	export import Scan = AddressScan
 	export import Internal = AddressInternal
 	export import Card = AddressCard
-	export import PaxgiroFunding = AddressPaxgiroCredit
 	export import Route = AddressRoute
 }
