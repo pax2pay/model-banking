@@ -6,11 +6,11 @@ export namespace Route {
 	export namespace Account {
 		export const type = isly.object<Account>({ type: isly.string("account"), id: isly.string() })
 	}
-	export type Service = { type: "service"; service: "paxgiroCredit"; configuration: string }
+	export type Service = { type: "service"; service: string; configuration: string }
 	export namespace Service {
 		export const type = isly.object<Service>({
 			type: isly.string("service"),
-			service: isly.string("paxgiroCredit"),
+			service: isly.string(),
 			configuration: isly.string(),
 		})
 	}
