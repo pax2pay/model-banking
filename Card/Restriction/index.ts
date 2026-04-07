@@ -21,8 +21,9 @@ export namespace Restriction {
 		transaction: Transaction.Creatable.CardTransaction | Transaction.PreTransaction.Authorization
 	): boolean {
 		let result: boolean = true
-		if (restrictions.merchants?.length)
+		if (restrictions.merchants?.length) {
 			result = restrictions.merchants.some(merchant => Merchant.check(merchant, transaction.counterpart))
+		}
 		return result
 	}
 }

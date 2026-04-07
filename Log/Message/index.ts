@@ -19,15 +19,16 @@ export namespace Message {
 					realm: configuration.realm,
 					resource: configuration.resource,
 					entries: [],
-			  }
+				}
 			: undefined
-		if (result)
+		if (result) {
 			for (const trace of traces) {
 				const logFragment: { entry: Log.Entry; resource: Log["resource"] } | undefined =
 					Message.Entry.fromEventLogs(trace)
 				logFragment?.resource && (result.resource ??= logFragment.resource)
 				logFragment?.entry && result.entries.push(logFragment.entry)
 			}
+		}
 		return (configuration?.requireEntries && result?.entries && result.entries.length > 0) ||
 			!configuration?.requireEntries
 			? result

@@ -18,12 +18,13 @@ export namespace Fx {
 		let result: Amount.Charge.Fx | undefined
 		const chargePreset = preset && charge[preset] ? preset : "default"
 		const chargeRate = charge[chargePreset] ?? 0
-		if (exchange)
+		if (exchange) {
 			result = {
 				preset: chargePreset,
 				rate: chargeRate,
 				amount: -isoly.Currency.multiply(currency, amount, chargeRate),
 			}
+		}
 		return result
 	}
 }

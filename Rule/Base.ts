@@ -14,7 +14,7 @@ export interface Base {
 	presets?: Preset[]
 }
 export namespace Base {
-	export type Kind = typeof Kind.values[number]
+	export type Kind = (typeof Kind.values)[number]
 	export namespace Kind {
 		export const values = ["authorization", "outbound", "inbound", "capture", "refund"] as const
 		export const type = isly.string<Kind>(values)
@@ -29,7 +29,7 @@ export namespace Base {
 			return kind == rule.type && applyRuleForGroup && applyRuleForPreset
 		}
 	}
-	export type Category = typeof Category.values[number]
+	export type Category = (typeof Category.values)[number]
 	export namespace Category {
 		export const values = ["fincrime", "product", "customer"] as const
 		export const type = isly.string<Category>(values)

@@ -3,7 +3,10 @@ import { http } from "cloudly-http"
 import { Label } from "../Label"
 
 export class Labels {
-	constructor(private readonly client: http.Client, readonly type: Label.Type) {}
+	constructor(
+		private readonly client: http.Client,
+		readonly type: Label.Type
+	) {}
 	async create(label: Label): Promise<Label | gracely.Error> {
 		return this.client.post<Label>(`/label/${this.type}`, label)
 	}

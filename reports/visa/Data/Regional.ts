@@ -13,8 +13,9 @@ export namespace Regional {
 	}
 	export function merge(previous: Regional, addition: Regional): Regional {
 		const result: Regional = {}
-		for (const region of Region.values)
+		for (const region of Region.values) {
 			result[region] = Monthly.merge(previous[region], addition[region])
+		}
 		return result
 	}
 	export function toCsvRow(regional: Regional, row: string): string {
@@ -23,8 +24,9 @@ export namespace Regional {
 		const key: "count" | "volume" = row.includes("Count") ? "count" : "volume"
 		for (const month of Monthly.Month.values) {
 			result += row.replace("Month x", `Month ${month}`)
-			for (const iin of Iin.values)
+			for (const iin of Iin.values) {
 				result += `|${regional[region]?.[month][key][iin] ?? 0}`
+			}
 			result += "\n"
 		}
 		return result

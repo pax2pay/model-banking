@@ -1,7 +1,7 @@
 import { isly } from "isly"
 import { Realm } from "../Realm"
 
-export type Stack = typeof Stack.stacks[number]
+export type Stack = (typeof Stack.stacks)[number]
 
 // realm-scheme-processor(-processor...)
 export namespace Stack {
@@ -88,5 +88,5 @@ export namespace Stack {
 			)?.[0]
 		}
 	}
-	export type Character = typeof Character.values[number]
+	export type Character = (typeof Character.values)[number]
 }

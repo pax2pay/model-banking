@@ -48,9 +48,9 @@ export namespace Transaction {
 	export import Exchange = TransactionExchange
 	export import Amount = TransactionAmount
 	export const types = ["card", "internal", "external", "system"] as const
-	export type Types = typeof types[number]
+	export type Types = (typeof types)[number]
 	export const directions = ["inbound", "outbound"] as const
-	export type Direction = typeof directions[number]
+	export type Direction = (typeof directions)[number]
 	export import Creatable = TransactionCreatable
 	export import PreTransaction = TransactionPreTransaction
 	export import Reference = TransactionReference
@@ -118,7 +118,7 @@ export namespace Transaction {
 							charge: 0,
 							total: transaction.state?.transaction.original.total ?? transaction.amount,
 						},
-				  }
+					}
 				: { amount: transaction.amount }),
 		}
 	}
@@ -153,17 +153,17 @@ export namespace Transaction {
 			typeof operation == "string"
 				? ["rejected", operation]
 				: state.outcome == "reject"
-				? ["rejected", "denied"]
-				: state.outcome == "review"
-				? "review"
-				: "processing"
+					? ["rejected", "denied"]
+					: state.outcome == "review"
+						? "review"
+						: "processing"
 		const rail: Rail = state.card
 			? state.card.scheme
 			: account.address.type == "internal"
-			? "internal"
-			: account.address.type == "paxgiro"
-			? "paxgiro"
-			: "fasterpayments"
+				? "internal"
+				: account.address.type == "paxgiro"
+					? "paxgiro"
+					: "fasterpayments"
 		return {
 			...creatable,
 			amount: Amount.fromState(state, charges, quote),
@@ -330,7 +330,7 @@ export namespace Transaction {
 	export function flag(transaction: Transaction, flags: string[] | undefined): void {
 		const current = new Set<string>(transaction.flags)
 		const old = new Set<string>(transaction.oldFlags)
-		for (const flag of flags ?? [])
+		for (const flag of flags ?? []) {
 			if (!flag.startsWith("-")) {
 				old.delete(flag)
 				current.add(flag)
@@ -338,6 +338,7 @@ export namespace Transaction {
 				current.delete(flag.substring(1))
 				old.add(flag.substring(1))
 			}
+		}
 		transaction.flags = Array.from(current)
 		transaction.oldFlags = Array.from(old)
 	}
@@ -350,14 +351,15 @@ export namespace Transaction {
 			accountName.startsWith("net-") ||
 			accountName.startsWith("interchange-") ||
 			accountName.startsWith("collect-")
-		)
+		) {
 			result = "system"
-		else if (counterpart.type == "internal")
+		} else if (counterpart.type == "internal") {
 			result = "internal"
-		else if (counterpart.type == "card")
+		} else if (counterpart.type == "card") {
 			result = "card"
-		else
+		} else {
 			result = "external"
+		}
 		return result
 	}
 
@@ -392,15 +394,15 @@ export namespace Transaction {
 		return address.type != "card"
 			? Rail.Address.stringify(address)
 			: Rail.Address.Card.Counterpart.type.is(address)
-			? `${address.merchant.category} ${address.merchant.name}`
-			: `${address.iin}******${address.last4}`
+				? `${address.merchant.category} ${address.merchant.name}`
+				: `${address.iin}******${address.last4}`
 	}
 	function railAddressId(address: Rail.Address): string {
 		return address.type != "card"
 			? Rail.Address.stringify(address)
 			: Rail.Address.Card.Counterpart.type.is(address)
-			? address.merchant.id
-			: address.id
+				? address.merchant.id
+				: address.id
 	}
 	export function toCsv(transactions: (Transaction | Transaction.Legacy)[]): string {
 		return Report.toCsv(

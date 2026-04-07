@@ -24,7 +24,7 @@ export namespace Cards {
 	}
 	export function report(previous: NonMonthly, cards: Card[], range: { start: isoly.Date; end: isoly.Date }): Cards {
 		const result = previous
-		for (const iin of Iin.values)
+		for (const iin of Iin.values) {
 			if (iin !== "totalIdx") {
 				// number of customers who have or have had active Visa products, ever
 				const iinCards = cards.filter(card => card.details.iin == iin)
@@ -51,13 +51,16 @@ export namespace Cards {
 				const accountsWithActive = new Set(activeCards.map(card => card.account)).size
 				accountsWithActive > 0 && (result["Total Number of Active Accounts"][iin] = accountsWithActive)
 			}
+		}
 		// All idx iin numbers are summed up to totalIdx
-		for (const key of typedly.Object.keys(result))
-			if (key !== "Payments Transactions Declined for Insufficient Funds - Number")
+		for (const key of typedly.Object.keys(result)) {
+			if (key !== "Payments Transactions Declined for Insufficient Funds - Number") {
 				result[key]["totalIdx"] = typedly.Object.entries(result[key]).reduce(
 					(r, [iin, value]) => r + (Iin.Idx.type.is(iin) && value ? value : 0),
 					0
 				)
+			}
+		}
 		return result
 	}
 }

@@ -30,7 +30,7 @@ export namespace Permission {
 	}
 	export type Collection = zod.infer<typeof Collection.typeZod>
 	export namespace Collection {
-		export type Realm = typeof Realm.values[number]
+		export type Realm = (typeof Realm.values)[number]
 		export namespace Realm {
 			export const values = [
 				"*",
@@ -44,7 +44,7 @@ export namespace Permission {
 				"treasury",
 			] as const
 		}
-		export type Global = typeof Global.values[number]
+		export type Global = (typeof Global.values)[number]
 		export namespace Global {
 			export const values = ["user"] as const
 		}

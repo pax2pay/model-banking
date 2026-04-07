@@ -41,7 +41,7 @@ export namespace Authorization {
 						typeof transaction.reference == "string" ? transaction.reference : transaction.reference?.reference,
 					description: transaction.description,
 					...("exchange" in transaction ? { exchange: transaction.exchange } : {}),
-			  }
+				}
 			: undefined
 	}
 	export function toTransaction(authorization: Authorization): Transaction.Creatable & {

@@ -20,14 +20,15 @@ export namespace Password {
 	}
 	export async function create(creatable: Creatable, pepper: string | undefined): Promise<Password | gracely.Error> {
 		let result: Awaited<ReturnType<typeof create>>
-		if (creatable.new !== creatable.repeat)
+		if (creatable.new !== creatable.repeat) {
 			result = gracely.client.forbidden("The new password and the repeated password do not match.")
-		else if (creatable.new.length < 8)
+		} else if (creatable.new.length < 8) {
 			result = gracely.client.forbidden("The new password must be at least 8 characters long.")
-		else if (!pepper)
+		} else if (!pepper) {
 			result = gracely.server.backendFailure("The password cannot be created without a pepper.")
-		else
+		} else {
 			result = { hash: await hash(creatable.new, pepper), changed: isoly.DateTime.now() }
+		}
 		return result
 	}
 	export function salt(): string {

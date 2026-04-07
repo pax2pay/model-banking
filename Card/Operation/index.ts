@@ -25,7 +25,7 @@ export namespace Operation {
 					id: entry.transaction.id,
 					status: entry.type == "capture" ? "captured" : "refunded",
 					created: isoly.DateTime.now(),
-			  }
+				}
 	}
 	export const type = isly.union(Card.type, OperationAuthorization.type)
 	export const type2: isly2.Union<Operation> = isly2

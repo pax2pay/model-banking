@@ -15,10 +15,10 @@ export class Operations {
 			options?.start && options?.end
 				? `?start=${options?.start}&end=${options?.end}`
 				: options?.start
-				? `?start=${options?.start}`
-				: options?.end
-				? `?end=${options?.end}`
-				: ""
+					? `?start=${options?.start}`
+					: options?.end
+						? `?end=${options?.end}`
+						: ""
 		return this.client.get<Operation[] & { cursor?: string | undefined }>(
 			`/operation${search}`,
 			options && (({ start, end, ...headers }) => headers)(options)

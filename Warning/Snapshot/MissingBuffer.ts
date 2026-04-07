@@ -22,7 +22,7 @@ export namespace MissingBuffer {
 		const result: MissingBuffer[] = []
 		for (const [currency, amount] of Object.entries(account.balance)) {
 			const minimum = account.conditions?.minimum?.[currency as isoly.Currency]
-			if (typeof minimum != "undefined" && minimum > amount)
+			if (typeof minimum != "undefined" && minimum > amount) {
 				result.push({
 					type: "missing-buffer",
 					resource: account.code,
@@ -31,6 +31,7 @@ export namespace MissingBuffer {
 					balance: amount,
 					date: isoly.Date.now(),
 				})
+			}
 		}
 		return result
 	}

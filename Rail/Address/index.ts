@@ -21,7 +21,7 @@ export namespace Address {
 		eea: ["internal", "iban", "scan", "card"],
 	}
 	export const values = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
-	export type Type = typeof values[number]
+	export type Type = (typeof values)[number]
 	export function compare(addresses: [Address, Address]): boolean {
 		return Object.entries(addresses[0]).every(([key, value]) => value == (addresses[1] as any)[key])
 	}

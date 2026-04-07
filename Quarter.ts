@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 
-export type Quarter = typeof Quarter.values[number]
+export type Quarter = (typeof Quarter.values)[number]
 export namespace Quarter {
 	export const values = ["Q1", "Q2", "Q3", "Q4"] as const
 	export const type = isly.string<Quarter>(values)

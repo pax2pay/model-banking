@@ -36,8 +36,9 @@ describe("Identity", () => {
 			expect(identity.authenticate({ settlement: "admin" })).haveOwnProperty("status", 403)
 		}
 		// This is to make the test fail if the identity cannot be created
-		else
+		else {
 			expect(identity).instanceOf(pax2pay.User.Identity)
+		}
 	})
 	it("Identifies a user from a whitelisted long term jwt", async () => {
 		const identity = await pax2pay.User.Identity.open(`Bearer ${whitelisted.token}`, { store, key: key.public })

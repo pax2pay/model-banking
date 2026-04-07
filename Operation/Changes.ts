@@ -18,10 +18,10 @@ export namespace Changes {
 								: 0
 						),
 					0
-			  )
+				)
 			: "available" in changes
-			? (changes.available?.type == "subtract" ? -1 : 1) * (changes.available?.amount ?? 0)
-			: 0
+				? (changes.available?.type == "subtract" ? -1 : 1) * (changes.available?.amount ?? 0)
+				: 0
 	}
 	export function reserved(changes: MaybeLegacy, currency: isoly.Currency): number {
 		return Object.entries(changes).reduce(
@@ -57,7 +57,7 @@ export namespace Changes {
 		export const type = isly.record<Legacy>(isly.string(), Change.type)
 		export type Entry = AccountBalance.Legacy.Entry
 		export namespace Entry {
-			export type Balance = typeof AccountBalance.Legacy.Entry.values[number]
+			export type Balance = (typeof AccountBalance.Legacy.Entry.values)[number]
 			export namespace Balance {
 				export const type = AccountBalance.Legacy.Entry.type
 			}
@@ -68,17 +68,18 @@ export namespace Changes {
 		export const type = isly.string<Entry>()
 		export function getBalanceType(key: string): string {
 			let result = ""
-			if (key.includes("net") || key.includes("fee") || key.includes("charge"))
+			if (key.includes("net") || key.includes("fee") || key.includes("charge")) {
 				result = "collecting"
-			else if (key.toLowerCase().includes("reserved") || key === "available")
+			} else if (key.toLowerCase().includes("reserved") || key === "available") {
 				result = "balance"
-			else if (key.includes("internal"))
+			} else if (key.includes("internal")) {
 				result = "equalizing"
-			else
+			} else {
 				result = "fiat"
+			}
 			return result
 		}
-		export type Balance = typeof Balance.values[number]
+		export type Balance = (typeof Balance.values)[number]
 		export namespace Balance {
 			export const values = ["available", "reserved-incoming", "reserved-outgoing", "reserved-buffer"] as const
 			export const type = isly.string<Balance>(values)

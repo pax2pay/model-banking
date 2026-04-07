@@ -3,7 +3,7 @@ import { isly as isly2 } from "isly2"
 import { Realm } from "../Realm"
 import { Stack } from "./Stack"
 
-export type Preset = typeof Preset.names[number]
+export type Preset = (typeof Preset.names)[number]
 
 // (test OR p2p)-scheme-interchange
 export namespace Preset {

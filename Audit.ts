@@ -3,7 +3,7 @@ import { isly } from "isly"
 
 export type Audit = storage.AuditLogger.Entry<Audit.Type>
 export namespace Audit {
-	export type Type = { [K in keyof typeof Resource.value]: typeof Resource.value[K][number] }
+	export type Type = { [K in keyof typeof Resource.value]: (typeof Resource.value)[K][number] }
 	export type Resource = keyof typeof Resource.value
 	export namespace Resource {
 		export const value = {

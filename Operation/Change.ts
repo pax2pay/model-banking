@@ -10,7 +10,7 @@ export interface Change<T extends Change.Operand = Change.Operand> {
 
 export namespace Change {
 	export const operand = ["add", "subtract"] as const
-	export type Operand = typeof operand[number]
+	export type Operand = (typeof operand)[number]
 	export const type = isly.object<Change>({
 		type: isly.string(["add", "subtract"]),
 		amount: isly.number(),

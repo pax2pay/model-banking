@@ -12,11 +12,11 @@ export interface Statistics {
 }
 
 export namespace Statistics {
-	export type TransactionType = typeof TransactionType.values[number]
+	export type TransactionType = (typeof TransactionType.values)[number]
 	export namespace TransactionType {
 		export const values = ["capture", "refund"] as const
 	}
-	export type Region = typeof Region.values[number]
+	export type Region = (typeof Region.values)[number]
 	export namespace Region {
 		export const values = ["domestic", "intraRegion", "extraRegion"] as const
 	}
@@ -54,7 +54,7 @@ export namespace Statistics {
 		regions: Record<"domestic" | "intraRegion", isoly.CountryCode.Alpha2[]>
 	): Statistics {
 		const result: Statistics = empty()
-		for (const transaction of transactions)
+		for (const transaction of transactions) {
 			if (
 				Transaction.CardTransaction.type.is(transaction) &&
 				transaction.status == "finalized" &&
@@ -63,8 +63,8 @@ export namespace Statistics {
 				const region = regions.domestic.includes(transaction.counterpart.merchant.country)
 					? "domestic"
 					: regions.intraRegion.includes(transaction.counterpart.merchant.country)
-					? "intraRegion"
-					: "extraRegion"
+						? "intraRegion"
+						: "extraRegion"
 				const kind = transaction.direction == "outbound" ? "capture" : "refund"
 				result[kind][region].count++
 				result[kind][region].amount = isoly.Currency.add(
@@ -74,6 +74,7 @@ export namespace Statistics {
 				)
 				result.cards.includes(transaction.account.id) || result.cards.push(transaction.account.id)
 			}
+		}
 		return result
 	}
 	export function combine(accumulation: Statistics, incoming: Statistics, currency: isoly.Currency): Statistics {

@@ -97,7 +97,7 @@ export namespace rows {
 		"Payments Transactions Declined for Insufficient Funds - Number",
 		"Cash Transactions Declined for Insufficient Funds - Number",
 	] as const
-	export type NonZero = typeof NonZero.values[number]
+	export type NonZero = (typeof NonZero.values)[number]
 	export namespace NonZero {
 		export const values = [
 			"National Payments Count - Month x",
@@ -117,7 +117,7 @@ export namespace rows {
 		] as const
 		export const type = isly.string<NonZero>(values)
 	}
-	export type Blank = typeof Blank.values[number]
+	export type Blank = (typeof Blank.values)[number]
 	export namespace Blank {
 		export const values = [
 			"Fraud Recoveries - Domestic - Cash Disbursements - Amount",
@@ -142,8 +142,9 @@ export namespace rows {
 	}
 	export function monthlyZeroRows(row: string, zeroes: number): string {
 		let result = ""
-		for (let i = 1; 3 >= i; i++)
+		for (let i = 1; 3 >= i; i++) {
 			result += row.replace("Month x", `Month ${i}`) + "|0".repeat(zeroes) + "\n"
+		}
 		return result
 	}
 	export function zeros(row: string, zeroes: number): string {
