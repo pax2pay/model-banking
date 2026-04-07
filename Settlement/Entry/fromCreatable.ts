@@ -11,17 +11,19 @@ export function fromCreatable(
 	let result: Entry
 	const reasons: string[] = []
 	const created = isoly.DateTime.now()
-	if (creatable.type == "unknown")
+	if (creatable.type == "unknown") {
 		reasons.push("Unknown entry type.")
-	if (gracely.Error.is(transaction))
+	}
+	if (gracely.Error.is(transaction)) {
 		reasons.push(`gracely error: ${JSON.stringify(transaction)}`)
-	else if (typeof transaction == "string")
+	} else if (typeof transaction == "string") {
 		reasons.push(transaction || "No reason provided.")
-	else if (transaction.status != "finalized" && transaction.status != "processing")
+	} else if (transaction.status != "finalized" && transaction.status != "processing") {
 		reasons.push(`Transaction ${transaction.id} on account ${transaction.accountId} unable to be finalized.`)
-	if (reasons.length > 0)
+	}
+	if (reasons.length > 0) {
 		result = { status: "failed", reason: reasons.join("\n"), ...creatable, created }
-	else {
+	} else {
 		const cardTransaction = transaction as Transaction.CardTransaction
 		result = {
 			status: "succeeded",

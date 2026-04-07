@@ -29,7 +29,7 @@ export namespace Creatable {
 		"legacy",
 		"adjustBuffer",
 	] as const
-	export type Type = typeof types[number]
+	export type Type = (typeof types)[number]
 	export const type = isly.object<Creatable>({
 		account: isly.fromIs("cryptly.Identifier", cryptly.Identifier.is),
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),

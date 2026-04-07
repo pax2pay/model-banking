@@ -50,10 +50,12 @@ export namespace Log {
 		locations?: LogLocations
 	): void {
 		const configuration = { collection, realm, resource, requireEntries }
-		if (Log.Message.Configuration.type.safeParse(configuration).success)
+		if (Log.Message.Configuration.type.safeParse(configuration).success) {
 			console.log(configuration)
-		if (Log.Locations.type.safeParse(locations).success)
+		}
+		if (Log.Locations.type.safeParse(locations).success) {
 			console.log(Log.Entry.Message.to("Locations", locations, resource))
+		}
 	}
 	export function log(message: string, data?: any, resource?: string): void {
 		console.log(Log.Entry.Message.to(message, data, resource))

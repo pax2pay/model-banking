@@ -13,7 +13,7 @@ export interface Card {
 
 export namespace Card {
 	export const statuses = ["created", "changed", "cancelled"] as const
-	export type Status = typeof statuses[number]
+	export type Status = (typeof statuses)[number]
 	export const type = isly.object<Card>({
 		type: isly.string("card"),
 		status: isly.string(statuses),

@@ -40,10 +40,11 @@ export namespace Data {
 	}
 	export function toCsv(data: Data, row: rows.NonZero): string {
 		let result: string
-		if (row.endsWith("Month x"))
+		if (row.endsWith("Month x")) {
 			result = Regional.toCsvRow(data.regional, row)
-		else
+		} else {
 			result = NonMonthly.toCsvRow(data.nonMonthly, row)
+		}
 		return result
 	}
 }

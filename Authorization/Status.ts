@@ -6,19 +6,21 @@ export type Status = "approved" | Status.Failed
 
 export namespace Status {
 	export const failures = [...Transaction.Status.reasons, "card not found", "account not found", "other"] as const
-	export type Failed = typeof failures[number]
+	export type Failed = (typeof failures)[number]
 	export namespace Failed {
 		export function from(error: gracely.Error | Transaction.Status.Reason): Failed {
 			let result: Status
-			if (gracely.Error.is(error))
-				if (error.error?.includes("Card with id"))
+			if (gracely.Error.is(error)) {
+				if (error.error?.includes("Card with id")) {
 					result = "card not found"
-				else if (error.error?.includes("Failed to reach account"))
+				} else if (error.error?.includes("Failed to reach account")) {
 					result = "account not found"
-				else
+				} else {
 					result = "other"
-			else
+				}
+			} else {
 				result = error
+			}
 			return result
 		}
 	}

@@ -14,7 +14,7 @@ export namespace fx {
 		rate: { base: number; markup: number; effective: number }
 	}
 	export namespace Quote {
-		export type Fixed = typeof Fixed.values[number]
+		export type Fixed = (typeof Fixed.values)[number]
 		export namespace Fixed {
 			export const values = ["from", "to"] as const
 			export const type = isly.string<Fixed>(values)

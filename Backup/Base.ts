@@ -14,7 +14,7 @@ export type Base<T> = {
 	value: T
 }
 export namespace Base {
-	export type Action = typeof Action.values[number]
+	export type Action = (typeof Action.values)[number]
 	export namespace Action {
 		export const values = ["created", "updated", "cancelled", "removed", "inactivated"] as const
 	}

@@ -8,7 +8,7 @@ export type History = {
 }
 
 export namespace History {
-	export type Property = typeof Property.values[number]
+	export type Property = (typeof Property.values)[number]
 	export namespace Property {
 		export const values = [
 			"status",

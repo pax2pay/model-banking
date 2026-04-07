@@ -16,7 +16,7 @@ export namespace Entry {
 						data: trace.message[0].data,
 					},
 					resource: trace.message[0].resource,
-			  }
+				}
 			: undefined
 	}
 }

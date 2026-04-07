@@ -25,7 +25,7 @@ export namespace State {
 	export import Account = StateAccount
 	export import Transaction = StateTransaction
 	export import Organization = StateOrganization
-	export type Outcome = typeof Outcome.values[number]
+	export type Outcome = (typeof Outcome.values)[number]
 	export namespace Outcome {
 		export const values = ["approve", "reject", "review"] as const
 		export const type = isly.string<Outcome>(values)

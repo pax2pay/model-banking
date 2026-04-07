@@ -15,7 +15,7 @@ export namespace Rule {
 	export import Category = Base.Category
 	export const control = ruleControl
 
-	export type Action = typeof Action.values[number]
+	export type Action = (typeof Action.values)[number]
 	export namespace Action {
 		export const values = [...Other.Action.values] as const
 		export const type = isly.string<Action>(values)

@@ -2,7 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Realm } from "../Realm"
 
-export type Supplier = typeof Supplier.names[number]
+export type Supplier = (typeof Supplier.names)[number]
 export namespace Supplier {
 	export const names = ["paxgiro", "clearbank", "bankingcircle"] as const
 	export const type = isly.string<Supplier>(names)
@@ -21,6 +21,5 @@ export namespace Supplier {
 		eea: [],
 		test: ["paxgiro", "bankingcircle"],
 		uk: ["clearbank", "bankingcircle"],
-	// eslint-disable-next-line prettierx/options
 	} as const satisfies Record<Realm, Supplier[]>
 }

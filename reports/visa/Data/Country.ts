@@ -31,15 +31,17 @@ export namespace Country {
 		type: "count" | "volume"
 	): string {
 		let result = ""
-		if (data[presence])
+		if (data[presence]) {
 			for (const month of Monthly.Month.values) {
 				result += `Country ${country} - ${region} Card ${presence == "present" ? "Present" : "Not Present"} ${
 					type == "count" ? "Count" : "Volume"
 				} - Month ${month}`
-				for (const iin of Iin.values)
+				for (const iin of Iin.values) {
 					result += `|${data[presence]?.[month][type][iin] ?? 0}`
+				}
 				result += "\n"
 			}
+		}
 		return result
 	}
 	export function update(country: Country, transaction: Transaction.CardTransaction): Country {
@@ -58,8 +60,9 @@ export namespace Country {
 	}
 	export function merge(previous: Country, addition: Country): Country {
 		const result: Country = {}
-		for (const country of Object.keys(previous).concat(Object.keys(addition)) as isoly.CountryCode.Alpha2[])
+		for (const country of Object.keys(previous).concat(Object.keys(addition)) as isoly.CountryCode.Alpha2[]) {
 			result[country] = mergePerCountry(previous[country] ?? {}, addition[country] ?? {})
+		}
 		return result
 	}
 }

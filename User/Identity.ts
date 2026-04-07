@@ -8,14 +8,18 @@ export class Identity {
 	get realm(): Realm {
 		return this.payload.realm
 	}
-	constructor(public readonly payload: JWT.Payload, public readonly jwt: string) {}
+	constructor(
+		public readonly payload: JWT.Payload,
+		public readonly jwt: string
+	) {}
 
 	authenticate(constraint: Access.Permission | Access.Permission[]): Identity | gracely.Error {
 		let allowed: boolean
-		if (Array.isArray(constraint))
+		if (Array.isArray(constraint)) {
 			allowed = constraint.some(c => this.authenticate(c))
-		else
+		} else {
 			allowed = Access.Permission.check(constraint, this.payload.permission)
+		}
 		return allowed ? this : gracely.client.forbidden()
 	}
 

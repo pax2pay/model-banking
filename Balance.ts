@@ -4,7 +4,7 @@ import { Amount } from "./Amount"
 
 export type Balance = { available?: number; reserved?: Balance.Reserved }
 export namespace Balance {
-	export type Reserve = typeof Reserve.values[number]
+	export type Reserve = (typeof Reserve.values)[number]
 	export namespace Reserve {
 		export const values = ["incoming", "outgoing", "buffer"] as const
 		export const type = isly.string<Reserve>(values)
@@ -16,7 +16,7 @@ export namespace Balance {
 	})
 	export type Legacy = Partial<Record<Legacy.Entry, number>>
 	export namespace Legacy {
-		export type Entry = typeof Entry.values[number]
+		export type Entry = (typeof Entry.values)[number]
 		export namespace Entry {
 			export const values = ["actual", "incomingReserved", "outgoingReserved", "bufferReserved"] as const
 			export const type = isly.string<Entry>(values)

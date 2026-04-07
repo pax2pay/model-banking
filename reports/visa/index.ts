@@ -17,19 +17,21 @@ export namespace visa {
 	export function toCsv(data: Data): string {
 		// report 1
 		let csv = headers.join("|") + "\n"
-		for (const row of rows.all)
-			if (rows.Blank.type.is(row))
+		for (const row of rows.all) {
+			if (rows.Blank.type.is(row)) {
 				// Leave empty for operations team to fill
 				csv += rows.Blank.toCsvRow(row, headers.length - 1)
-			else if (rows.NonZero.type.is(row))
+			} else if (rows.NonZero.type.is(row)) {
 				// "report 1" data
 				csv += Data.toCsv(data, row)
-			else if (row.endsWith("Month x"))
+			} else if (row.endsWith("Month x")) {
 				// rows with zeroes for each month
 				csv += rows.monthlyZeroRows(row, headers.length - 1)
-			// rows with zeroes
-			else
+			} else {
+				// rows with zeroes
 				csv += rows.zeros(row, headers.length - 1)
+			}
+		}
 		// append "report 2" to the end
 		csv += Data.Country.toCsv(data.country)
 		return csv

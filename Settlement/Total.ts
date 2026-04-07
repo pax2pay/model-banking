@@ -52,26 +52,28 @@ export namespace Total {
 	export function add(currency: isoly.Currency, addendee: Total, addend: Partial<Total>): Total {
 		const result: Total = { ...addendee }
 		addend.expected && (result.expected = Amount.add(currency, result.expected, addend.expected))
-		if (result.outcome || addend.outcome)
+		if (result.outcome || addend.outcome) {
 			result.outcome = Amount.add(currency, result.outcome ?? { net: 0, fee: { other: 0 } }, addend.outcome ?? {})
+		}
 		if (result.collected || addend.collected) {
 			const transactions1 = Array.isArray(result.collected?.transactions)
 				? result.collected.transactions
 				: result.collected?.transactions
-				? [result.collected.transactions]
-				: []
+					? [result.collected.transactions]
+					: []
 			const transactions2 = Array.isArray(addend.collected?.transactions)
 				? addend.collected.transactions
 				: addend.collected?.transactions
-				? [addend.collected.transactions]
-				: []
+					? [addend.collected.transactions]
+					: []
 			result.collected = { transactions: [...transactions1, ...transactions2] }
 		}
-		if (result.settled || addend.settled)
+		if (result.settled || addend.settled) {
 			result.settled = {
 				net: addend.settled?.net ?? result.settled?.net ?? 0,
 				transactions: result.settled?.transactions ?? addend.settled?.transactions ?? [],
 			}
+		}
 		return result
 	}
 }

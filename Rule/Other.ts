@@ -10,7 +10,7 @@ export interface Other extends Base {
 	action: Other.Action
 }
 export namespace Other {
-	export type Action = typeof Action.values[number]
+	export type Action = (typeof Action.values)[number]
 	export namespace Action {
 		export const values = ["review", "reject", "flag"] as const
 		export const type = isly.string<Action>(values)
@@ -38,14 +38,16 @@ export namespace Other {
 		if (
 			state.transaction.stage == "initiate" &&
 			["card", "external", "internal"].some(type => type == state.transaction.type)
-		)
-			for (const rule of rules)
+		) {
+			for (const rule of rules) {
 				if (control(rule, state)) {
 					result.outcomes[rule.action].push(rule)
 					result.notes.push({ author: "automatic", created: now, text: rule.name, rule })
 					rule.flags.forEach(f => result.flags.add(f))
 					rule.action == "review" && result.flags.add("review")
 				}
+			}
+		}
 		return result
 	}
 }

@@ -7,7 +7,7 @@ export type Monthly = Record<
 	{ count: Partial<Record<Iin, number>>; volume: Partial<Record<Iin, number>> }
 >
 export namespace Monthly {
-	export type Month = typeof Month.values[number]
+	export type Month = (typeof Month.values)[number]
 	export namespace Month {
 		export const values = [1, 2, 3] as const
 	}
@@ -45,7 +45,7 @@ export namespace Monthly {
 		const result: Monthly = empty()
 		previous ??= empty()
 		addition ??= empty()
-		for (const month of Monthly.Month.values)
+		for (const month of Monthly.Month.values) {
 			for (const iin of Iin.values) {
 				result[month].count[iin] = (previous[month].count[iin] ?? 0) + (addition[month].count[iin] ?? 0)
 				result[month].volume[iin] = isoly.Currency.add(
@@ -54,6 +54,7 @@ export namespace Monthly {
 					addition[month].volume[iin] ?? 0
 				)
 			}
+		}
 
 		return result
 	}

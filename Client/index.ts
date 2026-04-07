@@ -79,19 +79,20 @@ export class Client {
 			appendHeader: request => ({
 				...request.header,
 				realm: result.realm,
-				...(request.header.organization ?? result.organization
+				...((request.header.organization ?? result.organization)
 					? { organization: request.header.organization ?? result.organization }
 					: {}),
 			}),
 			postprocess: async response => {
 				let result = response
 				const body = await response.body
-				if (Array.isArray(body))
+				if (Array.isArray(body)) {
 					result = http.Response.create(
 						Object.defineProperty(body, "cursor", {
 							value: response.header.cursor ?? response.header.link?.split?.(",")[0],
 						})
 					)
+				}
 				return result
 			},
 		})

@@ -2,7 +2,7 @@ import { isly } from "isly"
 import { isly as isly2 } from "isly2"
 import { Address as RailAddress } from "./Address"
 
-export type Rail = typeof Rail.rails[number]
+export type Rail = (typeof Rail.rails)[number]
 export namespace Rail {
 	export const rails = [
 		"internal",

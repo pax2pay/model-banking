@@ -6,7 +6,7 @@ export interface Creatable {
 	location?: Creatable.Location
 }
 export namespace Creatable {
-	export type Location = typeof Location.values[number]
+	export type Location = (typeof Location.values)[number]
 	export namespace Location {
 		export const values = ["north-east-america", "west-europe"] as const
 		export function toCloudflare(value: Location): DurableObjectLocationHint {

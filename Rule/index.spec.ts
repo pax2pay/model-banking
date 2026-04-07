@@ -119,10 +119,10 @@ function getState(
 								zip: "string",
 								country: "GB",
 							},
-					  }
+						}
 					: type == "external"
-					? transaction1.counterpart
-					: { type: "internal", identifier: "abcd1234" },
+						? transaction1.counterpart
+						: { type: "internal", identifier: "abcd1234" },
 		},
 		kind,
 		stage,

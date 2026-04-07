@@ -16,7 +16,7 @@ export namespace Configuration {
 					collection: trace.message[0].collection,
 					resource: trace.message[0].resource,
 					requireEntries: trace.message[0].requireEntries,
-			  }
+				}
 			: undefined
 	}
 }

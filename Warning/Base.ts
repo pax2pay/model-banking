@@ -12,7 +12,7 @@ export interface Base {
 }
 
 export namespace Base {
-	export type Severity = typeof Severity.values[number]
+	export type Severity = (typeof Severity.values)[number]
 	export namespace Severity {
 		export const values = ["low", "medium", "high"] as const
 		export const type = isly.string<Severity>(values)
