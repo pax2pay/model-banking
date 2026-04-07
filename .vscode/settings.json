@@ -1,7 +1,8 @@
 {
 	"files.exclude": {
 		".*": true,
-		"*.json": true,
+		"*.json": false,
+		"package-lock.json": true,
 		"CODEOWNERS": true,
 		"dist": true,
 		"README.md": true,
@@ -20,10 +21,7 @@
 		"source.fixAll.eslint": "explicit",
 		"eslint.autoFixOnSave": "explicit"
 	},
-	"eslint.format.enable": true,
-	"eslint.lintTask.enable": true,
-	"javascript.format.enable": false,
-	"typescript.format.enable": false,
+	"js/ts.format.enabled": false,
 	"cSpell.words": [
 		"addendee",
 		"algerie",
@@ -61,7 +59,7 @@
 		"prettierx",
 		"rebalance",
 		"ryanair",
-		"selectivly",
+		"selectively",
 		"servly",
 		"servly-azure",
 		"smoothly",
