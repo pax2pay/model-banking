@@ -19,13 +19,21 @@ export interface Snapshot {
 		total: number // emoney issuable total amount
 		other: number
 		buffer: number
-		accounts: Account[]
+		accounts: Snapshot.Account[]
 	}
 }
 export namespace Snapshot {
 	export import funding = snapshotFunding
 	export type Emoney = SnapshotEmoney
 	export type Fiat = SnapshotFiat
+	export interface Account {
+		code: string
+		/* insert description/label/whatever here */
+		currency: isoly.Currency
+		opening: { at: isoly.DateTime; balance: number }
+		closing: { at: isoly.DateTime; balance: number }
+		delta: { balance: number; transactions: string[] }
+	}
 	export function validate(snapshot: Snapshot): boolean {
 		const issuable = snapshot.fiat.total
 		const actual = snapshot.emoney.actual ?? 0
