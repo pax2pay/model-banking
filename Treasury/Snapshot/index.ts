@@ -4,6 +4,7 @@ import { Balance } from "../../Balance"
 import { Supplier } from "../../Supplier"
 import { Warning } from "../../Warning"
 import { Account } from "../Account"
+import { Transaction } from "../Transaction"
 import { Emoney as SnapshotEmoney } from "./Emoney"
 import { Fiat as SnapshotFiat } from "./Fiat"
 import { funding as snapshotFunding } from "./funding"
@@ -32,7 +33,7 @@ export namespace Snapshot {
 		currency: isoly.Currency
 		opening: { at: isoly.DateTime; balance: number }
 		closing: { at: isoly.DateTime; balance: number }
-		delta: { balance: number; transactions: string[] }
+		delta: { balance: number; transactions: Transaction[] }
 	}
 	export function validate(snapshot: Snapshot): boolean {
 		const issuable = snapshot.fiat.total
