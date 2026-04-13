@@ -3,7 +3,6 @@ import { isly } from "isly"
 import { Balance } from "../../Balance"
 import { Supplier } from "../../Supplier"
 import { Warning } from "../../Warning"
-import { Account } from "../Account"
 import { Transaction } from "../Transaction"
 import { Emoney as SnapshotEmoney } from "./Emoney"
 import { Fiat as SnapshotFiat } from "./Fiat"
@@ -33,7 +32,20 @@ export namespace Snapshot {
 		currency: isoly.Currency
 		opening: { at: isoly.DateTime; balance: number }
 		closing: { at: isoly.DateTime; balance: number }
-		delta: { balance: number; transactions: Transaction[] }
+		delta: { amount: number; transactions: Transaction[] }
+	}
+	export namespace Account {
+		export type BalanceAt = { at: isoly.DateTime; balance: number }
+		export namespace BalanceAt {
+			export const type = isly.object<BalanceAt>({ at: isly.string(), balance: isly.number() })
+		}
+		export const type = isly.object<Account>({
+			code: isly.string(),
+			currency: isly.string(),
+			opening: BalanceAt.type,
+			closing: BalanceAt.type,
+			delta: isly.object<Account["delta"]>({ amount: isly.number(), transactions: Transaction.type.array() }),
+		})
 	}
 	export function validate(snapshot: Snapshot): boolean {
 		const issuable = snapshot.fiat.total
