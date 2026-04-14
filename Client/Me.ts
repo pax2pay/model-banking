@@ -12,7 +12,7 @@ export class Me {
 	async login(email: string, password: string, realm: Realm, totp?: User.mfa.Totp.Otp): Promise<User | gracely.Error> {
 		return await this.client.get<User>(`/me/${realm}`, {
 			authorization: `Basic ${authly.Base64.encode(email + ":" + password, "standard", "=")}`,
-			totp,
+			...(totp ? { totp } : undefined),
 		})
 	}
 }
