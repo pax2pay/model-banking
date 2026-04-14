@@ -1,16 +1,10 @@
 import { gracely } from "gracely"
 import { authly } from "authly"
 import { http } from "cloudly-http"
-import { Realm } from "../../Realm"
-import { User } from "../../User"
-import { Mfa } from "./Mfa"
+import { Realm } from "../Realm"
+import { User } from "../User"
 
 export class Me {
-	#mfa?: Mfa
-	get mfa(): Mfa {
-		return (this.#mfa ??= new Mfa(this.client))
-	}
-
 	constructor(private readonly client: http.Client) {}
 	async updatePassword(creatable: User.Password.Creatable): Promise<User | gracely.Error> {
 		return await this.client.put<User>(`/me/password`, creatable)
@@ -25,5 +19,9 @@ export class Me {
 			authorization: `Basic ${authly.Base64.encode(email + ":" + password, "standard", "=")}`,
 			...(totp ? { totp } : undefined),
 		})
+	}
+
+	async setupTotp(totp: User.mfa.Totp, otp: User.mfa.Totp.Otp): Promise<User | gracely.Error> {
+		return this.client.put<User>(`/me/mfa/totp`, totp, { ...(otp ? { totp: otp } : undefined) })
 	}
 }
