@@ -15,8 +15,13 @@ export class Me {
 	async updatePassword(creatable: User.Password.Creatable): Promise<User | gracely.Error> {
 		return await this.client.put<User>(`/me/password`, creatable)
 	}
-	async login(email: string, password: string, realm: Realm, totp?: User.mfa.Totp.Otp): Promise<User | gracely.Error> {
-		return await this.client.get<User>(`/me/${realm}`, {
+	async login(
+		email: string,
+		password: string,
+		realm: Realm,
+		totp?: User.mfa.Totp.Otp
+	): Promise<string | gracely.Error> {
+		return await this.client.get<string>(`/me/${realm}`, {
 			authorization: `Basic ${authly.Base64.encode(email + ":" + password, "standard", "=")}`,
 			...(totp ? { totp } : undefined),
 		})
