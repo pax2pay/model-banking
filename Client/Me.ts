@@ -15,4 +15,7 @@ export class Me {
 			...(totp ? { totp } : undefined),
 		})
 	}
+	async setupMfa(totp: User.mfa.Totp, otp: User.mfa.Totp.Otp) {
+		return this.client.put<User>(`/me/mfa/totp`, totp, { ...(otp ? { totp: otp } : undefined) })
+	}
 }
