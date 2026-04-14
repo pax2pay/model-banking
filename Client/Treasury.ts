@@ -16,7 +16,7 @@ export class Treasury {
 	async listAccounts(): Promise<TreasuryModel.Account.Listable[] | gracely.Error> {
 		return this.client.get<TreasuryModel.Account.Listable[]>(`/treasury/account`)
 	}
-	async report(start: isoly.Date, end: isoly.Date, supplier: string): Promise<TreasuryModel.Account.Listable[] | gracely.Error> {
-		return this.client.get<TreasuryModel.Account.Listable[]>(`/treasury/${supplier}/report?start=${start}&end=${end}`)
+	async report(start: isoly.Date, end: isoly.Date, supplier: string): Promise<string | gracely.Error> {
+		return this.client.get<string>(`/treasury/${supplier}/report?start=${start}&end=${end}`)
 	}
 }
