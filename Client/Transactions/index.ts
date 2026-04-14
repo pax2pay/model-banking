@@ -20,7 +20,11 @@ export class Transactions {
 		return this.client.post<Transaction>(`/account/${account}/transaction`, transaction)
 	}
 	async list(options?: string | Transactions.Query): Promise<(Transaction[] & { cursor?: string }) | gracely.Error> {
-		const query = !options ? undefined : typeof options == "string" ? options : http.Search.stringify({ ...options })
+		const query = !options
+			? undefined
+			: typeof options == "string"
+				? options
+				: http.Search.stringify({ ...options, references: options.references?.join(",") })
 		return await this.client.get<Transaction[] & { cursor?: string | undefined }>(
 			"/transaction" + (query ? "?" + query : "")
 		)
@@ -54,6 +58,7 @@ export namespace Transactions {
 		end?: isoly.DateTime
 		currency?: string
 		organization?: string
+		references?: string[]
 		rail?: Rail
 		type?: Transaction.Types
 	}
