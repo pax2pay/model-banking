@@ -21,7 +21,7 @@ export class Me {
 		})
 	}
 
-	async setupTotp(totp: User.mfa.Totp, otp: User.mfa.Totp.Otp): Promise<User | gracely.Error> {
+	async setupMfa(totp: User.mfa.Totp, otp: User.mfa.Totp.Otp): Promise<User | gracely.Error> {
 		return this.client.put<User>(`/me/mfa/totp`, totp, { ...(otp ? { totp: otp } : undefined) })
 	}
 }

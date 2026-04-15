@@ -25,7 +25,7 @@ export class Users {
 	async updateAccess(email: string, access: User.Access): Promise<User | gracely.Error> {
 		return await this.client.put<User>(`/user/${email}/access`, access)
 	}
-	async removeTotp(email: string) {
+	async removeMfa(email: string) {
 		return this.client.delete<User>(`/user/${email}/mfa/totp`)
 	}
 }
