@@ -1,7 +1,7 @@
 import { zod } from "../zod"
 
 export namespace mfa {
-	export type Totp = zod.infer<typeof Totp.Otp>
+	export type Totp = zod.infer<typeof Totp.typeZod>
 	export namespace Totp {
 		export const typeZod = zod.object({
 			key: zod.string().nonempty(), // secret
