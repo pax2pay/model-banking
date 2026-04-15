@@ -3,7 +3,7 @@ import { isly } from "isly"
 import { Balance } from "../../Balance"
 import { Supplier } from "../../Supplier"
 import { Warning } from "../../Warning"
-import { Transaction } from "../Transaction"
+import { Account as SnapshotAccount } from "./Account"
 import { Emoney as SnapshotEmoney } from "./Emoney"
 import { Fiat as SnapshotFiat } from "./Fiat"
 import { funding as snapshotFunding } from "./funding"
@@ -26,27 +26,7 @@ export namespace Snapshot {
 	export import funding = snapshotFunding
 	export type Emoney = SnapshotEmoney
 	export type Fiat = SnapshotFiat
-	export interface Account {
-		code: string
-		/* insert description/label/whatever here */
-		currency: isoly.Currency
-		opening: { at: isoly.DateTime; balance: number }
-		closing: { at: isoly.DateTime; balance: number }
-		delta: { amount: number; transactions: Transaction[] }
-	}
-	export namespace Account {
-		export type BalanceAt = { at: isoly.DateTime; balance: number }
-		export namespace BalanceAt {
-			export const type = isly.object<BalanceAt>({ at: isly.string(), balance: isly.number() })
-		}
-		export const type = isly.object<Account>({
-			code: isly.string(),
-			currency: isly.string(),
-			opening: BalanceAt.type,
-			closing: BalanceAt.type,
-			delta: isly.object<Account["delta"]>({ amount: isly.number(), transactions: Transaction.type.array() }),
-		})
-	}
+	export import Account = SnapshotAccount
 	export function validate(snapshot: Snapshot): boolean {
 		const issuable = snapshot.fiat.total
 		const actual = snapshot.emoney.actual ?? 0
