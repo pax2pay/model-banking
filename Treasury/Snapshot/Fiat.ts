@@ -12,5 +12,5 @@ export interface Fiat {
 	warnings?: Warning.Snapshot[]
 	conditions?: { minimum?: Balance }
 	label?: string
-	reference?: string
+	reference: string
 }
