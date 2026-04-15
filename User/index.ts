@@ -5,6 +5,7 @@ import { zod } from "../zod"
 import { Access as UserAccess } from "./Access"
 import { Identity as UserIdentity } from "./Identity"
 import { JWT as UserJWT } from "./JWT"
+import { mfa as userMfa } from "./mfa"
 import { Password as UserPassword } from "./Password"
 
 export interface User {
@@ -18,6 +19,7 @@ export namespace User {
 	export import Access = UserAccess
 	export import Identity = UserIdentity
 	export import JWT = UserJWT
+	export import mfa = userMfa
 	export import Password = UserPassword
 	export function fromInvite(invite: Invite): User {
 		const now = isoly.DateTime.now()
