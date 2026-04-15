@@ -4,7 +4,7 @@ import { Warning } from "../../Warning"
 import { Balance } from "../Balance"
 
 export interface Fiat {
-	supplier: Supplier | "total"
+	supplier: Supplier
 	account: string
 	timestamp: isoly.DateTime
 	type: "safeguarded" | "unsafe" | "other" | "buffer"
