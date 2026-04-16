@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { Warning } from "../../Warning"
 import { Transaction } from "../Transaction"
 
 export interface Account {
@@ -11,6 +12,7 @@ export interface Account {
 	opening: Account.Opening
 	closing: Account.Closing
 	delta: Account.Delta
+	warnings?: Warning.Snapshot[]
 }
 export namespace Account {
 	export type Opening = { at: isoly.DateTime; balance: number }
@@ -34,5 +36,6 @@ export namespace Account {
 		opening: Opening.type,
 		closing: Closing.type,
 		delta: Delta.type,
+		warnings: Warning.Snapshot.type.array().optional(),
 	})
 }
