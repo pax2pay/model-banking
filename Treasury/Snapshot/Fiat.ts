@@ -13,4 +13,5 @@ export interface Fiat {
 	conditions?: { minimum?: Balance }
 	label?: string
 	reference: string
+	description?: string
 }
