@@ -9,7 +9,7 @@ export interface Account {
 	description?: string
 	currency: isoly.Currency
 	opening: Account.Opening
-	closing: Account.Opening
+	closing: Account.Closing
 	delta: Account.Delta
 }
 export namespace Account {
