@@ -9,6 +9,7 @@ export interface Base {
 	value?: number
 	date: isoly.Date
 	issue?: Issue
+	description?: string
 }
 
 export namespace Base {
@@ -24,5 +25,6 @@ export namespace Base {
 		value: isly.number().optional(),
 		date: isly.string(),
 		issue: Issue.type.optional(),
+		description: isly.string().optional(),
 	})
 }
