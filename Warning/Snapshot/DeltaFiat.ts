@@ -4,13 +4,13 @@ import { Base } from "../Base"
 
 export interface DeltaFiat extends Base {
 	type: "delta-fiat"
-	severity?: "high"
+	severity?: "high" | "medium"
 	currency: isoly.Currency
 }
 export namespace DeltaFiat {
 	export const type = Base.type.extend<DeltaFiat>({
 		type: isly.string("delta-fiat"),
-		severity: isly.string("high").optional(),
+		severity: isly.string(["high", "medium"]).optional(),
 		currency: isly.string(),
 	})
 }
