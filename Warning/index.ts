@@ -19,6 +19,7 @@ export namespace Warning {
 			"missing-buffer",
 			"missing-emoney",
 			"missing-fiat",
+			"delta-fiat",
 		])
 		export type Settlement = WarningSettlement["type"]
 		export const Settlement = isly.string<Settlement>(["negative-amount", "missing-file", "unknown-entry"])

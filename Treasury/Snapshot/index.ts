@@ -3,7 +3,7 @@ import { isly } from "isly"
 import { Balance } from "../../Balance"
 import { Supplier } from "../../Supplier"
 import { Warning } from "../../Warning"
-import { Account } from "../Account"
+import { Account as SnapshotAccount } from "./Account"
 import { Emoney as SnapshotEmoney } from "./Emoney"
 import { Fiat as SnapshotFiat } from "./Fiat"
 import { funding as snapshotFunding } from "./funding"
@@ -19,13 +19,14 @@ export interface Snapshot {
 		total: number // emoney issuable total amount
 		other: number
 		buffer: number
-		accounts: Account[]
+		accounts: Snapshot.Account[]
 	}
 }
 export namespace Snapshot {
 	export import funding = snapshotFunding
 	export type Emoney = SnapshotEmoney
 	export type Fiat = SnapshotFiat
+	export import Account = SnapshotAccount
 	export function validate(snapshot: Snapshot): boolean {
 		const issuable = snapshot.fiat.total
 		const actual = snapshot.emoney.actual ?? 0
