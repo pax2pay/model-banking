@@ -2,7 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Balance } from "../../Balance"
 import { Supplier } from "../../Supplier"
-import { Note } from "../../Transaction/Note"
+import { Transaction } from "../../Transaction"
 import { Warning } from "../../Warning"
 import { Account as SnapshotAccount } from "./Account"
 import { Emoney as SnapshotEmoney } from "./Emoney"
@@ -22,7 +22,7 @@ export interface Snapshot {
 		buffer: number
 		accounts: Snapshot.Account[]
 	}
-	notes: Note[]
+	notes: Transaction.Note[]
 }
 export namespace Snapshot {
 	export import funding = snapshotFunding
@@ -47,6 +47,6 @@ export namespace Snapshot {
 			buffer: isly.number(),
 			accounts: Account.type.array(),
 		}),
-		notes: Note.type.array(),
+		notes: Transaction.Note.type.array(),
 	})
 }
