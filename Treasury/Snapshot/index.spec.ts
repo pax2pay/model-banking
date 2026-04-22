@@ -15,6 +15,7 @@ describe("Treasury.Snapshot", () => {
 			currency: "GBP",
 			fiat: { safe: 23846.03, unsafe: 0, total: 23846.03, other: 0, buffer: 0, accounts: [] },
 			emoney: { actual: 23846.03 },
+			notes: [],
 		}
 		expect(pax2pay.Treasury.Snapshot.validate(snapshot)).toEqual(true)
 	})
@@ -25,4 +26,5 @@ const snapshot: pax2pay.Treasury.Snapshot = {
 	emoney: { actual: 2 },
 	fiat: { safe: 1, unsafe: 1, total: 1, other: 1, buffer: 1, accounts: [] },
 	warnings: [],
+	notes: [],
 }
