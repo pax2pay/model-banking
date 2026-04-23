@@ -1,7 +1,4 @@
-export type Reconciliation = {
-	total?: number;
-	reconciliation?: {
-		correct: number;
-		incorrect: number;
-	};
-};
+export interface Reconciliation {
+	correct: number
+	incorrect: number
+}

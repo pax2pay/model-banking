@@ -12,7 +12,7 @@ import { Reconciliation as SnapshotReconciliation } from "./Reconciliation"
 
 export interface Snapshot {
 	warnings: Warning.Snapshot[]
-	emoney: Balance.Extended & Snapshot.Reconciliation
+	emoney: Balance.Extended & { total?: number; reconciliation?: Snapshot.Reconciliation }
 	currency: isoly.Currency
 	supplier: Supplier
 	fiat: {
