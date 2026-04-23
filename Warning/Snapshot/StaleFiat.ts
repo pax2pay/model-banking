@@ -26,7 +26,7 @@ export namespace StaleFiat {
 				if (transaction.amount > 0 && transaction.currency == currency && remainder > 0) {
 					remainder = isoly.Currency.subtract(currency, remainder, transaction.amount)
 					oldest = {
-						id: transaction.id,
+						id: transaction.reference,
 						date: isoly.DateTime.getDate(transaction.created),
 						created: transaction.created,
 					}

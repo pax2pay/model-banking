@@ -19,6 +19,7 @@ export namespace Warning {
 			"missing-buffer",
 			"missing-emoney",
 			"missing-fiat",
+			"missing-transaction",
 			"delta-fiat",
 		])
 		export type Settlement = WarningSettlement["type"]
