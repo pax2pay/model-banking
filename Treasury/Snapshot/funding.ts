@@ -10,7 +10,7 @@ export namespace funding {
 			amount: isly.number(),
 		})
 		export function fromTransaction(transaction: Transaction): string {
-			return `${transaction.currency}|${isoly.DateTime.invert(transaction.created)}|${transaction.id}`
+			return `${transaction.currency}|${isoly.DateTime.invert(transaction.created)}|${transaction.reference}`
 		}
 		export function toTimestamp(cursor: string): isoly.DateTime {
 			return isoly.DateTime.invert(cursor.split("|")[1])

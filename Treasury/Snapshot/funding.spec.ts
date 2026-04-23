@@ -26,7 +26,7 @@ describe("Treasury.Snapshot.Credit", () => {
 		}
 		pax2pay.Treasury.Snapshot.funding.settle(fundings, cursors)
 		expect(cursors.GBP?.amount).toBe(-11)
-		expect(cursors.GBP?.cursor.split("|")[2]).toBe(fundings[5].id)
+		expect(cursors.GBP?.cursor.split("|")[2]).toBe(fundings[5].reference)
 	})
 	it("Warns if stale", () => {
 		const staleBalance = {
