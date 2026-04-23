@@ -11,7 +11,7 @@ import { funding as snapshotFunding } from "./funding"
 
 export interface Snapshot {
 	warnings: Warning.Snapshot[]
-	emoney: Balance.Extended & { total?: number }
+	emoney: Balance.Extended & { total?: number; reconciliation?: { correct: number; incorrect: number } }
 	currency: isoly.Currency
 	supplier: Supplier
 	fiat: {
