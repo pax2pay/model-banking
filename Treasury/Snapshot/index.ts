@@ -8,10 +8,11 @@ import { Account as SnapshotAccount } from "./Account"
 import { Emoney as SnapshotEmoney } from "./Emoney"
 import { Fiat as SnapshotFiat } from "./Fiat"
 import { funding as snapshotFunding } from "./funding"
+import { Reconciliation as SnapshotReconciliation } from "./Reconciliation"
 
 export interface Snapshot {
 	warnings: Warning.Snapshot[]
-	emoney: Balance.Extended & { total?: number }
+	emoney: Balance.Extended & { total?: number; reconciliation?: Snapshot.Reconciliation }
 	currency: isoly.Currency
 	supplier: Supplier
 	fiat: {
@@ -26,6 +27,7 @@ export interface Snapshot {
 }
 export namespace Snapshot {
 	export import funding = snapshotFunding
+	export type Reconciliation = SnapshotReconciliation
 	export type Emoney = SnapshotEmoney
 	export type Fiat = SnapshotFiat
 	export import Account = SnapshotAccount

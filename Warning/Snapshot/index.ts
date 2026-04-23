@@ -5,31 +5,37 @@ import { MissingEmoney as WarningMissingEmoney } from "./MissingEmoney"
 import { MissingFiat as WarningMissingFiat } from "./MissingFiat"
 import { MissingTransaction as WarningMissingTransaction } from "./MissingTransaction"
 import { Overdraft as WarningOverdraft } from "./Overdraft"
+import { Reconciliation as WarningReconciliation } from "./Reconciliation"
 import { StaleFiat as WarningStaleFiat } from "./StaleFiat"
 
 export type Snapshot =
-	| Snapshot.Overdraft
-	| Snapshot.StaleFiat
+	| Snapshot.DeltaFiat
 	| Snapshot.MissingBuffer
 	| Snapshot.MissingEmoney
 	| Snapshot.MissingFiat
 	| Snapshot.MissingTransaction
-	| Snapshot.DeltaFiat
+	| Snapshot.Overdraft
+	| Snapshot.Reconciliation
+	| Snapshot.StaleFiat
+
 export namespace Snapshot {
-	export import Overdraft = WarningOverdraft
-	export import StaleFiat = WarningStaleFiat
+	export import DeltaFiat = WarningDeltaFiat
 	export import MissingBuffer = WarningMissingBuffer
 	export import MissingEmoney = WarningMissingEmoney
 	export import MissingFiat = WarningMissingFiat
 	export import MissingTransaction = WarningMissingTransaction
-	export import DeltaFiat = WarningDeltaFiat
+	export import Overdraft = WarningOverdraft
+	export import Reconciliation = WarningReconciliation
+	export import StaleFiat = WarningStaleFiat
+
 	export const type = isly.union<Snapshot>(
-		Overdraft.type,
-		StaleFiat.type,
+		DeltaFiat.type,
 		MissingBuffer.type,
 		MissingEmoney.type,
 		MissingFiat.type,
 		MissingTransaction.type,
-		DeltaFiat.type
+		Overdraft.type,
+		Reconciliation.type,
+		StaleFiat.type
 	)
 }
