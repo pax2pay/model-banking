@@ -40,9 +40,6 @@
 		"prepare": "npm run build",
 		"clean": "rimraf dist node_modules coverage"
 	},
-	"overrides": {
-		"esbuild": ">=0.25.0"
-	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20260405.1",
 		"@typescript-eslint/eslint-plugin": "8.44.1",
