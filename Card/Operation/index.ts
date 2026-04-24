@@ -1,6 +1,5 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
 import { Authorization } from "../../Authorization"
 import { Entry } from "../../Settlement/Entry"
 import { Authorization as OperationAuthorization } from "./Authorization"
@@ -28,8 +27,4 @@ export namespace Operation {
 				}
 	}
 	export const type = isly.union(Card.type, OperationAuthorization.type)
-	export const type2: isly2.Union<Operation> = isly2
-		.union<Operation>(Card.type2, OperationAuthorization.type2)
-		.rename("Operation")
-		.describe("An operation performed on a card.")
 }

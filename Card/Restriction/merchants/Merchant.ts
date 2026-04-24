@@ -1,4 +1,4 @@
-import { isly } from "isly2"
+import { isly } from "isly"
 
 export interface Merchant {
 	name: string
@@ -23,6 +23,6 @@ export namespace Merchant {
 			startsWith: value.startsWith && (Array.isArray(value.startsWith) ? value.startsWith : [value.startsWith]),
 			contains: value.contains && (Array.isArray(value.contains) ? value.contains : [value.contains]),
 		}
-		return type.prune(result)
+		return type.get(result)
 	}
 }

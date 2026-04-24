@@ -1,7 +1,5 @@
 import { isoly } from "isoly"
-import { isoly as isoly2 } from "isoly2"
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
 import { Amount } from "../Amount"
 import type { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
@@ -36,31 +34,5 @@ export namespace Creatable {
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 		key: isly.string().optional(),
 		restricted: isly.object<Required<Creatable>["restricted"]>({ to: Restriction.type.optional() }).optional(),
-	})
-	export const type2 = isly2.object<Creatable>({
-		account: isly2.string().rename("Account").describe("The account id the card was created on."),
-		number: isly2.string().optional().rename("Number").describe("The card identifier of the user of the api."),
-		preset: Preset.type2,
-		details: isly2
-			.object({ expiry: Expiry.type2, holder: isly2.string() })
-			.rename("Details")
-			.describe("The card details, the information that will be displayed on the card."),
-		limit: isly2
-			.tuple(isoly2.Currency.type, isly2.number().rename("Amount").describe("Amount in a specified currency."))
-			.rename("Limit")
-			.describe("Maximum amount that can be spent on the card."),
-		rules: isly2
-			.from("Rule", ruleType.is)
-			.array()
-			.optional()
-			.rename("Rules")
-			.describe("Card rules that applies to authorizations made with the card."),
-		meta: isly2.from("Meta", Meta.is).optional(),
-		key: isly2.string().optional(),
-		restricted: isly2
-			.object<Required<Creatable>["restricted"]>({ to: Restriction.type2.optional() })
-			.optional()
-			.rename("Restrictions")
-			.describe("Set of restrictions that apply to the card."),
 	})
 }
