@@ -6,6 +6,12 @@ import { Change } from "./Change"
 
 export type Changes = Partial<Record<Changes.Entry.Balance, Change>>
 export namespace Changes {
+	export function balance(currency: isoly.Currency, changes: Changes): number {
+		return [changes.available, changes["reserved-incoming"], changes["reserved-outgoing"]].reduce(
+			(r, change) => isoly.Currency.add(currency, r, (change?.type == "subtract" ? -1 : 1) * (change?.amount ?? 0)),
+			0
+		)
+	}
 	export function available(changes: MaybeLegacy, currency: isoly.Currency, legacy: boolean = false): number {
 		return legacy
 			? Object.entries(changes).reduce(
