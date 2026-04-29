@@ -9,7 +9,7 @@ export interface Account {
 	reference: string
 	description?: string
 	currency: isoly.Currency
-	opening: Account.Opening
+	opening?: Account.Opening
 	closing: Account.Closing
 	delta: Account.Delta
 	warnings?: Warning.Snapshot[]
