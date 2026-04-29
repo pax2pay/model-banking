@@ -1,6 +1,5 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
 import { Amount } from "../Amount"
 import { Realm } from "../Realm"
 import { Report } from "../Report"
@@ -76,42 +75,6 @@ export namespace Card {
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 		restricted: isly.object<Required<Card>["restricted"]>({ to: CardRestriction.type.optional() }).optional(),
 	})
-	export const type2: isly2.Object<Card> = isly2
-		.object<Card>({
-			id: isly2.string().rename("Id").describe("Unique 16 character base 64 identifier."),
-			number: isly2.string().optional().rename("Number").describe("Api users identifier."),
-			created: isly2.string().rename("Created").describe("Date and time of creation."),
-			organization: isly2.string().rename("Organization").describe("Organization code."),
-			realm: Realm.type2,
-			account: isly2.string().rename("Account").describe("Account identifier."),
-			preset: CardPreset.type2,
-			scheme: CardScheme.type2,
-			reference: isly2.string().rename("Reference").describe("Reference to external system."),
-			details: isly2.object<Card["details"]>({
-				iin: isly2.string().rename("Iin").describe("First 6-8 numbers of the pan."),
-				last4: isly2.string().rename("Last4").describe("Last four digits of pan."),
-				expiry: CardExpiry.type2,
-				holder: isly2.string().rename("Holder").describe("Card holder name."),
-				token: isly2.string().optional().rename("Token").describe("Encrypted token of the card."),
-			}),
-			limit: Amount.type2.rename("Limit").describe("Maximum amount that can be spent on the card."),
-			spent: Amount.type2.rename("Spent").describe("Amount spent on the card."),
-			status: isly2.string("value", ["active", "cancelled"]).rename("Status").describe("Current card status."),
-			history: CardOperation.type2.array().rename("History").describe("Card operation history."),
-			rules: isly2
-				.from("Rule", ruleType.is)
-				.array()
-				.rename("Rules")
-				.describe("Card rules that applies to authorizations made with the card."),
-			meta: isly2.from("Card.Meta", CardMeta.is).optional().rename("Meta").describe("Additional card information."),
-			restricted: isly2
-				.object<Required<Card>["restricted"]>({ to: CardRestriction.type2.optional() })
-				.optional()
-				.rename("Restrictions")
-				.describe("Set of restrictions that apply to the card."),
-		})
-		.rename("Card")
-		.describe("Card information.")
 	const csvMap: Record<string, (card: Card) => string | number | undefined> = {
 		id: card => card.id,
 		created: card => readableDate(card.created),

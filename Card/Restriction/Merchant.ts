@@ -1,5 +1,4 @@
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
 import { typedly } from "typedly"
 import { Rail } from "../../Rail"
 import { merchants } from "./merchants"
@@ -9,7 +8,6 @@ export type Merchant = (typeof Merchant.values)[number]
 export namespace Merchant {
 	export const values = typedly.Object.keys(merchants)
 	export const type = isly.string<Merchant>(values)
-	export const type2 = isly2.string<Merchant>("value", ...values)
 	export function check(merchant: Merchant, counterpart: Rail.Address.Card.Counterpart): boolean {
 		const attribute: Attribute = merchants[merchant]
 		let result: boolean

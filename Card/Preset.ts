@@ -1,5 +1,4 @@
 import { isly } from "isly"
-import { isly as isly2 } from "isly2"
 import { Realm } from "../Realm"
 import { Stack } from "./Stack"
 
@@ -25,10 +24,6 @@ export namespace Preset {
 		"test-diners-175",
 	] as const
 	export const type = isly.string<Preset>(names)
-	export const type2 = isly2
-		.string<Preset>("value", ...names)
-		.rename("Preset")
-		.describe("Card configuration (iin/scheme/interchange).")
 	export const forRealm: Record<Realm, Preset[]> = {
 		test: ["test-pg-150", "test-pg-200", "test-ta-mc-200", "test-ta-pg-200", "test-ta-pg-bc-200", "test-diners-175"],
 		uk: [
