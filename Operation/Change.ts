@@ -6,6 +6,7 @@ export interface Change<T extends Change.Operand = Change.Operand> {
 	amount: number
 	status: Status
 	result?: number
+	category?: Change.Category
 }
 
 export namespace Change {
@@ -16,6 +17,7 @@ export namespace Change {
 		amount: isly.number(),
 		status: Status.type,
 		result: isly.number().optional(),
+		category: Category.type.optional(),
 	})
 	export namespace Add {
 		export const type = Change.type.extend<Change<"add">>({
@@ -26,5 +28,16 @@ export namespace Change {
 		export const type = Change.type.extend<Change<"subtract">>({
 			type: isly.string("subtract"),
 		})
+	}
+	export type Category = (typeof category)[number]
+	export const category = [
+		"relevantFundsReceived", // Deposits
+		"amountsCreditedToClients", // Money send to customer from us
+		"paymentsExecutedForClients", // Money send to merchants
+		"emoneyRedeemed", // Money withdrawn by customers
+		"moneyDueAndPayableToTheFirm", // Money to p2p (fees)
+	]
+	export namespace Category {
+		export const type = isly.string<Category>(category)
 	}
 }
