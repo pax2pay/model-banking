@@ -44,17 +44,6 @@ export namespace Changes {
 			0
 		)
 	}
-	export function counterbalance(changes: Changes, currency: isoly.Currency): number {
-		return Object.entries(changes).reduce(
-			(r, [entry, change]) =>
-				isoly.Currency.add(
-					currency,
-					r,
-					Entry.Balance.type.is(entry) ? 0 : (change.type == "subtract" ? -1 : 1) * (change.amount ?? 0)
-				),
-			0
-		)
-	}
 	export type Sum = Partial<Record<Changes.Entry.Balance, number>>
 	export type MaybeLegacy = Changes | Legacy
 	export const type = isly.record<Changes>(isly.string(), Change.type)

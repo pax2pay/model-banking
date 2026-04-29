@@ -9,8 +9,8 @@ export interface Creatable {
 	currency: isoly.Currency
 	changes: Changes
 	type: Creatable.Type
+	counterbalance?: string // like: "uk-bc-safe02"
 }
-
 export namespace Creatable {
 	export const types = [
 		"incoming",
@@ -35,6 +35,7 @@ export namespace Creatable {
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		changes: Changes.type,
 		type: isly.string(types),
+		counterbalance: isly.string().optional(),
 	})
 	export function fromRefund(account: string, settlement: string, entry: Settlement.Entry.Creatable.Refund): Creatable {
 		// The Entry.Refund.Creatable has negative amount and fee
