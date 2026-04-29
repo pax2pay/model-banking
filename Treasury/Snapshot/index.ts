@@ -12,6 +12,7 @@ import { Reconciliation as SnapshotReconciliation } from "./Reconciliation"
 
 export interface Snapshot {
 	emoney: Balance.Extended & { total?: number }
+	created: isoly.DateTime
 	currency: isoly.Currency
 	supplier: Supplier
 	fiat: {
@@ -30,9 +31,4 @@ export namespace Snapshot {
 	export type Emoney = SnapshotEmoney
 	export type Fiat = SnapshotFiat
 	export import Account = SnapshotAccount
-	export function validate(snapshot: Snapshot): boolean {
-		const issuable = snapshot.fiat.total
-		const actual = 0 //snapshot.emoney.actual ?? 0
-		return issuable == actual
-	}
 }
