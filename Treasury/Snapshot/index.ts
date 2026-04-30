@@ -19,6 +19,7 @@ export interface Snapshot {
 		total: number // emoney issuable total amount
 		accounts: Snapshot.Account[]
 	}
+	counterbalance: number
 	notes: Transaction.Note[]
 	checks: Snapshot.Check[]
 	result: Snapshot.Check.Result
