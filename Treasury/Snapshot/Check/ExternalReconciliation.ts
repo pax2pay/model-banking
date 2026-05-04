@@ -2,7 +2,7 @@ import { Base } from "./Base"
 
 export interface ExternalReconciliation extends Base {
 	check: "external reconciliation"
-	counterbalance: number
+	counterbalance?: number
 	fiat: number
 	discrepancy: number
 }
