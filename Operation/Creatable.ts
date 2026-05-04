@@ -9,9 +9,16 @@ export interface Creatable {
 	currency: isoly.Currency
 	changes: Changes
 	type: Creatable.Type
-	counterbalance?: string // like: "uk-bc-safe02"
+	counterbalance?: Creatable.Counterbalance
 }
 export namespace Creatable {
+	export interface Counterbalance {
+		code: string /* like: "uk-bc-safe02" */
+		amount: number
+	}
+	export namespace Counterbalance {
+		export const type = isly.object<Counterbalance>({ code: isly.string(), amount: isly.number() })
+	}
 	export const types = [
 		"incoming",
 		"finalizeIncoming",
@@ -35,7 +42,7 @@ export namespace Creatable {
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		changes: Changes.type,
 		type: isly.string(types),
-		counterbalance: isly.string().optional(),
+		counterbalance: Counterbalance.type.optional(),
 	})
 	export function fromRefund(account: string, settlement: string, entry: Settlement.Entry.Creatable.Refund): Creatable {
 		// The Entry.Refund.Creatable has negative amount and fee
