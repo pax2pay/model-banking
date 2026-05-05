@@ -11,7 +11,8 @@ import { funding as snapshotFunding } from "./funding"
 import { Reconciliation as SnapshotReconciliation } from "./Reconciliation"
 
 export interface Snapshot {
-	emoney: Balance.Extended & { total?: number }
+	version: 1
+	emoney: Balance.Extended & { total?: number; accounts: Snapshot.EmoneyAccounts[] }
 	created: isoly.DateTime
 	currency: isoly.Currency
 	supplier: Supplier
@@ -26,6 +27,14 @@ export interface Snapshot {
 	warnings?: Warning.Snapshot[]
 }
 export namespace Snapshot {
+	export type EmoneyAccounts = {
+		id: string
+		organization: string
+		timestamp: string
+		opening?: { at: isoly.DateTime; balance: number }
+		ledger?: { change: number }
+		closing: { at: isoly.DateTime; balance: number }
+	}
 	export import funding = snapshotFunding
 	export import Check = SnapshotCheck
 	export type Reconciliation = SnapshotReconciliation
