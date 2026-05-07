@@ -37,6 +37,7 @@ export namespace User {
 		id: string
 		email: string
 		access: Access
+		messageId?: string
 	}
 	export namespace Invite {
 		export type Creatable = zod.infer<typeof Creatable.typeZod>
