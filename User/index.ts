@@ -39,16 +39,22 @@ export namespace User {
 			password: Password.Creatable.typeZod,
 		})
 	}
-	export interface Invite {
-		hash: string
-		token: string
-		email: string
-		access: Access
-		messageId?: string
-		created: isoly.DateTime
-		expires: isoly.DateTime
-	}
+	export type Invite = Omit<Invite.Storable, "hash" | "token" | "messageId">
 	export namespace Invite {
+		export interface Storable {
+			hash: string
+			token: string
+			email: string
+			access: Access
+			messageId?: string
+			created: isoly.DateTime
+			expires: isoly.DateTime
+		}
+		export namespace Storable {
+			export function toModel({ hash, token, messageId, ...rest }: Storable): Invite {
+				return { ...rest }
+			}
+		}
 		export type Creatable = zod.infer<typeof Creatable.typeZod>
 		export namespace Creatable {
 			export const typeZod = zod.object({ email: zod.string(), access: Access.typeZod })
