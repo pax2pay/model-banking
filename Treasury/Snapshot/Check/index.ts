@@ -6,6 +6,7 @@ import { LedgerIntegrity as CheckLedgerIntegrity } from "./LedgerIntegrity"
 import { Overdraft as CheckOverdraft } from "./Overdraft"
 import { Result as CheckResult } from "./Result"
 import { TransactionMatch as CheckTransactionMatch } from "./TransactionMatch"
+import { UnallocatedFunds as CheckUnallocatedFunds } from "./UnallocatedFunds"
 import { UnidentifiedFunds as CheckUnidentifiedFunds } from "./UnidentifiedFunds"
 
 export type Check =
@@ -15,6 +16,7 @@ export type Check =
 	| Check.LedgerIntegrity
 	| Check.Overdraft
 	| Check.TransactionMatch
+	| Check.UnallocatedFunds
 	| Check.UnidentifiedFunds
 export namespace Check {
 	export import Result = CheckResult
@@ -25,5 +27,6 @@ export namespace Check {
 	export type LedgerIntegrity = CheckLedgerIntegrity
 	export type Overdraft = CheckOverdraft
 	export type TransactionMatch = CheckTransactionMatch
+	export type UnallocatedFunds = CheckUnallocatedFunds
 	export type UnidentifiedFunds = CheckUnidentifiedFunds
 }
