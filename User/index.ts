@@ -39,10 +39,10 @@ export namespace User {
 			password: Password.Creatable.typeZod,
 		})
 	}
-	export type Invite = Omit<Invite.Storable, "hash" | "token" | "messageId">
+	export type Invite = Omit<Invite.Storable, "emailHash" | "token" | "messageId">
 	export namespace Invite {
 		export interface Storable {
-			hash: string
+			emailHash: string
 			token: string
 			email: string
 			access: Access
@@ -51,7 +51,7 @@ export namespace User {
 			expires: isoly.DateTime
 		}
 		export namespace Storable {
-			export function toModel({ hash, token, messageId, ...rest }: Storable): Invite {
+			export function toModel({ emailHash, token, messageId, ...rest }: Storable): Invite {
 				return { ...rest }
 			}
 		}
