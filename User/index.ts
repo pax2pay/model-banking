@@ -34,10 +34,13 @@ export namespace User {
 		export const typeZod = zod.object({ invite: zod.string(), password: Password.Creatable.typeZod })
 	}
 	export interface Invite {
-		id: string
+		hash: string // pepperHash(email)
+		token: string // random
 		email: string
 		access: Access
 		messageId?: string
+		created: isoly.DateTime
+		expires: isoly.DateTime
 	}
 	export namespace Invite {
 		export type Creatable = zod.infer<typeof Creatable.typeZod>
