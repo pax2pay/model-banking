@@ -9,8 +9,8 @@ export class Invites {
 		// TODO return type without token
 		return await this.client.post<User.Invite.Storable>("/user/invite", creatable)
 	}
-	async fetch(identifier: string): Promise<User.Invite | gracely.Error> {
-		return await this.client.get<User.Invite>(`/user/invite/${identifier}`)
+	async fetch(emailHash: string, token: string): Promise<User.Invite | gracely.Error> {
+		return await this.client.get<User.Invite>(`/user/invite/${emailHash}/${token}`)
 	}
 	async list(): Promise<User.Invite.Storable[] | gracely.Error> {
 		// TODO: update return type without token
