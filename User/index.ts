@@ -31,11 +31,11 @@ export namespace User {
 	export type Creatable = zod.infer<typeof Creatable.typeZod>
 	export namespace Creatable {
 		export const type = isly.object<Creatable>({
-			invite: isly.object({ hash: isly.string(), token: isly.string() }),
+			invite: isly.object({ emailHash: isly.string(), token: isly.string() }),
 			password: Password.Creatable.type,
 		})
 		export const typeZod = zod.object({
-			invite: zod.object({ hash: zod.string(), token: zod.string() }),
+			invite: zod.object({ emailHash: zod.string(), token: zod.string() }),
 			password: Password.Creatable.typeZod,
 		})
 	}
