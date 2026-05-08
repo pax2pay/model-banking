@@ -9,6 +9,7 @@ export namespace Checks {
 		"ledger integrity", // Proves Opening Balance + Operations = Closing Balance
 		"overdraft", // Warns if any customer accounts fall below zero
 		"transaction match", // Proves all external bank txns have a 1:1 internal ledger txn
+		"unallocated funds", // Never flags, only zero
 		"unidentified funds", // Flags any received money not yet assigned to a customer
 	] as const
 	export const type = isly.string(value)
