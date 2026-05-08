@@ -30,12 +30,18 @@ export namespace User {
 	}
 	export type Creatable = zod.infer<typeof Creatable.typeZod>
 	export namespace Creatable {
-		export const type = isly.object<Creatable>({ invite: isly.string(), password: Password.Creatable.type })
-		export const typeZod = zod.object({ invite: zod.string(), password: Password.Creatable.typeZod })
+		export const type = isly.object<Creatable>({
+			invite: isly.object({ hash: isly.string(), token: isly.string() }),
+			password: Password.Creatable.type,
+		})
+		export const typeZod = zod.object({
+			invite: zod.object({ hash: zod.string(), token: zod.string() }),
+			password: Password.Creatable.typeZod,
+		})
 	}
 	export interface Invite {
-		hash: string // pepperHash(email)
-		token: string // random
+		hash: string
+		token: string
 		email: string
 		access: Access
 		messageId?: string
