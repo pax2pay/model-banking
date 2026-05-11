@@ -3,9 +3,9 @@ import { Base } from "./Base"
 
 export interface LedgerIntegrity extends Base {
 	check: "ledger integrity"
-	opening: { at: isoly.DateTime; balance: number }
+	opening: { at?: isoly.DateTime; balance: number }
 	ledger: { change: number }
-	closing: { at: isoly.DateTime; balance: number }
+	closing: { at?: isoly.DateTime; balance: number }
 	failed: string[]
 	incomplete: string[]
 	passed: number
