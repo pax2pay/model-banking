@@ -11,7 +11,7 @@ import { funding as snapshotFunding } from "./funding"
 import { Reconciliation as SnapshotReconciliation } from "./Reconciliation"
 
 export interface Snapshot {
-	version: 1
+	version: typeof Snapshot.version
 	emoney: Balance.Extended & { total?: number; accounts: Snapshot.EmoneyAccounts[] }
 	created: isoly.DateTime
 	currency: isoly.Currency
@@ -27,6 +27,7 @@ export interface Snapshot {
 	warnings?: Warning.Snapshot[]
 }
 export namespace Snapshot {
+	export const version = 2
 	export type EmoneyAccounts = {
 		id: string
 		organization: string
