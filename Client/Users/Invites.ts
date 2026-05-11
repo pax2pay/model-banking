@@ -16,7 +16,7 @@ export class Invites {
 		// TODO: update return type without token
 		return await this.client.get<User.Invite.Storable[]>("/user/invite")
 	}
-	async remove(identifier: string): Promise<User.Invite | gracely.Error> {
-		return await this.client.delete<User.Invite>(`/user/invite/${identifier}`)
+	async remove(identifier: string): Promise<gracely.Result | gracely.Error> {
+		return await this.client.delete<gracely.Result>(`/user/invite/${identifier}`)
 	}
 }
