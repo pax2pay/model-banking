@@ -5,7 +5,8 @@ import { User } from "../../User"
 export class Invites {
 	constructor(private readonly client: http.Client) {}
 
-	async create(creatable: User.Invite.Creatable): Promise<User.Invite | gracely.Error> {
+	async create(creatable: User.Invite.Creatable): Promise<User.Invite.Storable | gracely.Error> {
+		// TODO: update type without token
 		return await this.client.post<User.Invite.Storable>("/user/invite", creatable)
 	}
 	async fetch(emailHash: string, token: string): Promise<User.Invite | gracely.Error> {
