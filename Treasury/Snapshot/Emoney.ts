@@ -6,6 +6,7 @@ export interface Emoney {
 	organization: string
 	account: string
 	supplier?: Supplier
+	currencies?: isoly.Currency[]
 	timestamp: isoly.DateTime
 	balances: Balances
 }
