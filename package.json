@@ -41,7 +41,7 @@
 		"clean": "rimraf dist node_modules coverage"
 	},
 	"devDependencies": {
-		"@cloudflare/workers-types": "4.20260405.1",
+		"@cloudflare/workers-types": "4.20260424.1",
 		"@typescript-eslint/eslint-plugin": "8.44.1",
 		"@typescript-eslint/parser": "8.44.1",
 		"@vitest/coverage-v8": "4.1.3",
