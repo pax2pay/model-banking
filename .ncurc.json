@@ -1,0 +1,5 @@
+{
+	"removeRange": true,
+	"cooldown": "7d", 
+	"format": ["time", "cooldown"]
+}
