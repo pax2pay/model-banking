@@ -30,16 +30,31 @@ export namespace User {
 	}
 	export type Creatable = zod.infer<typeof Creatable.typeZod>
 	export namespace Creatable {
-		export const type = isly.object<Creatable>({ invite: isly.string(), password: Password.Creatable.type })
-		export const typeZod = zod.object({ invite: zod.string(), password: Password.Creatable.typeZod })
+		export const type = isly.object<Creatable>({
+			invite: isly.object({ emailHash: isly.string(), token: isly.string() }),
+			password: Password.Creatable.type,
+		})
+		export const typeZod = zod.object({
+			invite: zod.object({ emailHash: zod.string(), token: zod.string() }),
+			password: Password.Creatable.typeZod,
+		})
 	}
-	export interface Invite {
-		id: string
-		email: string
-		access: Access
-		messageId?: string
-	}
+	export type Invite = Omit<Invite.Storable, "emailHash" | "token" | "messageId">
 	export namespace Invite {
+		export interface Storable {
+			emailHash: string
+			token: string
+			email: string
+			access: Access
+			messageId?: string
+			created: isoly.DateTime
+			expires: isoly.DateTime
+		}
+		export namespace Storable {
+			export function toModel({ emailHash, token, messageId, ...rest }: Storable): Invite {
+				return { ...rest }
+			}
+		}
 		export type Creatable = zod.infer<typeof Creatable.typeZod>
 		export namespace Creatable {
 			export const typeZod = zod.object({ email: zod.string(), access: Access.typeZod })

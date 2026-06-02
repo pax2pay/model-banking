@@ -5,16 +5,18 @@ import { User } from "../../User"
 export class Invites {
 	constructor(private readonly client: http.Client) {}
 
-	async create(creatable: User.Invite.Creatable): Promise<User.Invite | gracely.Error> {
-		return await this.client.post<User.Invite>("/user/invite", creatable)
+	async create(creatable: User.Invite.Creatable): Promise<User.Invite.Storable | gracely.Error> {
+		// TODO: update type without token
+		return await this.client.post<User.Invite.Storable>("/user/invite", creatable)
 	}
-	async fetch(identifier: string): Promise<User.Invite | gracely.Error> {
-		return await this.client.get<User.Invite>(`/user/invite/${identifier}`)
+	async fetch(emailHash: string, token: string): Promise<User.Invite | gracely.Error> {
+		return await this.client.get<User.Invite>(`/user/invite/${emailHash}/${token}`)
 	}
-	async list(): Promise<User.Invite[] | gracely.Error> {
-		return await this.client.get<User.Invite[]>("/user/invite")
+	async list(): Promise<User.Invite.Storable[] | gracely.Error> {
+		// TODO: update return type without token
+		return await this.client.get<User.Invite.Storable[]>("/user/invite")
 	}
-	async remove(identifier: string): Promise<User.Invite | gracely.Error> {
-		return await this.client.delete<User.Invite>(`/user/invite/${identifier}`)
+	async remove(identifier: string): Promise<gracely.Result | gracely.Error> {
+		return await this.client.delete<gracely.Result>(`/user/invite/${identifier}`)
 	}
 }
