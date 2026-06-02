@@ -1,4 +1,4 @@
-import { pax2pay } from "."
+import { pax2pay } from "./index"
 
 describe("Transaction.Fx", () => {
 	it("should include fx quote charge", () => {
