@@ -18,6 +18,13 @@ export namespace Password {
 			repeat: isly.string(),
 		})
 	}
+	export namespace Resetable {
+		export const zodType = zod.object({
+			reset: zod.object({ emailHash: zod.string(), token: zod.string() }),
+			new: zod.string(),
+			repeat: zod.string(),
+		})
+	}
 	export async function create(creatable: Creatable, pepper: string | undefined): Promise<Password | gracely.Error> {
 		let result: Awaited<ReturnType<typeof create>>
 		if (creatable.new !== creatable.repeat) {

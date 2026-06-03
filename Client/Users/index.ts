@@ -2,7 +2,7 @@ import { gracely } from "gracely"
 import { http } from "cloudly-http"
 import { User } from "../../User"
 import { Invites } from "./Invites"
-import { PasswordResets } from "./Resets"
+import { PasswordResets } from "./PasswordResets"
 
 export class Users {
 	#invites?: Invites
