@@ -7,9 +7,9 @@ export class PasswordResets {
 
 	async create(creatable: User.PasswordReset.Creatable): Promise<gracely.Result | gracely.Error> {
 		// TODO: update type without token
-		return await this.client.post<gracely.Result>("/user/reset", creatable)
+		return await this.client.post<gracely.Result>("/user/password-reset", creatable)
 	}
 	async fetch(emailHash: string, token: string): Promise<User.PasswordReset | gracely.Error> {
-		return await this.client.get<User.PasswordReset>(`/user/reset/${emailHash}/${token}`)
+		return await this.client.get<User.PasswordReset>(`/user/password-reset/${emailHash}/${token}`)
 	}
 }
