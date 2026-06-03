@@ -61,8 +61,8 @@ export namespace User {
 			export const type = isly.object<Creatable>({ email: isly.string(), access: Access.type })
 		}
 	}
-	export type Reset = { email: string }
-	export namespace Reset {
+	export type PasswordReset = { email: string }
+	export namespace PasswordReset {
 		export interface Storable {
 			emailHash: string
 			token: string
@@ -70,6 +70,11 @@ export namespace User {
 			messageId?: string
 			created: isoly.DateTime
 			expires: isoly.DateTime
+		}
+		export namespace Storable {
+			export function toModel(storable: Storable): PasswordReset {
+				return { email: storable.email }
+			}
 		}
 		export type Creatable = zod.infer<typeof Creatable.typeZod>
 		export namespace Creatable {

@@ -2,23 +2,23 @@ import { gracely } from "gracely"
 import { http } from "cloudly-http"
 import { User } from "../../User"
 import { Invites } from "./Invites"
-import { Resets } from "./Resets"
+import { PasswordResets } from "./Resets"
 
 export class Users {
 	#invites?: Invites
 	get invites(): Invites {
 		return (this.#invites ??= new Invites(this.client))
 	}
-	#resets?: Resets
-	get resets(): Resets {
-		return (this.#resets ??= new Resets(this.client))
+	#passwordResets?: PasswordResets
+	get passwordResets(): PasswordResets {
+		return (this.#passwordResets ??= new PasswordResets(this.client))
 	}
 	constructor(private readonly client: http.Client) {}
 
 	async create(user: User.Creatable): Promise<User | gracely.Error> {
 		return await this.client.post<User>("/user", user)
 	}
-	async resetPassword(reset: User.Reset.Creatable): Promise<gracely.Result | gracely.Error> {
+	async resetPassword(reset: User.PasswordReset.Creatable): Promise<gracely.Result | gracely.Error> {
 		return await this.client.put<gracely.Result>(`/user/password`, reset)
 	}
 	async fetch(email: string): Promise<User | gracely.Error> {
