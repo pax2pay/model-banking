@@ -63,6 +63,14 @@ export namespace User {
 	}
 	export type PasswordReset = { email: string }
 	export namespace PasswordReset {
+		export type Update = zod.infer<typeof Update.typeZod>
+		export namespace Update {
+			export const typeZod = zod.object({
+				emailHash: zod.string(),
+				token: zod.string(),
+				password: Password.Creatable.typeZod,
+			})
+		}
 		export interface Storable {
 			emailHash: string
 			token: string
