@@ -16,6 +16,6 @@ export class PasswordResets {
 		token: string,
 		reset: User.Password.Creatable
 	): Promise<gracely.Result | gracely.Error> {
-		return await this.client.put<gracely.Result>(`/user/password-reset/${emailHash}/${token}/confirm`, reset)
+		return await this.client.post<gracely.Result>(`/user/password-reset/${emailHash}/${token}/confirm`, reset)
 	}
 }
