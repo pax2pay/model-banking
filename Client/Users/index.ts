@@ -18,9 +18,6 @@ export class Users {
 	async create(user: User.Creatable): Promise<User | gracely.Error> {
 		return await this.client.post<User>("/user", user)
 	}
-	async resetPassword(reset: User.PasswordReset.Updatable): Promise<gracely.Result | gracely.Error> {
-		return await this.client.put<gracely.Result>(`/user/password`, reset)
-	}
 	async fetch(email: string): Promise<User | gracely.Error> {
 		return await this.client.get<User>(`/user/${email}`)
 	}
