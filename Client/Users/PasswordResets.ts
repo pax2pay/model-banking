@@ -11,11 +11,7 @@ export class PasswordResets {
 	async fetch(emailHash: string, token: string): Promise<User.PasswordReset | gracely.Error> {
 		return await this.client.get<User.PasswordReset>(`/user/password-reset/${emailHash}/${token}`)
 	}
-	async confirm(
-		emailHash: string,
-		token: string,
-		reset: User.Password.Creatable
-	): Promise<gracely.Result | gracely.Error> {
-		return await this.client.post<gracely.Result>(`/user/password-reset/${emailHash}/${token}/confirm`, reset)
+	async confirm(emailHash: string, token: string, reset: User.Password.Creatable): Promise<User | gracely.Error> {
+		return await this.client.post<User>(`/user/password-reset/${emailHash}/${token}/confirm`, reset)
 	}
 }
