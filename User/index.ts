@@ -53,10 +53,10 @@ export namespace User {
 			expires: isoly.DateTime
 		}
 		export namespace Storable {
-			export function toVerified(storable: Storable): invite.Verified {
+			export function toVerified(storable: Storable | invite.Row): invite.Verified {
 				return { email: storable.email }
 			}
-			export function toEntry({ token, ...rest }: Storable): invite.Row {
+			export function toRow({ token, ...rest }: Storable): invite.Row {
 				return { ...rest }
 			}
 		}
