@@ -61,7 +61,7 @@ export namespace User {
 			export const type = isly.object<Creatable>({ email: isly.string(), access: Access.type })
 		}
 	}
-	export type PasswordReset = { email: string }
+	export type PasswordReset = Pick<PasswordReset.Storable, "email">
 	export namespace PasswordReset {
 		export interface Storable {
 			emailHash: string
