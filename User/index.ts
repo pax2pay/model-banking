@@ -21,7 +21,7 @@ export namespace User {
 	export import JWT = UserJWT
 	export import mfa = userMfa
 	export import Password = UserPassword
-	export function fromInvite(invite: Invite): User {
+	export function fromInvite(invite: invite.Creatable): User {
 		const now = isoly.DateTime.now()
 		return { email: invite.email, access: invite.access, changed: now, created: now, password: { changed: now } }
 	}
@@ -39,8 +39,10 @@ export namespace User {
 			password: Password.Creatable.typeZod,
 		})
 	}
-	export type Invite = Omit<Invite.Storable, "emailHash" | "token" | "messageId">
-	export namespace Invite {
+	export namespace invite {
+		export type Verified = Pick<Storable, "email">
+		export type Row = Omit<Storable, "token">
+
 		export interface Storable {
 			emailHash: string
 			token: string
@@ -51,7 +53,10 @@ export namespace User {
 			expires: isoly.DateTime
 		}
 		export namespace Storable {
-			export function toModel({ emailHash, token, messageId, ...rest }: Storable): Invite {
+			export function toVerified(storable: Storable): invite.Verified {
+				return { email: storable.email }
+			}
+			export function toEntry({ token, ...rest }: Storable): invite.Row {
 				return { ...rest }
 			}
 		}
