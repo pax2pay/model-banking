@@ -43,11 +43,4 @@ export namespace Password {
 	function signer(pepper: string): { sign: (data: string) => Promise<string> } {
 		return cryptly.Signer.create("HMAC", "SHA-512", pepper)
 	}
-	export namespace Resetable {
-		export const typeZod = zod.object({
-			reset: zod.object({ emailHash: zod.string(), token: zod.string() }),
-			new: zod.string(),
-			repeat: zod.string(),
-		})
-	}
 }
