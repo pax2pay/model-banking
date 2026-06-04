@@ -2,11 +2,16 @@ import { gracely } from "gracely"
 import { http } from "cloudly-http"
 import { User } from "../../User"
 import { Invites } from "./Invites"
+import { PasswordResets } from "./PasswordResets"
 
 export class Users {
 	#invites?: Invites
 	get invites(): Invites {
 		return (this.#invites ??= new Invites(this.client))
+	}
+	#passwordResets?: PasswordResets
+	get passwordResets(): PasswordResets {
+		return (this.#passwordResets ??= new PasswordResets(this.client))
 	}
 	constructor(private readonly client: http.Client) {}
 
