@@ -42,7 +42,6 @@ export namespace User {
 	export namespace invite {
 		export type Verified = Pick<Storable, "email">
 		export type Row = Omit<Storable, "token">
-
 		export interface Storable {
 			emailHash: string
 			token: string
