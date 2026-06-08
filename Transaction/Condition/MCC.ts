@@ -13,16 +13,15 @@ export namespace MCC {
 		from: Value
 		to: Value
 	}
-	export function evaluate(mcc: MCC[], transaction: Transaction): boolean | undefined {
+	export function evaluate(global: MCC[], organization: MCC[], transaction: Transaction): boolean | undefined {
 		let result: boolean | undefined = undefined
-		const { allow, block } = mcc.reduce<{ allow: MCC[]; block: MCC[] }>(
+		const { allow, block } = [...global, ...organization].reduce<{ allow: MCC[]; block: MCC[] }>(
 			(r, m) => (m.type == "allow" ? { ...r, allow: [...r.allow, m] } : { ...r, block: [...r.block, m] }),
 			{ allow: [], block: [] }
 		)
 		if (block.some(m => m.stack.some(s => s.evaluate(transaction)))) {
 			result = false
-		}
-		if (result == undefined && allow.some(m => m.stack.some(s => s.evaluate(transaction)))) {
+		} else if (allow.some(m => m.stack.some(s => s.evaluate(transaction)))) {
 			result = true
 		}
 		return result
