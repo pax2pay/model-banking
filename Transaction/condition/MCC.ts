@@ -1,9 +1,9 @@
 import { isly } from "isly"
-import { Card } from "../../../Card"
-import { Merchant } from "../../../Merchant"
-import { Rail } from "../../../Rail"
-import { Transaction } from "../.."
-import { Base } from "../Base"
+import { Card } from "../../Card"
+import { Merchant } from "../../Merchant"
+import { Rail } from "../../Rail"
+import { Transaction } from ".."
+import { Base } from "./Base"
 
 export interface MCC extends Base {
 	stacks: MCC.Stack[]
