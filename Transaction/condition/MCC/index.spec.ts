@@ -1,6 +1,6 @@
-import { Card } from "../../Card"
-import { Transaction } from "../index"
-import { MCC } from "./MCC"
+import { Card } from "../../../Card"
+import { Transaction } from "../../index"
+import { MCC } from "."
 
 describe("MCC", () => {
 	it.each([
