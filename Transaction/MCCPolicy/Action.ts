@@ -1,8 +1,8 @@
 import { isly } from "isly"
 
-export type Policy = (typeof Policy.values)[number]
+export type Action = (typeof Action.values)[number]
 
-export namespace Policy {
+export namespace Action {
 	export const values = ["allow", "block"] as const
 	export const type = isly.string(values)
 }
