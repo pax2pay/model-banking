@@ -5,7 +5,6 @@ import { Transaction } from "../index"
 import { Action as MCCAction } from "./Action"
 import { Group as MCCGroup } from "./Group"
 
-// TODO change name and remove Condition - just have MCC-Condition or something like that
 export interface MCCPolicy {
 	id: string
 	action: MCCPolicy.Action

@@ -12,9 +12,9 @@ describe("MCCPolicy", () => {
 		(_: string, stacks: Card.Stack[] | undefined, transactionPreset: Card.Preset, isMatch: boolean) => {
 			const policy: MCCPolicy = {
 				stacks,
-				id: "test-condition",
+				id: "test-policy",
 				action: "allow",
-				description: "Test condition",
+				description: "Test policy",
 				group: { values: ["5411"], ranges: [] },
 			}
 			const transaction = {
@@ -51,7 +51,7 @@ describe("MCCPolicy", () => {
 		group: { values: ["5500"], ranges: [] },
 	}
 	it.each([
-		["no conditions", [], "5411", [], undefined],
+		["no policies", [], "5411", [], undefined],
 		["no match", [allow, block], "7000", [], undefined],
 		["allow match", [allow, block], "5411", [allow], true],
 		["block match", [allow, block], "5500", [block], false],
