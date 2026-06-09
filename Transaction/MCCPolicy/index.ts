@@ -9,8 +9,8 @@ export interface MCCPolicy {
 	id: string
 	action: MCCPolicy.Action
 	description: string
-	organizations?: string[]
 	stacks?: Card.Stack[]
+	organizations?: string[]
 	group: MCCPolicy.Group
 }
 export namespace MCCPolicy {
