@@ -43,7 +43,7 @@ export namespace MCCPolicy {
 			Group.within(policy.group, category)
 		)
 	}
-	function getMatching(policies: MCCPolicy[], transaction: Transaction): MCCPolicy[] | undefined {
+	export function getMatching(policies: MCCPolicy[], transaction: Transaction): MCCPolicy[] | undefined {
 		const result = policies.filter(c => MCCPolicy.match(c, transaction))
 		return result.length > 0 ? result : undefined
 	}
