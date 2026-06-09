@@ -24,12 +24,12 @@ export namespace MCCPolicy {
 		stacks: Card.Stack.type.array().optional(),
 		group: Group.type,
 	})
-	function stackMatch(allowedStacks: Card.Stack[] | undefined, preset: Card.Preset | undefined): boolean {
+	function matchStack(allowedStacks: Card.Stack[] | undefined, preset: Card.Preset | undefined): boolean {
 		const stack = preset ? Card.Preset.presets[preset] : undefined
 		return !allowedStacks || (!!stack && allowedStacks.includes(stack))
 	}
-	function organizationMatch(allowedOrgs: string[] | undefined, organization: string): boolean {
-		return !allowedOrgs || allowedOrgs.includes(organization)
+	function matchOrg(allowedOrgs: string[] | undefined, org: string): boolean {
+		return !allowedOrgs || allowedOrgs.includes(org)
 	}
 	export function match(policy: MCCPolicy, transaction: Transaction): boolean {
 		const category = Rail.Address.Card.Counterpart.type.is(transaction.counterpart)
@@ -37,8 +37,8 @@ export namespace MCCPolicy {
 			: undefined
 		return (
 			!!category &&
-			stackMatch(policy.stacks, transaction.state?.card?.preset) &&
-			organizationMatch(policy.organizations, transaction.organization) &&
+			matchStack(policy.stacks, transaction.state?.card?.preset) &&
+			matchOrg(policy.organizations, transaction.organization) &&
 			Group.within(policy.group, category)
 		)
 	}
