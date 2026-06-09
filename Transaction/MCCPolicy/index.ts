@@ -32,7 +32,7 @@ export namespace MCCPolicy {
 	function organizationMatch(allowedOrgs: string[] | undefined, organization: string): boolean {
 		return !allowedOrgs || allowedOrgs.includes(organization)
 	}
-	function match(policy: MCCPolicy, transaction: Transaction): boolean {
+	export function match(policy: MCCPolicy, transaction: Transaction): boolean {
 		const category = Rail.Address.Card.Counterpart.type.is(transaction.counterpart)
 			? transaction.counterpart.merchant.category
 			: undefined
@@ -44,7 +44,7 @@ export namespace MCCPolicy {
 		)
 	}
 	function getMatching(policies: MCCPolicy[], transaction: Transaction): MCCPolicy[] | undefined {
-		const result = policies.filter(c => match(c, transaction))
+		const result = policies.filter(c => MCCPolicy.match(c, transaction))
 		return result.length > 0 ? result : undefined
 	}
 	export function resolve(policies: MCCPolicy[], transaction: Transaction): MCCPolicy[] {
