@@ -26,33 +26,36 @@ describe("MCC", () => {
 		expect(MCC.Set.within(set, category)).toBe(isWithin)
 	})
 	it.each([
-		["all stacks", ["*"] as MCC.Stack[], "p2p-diners-175" as Card.Preset, true],
+		["all stacks", undefined, "p2p-diners-175" as Card.Preset, true],
 		["stack no match", ["test-paxgiro", "uk-diners-dpg"] as MCC.Stack[], "p2p-visa-idx-200" as Card.Preset, false],
 		["stack precise match", ["test-paxgiro", "uk-diners-dpg"] as MCC.Stack[], "p2p-diners-200" as Card.Preset, true],
-	])("MCC.match stacks - %s", (_: string, stacks: MCC.Stack[], transactionPreset: Card.Preset, isMatch: boolean) => {
-		const condition: MCC = {
-			stacks,
-			id: "test-condition",
-			policy: "allow",
-			description: "Test condition",
-			set: { values: ["5411"], ranges: [] },
-		}
-		const transaction = {
-			state: { card: { preset: transactionPreset } },
-			counterpart: {
-				type: "card",
-				acquirer: { id: "acquirer", number: "acquirer" },
-				merchant: {
-					name: "FinalFlight",
-					id: "final",
-					category: "5411",
-					address: "123 Main St",
-					city: "Bristol",
-					zip: "12345",
-					country: "GB",
+	])(
+		"MCC.match stacks - %s",
+		(_: string, stacks: MCC.Stack[] | undefined, transactionPreset: Card.Preset, isMatch: boolean) => {
+			const condition: MCC = {
+				stacks,
+				id: "test-condition",
+				policy: "allow",
+				description: "Test condition",
+				set: { values: ["5411"], ranges: [] },
+			}
+			const transaction = {
+				state: { card: { preset: transactionPreset } },
+				counterpart: {
+					type: "card",
+					acquirer: { id: "acquirer", number: "acquirer" },
+					merchant: {
+						name: "FinalFlight",
+						id: "final",
+						category: "5411",
+						address: "123 Main St",
+						city: "Bristol",
+						zip: "12345",
+						country: "GB",
+					},
 				},
-			},
-		} as Transaction
-		expect(MCC.match(condition, transaction)).toBe(isMatch)
-	})
+			} as Transaction
+			expect(MCC.match(condition, transaction)).toBe(isMatch)
+		}
+	)
 })

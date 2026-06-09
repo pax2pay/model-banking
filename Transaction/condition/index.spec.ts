@@ -23,14 +23,14 @@ const allow: Condition = {
 	id: "allow-5411",
 	policy: "allow",
 	description: "Allow groceries",
-	stacks: ["*"],
+	stacks: undefined,
 	set: { values: ["5411"], ranges: [] },
 }
 const block: Condition = {
 	id: "block-5500",
 	policy: "block",
 	description: "Block fuel",
-	stacks: ["*"],
+	stacks: undefined,
 	set: { values: ["5500"], ranges: [] },
 }
 
