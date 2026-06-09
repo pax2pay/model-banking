@@ -75,7 +75,7 @@ describe("MCCPolicy", () => {
 				},
 			} as Transaction
 			expect(MCCPolicy.resolve(policy, transaction)).toEqual(resolved)
-			expect(MCCPolicy.evaluate(policy, transaction)).toBe(evaluated)
+			expect(MCCPolicy.isAllowed(policy, transaction)).toBe(evaluated)
 		}
 	)
 })

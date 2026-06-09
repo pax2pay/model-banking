@@ -25,29 +25,34 @@ export namespace MCCPolicy {
 		stacks: Card.Stack.type.array().optional(),
 		group: Group.type,
 	})
-	export function stackMatch(stacks: Card.Stack[] | undefined, preset: Card.Preset | undefined): boolean {
+	function stackMatch(allowedStacks: Card.Stack[] | undefined, preset: Card.Preset | undefined): boolean {
 		const stack = preset ? Card.Preset.presets[preset] : undefined
-		return !stacks || (!!stack && stacks.includes(stack))
+		return !allowedStacks || (!!stack && allowedStacks.includes(stack))
 	}
-
-	export function match(policy: MCCPolicy, transaction: Transaction): boolean {
+	function organizationMatch(allowedOrgs: string[] | undefined, organization: string): boolean {
+		return !allowedOrgs || allowedOrgs.includes(organization)
+	}
+	function match(policy: MCCPolicy, transaction: Transaction): boolean {
 		const category = Rail.Address.Card.Counterpart.type.is(transaction.counterpart)
 			? transaction.counterpart.merchant.category
 			: undefined
 		return (
-			!!category && stackMatch(policy.stacks, transaction.state?.card?.preset) && Group.within(policy.group, category)
+			!!category &&
+			stackMatch(policy.stacks, transaction.state?.card?.preset) &&
+			organizationMatch(policy.organizations, transaction.organization) &&
+			Group.within(policy.group, category)
 		)
 	}
-	function find(policies: MCCPolicy[], transaction: Transaction): MCCPolicy[] | undefined {
-		const result = policies.filter(c => MCCPolicy.match(c, transaction))
+	function getMatching(policies: MCCPolicy[], transaction: Transaction): MCCPolicy[] | undefined {
+		const result = policies.filter(c => match(c, transaction))
 		return result.length > 0 ? result : undefined
 	}
 	export function resolve(policies: MCCPolicy[], transaction: Transaction): MCCPolicy[] {
 		const blocks = policies.filter(c => c.action == "block")
 		const allows = policies.filter(c => c.action == "allow")
-		return find(blocks, transaction) ?? find(allows, transaction) ?? []
+		return getMatching(blocks, transaction) ?? getMatching(allows, transaction) ?? []
 	}
-	export function evaluate(policies: MCCPolicy[], transaction: Transaction): boolean | undefined {
+	export function isAllowed(policies: MCCPolicy[], transaction: Transaction): boolean | undefined {
 		const [result] = resolve(policies, transaction)
 		return result ? result.action == "allow" : undefined
 	}
