@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import { Card } from "../../../Card"
+import { Merchant } from "../../../Merchant"
 import { Rail } from "../../../Rail"
 import { Transaction } from "../.."
 import { Base } from "../Base"
@@ -10,62 +11,58 @@ export interface MCC extends Base {
 }
 
 export namespace MCC {
-	export const type = Base.type.extend<MCC>({
-		stacks: Stack.type.array(),
-		set: Set.type,
-	})
-
 	export type Stack = Card.Stack | "*"
 	export namespace Stack {
 		export const values = [...Card.Stack.stacks, "*"] as const
 		export const type = isly.string(values)
 	}
+
 	export interface Set {
-		values: Set.Value[]
+		values: Merchant.Category[]
 		ranges: Set.Range[]
 	}
 	export namespace Set {
-		export function within(set: Set, mcc: string): boolean {
-			const appliesToValue = set.values.includes(mcc as Value) || set.ranges.some(r => r.from <= mcc && r.to >= mcc)
-			return appliesToValue
-		}
-		export const type = isly.object<Set>({
-			values: Value.type.array(),
-			ranges: Range.type.array(),
-		})
-		export type Digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-		export type Value = `${Digit}${Digit}${Digit}${Digit}`
-		export namespace Value {
-			export const type = isly.fromIs<Value>("Transaction.Condition.MCC.Set.Value", (s: any): s is Value =>
-				/^\d{4}$/.test(s)
-			)
-		}
 		export interface Range {
-			from: Value
-			to: Value
+			from: Merchant.Category
+			to: Merchant.Category
 		}
 		export namespace Range {
 			export const type = isly.object<Range>({
-				from: Value.type,
-				to: Value.type,
+				from: Merchant.Category.type,
+				to: Merchant.Category.type,
 			})
 		}
+		export const type = isly.object<Set>({
+			values: Merchant.Category.type.array(),
+			ranges: Range.type.array(),
+		})
+		export function within(set: Set, category: string): boolean {
+			return (
+				set.values.includes(category as Merchant.Category) ||
+				set.ranges.some(r => r.from <= category && r.to >= category)
+			)
+		}
 	}
+
+	export const type = Base.type.extend<MCC>({
+		stacks: Stack.type.array(),
+		set: Set.type,
+	})
 
 	function stackMatch(stacks: Stack[], transaction: Transaction): boolean {
 		let result: boolean
 		if (stacks.includes("*")) {
 			result = true
 		} else {
-			const cardStack = transaction.state?.card?.preset ? Card.Preset.presets[transaction.state.card.preset] : undefined
-			result = !!cardStack && !!transaction.state?.card?.preset && stacks.includes(cardStack)
+			const stack = transaction.state?.card?.preset ? Card.Preset.presets[transaction.state.card.preset] : undefined
+			result = !!stack && stacks.includes(stack)
 		}
 		return result
 	}
 	export function match(condition: MCC, transaction: Transaction): boolean {
-		const mcc = Rail.Address.Card.Counterpart.type.is(transaction.counterpart)
+		const category = Rail.Address.Card.Counterpart.type.is(transaction.counterpart)
 			? transaction.counterpart.merchant.category
 			: undefined
-		return !!mcc && stackMatch(condition.stacks, transaction) && MCC.Set.within(condition.set, mcc)
+		return !!category && stackMatch(condition.stacks, transaction) && Set.within(condition.set, category)
 	}
 }

@@ -1,9 +1,10 @@
 import { Transaction } from "../index"
-import { MCC } from "./MCC"
+import { MCC as ConditionMCC } from "./MCC"
 
-export type Condition = MCC
+export type Condition = ConditionMCC
 
 export namespace Condition {
+	export import MCC = ConditionMCC
 	function match(condition: Condition, transaction: Transaction): boolean {
 		if (MCC.type.is(condition)) {
 			return MCC.match(condition, transaction)
