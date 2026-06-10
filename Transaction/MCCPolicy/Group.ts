@@ -21,6 +21,6 @@ export namespace Group {
 		ranges: Range.type.array(),
 	})
 	export function within(set: Group, category: Merchant.Category): boolean {
-		return set.values.includes(category) || set.ranges.some(r => r.from <= category && r.to >= category)
+		return set.values.includes(category) || set.ranges.some(r => r.from <= category && category <= r.to)
 	}
 }
