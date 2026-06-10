@@ -20,9 +20,7 @@ export namespace Group {
 		values: Merchant.Category.type.array(),
 		ranges: Range.type.array(),
 	})
-	export function within(set: Group, category: string): boolean {
-		return (
-			set.values.includes(category as Merchant.Category) || set.ranges.some(r => r.from <= category && r.to >= category)
-		)
+	export function within(set: Group, category: Merchant.Category): boolean {
+		return set.values.includes(category) || set.ranges.some(r => r.from <= category && r.to >= category)
 	}
 }

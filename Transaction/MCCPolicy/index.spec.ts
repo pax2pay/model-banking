@@ -1,4 +1,5 @@
 import { Card } from "../../Card"
+import { Merchant } from "../../Merchant"
 import { MCCPolicy } from "./index"
 
 describe("MCCPolicy", () => {
@@ -42,7 +43,13 @@ describe("MCCPolicy", () => {
 		["block wins over allow", [{ ...allow, group: block.group }, block], "5500", [block], false],
 	])(
 		"resolve & evaluate - %s",
-		(_: string, policy: MCCPolicy[], category: string, resolved: MCCPolicy[], evaluated: boolean | undefined) => {
+		(
+			_: string,
+			policy: MCCPolicy[],
+			category: Merchant.Category,
+			resolved: MCCPolicy[],
+			evaluated: boolean | undefined
+		) => {
 			const input: MCCPolicy.TransactionInput = { category }
 			expect(MCCPolicy.resolve(policy, input)).toEqual(resolved)
 			expect(MCCPolicy.isAllowed(policy, input)).toBe(evaluated)
