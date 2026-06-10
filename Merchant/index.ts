@@ -5,7 +5,7 @@ import { Category as MerchantCategory } from "./Category"
 export interface Merchant {
 	name: string
 	id: string
-	category: string
+	category: Merchant.Category
 	address: string
 	city: string
 	zip: string
