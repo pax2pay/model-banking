@@ -1,5 +1,4 @@
 import { Card } from "../../Card"
-import { Transaction } from "../index"
 import { MCCPolicy } from "./index"
 
 describe("MCCPolicy", () => {
@@ -17,23 +16,8 @@ describe("MCCPolicy", () => {
 				description: "Test policy",
 				group: { values: ["5411"], ranges: [] },
 			}
-			const transaction = {
-				state: { card: { preset: transactionPreset } },
-				counterpart: {
-					type: "card",
-					acquirer: { id: "acquirer", number: "acquirer" },
-					merchant: {
-						name: "FinalFlight",
-						id: "final",
-						category: "5411",
-						address: "123 Main St",
-						city: "Bristol",
-						zip: "12345",
-						country: "GB",
-					},
-				},
-			} as Transaction
-			expect(MCCPolicy.match(policy, transaction)).toBe(isMatch)
+			const input: MCCPolicy.TransactionInput = { category: "5411", cardPreset: transactionPreset }
+			expect(MCCPolicy.match(policy, input)).toBe(isMatch)
 		}
 	)
 	const allow: MCCPolicy = {
@@ -59,23 +43,9 @@ describe("MCCPolicy", () => {
 	])(
 		"resolve & evaluate - %s",
 		(_: string, policy: MCCPolicy[], category: string, resolved: MCCPolicy[], evaluated: boolean | undefined) => {
-			const transaction = {
-				counterpart: {
-					type: "card",
-					acquirer: { id: "acquirer", number: "acquirer" },
-					merchant: {
-						name: "FinalFlight",
-						id: "final",
-						category,
-						address: "123 Main St",
-						city: "Bristol",
-						zip: "12345",
-						country: "GB",
-					},
-				},
-			} as Transaction
-			expect(MCCPolicy.resolve(policy, transaction)).toEqual(resolved)
-			expect(MCCPolicy.isAllowed(policy, transaction)).toBe(evaluated)
+			const input: MCCPolicy.TransactionInput = { category }
+			expect(MCCPolicy.resolve(policy, input)).toEqual(resolved)
+			expect(MCCPolicy.isAllowed(policy, input)).toBe(evaluated)
 		}
 	)
 })
