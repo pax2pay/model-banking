@@ -28,31 +28,49 @@ export namespace MCCPolicy {
 		const stack = preset ? Card.Preset.presets[preset] : undefined
 		return !allowedStacks || (!!stack && allowedStacks.includes(stack))
 	}
-	function matchOrg(allowedOrgs: string[] | undefined, org: string): boolean {
-		return !allowedOrgs || allowedOrgs.includes(org)
+	function matchOrg(allowedOrgs: string[] | undefined, org: string | undefined): boolean {
+		return !allowedOrgs || (!!org && allowedOrgs.includes(org))
 	}
-	export function match(policy: MCCPolicy, transaction: Transaction): boolean {
-		const category = Rail.Address.Card.Counterpart.type.is(transaction.counterpart)
-			? transaction.counterpart.merchant.category
-			: undefined
+	export function match(
+		policy: MCCPolicy,
+		transaction: { category?: string; cardPreset?: Card.Preset; org?: string }
+	): boolean {
 		return (
-			!!category &&
-			matchStack(policy.stacks, transaction.state?.card?.preset) &&
-			matchOrg(policy.organizations, transaction.organization) &&
-			Group.within(policy.group, category)
+			!!transaction.category &&
+			matchStack(policy.stacks, transaction.cardPreset) &&
+			matchOrg(policy.organizations, transaction.org) &&
+			Group.within(policy.group, transaction.category)
 		)
 	}
-	export function getMatching(policies: MCCPolicy[], transaction: Transaction): MCCPolicy[] | undefined {
+	export function getMatching(
+		policies: MCCPolicy[],
+		transaction: { category?: string; cardPreset?: Card.Preset; org?: string }
+	): MCCPolicy[] | undefined {
 		const result = policies.filter(c => MCCPolicy.match(c, transaction))
 		return result.length > 0 ? result : undefined
 	}
-	export function resolve(policies: MCCPolicy[], transaction: Transaction): MCCPolicy[] {
+	export function resolve(
+		policies: MCCPolicy[],
+		transaction: { category?: string; cardPreset?: Card.Preset; org?: string }
+	): MCCPolicy[] {
 		const blocks = policies.filter(c => c.action == "block")
 		const allows = policies.filter(c => c.action == "allow")
 		return getMatching(blocks, transaction) ?? getMatching(allows, transaction) ?? []
 	}
-	export function isAllowed(policies: MCCPolicy[], transaction: Transaction): boolean | undefined {
+	export function isAllowed(
+		policies: MCCPolicy[],
+		transaction: { category?: string; cardPreset?: Card.Preset; org?: string }
+	): boolean | undefined {
 		const [result] = resolve(policies, transaction)
 		return result ? result.action == "allow" : undefined
+	}
+	export function isAllowedOnTransaction(policies: MCCPolicy[], transaction: Transaction): boolean | undefined {
+		return isAllowed(policies, {
+			category: Rail.Address.Card.Counterpart.type.is(transaction.counterpart)
+				? transaction.counterpart.merchant.category
+				: undefined,
+			cardPreset: transaction.state?.card?.preset,
+			org: transaction.organization,
+		})
 	}
 }
