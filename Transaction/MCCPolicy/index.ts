@@ -9,7 +9,8 @@ import { Group as MCCGroup } from "./Group"
 export interface MCCPolicy {
 	id: string
 	action: MCCPolicy.Action
-	description: string
+	name: string
+	description?: string
 	stacks?: Card.Stack[]
 	organizations?: string[]
 	group: MCCPolicy.Group
@@ -21,7 +22,8 @@ export namespace MCCPolicy {
 	export const type = isly.object<MCCPolicy>({
 		id: isly.string(),
 		action: Action.type,
-		description: isly.string(),
+		name: isly.string(),
+		description: isly.string().optional(),
 		organizations: isly.string().array().optional(),
 		stacks: Card.Stack.type.array().optional(),
 		group: Group.type,

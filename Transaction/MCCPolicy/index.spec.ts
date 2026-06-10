@@ -14,7 +14,7 @@ describe("MCCPolicy", () => {
 				stacks,
 				id: "test-policy",
 				action: "allow",
-				description: "Test policy",
+				name: "Test policy",
 				group: { values: ["5411"], ranges: [] },
 			}
 			const input: MCCPolicy.TransactionInput = { category: "5411", cardPreset: transactionPreset }
@@ -24,23 +24,23 @@ describe("MCCPolicy", () => {
 	const allow: MCCPolicy = {
 		id: "allow-5411",
 		action: "allow",
-		description: "Allow groceries",
+		name: "Allow groceries",
 		stacks: undefined,
 		group: { values: ["5411"], ranges: [] },
 	}
 	const block: MCCPolicy = {
-		id: "block-5500",
+		id: "block-5542",
 		action: "block",
-		description: "Block fuel",
+		name: "Block fuel",
 		stacks: undefined,
-		group: { values: ["5500"], ranges: [] },
+		group: { values: ["5542"], ranges: [] },
 	}
 	it.each([
 		["no policies", [], "5411", [], undefined],
 		["no match", [allow, block], "7000", [], undefined],
 		["allow match", [allow, block], "5411", [allow], true],
-		["block match", [allow, block], "5500", [block], false],
-		["block wins over allow", [{ ...allow, group: block.group }, block], "5500", [block], false],
+		["block match", [allow, block], "5542", [block], false],
+		["block wins over allow", [{ ...allow, group: block.group }, block], "5542", [block], false],
 	])(
 		"resolve & evaluate - %s",
 		(
