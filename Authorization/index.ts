@@ -8,6 +8,13 @@ import { Transaction } from "../Transaction"
 import { Status as AuthorizationStatus } from "./Status"
 
 export interface Authorization {
+	type?:
+		| "preauth"
+		| "incremental"
+		| "completion"
+		| "recurring_initial"
+		| "recurring_subsequent"
+		| "anticipated_amount_verification"
 	id: cryptly.Identifier
 	created: isoly.DateTime
 	status: Authorization.Status
@@ -35,6 +42,16 @@ export namespace Authorization {
 	export import Status = AuthorizationStatus
 	export const type = isly.object<Authorization>({
 		id: isly.fromIs("Authorization.id", cryptly.Identifier.is),
+		type: isly
+			.string([
+				"preauth",
+				"incremental",
+				"completion",
+				"recurring_initial",
+				"recurring_subsequent",
+				"anticipated_amount_verification",
+			])
+			.optional(),
 		status: Status.type,
 		transaction: isly
 			.object<Required<Authorization>["transaction"]>({
@@ -59,7 +76,10 @@ export namespace Authorization {
 		approvalCode: isly.string().optional(),
 		description: isly.string(),
 	})
-	export function fromTransaction(transaction: Transaction.CardTransaction): Authorization {
+	export function fromTransaction(
+		transaction: Transaction.CardTransaction,
+		type?: Authorization["type"]
+	): Authorization {
 		return {
 			id: transaction.id,
 			created: isoly.DateTime.now(),
@@ -76,6 +96,7 @@ export namespace Authorization {
 			merchant: transaction.counterpart.merchant,
 			acquirer: transaction.counterpart.acquirer,
 			description: transaction.description,
+			type: type,
 		}
 	}
 }
