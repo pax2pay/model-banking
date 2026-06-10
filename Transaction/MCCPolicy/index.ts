@@ -16,6 +16,7 @@ export interface MCCPolicy {
 export namespace MCCPolicy {
 	export import Action = MCCAction
 	export import Group = MCCGroup
+	export type TransactionInput = { category?: string; cardPreset?: Card.Preset; org?: string }
 	export const type = isly.object<MCCPolicy>({
 		id: isly.string(),
 		action: Action.type,
@@ -31,10 +32,7 @@ export namespace MCCPolicy {
 	function matchOrg(allowedOrgs: string[] | undefined, org: string | undefined): boolean {
 		return !allowedOrgs || (!!org && allowedOrgs.includes(org))
 	}
-	export function match(
-		policy: MCCPolicy,
-		transaction: { category?: string; cardPreset?: Card.Preset; org?: string }
-	): boolean {
+	export function match(policy: MCCPolicy, transaction: MCCPolicy.TransactionInput): boolean {
 		return (
 			!!transaction.category &&
 			matchStack(policy.stacks, transaction.cardPreset) &&
@@ -42,10 +40,7 @@ export namespace MCCPolicy {
 			Group.within(policy.group, transaction.category)
 		)
 	}
-	export function getMatching(
-		policies: MCCPolicy[],
-		transaction: { category?: string; cardPreset?: Card.Preset; org?: string }
-	): MCCPolicy[] | undefined {
+	export function getMatching(policies: MCCPolicy[], transaction: MCCPolicy.TransactionInput): MCCPolicy[] | undefined {
 		const result = policies.filter(c => MCCPolicy.match(c, transaction))
 		return result.length > 0 ? result : undefined
 	}
@@ -64,13 +59,13 @@ export namespace MCCPolicy {
 		const [result] = resolve(policies, transaction)
 		return result ? result.action == "allow" : undefined
 	}
-	export function isAllowedOnTransaction(policies: MCCPolicy[], transaction: Transaction): boolean | undefined {
-		return isAllowed(policies, {
+	export function toTransactionInput(transaction: Transaction): MCCPolicy.TransactionInput {
+		return {
 			category: Rail.Address.Card.Counterpart.type.is(transaction.counterpart)
 				? transaction.counterpart.merchant.category
 				: undefined,
 			cardPreset: transaction.state?.card?.preset,
 			org: transaction.organization,
-		})
+		}
 	}
 }
