@@ -1,7 +1,7 @@
 import { isly } from "isly"
 import { Card } from "../../Card"
 import { Rail } from "../../Rail"
-import { Transaction } from "../index"
+import type { Transaction } from "../index"
 import { Action as MCCAction } from "./Action"
 import { Group as MCCGroup } from "./Group"
 
