@@ -28,20 +28,11 @@ export namespace MCCPolicy {
 		stacks: Card.Stack.type.array().optional(),
 		group: Group.type,
 	})
-	function matchStack(allowedStacks: Card.Stack[] | undefined, preset: Card.Preset | undefined): boolean {
-		const stack = preset ? Card.Preset.presets[preset] : undefined
-		return !allowedStacks || (!!stack && allowedStacks.includes(stack))
-	}
-	function matchOrg(allowedOrgs: string[] | undefined, org: string | undefined): boolean {
-		return !allowedOrgs || (!!org && allowedOrgs.includes(org))
-	}
 	export function match(policy: MCCPolicy, transaction: TransactionInput): boolean {
-		return (
-			!!transaction.category &&
-			matchStack(policy.stacks, transaction.cardPreset) &&
-			matchOrg(policy.organizations, transaction.org) &&
-			Group.within(policy.group, transaction.category)
-		)
+		const stack = transaction.cardPreset ? Card.Preset.presets[transaction.cardPreset] : undefined
+		const stackMatches = !policy.stacks || (!!stack && policy.stacks.includes(stack))
+		const orgMatches = !policy.organizations || (!!transaction.org && policy.organizations.includes(transaction.org))
+		return !!transaction.category && stackMatches && orgMatches && Group.within(policy.group, transaction.category)
 	}
 	export function getMatching(policies: MCCPolicy[], transaction: TransactionInput): MCCPolicy[] | undefined {
 		const result = policies.filter(c => MCCPolicy.match(c, transaction))
