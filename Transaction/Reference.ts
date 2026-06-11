@@ -7,6 +7,7 @@ export interface Reference {
 	returnId?: string
 	endToEndId?: string
 	instruction?: string // SWIFT instruction id, TransactionReference on Banking circle hook
+	network?: string
 }
 
 export namespace Reference {
@@ -16,5 +17,6 @@ export namespace Reference {
 		returnId: isly.string().optional(),
 		endToEndId: isly.string().optional(),
 		instruction: isly.string().optional(),
+		network: isly.string().optional(),
 	})
 }
