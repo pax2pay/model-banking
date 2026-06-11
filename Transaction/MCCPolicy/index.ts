@@ -34,14 +34,11 @@ export namespace MCCPolicy {
 		const orgMatches = !policy.organizations || (!!transaction.org && policy.organizations.includes(transaction.org))
 		return !!transaction.category && stackMatches && orgMatches && Group.within(policy.group, transaction.category)
 	}
-	export function getMatching(policies: MCCPolicy[], transaction: TransactionInput): MCCPolicy[] | undefined {
-		const result = policies.filter(c => MCCPolicy.match(c, transaction))
-		return result.length > 0 ? result : undefined
-	}
 	export function resolve(policies: MCCPolicy[], transaction: TransactionInput): MCCPolicy[] {
 		const blocks = policies.filter(c => c.action == "block")
+		const blockMatches = blocks.filter(c => MCCPolicy.match(c, transaction))
 		const allows = policies.filter(c => c.action == "allow")
-		return getMatching(blocks, transaction) ?? getMatching(allows, transaction) ?? []
+		return blockMatches.length ? blockMatches : allows.filter(c => MCCPolicy.match(c, transaction))
 	}
 	export function isAllowed(policies: MCCPolicy[], transaction: TransactionInput): boolean | undefined {
 		const [result] = resolve(policies, transaction)
