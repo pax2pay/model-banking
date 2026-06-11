@@ -1,8 +1,6 @@
 import { isly } from "isly"
 import { Card } from "../../Card"
 import { Merchant } from "../../Merchant"
-import { Rail } from "../../Rail"
-import type { Transaction } from "../index"
 import { Action as MCCAction } from "./Action"
 import { Group as MCCGroup } from "./Group"
 
@@ -43,14 +41,5 @@ export namespace MCCPolicy {
 	export function isAllowed(policies: MCCPolicy[], transaction: TransactionInput): boolean | undefined {
 		const [result] = resolve(policies, transaction)
 		return result ? result.action == "allow" : undefined
-	}
-	export function toTransactionInput(transaction: Transaction): TransactionInput {
-		return {
-			category: Rail.Address.Card.Counterpart.type.is(transaction.counterpart)
-				? transaction.counterpart.merchant.category
-				: undefined,
-			cardPreset: transaction.state?.card?.preset,
-			org: transaction.organization,
-		}
 	}
 }
