@@ -6,6 +6,7 @@ import { Cards } from "./Cards"
 import { Exchanges } from "./Exchanges"
 import { Labels } from "./Labels"
 import { Logs } from "./Logs"
+import { MCCPolicies } from "./MCCPolicies"
 import { Me } from "./Me"
 import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
@@ -17,7 +18,6 @@ import { Transactions as ClientTransactions } from "./Transactions"
 import { Treasury } from "./Treasury"
 import { Users } from "./Users"
 import { Version } from "./Version"
-
 export class Client {
 	realm?: string
 	organization?: string
@@ -28,6 +28,7 @@ export class Client {
 	readonly flags: Labels
 	readonly groups: Labels
 	readonly logs: Logs
+	readonly mccPolicies: MCCPolicies
 	readonly me: Me
 	readonly operations: Operations
 	readonly organizations: Organizations
@@ -60,6 +61,7 @@ export class Client {
 		this.flags = new Labels(this.client, "flag")
 		this.groups = new Labels(this.client, "group")
 		this.logs = new Logs(this.client)
+		this.mccPolicies = new MCCPolicies(this.client)
 		this.me = new Me(this.client)
 		this.operations = new Operations(this.client)
 		this.organizations = new Organizations(this.client)
