@@ -1,5 +1,5 @@
-import { Card } from "../../Card"
-import { Merchant } from "../../Merchant"
+import { Card } from "../Card"
+import { Merchant } from "../Merchant"
 import { MCCPolicy } from "./index"
 
 describe("MCCPolicy", () => {

@@ -1,30 +1,32 @@
+import { isoly } from "isoly"
 import { isly } from "isly"
-import { Card } from "../../Card"
-import { Merchant } from "../../Merchant"
+import { Card } from "../Card"
+import { Merchant } from "../Merchant"
+import { Realm } from "../Realm"
 import { Action as MCCAction } from "./Action"
+import { Creatable as MCCPolicyCreatable } from "./Creatable"
 import { Group as MCCGroup } from "./Group"
+import { Identifier as MCCPolicyIdentifier } from "./Identifier"
+import { Updatable as MCCPolicyUpdatable } from "./Updatable"
 
-export interface MCCPolicy {
+export interface MCCPolicy extends MCCPolicyCreatable {
 	id: string
-	action: MCCPolicy.Action
-	name: string
-	description?: string
-	stacks?: Card.Stack[]
-	organizations?: string[]
-	group: MCCPolicy.Group
+	realm: Realm
+	created: isoly.DateTime
+	updated: isoly.DateTime
 }
 export namespace MCCPolicy {
+	export import Creatable = MCCPolicyCreatable
+	export import Updatable = MCCPolicyUpdatable
+	export import Identifier = MCCPolicyIdentifier
 	export import Action = MCCAction
 	export import Group = MCCGroup
 	export type TransactionInput = { category?: Merchant.Category; cardPreset?: Card.Preset; org?: string }
-	export const type = isly.object<MCCPolicy>({
+	export const type = Creatable.type.extend<MCCPolicy>({
 		id: isly.string(),
-		action: Action.type,
-		name: isly.string(),
-		description: isly.string().optional(),
-		organizations: isly.string().array().optional(),
-		stacks: Card.Stack.type.array().optional(),
-		group: Group.type,
+		realm: Realm.type,
+		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+		updated: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
 	export function match(policy: MCCPolicy, transaction: TransactionInput): boolean {
 		const stack = transaction.cardPreset ? Card.Preset.presets[transaction.cardPreset] : undefined
