@@ -21,14 +21,4 @@ export namespace Creatable {
 		stacks: Card.Stack.type.array().optional(),
 		group: Group.type,
 	})
-	export function sanitize(creatable: Creatable & Record<string, any>): Creatable {
-		return {
-			action: creatable.action,
-			name: creatable.name,
-			description: creatable.description,
-			organizations: creatable.organizations,
-			stacks: creatable.stacks,
-			group: creatable.group,
-		}
-	}
 }

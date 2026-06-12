@@ -6,6 +6,7 @@ import { Realm } from "../Realm"
 import { Action as MCCAction } from "./Action"
 import { Creatable as MCCPolicyCreatable } from "./Creatable"
 import { Group as MCCGroup } from "./Group"
+import { Identifier as MCCPolicyIdentifier } from "./Identifier"
 import { Updatable as MCCPolicyUpdatable } from "./Updatable"
 
 export interface MCCPolicy extends MCCPolicyCreatable {
@@ -17,6 +18,7 @@ export interface MCCPolicy extends MCCPolicyCreatable {
 export namespace MCCPolicy {
 	export import Creatable = MCCPolicyCreatable
 	export import Updatable = MCCPolicyUpdatable
+	export import Identifier = MCCPolicyIdentifier
 	export import Action = MCCAction
 	export import Group = MCCGroup
 	export type TransactionInput = { category?: Merchant.Category; cardPreset?: Card.Preset; org?: string }
