@@ -1,23 +1,28 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { Card } from "../../Card"
-import { Merchant } from "../../Merchant"
+import { Card } from "../Card"
+import { Merchant } from "../Merchant"
+import { Realm } from "../pax2pay"
 import { Action as MCCAction } from "./Action"
 import { Creatable as MCCPolicyCreatable } from "./Creatable"
 import { Group as MCCGroup } from "./Group"
+import { Updatable as MCCPolicyUpdatable } from "./Updatable"
 
 export interface MCCPolicy extends MCCPolicyCreatable {
 	id: string
+	realm: Realm
 	created: isoly.DateTime
 	updated: isoly.DateTime
 }
 export namespace MCCPolicy {
 	export import Creatable = MCCPolicyCreatable
+	export import Updatable = MCCPolicyUpdatable
 	export import Action = MCCAction
 	export import Group = MCCGroup
 	export type TransactionInput = { category?: Merchant.Category; cardPreset?: Card.Preset; org?: string }
 	export const type = Creatable.type.extend<MCCPolicy>({
 		id: isly.string(),
+		realm: Realm.type,
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		updated: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
