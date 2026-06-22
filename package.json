@@ -25,6 +25,9 @@
 			}
 		}
 	},
+	"files": [
+		"dist"
+	],
 	"git": {
 		"tagName": "v${version}"
 	},
