@@ -31,7 +31,7 @@ export namespace MCCPolicy {
 	export function match(policy: MCCPolicy, transaction: TransactionInput): boolean {
 		const stack = transaction.cardPreset ? Card.Preset.presets[transaction.cardPreset] : undefined
 		const stackMatches = !policy.stacks || (!!stack && policy.stacks.includes(stack))
-		const orgMatches = !policy.organizations || (!!transaction.org && policy.organizations.includes(transaction.org))
+		const orgMatches = !policy.organization || (!!transaction.org && policy.organization == transaction.org)
 		return !!transaction.category && stackMatches && orgMatches && Group.within(policy.group, transaction.category)
 	}
 	export function resolve(policies: MCCPolicy[], transaction: TransactionInput): MCCPolicy[] {

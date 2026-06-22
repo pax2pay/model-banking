@@ -8,7 +8,7 @@ export interface Creatable {
 	name: string
 	description?: string
 	stacks?: Card.Stack[]
-	organizations?: string[]
+	organization?: string
 	group: Group
 }
 
@@ -17,7 +17,7 @@ export namespace Creatable {
 		action: Action.type,
 		name: isly.string(),
 		description: isly.string().optional(),
-		organizations: isly.string().array().optional(),
+		organization: isly.string().optional(),
 		stacks: Card.Stack.type.array().optional(),
 		group: Group.type,
 	})

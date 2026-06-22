@@ -12,6 +12,9 @@ describe("MCCPolicy", () => {
 		(_: string, stacks: Card.Stack[] | undefined, transactionPreset: Card.Preset, isMatch: boolean) => {
 			const policy: MCCPolicy = {
 				stacks,
+				realm: "test",
+				created: "2024-01-01T00:00:00Z",
+				updated: "2024-01-01T00:00:00Z",
 				id: "test-policy",
 				action: "allow",
 				name: "Test policy",
@@ -23,6 +26,9 @@ describe("MCCPolicy", () => {
 	)
 	const allow: MCCPolicy = {
 		id: "allow-5411",
+		realm: "test",
+		created: "2024-01-01T00:00:00Z",
+		updated: "2024-01-01T00:00:00Z",
 		action: "allow",
 		name: "Allow groceries",
 		stacks: undefined,
@@ -30,6 +36,9 @@ describe("MCCPolicy", () => {
 	}
 	const block: MCCPolicy = {
 		id: "block-5542",
+		realm: "test",
+		created: "2024-01-01T00:00:00Z",
+		updated: "2024-01-01T00:00:00Z",
 		action: "block",
 		name: "Block fuel",
 		stacks: undefined,
