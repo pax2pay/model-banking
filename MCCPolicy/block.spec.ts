@@ -192,7 +192,7 @@ describe("global block list", () => {
 				},
 			},
 		}
-		const ruleResult = pax2pay.Rule.evaluate([blockRule], state)
+		const ruleResult = pax2pay.Rule.evaluate([allowRule], state)
 		const [policyResult] = pax2pay.MCCPolicy.resolve([allow], {
 			category: mcc,
 			org: state.organization?.code,
@@ -214,7 +214,7 @@ describe("global block list", () => {
 })
 
 const failedMccs: { mcc: string; policy?: pax2pay.MCCPolicy; ruleOutcome?: string }[] = []
-const blockRule: pax2pay.Rule = {
+const allowRule: pax2pay.Rule = {
 	name: "mcc allow list",
 	code: "mcc-allow-list",
 	description: "Only allow travel MCCs.",
