@@ -1,8 +1,15 @@
-import { storage } from "cloudly-storage"
+import { isoly } from "isoly"
 import { isly } from "isly"
 
-export type Audit = storage.AuditLogger.Entry<Audit.Type>
+export type Audit = Audit.Entry<Audit.Type>
 export namespace Audit {
+	export interface Entry<T extends Record<string, string>> {
+		id: string
+		created: isoly.DateTime
+		resource: T
+		by: string
+		messages: string[]
+	}
 	export type Type = { [K in keyof typeof Resource.value]: (typeof Resource.value)[K][number] }
 	export type Resource = keyof typeof Resource.value
 	export namespace Resource {
