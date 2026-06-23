@@ -1,13 +1,13 @@
 import { gracely } from "gracely"
-import { storage } from "cloudly-storage"
 import { pax2pay } from "../index"
+import { MockKv } from "./MockKv"
 
 let jwt: pax2pay.User.JWT
-let store: storage.KeyValueStore<pax2pay.User.JWT.Payload.LongTerm>
+let store: MockKv<pax2pay.User.JWT.Payload.LongTerm>
 let longTermTokenGetter: pax2pay.User.JWT.LongTermTokenGetter
 describe("Identity", () => {
 	beforeAll(async () => {
-		store = storage.KeyValueStore.Json.create<pax2pay.User.JWT.Payload.LongTerm>()
+		store = new MockKv<pax2pay.User.JWT.Payload.LongTerm>()
 		store.set(whitelisted.id, whitelist[0])
 		jwt = pax2pay.User.JWT.open(key)
 		longTermTokenGetter = async (id: string) => (await store.get(id))?.value

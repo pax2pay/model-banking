@@ -1,6 +1,5 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
-import { storage } from "cloudly-storage"
 import { pax2pay } from "../../index"
 import { reports } from "../../reports"
 
@@ -10,7 +9,7 @@ export class Tpl {
 	async getQuarterly(
 		realm: pax2pay.Realm,
 		processor: string,
-		[start, end]: NonNullable<storage.KeyValueStore.ListOptions["range"]>,
+		[start, end]: [string?, string?],
 		cursor?: string,
 		limit?: number
 	): Promise<(reports.visa.Data & { cursor?: string }) | gracely.Error> {
