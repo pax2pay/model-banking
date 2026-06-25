@@ -15,6 +15,10 @@ export namespace Rail {
 		"bacs",
 		"transfer",
 		"credit",
+		"sepa",
+		"sepa-instant",
+		"rix-rtgs",
+		"rix-inst",
 	] as const
 	export const type = isly.string<Rail>(rails)
 	export import Address = RailAddress
