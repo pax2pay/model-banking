@@ -8,8 +8,8 @@ export class MCCPolicies {
 	async create(policy: MCCPolicy.Creatable): Promise<MCCPolicy | gracely.Error> {
 		return this.client.post<MCCPolicy>(`/mcc-policy`, policy)
 	}
-	async update(id: string, policy: MCCPolicy.Creatable): Promise<MCCPolicy | gracely.Error> {
-		return this.client.put<MCCPolicy>(`/mcc-policy/${id}`, policy)
+	async update(policy: MCCPolicy.Updatable): Promise<MCCPolicy | gracely.Error> {
+		return this.client.put<MCCPolicy>(`/mcc-policy`, policy)
 	}
 	async list(filter: { organization?: string; stack?: Card.Stack }): Promise<MCCPolicy[] | gracely.Error> {
 		const query = Object.entries(filter)
