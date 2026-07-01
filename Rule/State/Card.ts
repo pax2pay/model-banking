@@ -32,15 +32,19 @@ export namespace Card {
 			original: { currency: card.limit[0], limit: card.limit[1] },
 		}
 	}
-	export function check(card: Card, amount: number, currency: isoly.Currency): TransactionStatus.Reason | undefined {
+	export function check(
+		card: Card,
+		transactionAmount: number,
+		transactionCurrency: isoly.Currency
+	): TransactionStatus.Reason | undefined {
 		let result: TransactionStatus.Reason | undefined = undefined
 		if (card.status != "active") {
 			result = "cancelled card"
 		} else if (ModelCard.Expiry.isExpired(card.details.expiry)) {
 			result = "card expired"
-		} else if (card.original.currency != currency) {
+		} else if (card.original.currency != transactionCurrency) {
 			result = "invalid request"
-		} else if (amount + card.spent[1] > card.limit) {
+		} else if (transactionAmount + card.spent[1] > card.limit) {
 			result = "exceeds limit"
 		}
 		return result
