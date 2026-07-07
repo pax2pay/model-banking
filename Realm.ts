@@ -15,12 +15,12 @@ export namespace Realm {
 	export const currency: Record<Realm, isoly.Currency> = { test: "EUR", uk: "GBP", eea: "EUR" }
 	export const suppliers: Record<Realm, modelSupplier[]> = {
 		test: ["paxgiro", "bankingcircle"],
-		uk: ["clearbank", "bankingcircle"],
+		uk: ["bankingcircle"],
 		eea: [],
 	}
 	export interface Suppliers extends Record<Realm, modelSupplier[]> {
 		test: ["paxgiro", "bankingcircle"]
-		uk: ["clearbank", "bankingcircle"]
+		uk: ["bankingcircle"]
 		eea: []
 	}
 	export type Supplier<P extends keyof Suppliers> = Pick<Suppliers, P>[P][number]

@@ -9,7 +9,6 @@ export namespace Supplier {
 	export const currencies: Record<Realm, Partial<Record<Supplier, isoly.Currency[]>>> = {
 		eea: {},
 		uk: {
-			clearbank: ["GBP"],
 			bankingcircle: ["EUR", "GBP", "USD", "DKK", "CHF", "PLN", "SEK", "HUF"],
 		},
 		test: {
@@ -20,6 +19,6 @@ export namespace Supplier {
 	export const realm = {
 		eea: [],
 		test: ["paxgiro", "bankingcircle"],
-		uk: ["clearbank", "bankingcircle"],
+		uk: ["bankingcircle"],
 	} as const satisfies Record<Realm, Supplier[]>
 }
