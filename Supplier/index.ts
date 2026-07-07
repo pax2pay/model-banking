@@ -6,6 +6,11 @@ export type Supplier = (typeof Supplier.names)[number]
 export namespace Supplier {
 	export const names = ["paxgiro", "clearbank", "bankingcircle"] as const
 	export const type = isly.string<Supplier>(names)
+	export const decommissioned = ["clearbank"] as const
+	export type Decommissioned = (typeof decommissioned)[number]
+	export function isDecommissioned(supplier: Supplier | any): supplier is Decommissioned {
+		return decommissioned.includes(supplier)
+	}
 	export const currencies: Record<Realm, Partial<Record<Supplier, isoly.Currency[]>>> = {
 		eea: {},
 		uk: {
