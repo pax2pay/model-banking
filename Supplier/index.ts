@@ -6,10 +6,14 @@ export type Supplier = (typeof Supplier.names)[number]
 export namespace Supplier {
 	export const names = ["paxgiro", "clearbank", "bankingcircle"] as const
 	export const type = isly.string<Supplier>(names)
+	export const decommissioned = ["clearbank"] as const
+	export type Decommissioned = (typeof decommissioned)[number]
+	export function isDecommissioned(supplier: Supplier | any): supplier is Decommissioned {
+		return decommissioned.includes(supplier)
+	}
 	export const currencies: Record<Realm, Partial<Record<Supplier, isoly.Currency[]>>> = {
 		eea: {},
 		uk: {
-			clearbank: ["GBP"],
 			bankingcircle: ["EUR", "GBP", "USD", "DKK", "CHF", "PLN", "SEK", "HUF"],
 		},
 		test: {
@@ -20,6 +24,6 @@ export namespace Supplier {
 	export const realm = {
 		eea: [],
 		test: ["paxgiro", "bankingcircle"],
-		uk: ["clearbank", "bankingcircle"],
+		uk: ["bankingcircle"],
 	} as const satisfies Record<Realm, Supplier[]>
 }
