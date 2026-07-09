@@ -1,29 +1,23 @@
 import { gracely } from "gracely"
 import { http } from "cloudly-http"
 import { Account } from "../../Account"
-import { Buffer } from "./Buffer"
 import { Charge } from "./Charge"
-import { Counterparts } from "./Counterparts"
 import { Details } from "./Details"
 import { History } from "./History"
 import { Rules } from "./Rules"
 import { Status } from "./Status"
 
 export class Accounts {
-	readonly buffer: Buffer
 	readonly charge: Charge
 	readonly details: Details
 	readonly rules: Rules
 	readonly status: Status
-	readonly counterparts: Counterparts
 	readonly history: History
 	constructor(private readonly client: http.Client) {
-		this.buffer = new Buffer(this.client)
 		this.charge = new Charge(this.client)
 		this.details = new Details(this.client)
 		this.rules = new Rules(this.client)
 		this.status = new Status(this.client)
-		this.counterparts = new Counterparts(this.client)
 		this.history = new History(this.client)
 	}
 
