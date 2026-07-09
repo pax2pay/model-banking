@@ -3,7 +3,6 @@ import { http } from "cloudly-http"
 import { Accounts } from "./Accounts"
 import { Audit } from "./Audit"
 import { Cards } from "./Cards"
-import { Exchanges } from "./Exchanges"
 import { Labels } from "./Labels"
 import { Logs } from "./Logs"
 import { MCCPolicies } from "./MCCPolicies"
@@ -24,7 +23,6 @@ export class Client {
 	readonly accounts: Accounts
 	readonly audits: Audit
 	readonly cards: Cards
-	readonly exchanges: Exchanges
 	readonly flags: Labels
 	readonly groups: Labels
 	readonly logs: Logs
@@ -57,7 +55,6 @@ export class Client {
 		this.accounts = new Accounts(this.client)
 		this.audits = new Audit(this.client)
 		this.cards = new Cards(this.client)
-		this.exchanges = new Exchanges(this.client)
 		this.flags = new Labels(this.client, "flag")
 		this.groups = new Labels(this.client, "group")
 		this.logs = new Logs(this.client)
