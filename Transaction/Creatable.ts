@@ -7,7 +7,7 @@ import { Amount } from "./Amount"
 import { Exchange } from "./Exchange"
 
 export interface Creatable {
-	counterpart: string | Rail.Address
+	counterpart: Rail.Address
 	currency: isoly.Currency
 	amount: number
 	description: string
@@ -16,7 +16,7 @@ export interface Creatable {
 export namespace Creatable {
 	export type Resolved = (Creatable & { counterpart: Rail.Address }) | CardTransaction
 	export const type = isly.object<Creatable>({
-		counterpart: isly.union<string | Rail.Address, string, Rail.Address>(isly.string(), Rail.Address.type),
+		counterpart: Rail.Address.type,
 		currency: isly.fromIs("isoly.Currency", isoly.Currency.is),
 		amount: isly.number(),
 		description: isly.string(),
