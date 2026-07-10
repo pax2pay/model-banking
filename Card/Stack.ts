@@ -12,6 +12,7 @@ export namespace Stack {
 		"uk-diners-dpg",
 		"uk-mc-tpl-marqeta",
 		"uk-visa-tpl-marqeta",
+		"uk-diners-clowd9",
 	] as const
 	export const type = isly.string(stacks)
 	export function toRealm(stack: Stack): Realm {
@@ -78,6 +79,7 @@ export namespace Stack {
 			"uk-mc-tpl-marqeta": "a",
 			"uk-diners-dpg": "b",
 			"uk-visa-tpl-marqeta": "c",
+			"uk-diners-clowd9": "d",
 		}
 		export function from(stack: Stack): Stack.Character {
 			return table[stack]
