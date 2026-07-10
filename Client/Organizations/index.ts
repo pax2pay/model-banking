@@ -2,16 +2,13 @@ import { gracely } from "gracely"
 import { http } from "cloudly-http"
 import { Organization } from "../../Organization"
 import { Fx } from "./Fx"
-import { Groups } from "./Groups"
 import { Risk } from "./Risk"
 
 export class Organizations {
 	readonly risk: Risk
-	readonly groups: Groups
 	readonly fx: Fx
 	constructor(private readonly client: http.Client) {
 		this.risk = new Risk(this.client)
-		this.groups = new Groups(this.client)
 		this.fx = new Fx(this.client)
 	}
 
