@@ -17,7 +17,7 @@ export namespace Account {
 		account: value.id,
 		action,
 		created: isoly.DateTime.now(),
-		meta: { key: value.key ?? "" },
+		meta: { key: "" },
 		value,
 	})
 	export const addSender = Base.pipeToSender(create)

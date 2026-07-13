@@ -182,7 +182,6 @@ const state: pax2pay.Rule.State = {
 				outgoingReserved: 0,
 			},
 		},
-		counterparts: {},
 		organization: "agpiPo0v",
 		transactions: {
 			card: {

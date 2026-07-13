@@ -11,6 +11,8 @@ namespace Test {
 		code: "organization-id",
 		name: "Acme Inc.",
 		rules: [],
+		risk: "high",
+		type: "emoney",
 	}
 	export const account: pax2pay.Account = {
 		id: "account-id",
@@ -19,9 +21,9 @@ namespace Test {
 		organization: organization.code,
 		balances: { GBP: { available: 100 } },
 		rails: [],
-		key: "string",
 		rules: [],
 		status: { mode: "active" },
+		type: "emoney",
 	}
 	export const transaction: pax2pay.Transaction = {
 		id: "transaction-id",
@@ -32,30 +34,16 @@ namespace Test {
 		amount: { original: -100, charge: 0, total: -100 },
 		posted: "2023-08-07T09:25:11.296Z",
 		description: "internal transaction",
-		account: {
-			type: "internal",
-			identifier: "3Lb41MlP",
-		},
+		account: { type: "internal", identifier: "3Lb41MlP" },
 		type: "internal",
 		direction: "outbound",
-		balance: {
-			actual: 1000,
-			reserved: 10,
-			available: 990,
-		},
+		balance: { actual: 1000, reserved: 10, available: 990 },
 		operations: [
 			{
 				account: "3Lb41MlP",
 				currency: "GBP",
 				type: "collect",
-				changes: {
-					"fee_test-paxgiro_202333303": {
-						type: "subtract",
-						amount: 10,
-						status: "success",
-						result: 0,
-					},
-				},
+				changes: {},
 				transaction: "zzzyRwIvXovdzVNA",
 				counter: 0,
 				created: "2023-12-05T17:26:36.977Z",
@@ -73,13 +61,7 @@ namespace Test {
 		created: "2023-08-07T09:25:11.296Z",
 		counter: 1,
 		currency: "GBP",
-		changes: {
-			"reserved-incoming": {
-				type: "add",
-				amount: 100,
-				status: "pending",
-			},
-		},
+		changes: { "reserved-incoming": { type: "add", amount: 100, status: "pending" } },
 		type: "refund",
 		signature: "signature",
 		previous: "previous",
@@ -111,9 +93,7 @@ namespace Test {
 				treasury: "read",
 			},
 		},
-		password: {
-			changed: "2023-08-07T09:25:11.296Z",
-		},
+		password: { changed: "2023-08-07T09:25:11.296Z" },
 	}
 	export const card: pax2pay.Card = {
 		id: "card-id",
@@ -168,7 +148,7 @@ describe("Backup", () => {
 			account: Test.account.id,
 			created: backup.created,
 			action: "created",
-			meta: { key: Test.account.key },
+			meta: { key: "" },
 			value: Test.account,
 		}
 		expect(backup).toEqual(partial)
