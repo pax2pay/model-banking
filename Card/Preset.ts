@@ -16,6 +16,7 @@ export namespace Preset {
 		"p2p-visa-idx-140",
 		"p2p-visa-idx-160",
 		"p2p-visa-idx-200",
+		"p2p-diners-tsa-175",
 		"test-pg-150",
 		"test-pg-200",
 		"test-ta-mc-200",
@@ -36,6 +37,7 @@ export namespace Preset {
 			"p2p-visa-idx-140",
 			"p2p-visa-idx-160",
 			"p2p-visa-idx-200",
+			"p2p-diners-tsa-175",
 		],
 		eea: [],
 	}
@@ -55,5 +57,6 @@ export namespace Preset {
 		"test-ta-pg-200": "test-tpl-paxgiro",
 		"test-ta-pg-bc-200": "test-tpl-paxgiro",
 		"test-diners-175": "test-diners-clowd9",
+		"p2p-diners-tsa-175": "uk-diners-clowd9",
 	}
 }
