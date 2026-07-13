@@ -4,19 +4,16 @@ import { Account } from "../../Account"
 import { Charge } from "./Charge"
 import { Details } from "./Details"
 import { History } from "./History"
-import { Rules } from "./Rules"
 import { Status } from "./Status"
 
 export class Accounts {
 	readonly charge: Charge
 	readonly details: Details
-	readonly rules: Rules
 	readonly status: Status
 	readonly history: History
 	constructor(private readonly client: http.Client) {
 		this.charge = new Charge(this.client)
 		this.details = new Details(this.client)
-		this.rules = new Rules(this.client)
 		this.status = new Status(this.client)
 		this.history = new History(this.client)
 	}
