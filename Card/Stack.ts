@@ -5,15 +5,20 @@ export type Stack = (typeof Stack.stacks)[number]
 
 // realm-scheme-processor(-processor...)
 export namespace Stack {
-	export const stacks = [
-		"test-paxgiro",
-		"test-tpl-paxgiro",
-		"test-diners-clowd9",
-		"uk-diners-dpg",
-		"uk-mc-tpl-marqeta",
-		"uk-visa-tpl-marqeta",
-		"uk-diners-clowd9",
-	] as const
+	export type Active = (typeof Active.values)[number]
+	export namespace Active {
+		export const test = ["test-paxgiro", "test-tpl-paxgiro", "test-diners-clowd9"]
+		export const uk = ["uk-visa-tpl-marqeta", "uk-diners-clowd9"] as const
+		export const values = [...test, ...uk] as const
+		export const type = isly.string([...test, ...uk])
+	}
+	export type Decommissioned = (typeof Decommissioned.values)[number]
+	export namespace Decommissioned {
+		export const uk = ["uk-diners-dpg", "uk-mc-tpl-marqeta"] as const
+		export const values = [...uk] as const
+		export const type = isly.string(values)
+	}
+	export const stacks = [...Active.values, ...Decommissioned.values] as const
 	export const type = isly.string(stacks)
 	export function toRealm(stack: Stack): Realm {
 		return stack.split("-")[0] as Realm
