@@ -7,7 +7,7 @@ export type Stack = (typeof Stack.stacks)[number]
 export namespace Stack {
 	export type Active = (typeof Active.values)[number]
 	export namespace Active {
-		export const test = ["test-paxgiro", "test-tpl-paxgiro", "test-diners-clowd9"]
+		export const test = ["test-paxgiro", "test-tpl-paxgiro", "test-diners-clowd9"] as const
 		export const uk = ["uk-visa-tpl-marqeta", "uk-diners-clowd9"] as const
 		export const values = [...test, ...uk] as const
 		export const type = isly.string([...test, ...uk])
