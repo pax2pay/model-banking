@@ -1,4 +1,4 @@
-import { DurableObjectLocationHint } from "@cloudflare/workers-types"
+import { DurableObjectLocationHint } from "@cloudflare/workers-types" // TODO: REMOVE
 import { isly } from "isly"
 
 export interface Creatable {
