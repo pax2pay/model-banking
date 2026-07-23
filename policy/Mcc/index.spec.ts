@@ -1,8 +1,8 @@
-import { Card } from "../Card"
-import { Merchant } from "../Merchant"
-import { MCCPolicy } from "./index"
+import { Card } from "../../Card"
+import { Merchant } from "../../Merchant"
+import { Mcc } from "./index"
 
-describe("MCCPolicy", () => {
+describe("Mcc", () => {
 	it.each([
 		["all stacks", undefined, "p2p-diners-175" as Card.Preset, true],
 		["stack no match", ["test-paxgiro", "uk-diners-dpg"] as Card.Stack[], "p2p-visa-idx-200" as Card.Preset, false],
@@ -10,7 +10,7 @@ describe("MCCPolicy", () => {
 	])(
 		"MCC.match stacks - %s",
 		(_: string, stacks: Card.Stack[] | undefined, transactionPreset: Card.Preset, isMatch: boolean) => {
-			const policy: MCCPolicy = {
+			const policy: Mcc = {
 				stacks,
 				realm: "test",
 				created: "2024-01-01T00:00:00Z",
@@ -20,8 +20,8 @@ describe("MCCPolicy", () => {
 				name: "Test policy",
 				group: { values: ["5411"], ranges: [] },
 			}
-			const input: MCCPolicy.TransactionInput = { category: "5411", cardPreset: transactionPreset, org: "test-org" }
-			expect(MCCPolicy.match(policy, input)).toBe(isMatch)
+			const input: Mcc.TransactionInput = { category: "5411", cardPreset: transactionPreset, org: "test-org" }
+			expect(Mcc.match(policy, input)).toBe(isMatch)
 		}
 	)
 	it.each([
@@ -31,7 +31,7 @@ describe("MCCPolicy", () => {
 		["org policy excludes other org", "org-a", "org-b", false],
 		["org policy excludes missing org", "org-a", undefined, false],
 	])("MCC.match org - %s", (_: string, organization: string | undefined, org: string | undefined, isMatch: boolean) => {
-		const policy: MCCPolicy = {
+		const policy: Mcc = {
 			organization,
 			stacks: undefined,
 			realm: "test",
@@ -42,10 +42,10 @@ describe("MCCPolicy", () => {
 			name: "Test policy",
 			group: { values: ["5411"], ranges: [] },
 		}
-		const input: MCCPolicy.TransactionInput = { category: "5411", org }
-		expect(MCCPolicy.match(policy, input)).toBe(isMatch)
+		const input: Mcc.TransactionInput = { category: "5411", org }
+		expect(Mcc.match(policy, input)).toBe(isMatch)
 	})
-	const allow: MCCPolicy = {
+	const allow: Mcc = {
 		id: "allow-5411",
 		realm: "test",
 		organization: "test-org",
@@ -56,7 +56,7 @@ describe("MCCPolicy", () => {
 		stacks: undefined,
 		group: { values: ["5411"], ranges: [] },
 	}
-	const block: MCCPolicy = {
+	const block: Mcc = {
 		id: "block-5542",
 		realm: "test",
 		organization: "test-org",
@@ -78,14 +78,14 @@ describe("MCCPolicy", () => {
 		"resolve & evaluate - %s",
 		(
 			_: string,
-			policy: MCCPolicy[],
+			policy: Mcc[],
 			category: Merchant.Category,
-			resolved: MCCPolicy[],
+			resolved: Mcc[],
 			evaluated: boolean | undefined
 		) => {
-			const input: MCCPolicy.TransactionInput = { category, org: "test-org" }
-			expect(MCCPolicy.resolve(policy, input)).toEqual(resolved)
-			expect(MCCPolicy.isAllowed(policy, input)).toBe(evaluated)
+			const input: Mcc.TransactionInput = { category, org: "test-org" }
+			expect(Mcc.resolve(policy, input)).toEqual(resolved)
+			expect(Mcc.isAllowed(policy, input)).toBe(evaluated)
 		}
 	)
 })
