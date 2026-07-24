@@ -4,10 +4,10 @@ import { Accounts } from "./Accounts"
 import { Audit } from "./Audit"
 import { Cards } from "./Cards"
 import { Logs } from "./Logs"
-import { MCCPolicies } from "./MCCPolicies"
 import { Me } from "./Me"
 import { Operations } from "./Operations"
 import { Organizations } from "./Organizations"
+import { Policies } from "./Policies"
 import { Processor } from "./Processor"
 import { Reports } from "./Reports"
 import { Settlements } from "./Settlements"
@@ -22,7 +22,7 @@ export class Client {
 	readonly audits: Audit
 	readonly cards: Cards
 	readonly logs: Logs
-	readonly mccPolicies: MCCPolicies
+	readonly policies: Policies
 	readonly me: Me
 	readonly operations: Operations
 	readonly organizations: Organizations
@@ -51,7 +51,7 @@ export class Client {
 		this.audits = new Audit(this.client)
 		this.cards = new Cards(this.client)
 		this.logs = new Logs(this.client)
-		this.mccPolicies = new MCCPolicies(this.client)
+		this.policies = new Policies(this.client)
 		this.me = new Me(this.client)
 		this.operations = new Operations(this.client)
 		this.organizations = new Organizations(this.client)
