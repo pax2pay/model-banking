@@ -19,7 +19,7 @@ export namespace Mcc {
 	export import Updatable = MccUpdatable
 	export import Action = MCCAction
 	export import Group = MCCGroup
-	export type TransactionInput = { category?: Merchant.Category; cardPreset?: Card.Preset; org?: string }
+	export type TransactionInput = { category?: Merchant.Category; preset?: Card.Preset; organization?: string }
 	export const type = Creatable.type.extend<Mcc>({
 		id: isly.string(),
 		realm: Realm.type,
@@ -27,9 +27,11 @@ export namespace Mcc {
 		updated: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
 	export function match(policy: Mcc, transaction: TransactionInput): boolean {
-		const stack = transaction.cardPreset ? Card.Preset.presets[transaction.cardPreset] : undefined
+		const stack = transaction.preset ? Card.Preset.presets[transaction.preset] : undefined
 		const stackMatches = !policy.stacks || (!!stack && policy.stacks.includes(stack))
-		const orgMatches = policy.organization == undefined || (!!transaction.org && policy.organization == transaction.org)
+		const orgMatches =
+			policy.organization == undefined ||
+			(!!transaction.organization && policy.organization == transaction.organization)
 		return !!transaction.category && stackMatches && orgMatches && Group.within(policy.group, transaction.category)
 	}
 	export function resolve(policies: Mcc[], transaction: TransactionInput): Mcc[] {

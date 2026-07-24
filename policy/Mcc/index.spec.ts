@@ -20,7 +20,7 @@ describe("Mcc", () => {
 				name: "Test policy",
 				group: { values: ["5411"], ranges: [] },
 			}
-			const input: Mcc.TransactionInput = { category: "5411", cardPreset: transactionPreset, org: "test-org" }
+			const input: Mcc.TransactionInput = { category: "5411", preset: transactionPreset, organization: "test-org" }
 			expect(Mcc.match(policy, input)).toBe(isMatch)
 		}
 	)
@@ -42,7 +42,7 @@ describe("Mcc", () => {
 			name: "Test policy",
 			group: { values: ["5411"], ranges: [] },
 		}
-		const input: Mcc.TransactionInput = { category: "5411", org }
+		const input: Mcc.TransactionInput = { category: "5411", organization: org }
 		expect(Mcc.match(policy, input)).toBe(isMatch)
 	})
 	const allow: Mcc = {
@@ -76,14 +76,8 @@ describe("Mcc", () => {
 		["wrong organization excluded", [{ ...allow, organization: "other-org" }], "5411", [], undefined],
 	])(
 		"resolve & evaluate - %s",
-		(
-			_: string,
-			policy: Mcc[],
-			category: Merchant.Category,
-			resolved: Mcc[],
-			evaluated: boolean | undefined
-		) => {
-			const input: Mcc.TransactionInput = { category, org: "test-org" }
+		(_: string, policy: Mcc[], category: Merchant.Category, resolved: Mcc[], evaluated: boolean | undefined) => {
+			const input: Mcc.TransactionInput = { category, organization: "test-org" }
 			expect(Mcc.resolve(policy, input)).toEqual(resolved)
 			expect(Mcc.isAllowed(policy, input)).toBe(evaluated)
 		}
