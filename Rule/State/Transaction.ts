@@ -30,31 +30,7 @@ export namespace Transaction {
 			kind,
 			amount,
 			type: ModelTransaction.getType(transaction.counterpart, account.name),
-			original: {
-				currency: transaction.currency,
-				amount,
-				total: amount,
-			},
-		}
-	}
-	export function fromPreTransaction(
-		accountName: string,
-		transaction: ModelTransaction.PreTransaction | ModelTransaction,
-		kind: Rule.Base.Kind,
-		stage: "finalize" | "initiate"
-	): Transaction {
-		return {
-			...transaction,
-			id: "id" in transaction ? transaction.id : ModelTransaction.Identifier.generate(),
-			stage,
-			kind,
-			amount: Math.abs(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.total),
-			type: ModelTransaction.getType(transaction.counterpart, accountName),
-			original: {
-				currency: transaction.currency,
-				amount: Math.abs(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original),
-				total: Math.abs(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.total),
-			},
+			original: { currency: transaction.currency, amount, total: amount },
 		}
 	}
 }

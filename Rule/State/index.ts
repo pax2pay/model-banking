@@ -1,6 +1,5 @@
 import { isly } from "isly"
 import { Account as ModelAccount } from "../../Account"
-import type { Card as ModelCard } from "../../Card"
 import { Rail } from "../../Rail"
 import type { Transaction as ModelTransaction } from "../../Transaction"
 import type { Rule } from "../index"
@@ -57,19 +56,5 @@ export namespace State {
 		authorization: "authorization",
 		incoming: "inbound",
 		outgoing: "outbound",
-	}
-	export function fromPreTransaction(
-		account: ModelAccount,
-		address: Rail.Address,
-		transaction: ModelTransaction.PreTransaction,
-		card?: ModelCard & { statistics: Card.Statistics },
-		organization?: Organization
-	): State {
-		return {
-			account: Account.from(account, address),
-			transaction: Transaction.from(account, transaction, type[transaction.type], "initiate"),
-			card: card ? Card.from(card, card.statistics) : undefined,
-			organization,
-		}
 	}
 }
