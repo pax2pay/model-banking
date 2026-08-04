@@ -31,7 +31,7 @@ export namespace Transaction {
 			amount,
 			type: ModelTransaction.getType(transaction.counterpart, account.name),
 			original: { currency: transaction.currency, amount, total: amount },
-			reference: transaction.reference ?? { reference: "" },
+			reference: { ...transaction.reference, reference: transaction.reference?.reference ?? "" },
 		}
 	}
 }
