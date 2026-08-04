@@ -12,7 +12,7 @@ export interface Creatable {
 	amount: number
 	description: string
 	exchange?: Exchange
-	reference?: { reference: string }
+	reference?: { reference?: string }
 }
 export namespace Creatable {
 	export type Resolved = Creatable | CardTransaction
@@ -22,7 +22,7 @@ export namespace Creatable {
 		amount: isly.number(),
 		description: isly.string(),
 		exchange: Exchange.type.optional(),
-		reference: isly.object<{ reference: string }>({ reference: isly.string() }).optional(),
+		reference: isly.object<{ reference?: string }>({ reference: isly.string().optional() }).optional(),
 	})
 	export interface CardTransaction extends Creatable {
 		account: Pick<Rail.Address.Card, "id" | "type">
