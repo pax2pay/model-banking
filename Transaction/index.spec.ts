@@ -27,7 +27,7 @@ const transaction: pax2pay.Transaction = {
 			account: "3Lb41MlP",
 			currency: "GBP",
 			type: "collect",
-			changes: { "fee_test-paxgiro_202333303": { type: "subtract", amount: 10, status: "success", result: 0 } },
+			changes: {},
 			transaction: "zzzyRwIvXovdzVNA",
 			counter: 0,
 			created: "2023-12-05T17:26:36.977Z",

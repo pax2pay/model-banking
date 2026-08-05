@@ -1,7 +1,5 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { fx } from "../../fx"
-import type { Rule } from "../../Rule"
 import { Exchange } from "../Exchange"
 import { Charge as AmountCharge } from "./Charge"
 
@@ -21,22 +19,22 @@ export namespace Amount {
 		total: isly.number(),
 		exchange: Exchange.type.optional(),
 	})
-	export function fromState(state: Rule.State, charges?: Charge, quote?: fx.Quote): Amount {
-		const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
-			? -1
-			: 1
-		return {
-			original: sign * state.transaction.original.amount,
-			charge: 0,
-			charges: charges ?? (quote && fx.Quote.toCharge(quote)),
-			total: isoly.Currency.add(
-				state.transaction.original.currency,
-				sign * state.transaction.original.total,
-				Amount.Charge.total(state.transaction.original.currency, charges ?? {})
-			),
-			exchange: state?.transaction.exchange ?? state.authorization?.exchange,
-		}
-	}
+	// export function fromState(state: Rule.State, charges?: Charge, quote?: fx.Quote): Amount {
+	// 	const sign = ["outbound", "authorization", "capture"].some(direction => direction == state.transaction.kind)
+	// 		? -1
+	// 		: 1
+	// 	return {
+	// 		original: sign * state.transaction.original.amount,
+	// 		charge: 0,
+	// 		charges: charges ?? (quote && fx.Quote.toCharge(quote)),
+	// 		total: isoly.Currency.add(
+	// 			state.transaction.original.currency,
+	// 			sign * state.transaction.original.total,
+	// 			Amount.Charge.total(state.transaction.original.currency, charges ?? {})
+	// 		),
+	// 		exchange: state?.transaction.exchange ?? state.authorization?.exchange,
+	// 	}
+	// }
 	export function change(
 		currency: isoly.Currency,
 		amount: Amount,

@@ -164,7 +164,17 @@ export namespace Transaction {
 					: "fasterpayments"
 		return {
 			...creatable,
-			amount: Amount.fromState(state, charges, quote),
+			amount: {
+				original: creatable.amount,
+				charge: 0,
+				charges: charges ?? (quote && fx.Quote.toCharge(quote)),
+				total: isoly.Currency.add(
+					creatable.currency,
+					creatable.amount,
+					Amount.Charge.total(creatable.currency, charges ?? {})
+				),
+				exchange: creatable.exchange,
+			},
 			type: getType(creatable.counterpart, account.name),
 			direction: "outbound",
 			organization: account.organization,
@@ -280,7 +290,12 @@ export namespace Transaction {
 			state.outcome == "reject" ? ["rejected", "denied"] : state.outcome == "review" ? "review" : "processing"
 		return {
 			...transaction,
-			amount: Amount.fromState(state),
+			amount: {
+				original: transaction.amount,
+				charge: 0,
+				total: transaction.amount,
+				exchange: state?.transaction.exchange ?? state.authorization?.exchange,
+			},
 			type: getType(transaction.counterpart, account.name),
 			direction: "inbound",
 			organization: account.organization,
@@ -296,30 +311,37 @@ export namespace Transaction {
 		}
 	}
 	export function fromRefund(
-		refund: Settlement.Entry.Creatable.Refund,
 		id: string,
-		account: { id: string; name: string; organization: string },
 		card: Rail.Address.Card,
-		balance: { actual: number; reserved: number; available: number },
-		state: Rule.State.Evaluated
-	): Transaction {
-		const amount = Amount.fromState(state)
-		refund.exchange && (amount.exchange = refund.exchange)
+		refund: Settlement.Entry.Creatable.Refund,
+		account: { id: string; name: string; organization: string },
+		balance: { actual: number; reserved: number; available: number }
+	): CardTransaction {
+		const original = isoly.Currency.add(
+			refund.amount[0],
+			Math.abs(refund.amount[1]),
+			Math.abs(refund.fee.other[refund.amount[0]] ?? 0)
+		)
 		return {
-			...Transaction.PreTransaction.Incoming.fromRefund(refund, card),
-			amount,
+			id,
 			type: "card",
+			status: "review",
+			posted: isoly.DateTime.now(),
+			account: card,
 			direction: "inbound",
-			organization: account.organization,
+			currency: refund.amount[0],
+			amount: { charge: 0, original, total: original },
+			counterpart: { type: "card", merchant: refund.merchant, acquirer: refund.acquirer },
 			accountId: account.id,
 			accountName: account.name,
+			organization: account.organization,
 			balance,
-			id,
-			status: "review",
+			rail: card.scheme,
+			notes: [],
 			flags: [],
 			oldFlags: [],
-			notes: [],
 			reference: { reference: refund.reference },
+			description: "Refund transaction.",
 		}
 	}
 	export function isIdentifier(value: string | any): value is string {
