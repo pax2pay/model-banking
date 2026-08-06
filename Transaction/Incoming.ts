@@ -1,7 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Rail } from "../Rail"
-import { Settlement } from "../Settlement"
 import { Reference as TransactionReference } from "./Reference"
 
 export interface Incoming {
@@ -25,17 +24,4 @@ export namespace Incoming {
 		rail: Rail.type.optional(),
 		reference: TransactionReference.type.optional(),
 	})
-
-	export function fromRefund(entry: Settlement.Entry.Creatable.Refund, card: Rail.Address.Card): Incoming {
-		const [currency, amount] = entry.amount
-		return {
-			account: card,
-			currency,
-			amount: isoly.Currency.add(currency, -amount, -(entry.fee.other[currency] ?? 0)),
-			posted: isoly.DateTime.now(),
-			counterpart: { type: "card", merchant: entry.merchant, acquirer: entry.acquirer },
-			description: "Refund transaction.",
-			rail: card.scheme,
-		}
-	}
 }
