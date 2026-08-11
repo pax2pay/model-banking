@@ -2,7 +2,6 @@ import { isly } from "isly"
 import { Type } from "../Account/Type"
 import { Realm } from "../Realm"
 import { Rule } from "../Rule"
-import { type as ruleType } from "../Rule/type"
 import { Changeable as OrganizationChangeable } from "./Changeable"
 import { Contact as OrganizationContact } from "./Contact"
 import { Creatable as OrganizationCreatable } from "./Creatable"
@@ -31,7 +30,7 @@ export namespace Organization {
 		name: isly.string(),
 		code: isly.string(new RegExp(/^[A-Za-z0-9\-_]+$/)),
 		realm: Realm.type,
-		rules: ruleType.array(),
+		rules: Rule.type.array(),
 		status: isly.string(["active", "inactive"]),
 		risk: Organization.Risk.type,
 		contact: Contact.type.optional(),

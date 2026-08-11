@@ -39,7 +39,7 @@ export namespace State {
 		account: ModelAccount,
 		address: Rail.Address,
 		transaction: ModelTransaction.Creatable.Resolved | ModelTransaction,
-		kind: Rule.Base.Kind,
+		kind: Rule.Kind,
 		stage: "finalize" | "initiate",
 		card?: Card,
 		organization?: Organization
@@ -52,7 +52,7 @@ export namespace State {
 			organization,
 		}
 	}
-	export const type: Record<ModelTransaction.PreTransaction["type"], Rule.Base.Kind> = {
+	export const type: Record<ModelTransaction.PreTransaction["type"], Rule.Kind> = {
 		authorization: "authorization",
 		incoming: "inbound",
 		outgoing: "outbound",

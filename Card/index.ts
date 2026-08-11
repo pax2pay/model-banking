@@ -3,8 +3,7 @@ import { isly } from "isly"
 import { Amount } from "../Amount"
 import { Realm } from "../Realm"
 import { Report } from "../Report"
-import type { Rule } from "../Rule"
-import { type as ruleType } from "../Rule/type"
+import { Rule } from "../Rule"
 import { Changeable as CardChangeable } from "./Changeable"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Expiry as CardExpiry } from "./Expiry"
@@ -71,7 +70,7 @@ export namespace Card {
 		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		status: isly.union(isly.string("active"), isly.string("cancelled")),
 		history: isly.array(CardOperation.type),
-		rules: ruleType.array(),
+		rules: Rule.type.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 		restricted: isly.object<Required<Card>["restricted"]>({ to: CardRestriction.type.optional() }).optional(),
 	})
