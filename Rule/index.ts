@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import { State as RuleState } from "./State"
+import { type as ruleType } from "./type"
 
 export type Rule = never
 export namespace Rule {
@@ -14,5 +15,5 @@ export namespace Rule {
 		export const values = ["review", "reject", "flag"] as const
 		export const type = isly.string<Action>(values)
 	}
-	export const type = isly.any<never>()
+	export const type = ruleType
 }
