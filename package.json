@@ -53,7 +53,9 @@
 		"isoly": "3.0.6",
 		"selectively": "^2.0.15",
 		"slackly": "0.0.6",
-		"typedly": "0.0.27",
-		"zod": "4.1.13"
+		"typedly": "0.0.27"
+	},
+	"peerDependencies": {
+		"zod": "^4.0.0"
 	}
 }

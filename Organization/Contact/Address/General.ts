@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../../../zod"
 
 export interface Default {
 	countryCode: Exclude<isoly.CountryCode.Alpha2, "GB" | "SE">
@@ -18,5 +19,13 @@ export namespace Default {
 		city: isly.string(),
 		street: isly.string(),
 		zipCode: isly.string(),
+	})
+	export const typeZod = zod.object({
+		countryCode: zod.string(),
+		state: zod.string().optional(),
+		county: zod.string().optional(),
+		city: zod.string(),
+		zipCode: zod.string(),
+		street: zod.string(),
 	})
 }
