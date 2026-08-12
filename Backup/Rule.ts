@@ -12,14 +12,18 @@ export namespace Rule {
 		value: modelRule,
 		action: Base.Action,
 		data?: { organization?: string; account?: string }
-	) => ({
-		entityType: "rule",
-		entity: value.code,
-		...data,
-		action,
-		created: isoly.DateTime.now(),
-		meta: `${value.category}.${value.type}.${value.action}`,
-		value,
-	})
+	) => {
+		// Rule is currently typed as `never`, so its fields are read via a cast until rules are retyped.
+		const rule = value as { code: string; category: string; type: string; action: string }
+		return {
+			entityType: "rule",
+			entity: rule.code,
+			...data,
+			action,
+			created: isoly.DateTime.now(),
+			meta: `${rule.category}.${rule.type}.${rule.action}`,
+			value,
+		}
+	}
 	export const addSender = Base.pipeToSender(create)
 }

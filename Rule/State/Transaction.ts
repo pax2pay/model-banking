@@ -5,7 +5,7 @@ import type { Rule } from "../index"
 
 export type Transaction = ModelTransaction.Creatable.Resolved & {
 	id: string
-	kind: Rule.Base.Kind
+	kind: Rule.Kind
 	stage: "finalize" | "initiate"
 	amount: number
 	type: ModelTransaction.Types
@@ -19,7 +19,7 @@ export namespace Transaction {
 	export function from(
 		account: ModelAccount,
 		transaction: ModelTransaction.Creatable.Resolved | ModelTransaction,
-		kind: Rule.Base.Kind,
+		kind: Rule.Kind,
 		stage: "finalize" | "initiate"
 	): Transaction {
 		const amount = Math.abs(typeof transaction.amount == "number" ? transaction.amount : transaction.amount.original)

@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { Rule } from "../Rule"
+import type { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
 import { Contact } from "./Contact"
 import { Fx } from "./Fx"
