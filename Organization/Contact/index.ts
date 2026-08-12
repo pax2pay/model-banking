@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../../zod"
 import { Address as ContactAddress } from "./Address"
 import { Addresses as ContactAddresses } from "./Addresses"
 import { Creatable as ContactCreatable } from "./Creatable"
@@ -24,5 +25,12 @@ export namespace Contact {
 		name: Name.type,
 		phone: Phone.type,
 		owners: Name.type.array().optional(),
+	})
+	export const typeZod = zod.object({
+		address: Addresses.typeZod,
+		email: zod.string().regex(/^\S+@\S+\.\S+$/),
+		name: Name.typeZod,
+		phone: Phone.typeZod,
+		owners: zod.array(Name.typeZod).optional(),
 	})
 }

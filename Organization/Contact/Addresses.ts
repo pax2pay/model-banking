@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../../zod"
 import { Address } from "./Address"
 
 export interface Addresses {
@@ -13,5 +14,11 @@ export namespace Addresses {
 		billing: Address.type.optional(),
 		delivery: Address.type.optional(),
 		visit: Address.type.optional(),
+	})
+	export const typeZod = zod.object({
+		primary: Address.typeZod,
+		billing: Address.typeZod.optional(),
+		delivery: Address.typeZod.optional(),
+		visit: Address.typeZod.optional(),
 	})
 }

@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../../../zod"
 
 export interface SE {
 	countryCode: "SE"
@@ -12,5 +13,11 @@ export namespace SE {
 		zipCode: isly.string(),
 		city: isly.string(),
 		street: isly.string(),
+	})
+	export const typeZod = zod.object({
+		countryCode: zod.literal("SE"),
+		zipCode: zod.string(),
+		city: zod.string(),
+		street: zod.string(),
 	})
 }

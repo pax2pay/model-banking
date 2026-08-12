@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../../zod"
 import { Addresses } from "./Addresses"
 import { Name } from "./Name"
 import { Phone } from "./Phone"
@@ -17,5 +18,12 @@ export namespace Creatable {
 		name: Name.type,
 		phone: Phone.type,
 		owners: Name.type.array({ criteria: "minLength", value: 1 }),
+	})
+	export const typeZod = zod.object({
+		address: Addresses.typeZod,
+		email: zod.string().regex(/^\S+@\S+\.\S+$/),
+		name: Name.typeZod,
+		phone: Phone.typeZod,
+		owners: zod.array(Name.typeZod).min(1),
 	})
 }
