@@ -14,7 +14,7 @@ export namespace Quarter {
 	}
 	export function previous(quarter: Quarter): Quarter {
 		const index = values.indexOf(quarter) - 1
-		return values[index < 0 ? values.length - 1 : index]
+		return values[index < 0 ? values.length - 1 : index]!
 	}
 	export namespace DateRange {
 		export const converter: Record<Quarter, { start: string; end: string }> = {

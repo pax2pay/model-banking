@@ -13,7 +13,7 @@ export namespace funding {
 			return `${transaction.currency}|${isoly.DateTime.invert(transaction.created)}|${transaction.reference}`
 		}
 		export function toTimestamp(cursor: string): isoly.DateTime {
-			return isoly.DateTime.invert(cursor.split("|")[1])
+			return isoly.DateTime.invert(cursor.split("|")[1]!)
 		}
 	}
 	export type Cursors = Partial<Record<isoly.Currency, Cursor>>
@@ -47,7 +47,7 @@ export namespace funding {
 	}
 	export function settle(transactions: Transaction[], amountsUpdated: Cursors): Cursors {
 		for (let i = transactions.length - 1; i >= 0; i--) {
-			Cursors.updateCursors(transactions[i], amountsUpdated)
+			Cursors.updateCursors(transactions[i]!, amountsUpdated)
 		}
 		return amountsUpdated
 	}
