@@ -30,7 +30,7 @@ export namespace Address {
 		const splitted = value.split("-")
 		switch (splitted[0]) {
 			case "pxg":
-				result = splitted.length == 2 ? { type: "paxgiro", identifier: splitted[1] } : undefined
+				result = splitted.length == 2 ? { type: "paxgiro", identifier: splitted[1]! } : undefined
 				break
 		}
 		return result
