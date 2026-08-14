@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import type { Transaction } from "../../Transaction"
+import { zod } from "../../zod"
 import { Merchant as RestrictionsMerchant } from "./Merchant"
 
 export interface Restriction {
@@ -8,6 +9,7 @@ export interface Restriction {
 export namespace Restriction {
 	export import Merchant = RestrictionsMerchant
 	export const type = isly.object<Restriction>({ merchants: Merchant.type.array().optional() })
+	export const typeZod = zod.object({ merchants: zod.array(Merchant.typeZod).optional() })
 	export function check(
 		restrictions: Restriction,
 		transaction: Transaction.Creatable.CardTransaction | Transaction.PreTransaction.Authorization

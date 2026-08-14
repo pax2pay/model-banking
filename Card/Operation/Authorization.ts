@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../../zod"
 
 export interface Authorization {
 	type: "authorization"
@@ -17,5 +18,12 @@ export namespace Authorization {
 		status: isly.string(statuses),
 		reason: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+	})
+	export const typeZod = zod.object({
+		type: zod.literal("authorization"),
+		id: zod.string(),
+		status: zod.enum(statuses),
+		reason: zod.string().optional(),
+		created: zod.string().refine(isoly.DateTime.is),
 	})
 }

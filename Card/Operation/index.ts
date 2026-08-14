@@ -2,6 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Authorization } from "../../Authorization"
 import { Entry } from "../../Settlement/Entry"
+import { zod } from "../../zod"
 import { Authorization as OperationAuthorization } from "./Authorization"
 import { Card } from "./Card"
 
@@ -27,4 +28,5 @@ export namespace Operation {
 				}
 	}
 	export const type = isly.union(Card.type, OperationAuthorization.type)
+	export const typeZod = zod.union([Card.typeZod, OperationAuthorization.typeZod])
 }

@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import { Realm } from "../Realm"
+import { zod } from "../zod"
 
 export type Stack = (typeof Stack.stacks)[number]
 
@@ -11,15 +12,18 @@ export namespace Stack {
 		export const uk = ["uk-visa-tpl-marqeta", "uk-diners-clowd9"] as const
 		export const values = [...test, ...uk] as const
 		export const type = isly.string([...test, ...uk])
+		export const typeZod = zod.enum([...test, ...uk])
 	}
 	export type Decommissioned = (typeof Decommissioned.values)[number]
 	export namespace Decommissioned {
 		export const uk = ["uk-diners-dpg", "uk-mc-tpl-marqeta"] as const
 		export const values = [...uk] as const
 		export const type = isly.string(values)
+		export const typeZod = zod.enum(values)
 	}
 	export const stacks = [...Active.values, ...Decommissioned.values] as const
 	export const type = isly.string(stacks)
+	export const typeZod = zod.enum(stacks)
 	export function toRealm(stack: Stack): Realm {
 		return stack.split("-")[0] as Realm
 	}

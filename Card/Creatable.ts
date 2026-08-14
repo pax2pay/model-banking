@@ -3,6 +3,7 @@ import { isly } from "isly"
 import { Amount } from "../Amount"
 import type { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
+import { zod } from "../zod"
 import { Expiry } from "./Expiry"
 import { Meta } from "./Meta"
 import { Preset } from "./Preset"
@@ -34,5 +35,16 @@ export namespace Creatable {
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 		key: isly.string().optional(),
 		restricted: isly.object<Required<Creatable>["restricted"]>({ to: Restriction.type.optional() }).optional(),
+	})
+	export const typeZod = zod.object({
+		account: zod.string(),
+		number: zod.string().optional(),
+		preset: Preset.typeZod,
+		details: zod.object({ expiry: Expiry.typeZod, holder: zod.string() }),
+		limit: Amount.typeZod,
+		rules: zod.array(zod.never()).optional(),
+		meta: Meta.typeZod.optional(),
+		key: zod.string().optional(),
+		restricted: zod.object({ to: Restriction.typeZod.optional() }).optional(),
 	})
 }
