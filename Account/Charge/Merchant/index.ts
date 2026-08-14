@@ -3,6 +3,7 @@ import { isly } from "isly"
 import { Card } from "../../../Card"
 import { Rail } from "../../../Rail"
 import { Amount } from "../../../Transaction/Amount"
+import { zod } from "../../../zod"
 import { Preset } from "../Preset"
 
 export interface Merchant {
@@ -15,6 +16,10 @@ export namespace Merchant {
 			account: isly.string(),
 		}),
 		merchants: isly.record<Card.Restriction.Merchant, Preset>(Card.Restriction.Merchant.type, Preset.type),
+	})
+	export const typeZod = zod.object({
+		destination: zod.object({ account: zod.string() }),
+		merchants: zod.partialRecord(Card.Restriction.Merchant.typeZod, Preset.typeZod),
 	})
 
 	export function evaluate(

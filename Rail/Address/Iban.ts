@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../../zod"
 
 export interface Iban {
 	type: "iban"
@@ -16,5 +17,12 @@ export namespace Iban {
 		holder: isly.string(),
 		institution: isly.string().optional(),
 		transactor: isly.string().optional(),
+	})
+	export const typeZod = zod.object({
+		type: zod.literal("iban"),
+		iban: zod.string(),
+		holder: zod.string(),
+		institution: zod.string().optional(),
+		transactor: zod.string().optional(),
 	})
 }

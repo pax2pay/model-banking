@@ -8,6 +8,7 @@ export type Fx = Preset
 
 export namespace Fx {
 	export const type = Preset.type
+	export const typeZod = Preset.typeZod
 	export function evaluate(
 		charge: Fx,
 		currency: isoly.Currency,

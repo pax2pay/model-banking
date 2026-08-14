@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import { Realm } from "../Realm"
+import { zod } from "../zod"
 import { Stack } from "./Stack"
 
 export type Preset = (typeof Preset.names)[number]
@@ -25,6 +26,7 @@ export namespace Preset {
 		"test-diners-175",
 	] as const
 	export const type = isly.string<Preset>(names)
+	export const typeZod = zod.enum(names)
 	export const forRealm: Record<Realm, Preset[]> = {
 		test: ["test-pg-150", "test-pg-200", "test-ta-mc-200", "test-ta-pg-200", "test-ta-pg-bc-200", "test-diners-175"],
 		uk: [

@@ -3,6 +3,7 @@ import { Acquirer } from "../../Acquirer"
 import { Card as ModelCard } from "../../Card"
 import { Merchant } from "../../Merchant"
 import type { Rule } from "../../Rule"
+import { zod } from "../../zod"
 
 export interface Card {
 	type: "card"
@@ -28,6 +29,13 @@ namespace CardCounterpart {
 		present: isly.boolean().optional(),
 		approvalCode: isly.string().optional(),
 	})
+	export const typeZod = zod.object({
+		type: zod.literal("card"),
+		acquirer: Acquirer.typeZod,
+		merchant: Merchant.typeZod,
+		present: zod.boolean().optional(),
+		approvalCode: zod.string().optional(),
+	})
 }
 export namespace Card {
 	export const currencies = ["EUR", "GBP", "SEK", "USD"] as const
@@ -39,6 +47,15 @@ export namespace Card {
 		last4: isly.string(),
 		expiry: ModelCard.Expiry.type,
 		holder: isly.string(),
+	})
+	export const typeZod = zod.object({
+		type: zod.literal("card"),
+		scheme: ModelCard.Scheme.typeZod,
+		id: zod.string(),
+		iin: zod.string(),
+		last4: zod.string(),
+		expiry: ModelCard.Expiry.typeZod,
+		holder: zod.string(),
 	})
 
 	export function from(card: ModelCard | Rule.State.Card): Card {

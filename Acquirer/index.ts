@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../zod"
 
 export interface Acquirer {
 	id: string
@@ -15,5 +16,12 @@ export namespace Acquirer {
 		country: isly.fromIs("Acquirer.country", isoly.CountryCode.Alpha2.is).optional(),
 		retrievalReferenceNumber: isly.string().optional(),
 		systemTraceAuditNumber: isly.string().optional(),
+	})
+	export const typeZod = zod.object({
+		id: zod.string(),
+		number: zod.string(),
+		country: zod.string().refine(isoly.CountryCode.Alpha2.is).optional(),
+		retrievalReferenceNumber: zod.string().optional(),
+		systemTraceAuditNumber: zod.string().optional(),
 	})
 }

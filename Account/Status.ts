@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../zod"
 
 export type Status = {
 	mode: Status.Mode
@@ -16,5 +17,9 @@ export namespace Status {
 	export const type = isly.object<Status>({
 		mode: isly.string<Mode>(Mode.values),
 		reason: isly.string().optional(),
+	})
+	export const typeZod = zod.object({
+		mode: zod.enum(Mode.values),
+		reason: zod.string().optional(),
 	})
 }

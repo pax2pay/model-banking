@@ -4,6 +4,7 @@ import { isly } from "isly"
 import { Balances } from "../Balances"
 import { Rail } from "../Rail"
 import { Rule } from "../Rule"
+import { zod } from "../zod"
 import { Charge as AccountCharge } from "./Charge"
 import { Creatable as AccountCreatable } from "./Creatable"
 import { Details as AccountDetails } from "./Details"
@@ -41,6 +42,18 @@ export namespace Account {
 		rules: Rule.type.array().optional(),
 		status: AccountStatus.type,
 		type: Type.type,
+	})
+	export const typeZod = Creatable.typeZod.extend({
+		id: zod.string(),
+		created: zod.string().refine(isoly.DateTime.is),
+		organization: zod.string(),
+		balances: Balances.typeZod,
+		rails: zod.array(Rail.Address.typeZod),
+		details: Details.typeZod.optional(),
+		charges: AccountCharge.typeZod.optional(),
+		rules: zod.array(zod.never()).optional(),
+		status: AccountStatus.typeZod,
+		type: Type.typeZod,
 	})
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
 		return cryptly.Identifier.is(value, 8)
