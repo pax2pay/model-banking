@@ -18,7 +18,7 @@ export namespace Balance {
 	})
 	export const typeZod = zod.object({
 		available: zod.number().optional(),
-		reserved: zod.partialRecord(Balance.Reserve.typeZod, zod.number()).optional(),
+		reserved: zod.partialRecord(Balance.Reserve.typeZod, zod.number().optional()).optional(),
 	})
 	export type Legacy = Partial<Record<Legacy.Entry, number>>
 	export namespace Legacy {
