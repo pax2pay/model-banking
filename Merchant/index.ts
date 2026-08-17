@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../zod"
 import { Category as MerchantCategory } from "./Category"
 
 export interface Merchant {
@@ -23,5 +24,15 @@ export namespace Merchant {
 		zip: isly.string(),
 		state: isly.string().optional(),
 		country: isly.string(),
+	})
+	export const typeZod = zod.object({
+		name: zod.string(),
+		id: zod.string(),
+		category: zod.string(),
+		address: zod.string(),
+		city: zod.string(),
+		zip: zod.string(),
+		state: zod.string().optional(),
+		country: zod.string(),
 	})
 }

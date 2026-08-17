@@ -3,6 +3,7 @@ import { isly } from "isly"
 import type { Card } from "../../Card"
 import type { Rail } from "../../Rail"
 import type { Transaction } from "../../Transaction"
+import { zod } from "../../zod"
 import { Fx as ChargeFx } from "./Fx"
 import { Merchant as ChargeMerchant } from "./Merchant"
 
@@ -11,6 +12,10 @@ export namespace Charge {
 	export import Merchant = ChargeMerchant
 	export import Fx = ChargeFx
 	export const type = isly.object<Charge>({ merchant: ChargeMerchant.type.optional(), fx: ChargeFx.type.optional() })
+	export const typeZod = zod.object({
+		merchant: ChargeMerchant.typeZod.optional(),
+		fx: ChargeFx.typeZod.optional(),
+	})
 	export function evaluate(
 		counterpart: Rail.Address.Card.Counterpart,
 		currency: isoly.Currency,

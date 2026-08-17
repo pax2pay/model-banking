@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import { Realm } from "../../Realm"
+import { zod } from "../../zod"
 import { Card as AddressCard } from "./Card"
 import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
@@ -85,6 +86,14 @@ export namespace Address {
 		AddressPaxGiro.type,
 		AddressScan.type
 	)
+	export const typeZod = zod.union([
+		AddressCard.typeZod,
+		AddressCard.Counterpart.typeZod,
+		AddressIban.typeZod,
+		AddressInternal.typeZod,
+		AddressPaxGiro.typeZod,
+		AddressScan.typeZod,
+	])
 
 	export import PaxGiro = AddressPaxGiro
 	export import Iban = AddressIban

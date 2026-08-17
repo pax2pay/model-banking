@@ -1,6 +1,7 @@
 import { isly } from "isly"
 import { typedly } from "typedly"
 import { Rail } from "../../Rail"
+import { zod } from "../../zod"
 import { merchants } from "./merchants"
 import { Merchant as Attribute } from "./merchants/Merchant"
 
@@ -8,6 +9,7 @@ export type Merchant = (typeof Merchant.values)[number]
 export namespace Merchant {
 	export const values = typedly.Object.keys(merchants)
 	export const type = isly.string<Merchant>(values)
+	export const typeZod = zod.enum(values)
 	export function check(merchant: Merchant, counterpart: Rail.Address.Card.Counterpart): boolean {
 		const attribute: Attribute = merchants[merchant]
 		let result: boolean

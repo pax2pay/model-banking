@@ -1,11 +1,13 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Realm } from "../Realm"
+import { zod } from "../zod"
 
 export type Supplier = (typeof Supplier.names)[number]
 export namespace Supplier {
 	export const names = ["paxgiro", "clearbank", "bankingcircle"] as const
 	export const type = isly.string<Supplier>(names)
+	export const typeZod = zod.enum(names)
 	export const decommissioned = ["clearbank"] as const
 	export type Decommissioned = (typeof decommissioned)[number]
 	export function isDecommissioned(supplier: Supplier | any): supplier is Decommissioned {

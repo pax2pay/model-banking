@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../../zod"
 import { Iban } from "./Iban"
 
 //SCAN: Sort Code Account Number
@@ -26,5 +27,12 @@ export namespace Scan {
 		account: isly.string(),
 		holder: isly.string(),
 		institution: isly.string().optional(),
+	})
+	export const typeZod = zod.object({
+		type: zod.literal("scan"),
+		sort: zod.string(),
+		account: zod.string(),
+		holder: zod.string(),
+		institution: zod.string().optional(),
 	})
 }

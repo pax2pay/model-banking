@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amount } from "./Amount"
+import { zod } from "./zod"
 
 export type Balance = { available?: number; reserved?: Balance.Reserved }
 export namespace Balance {
@@ -8,11 +9,16 @@ export namespace Balance {
 	export namespace Reserve {
 		export const values = ["incoming", "outgoing", "buffer"] as const
 		export const type = isly.string<Reserve>(values)
+		export const typeZod = zod.enum(values)
 	}
 	export type Reserved = Partial<Record<Balance.Reserve, number>>
 	export const type = isly.object<Balance>({
 		available: isly.number().optional(),
 		reserved: isly.record<Reserved>(Balance.Reserve.type, isly.number().optional()).optional(),
+	})
+	export const typeZod = zod.object({
+		available: zod.number().optional(),
+		reserved: zod.partialRecord(Balance.Reserve.typeZod, zod.number().optional()).optional(),
 	})
 	export type Legacy = Partial<Record<Legacy.Entry, number>>
 	export namespace Legacy {
