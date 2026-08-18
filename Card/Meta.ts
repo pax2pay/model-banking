@@ -1,3 +1,5 @@
+import { zod } from "../zod"
+
 export interface Meta {
 	[key: string]: any
 }
@@ -14,4 +16,5 @@ export namespace Meta {
 			typeof value == "boolean"
 		)
 	}
+	export const typeZod = zod.any().refine(Meta.is)
 }

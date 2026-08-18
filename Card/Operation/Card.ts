@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../../zod"
 import { Changeable } from "../Changeable"
 
 export interface Card {
@@ -17,5 +18,11 @@ export namespace Card {
 		status: isly.string(statuses),
 		from: Changeable.type.optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+	})
+	export const typeZod = zod.object({
+		type: zod.literal("card"),
+		status: zod.enum(statuses),
+		from: Changeable.typeZod.optional(),
+		created: zod.string().refine(isoly.DateTime.is),
 	})
 }

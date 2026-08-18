@@ -5,6 +5,7 @@ import { Realm } from "../Realm"
 import { Report } from "../Report"
 import type { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
+import { zod } from "../zod"
 import { Changeable as CardChangeable } from "./Changeable"
 import { Creatable as CardCreatable } from "./Creatable"
 import { Expiry as CardExpiry } from "./Expiry"
@@ -74,6 +75,31 @@ export namespace Card {
 		rules: ruleType.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 		restricted: isly.object<Required<Card>["restricted"]>({ to: CardRestriction.type.optional() }).optional(),
+	})
+	export const typeZod = zod.object({
+		id: zod.string(),
+		number: zod.string().optional(),
+		created: zod.string().refine(isoly.DateTime.is),
+		organization: zod.string(),
+		realm: Realm.typeZod,
+		account: zod.string(),
+		preset: CardPreset.typeZod,
+		scheme: CardScheme.typeZod,
+		reference: zod.string(),
+		details: zod.object({
+			iin: zod.string(),
+			last4: zod.string(),
+			expiry: CardExpiry.typeZod,
+			holder: zod.string(),
+			token: zod.string().optional(),
+		}),
+		limit: Amount.typeZod,
+		spent: Amount.typeZod,
+		status: zod.enum(["active", "cancelled"]),
+		history: zod.array(CardOperation.typeZod),
+		rules: zod.array(zod.never()),
+		meta: CardMeta.typeZod.optional(),
+		restricted: zod.object({ to: CardRestriction.typeZod.optional() }).optional(),
 	})
 	const csvMap: Record<string, (card: Card) => string | number | undefined> = {
 		id: card => card.id,
