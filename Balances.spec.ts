@@ -8,6 +8,13 @@ describe("Balances", () => {
 		}
 		expect(pax2pay.Balances.type.is(balances)).toEqual(true)
 	})
+	it("Balances.typeZod preserves legacy fields", () => {
+		const balances: pax2pay.Balances = {
+			AED: { actual: 110 },
+			USD: { available: 100, reserved: { incoming: 100, outgoing: 100 }, actual: 300, incomingReserved: 100 },
+		}
+		expect(pax2pay.Balances.typeZod.parse(balances)).toEqual(balances)
+	})
 	it("Balances.update", () => {
 		const legacy: pax2pay.Balances = {
 			USD: { outgoingReserved: 100, incomingReserved: 100, actual: 300 },
