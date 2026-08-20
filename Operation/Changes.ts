@@ -2,6 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Balance as AccountBalance } from "../Balance"
 import type { Settlement } from "../Settlement"
+import { zod } from "../zod"
 import { Change } from "./Change"
 
 export type Changes = Partial<Record<Changes.Entry.Balance, Change>>
@@ -47,6 +48,7 @@ export namespace Changes {
 	export type Sum = Partial<Record<Changes.Entry.Balance, number>>
 	export type MaybeLegacy = Changes | Legacy
 	export const type = isly.record<Changes>(isly.string(), Change.type)
+	export const typeZod = zod.record(zod.string(), Change.typeZod)
 	export type Legacy = Partial<Record<AccountBalance.Legacy.Entry, Change>>
 	export namespace Legacy {
 		export const type = isly.record<Legacy>(isly.string(), Change.type)

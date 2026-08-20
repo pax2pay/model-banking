@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import zod from "zod"
+import { zod } from "../zod"
 import { Change as OperationChange } from "./Change"
 import { Changes as OperationChanges } from "./Changes"
 import { Creatable as OperationCreatable } from "./Creatable"
@@ -31,29 +31,17 @@ export namespace Operation {
 		}
 		return result
 	}
-	export const typeZod = zod.object({
-		transaction: zod.string(),
-		counter: zod.number(),
-		created: zod.string(),
-		account: zod.string(),
-		currency: zod.string(),
-		type: zod.string(),
-		changes: zod.record(
-			zod.string(),
-			zod.object({
-				type: zod.enum(["add", "subtract"]),
-				amount: zod.number(),
-				status: zod.enum(["pending", "success", "failed"]),
-				result: zod.number().optional(),
-			})
-		),
-		signature: zod.string().optional(),
-		previous: zod.string().optional(),
-	})
 	export import Signer = OperationSigner
 	export import Creatable = OperationCreatable
 	export import Changes = OperationChanges
 	export import Change = OperationChange
+	export const typeZod = Creatable.typeZod.extend({
+		transaction: zod.string(),
+		counter: zod.number(),
+		created: zod.string().refine(isoly.DateTime.is),
+		signature: zod.string().optional(),
+		previous: zod.string().optional(),
+	})
 	export const type = OperationCreatable.type.extend<Operation>({
 		transaction: isly.string(),
 		counter: isly.number(),
