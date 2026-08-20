@@ -2,6 +2,7 @@ import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Settlement } from "../Settlement"
+import { zod } from "../zod"
 import { Changes } from "./Changes"
 
 export interface Creatable {
@@ -36,6 +37,13 @@ export namespace Creatable {
 		changes: Changes.type,
 		type: isly.string(types),
 		counterbalance: isly.string().optional(),
+	})
+	export const typeZod = zod.object({
+		account: zod.string(),
+		currency: zod.enum(isoly.Currency.values),
+		changes: Changes.typeZod,
+		type: zod.enum(types),
+		counterbalance: zod.string().optional(),
 	})
 	export function fromRefund(account: string, settlement: string, entry: Settlement.Entry.Creatable.Refund): Creatable {
 		// The Entry.Refund.Creatable has negative amount and fee
