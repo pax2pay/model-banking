@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../../../Card"
+import { zod } from "../../../zod"
 
 export interface Charge {
 	merchant?: Charge.Merchant
@@ -17,6 +18,11 @@ export namespace Charge {
 			amount: isly.number(),
 			rate: isly.number(),
 			preset: isly.union(Card.Preset.type, isly.string("default")),
+		})
+		export const typeZod = zod.object({
+			amount: zod.number(),
+			rate: zod.number(),
+			preset: zod.union([Card.Preset.typeZod, zod.literal("default")]),
 		})
 	}
 	export interface Merchant {
@@ -36,6 +42,13 @@ export namespace Charge {
 				account: isly.string(),
 			}),
 		})
+		export const typeZod = zod.object({
+			amount: zod.number(),
+			rate: zod.number(),
+			merchant: Card.Restriction.Merchant.typeZod,
+			preset: zod.union([Card.Preset.typeZod, zod.literal("default")]),
+			destination: zod.object({ account: zod.string() }),
+		})
 	}
 	export function total(currency: isoly.Currency, charges: Charge): number {
 		return isoly.Currency.add(currency, charges.fx?.amount ?? 0, charges.merchant?.amount ?? 0)
@@ -43,5 +56,9 @@ export namespace Charge {
 	export const type = isly.object<Charge>({
 		merchant: Charge.Merchant.type.optional(),
 		fx: Charge.Fx.type.optional(),
+	})
+	export const typeZod = zod.object({
+		merchant: Charge.Merchant.typeZod.optional(),
+		fx: Charge.Fx.typeZod.optional(),
 	})
 }

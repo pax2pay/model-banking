@@ -8,6 +8,9 @@ describe("Transaction", () => {
 	"zzzyRwIvXovdzVNA","2023-12-05 17:26:36.977","","paxair","3Lb41MlP","internal-3Lb41MlP","internal-3Lb41MlP","internal-IkToJ5Ep","internal-IkToJ5Ep","-10.00","GBP","review","dannebrogen union-jack","sssr","","""
 	`)
 	})
+	it("typeZod", () => {
+		expect(pax2pay.Transaction.typeZod.parse(transaction)).toEqual(transaction)
+	})
 })
 const transaction: pax2pay.Transaction = {
 	amount: { original: -10, charge: 0, total: -10 },

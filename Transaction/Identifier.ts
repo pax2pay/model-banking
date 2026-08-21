@@ -4,6 +4,7 @@ import { Identifier as Pax2PayIdentifier } from "../Identifier"
 export type Identifier = Pax2PayIdentifier
 export namespace Identifier {
 	export const type = Pax2PayIdentifier.type
+	export const typeZod = Pax2PayIdentifier.typeZod
 	export function generate(): string {
 		//This function will stop working 4199-11-24T01:22:57.664Z
 		//Then we need to replace "zzy" instead

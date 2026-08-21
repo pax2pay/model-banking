@@ -3,6 +3,7 @@ import { isly } from "isly"
 import { Account } from "../Account"
 import { Preset } from "../Card/Preset"
 import { Rail } from "../Rail"
+import { zod } from "../zod"
 import { Amount } from "./Amount"
 import { Exchange } from "./Exchange"
 
@@ -24,6 +25,14 @@ export namespace Creatable {
 		exchange: Exchange.type.optional(),
 		reference: isly.object<{ reference?: string }>({ reference: isly.string().optional() }).optional(),
 	})
+	export const typeZod = zod.object({
+		counterpart: Rail.Address.typeZod,
+		currency: zod.enum(isoly.Currency.values),
+		amount: zod.number(),
+		description: zod.string(),
+		exchange: Exchange.typeZod.optional(),
+		reference: zod.object({ reference: zod.string().optional() }).optional(),
+	})
 	export interface CardTransaction extends Creatable {
 		account: Pick<Rail.Address.Card, "id" | "type">
 		accountId: string
@@ -38,6 +47,13 @@ export namespace Creatable {
 			counterpart: Rail.Address.Card.Counterpart.type,
 			reference: isly.object<{ reference: string }>({ reference: isly.string() }),
 			approvalCode: isly.string().optional(),
+		})
+		export const typeZod = Creatable.typeZod.extend({
+			account: Rail.Address.Card.typeZod.pick({ id: true, type: true }),
+			accountId: zod.string(),
+			counterpart: Rail.Address.Card.Counterpart.typeZod,
+			reference: zod.object({ reference: zod.string() }),
+			approvalCode: zod.string().optional(),
 		})
 		export function charge(creatable: CardTransaction, preset: Preset, charges?: Account.Charge): Amount.Charge {
 			return Account.Charge.evaluate(

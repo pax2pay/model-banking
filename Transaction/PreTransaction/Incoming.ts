@@ -2,6 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Rail } from "../../Rail"
 import { Settlement } from "../../Settlement"
+import { zod } from "../../zod"
 import { Reference as TransactionReference } from "../Reference"
 import { Base } from "./Base"
 
@@ -25,6 +26,16 @@ export namespace Incoming {
 		posted: isly.string(),
 		rail: Rail.type.optional(),
 		reference: TransactionReference.type.optional(),
+	})
+	export const typeZod = Base.typeZod.extend({
+		type: zod.literal("incoming"),
+		account: Rail.Address.typeZod,
+		currency: zod.enum(isoly.Currency.values),
+		amount: zod.number(),
+		description: zod.string(),
+		posted: zod.string(),
+		rail: Rail.typeZod.optional(),
+		reference: TransactionReference.typeZod.optional(),
 	})
 	export function fromRefund(entry: Settlement.Entry.Creatable.Refund, card: Rail.Address.Card): Incoming {
 		const [currency, amount] = entry.amount

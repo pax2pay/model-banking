@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../../zod"
 import { Exchange } from "../Exchange"
 import { Charge as AmountCharge } from "./Charge"
 
@@ -18,6 +19,13 @@ export namespace Amount {
 		charges: Amount.Charge.type.optional(),
 		total: isly.number(),
 		exchange: Exchange.type.optional(),
+	})
+	export const typeZod = zod.object({
+		original: zod.number(),
+		charge: zod.number(),
+		charges: Amount.Charge.typeZod.optional(),
+		total: zod.number(),
+		exchange: Exchange.typeZod.optional(),
 	})
 	export function change(
 		currency: isoly.Currency,

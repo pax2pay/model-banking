@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import { Rail } from "../../Rail"
+import { zod } from "../../zod"
 import { Base } from "./Base"
 
 export interface Authorization extends Base {
@@ -16,5 +17,12 @@ export namespace Authorization {
 		counterpart: Rail.Address.Card.Counterpart.type,
 		reference: isly.object<{ reference: string }>({ reference: isly.string() }),
 		approvalCode: isly.string().optional(),
+	})
+	export const typeZod = Base.typeZod.extend({
+		type: zod.literal("authorization"),
+		account: Rail.Address.Card.typeZod.pick({ id: true, type: true }),
+		counterpart: Rail.Address.Card.Counterpart.typeZod,
+		reference: zod.object({ reference: zod.string() }),
+		approvalCode: zod.string().optional(),
 	})
 }

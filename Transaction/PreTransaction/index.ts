@@ -1,4 +1,5 @@
 import { Rail } from "../../Rail"
+import { zod } from "../../zod"
 import { Authorization as PreTransactionAuthorization } from "./Authorization"
 import { Incoming as PreTransactionIncoming } from "./Incoming"
 import { Outgoing as PreTransactionOutgoing } from "./Outgoing"
@@ -13,4 +14,5 @@ export namespace PreTransaction {
 	export import Authorization = PreTransactionAuthorization
 	export import Incoming = PreTransactionIncoming
 	export import Outgoing = PreTransactionOutgoing
+	export const typeZod = zod.union([Outgoing.typeZod, Authorization.typeZod, Incoming.typeZod])
 }
