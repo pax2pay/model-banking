@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../zod"
 
 export interface Note extends Note.Creatable {
 	author: string
@@ -32,9 +33,19 @@ export namespace Note {
 			flags: isly.string().array().optional(),
 			rule: isly.any().optional(),
 		})
+		export const typeZod = zod.object({
+			text: zod.string().optional(),
+			action: zod.enum(["approve", "reject"]).optional(),
+			flags: zod.array(zod.string()).optional(),
+			rule: zod.any().optional(),
+		})
 	}
 	export const type = Creatable.type.extend<Note>({
 		author: isly.string(),
 		created: isly.string(),
+	})
+	export const typeZod = Creatable.typeZod.extend({
+		author: zod.string(),
+		created: zod.string().refine(isoly.DateTime.is),
 	})
 }

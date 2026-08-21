@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import { Amount } from "../Amount"
+import { zod } from "../zod"
 
 export interface Exchange {
 	rate: number
@@ -13,5 +14,11 @@ export namespace Exchange {
 		to: Amount.type.optional(),
 		from: Amount.type.optional(),
 		quote: isly.string().optional(),
+	})
+	export const typeZod = zod.object({
+		rate: zod.number(),
+		to: Amount.typeZod.optional(),
+		from: Amount.typeZod.optional(),
+		quote: zod.string().optional(),
 	})
 }

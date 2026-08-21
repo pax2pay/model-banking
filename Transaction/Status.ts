@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../zod"
 
 export type Status = Status.Success | [Status.Fail, Status.Reason]
 export namespace Status {
@@ -27,4 +28,5 @@ export namespace Status {
 		Success,
 		isly.tuple<[Fail, Status.Reason]>(Fail, Reason)
 	)
+	export const typeZod = zod.union([zod.enum(successes), zod.tuple([zod.enum(failures), zod.enum(reasons)])])
 }

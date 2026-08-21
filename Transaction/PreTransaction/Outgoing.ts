@@ -1,8 +1,9 @@
-import type { Base } from "./Base"
+import { zod } from "../../zod"
+import { Base } from "./Base"
 
 export interface Outgoing extends Base {
 	type: "outgoing"
 }
 export namespace Outgoing {
-	export const dummy = true
+	export const typeZod = Base.typeZod.extend({ type: zod.literal("outgoing") })
 }

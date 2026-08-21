@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import { Supplier } from "../Supplier"
+import { zod } from "../zod"
 
 export interface Reference {
 	supplier?: Supplier
@@ -18,5 +19,13 @@ export namespace Reference {
 		endToEndId: isly.string().optional(),
 		instruction: isly.string().optional(),
 		network: isly.string().optional(),
+	})
+	export const typeZod = zod.object({
+		supplier: Supplier.typeZod.optional(),
+		reference: zod.string().optional(),
+		returnId: zod.string().optional(),
+		endToEndId: zod.string().optional(),
+		instruction: zod.string().optional(),
+		network: zod.string().optional(),
 	})
 }
