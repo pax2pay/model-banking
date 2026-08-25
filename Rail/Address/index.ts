@@ -1,6 +1,7 @@
 import { isly } from "isly"
 import { Realm } from "../../Realm"
 import { zod } from "../../zod"
+import { Bic as AddressBic } from "./Bic"
 import { Card as AddressCard } from "./Card"
 import { Iban as AddressIban } from "./Iban"
 import { Internal as AddressInternal } from "./internal"
@@ -15,13 +16,14 @@ export type Address =
 	| AddressInternal
 	| AddressPaxGiro
 	| AddressScan
+	| AddressBic
 export namespace Address {
 	export const realm: Record<Realm, string[]> = {
-		test: ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"],
+		test: ["paxgiro", "internal", "iban", "bic", "scan", "card", "paxgiro-credit"],
 		uk: ["internal", "iban", "scan", "card"],
 		eea: ["internal", "iban", "scan", "card"],
 	}
-	export const values = ["paxgiro", "internal", "iban", "scan", "card", "paxgiro-credit"] as const
+	export const values = ["paxgiro", "internal", "iban", "bic", "scan", "card", "paxgiro-credit"] as const
 	export type Type = (typeof values)[number]
 	export function compare(addresses: [Address, Address]): boolean {
 		return Object.entries(addresses[0]).every(([key, value]) => value == (addresses[1] as any)[key])
@@ -36,44 +38,50 @@ export namespace Address {
 		}
 		return result
 	}
-	export function stringify(Address: Address): string {
+	export function stringify(address: Address): string {
 		let result: string
-		switch (Address.type) {
+		switch (address.type) {
 			case "iban":
-				result = `iban-${Address.iban}`
+				result = `iban-${address.iban}`
 				break
 			case "paxgiro":
-				result = `pxg-${Address.identifier}`
+				result = `pxg-${address.identifier}`
 				break
 			case "internal":
-				result = `internal-${Address.identifier}`
+				result = `internal-${address.identifier}`
 				break
 			case "scan":
-				result = `scan-${Address.sort}-${Address.account}`
+				result = `scan-${address.sort}-${address.account}`
 				break
 			case "card":
-				result = "id" in Address ? `${Address.type}-${Address.id}` : `${Address.type}-merchant-${Address.merchant.id}`
+				result = "id" in address ? `${address.type}-${address.id}` : `${address.type}-merchant-${address.merchant.id}`
+				break
+			case "bic":
+				result = `bic-${address.institution}-${address.account}`
 				break
 		}
 		return result
 	}
-	export function beautify(Address: Address): string {
+	export function beautify(address: Address): string {
 		let result: string
-		switch (Address.type) {
+		switch (address.type) {
 			case "iban":
-				result = `${Address.iban}`
+				result = `${address.iban}`
 				break
 			case "paxgiro":
-				result = `${Address.identifier}`
+				result = `${address.identifier}`
 				break
 			case "internal":
-				result = `${Address.identifier}`
+				result = `${address.identifier}`
 				break
 			case "scan":
-				result = `${Address.sort} ${Address.account}`
+				result = `${address.sort} ${address.account}`
 				break
 			case "card":
-				result = "id" in Address ? `${Address.type}-${Address.id}` : `${Address.type}-merchant-${Address.merchant.id}`
+				result = "id" in address ? `${address.type}-${address.id}` : `${address.type}-merchant-${address.merchant.id}`
+				break
+			case "bic":
+				result = `${address.institution} ${address.account}`
 				break
 		}
 		return result
@@ -84,7 +92,8 @@ export namespace Address {
 		AddressIban.type,
 		AddressInternal.type,
 		AddressPaxGiro.type,
-		AddressScan.type
+		AddressScan.type,
+		AddressBic.type
 	)
 	export const typeZod = zod.union([
 		AddressCard.typeZod,
@@ -93,6 +102,7 @@ export namespace Address {
 		AddressInternal.typeZod,
 		AddressPaxGiro.typeZod,
 		AddressScan.typeZod,
+		AddressBic.typeZod,
 	])
 
 	export import PaxGiro = AddressPaxGiro
@@ -101,4 +111,5 @@ export namespace Address {
 	export import Internal = AddressInternal
 	export import Card = AddressCard
 	export import Route = AddressRoute
+	export import Bic = AddressBic
 }
