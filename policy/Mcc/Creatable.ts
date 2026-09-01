@@ -1,5 +1,6 @@
 import { isly } from "isly"
 import { Card } from "../../Card"
+import { zod } from "../../zod"
 import { Action } from "./Action"
 import { Group } from "./Group"
 
@@ -19,5 +20,13 @@ export namespace Creatable {
 		organization: isly.string().optional(),
 		stacks: Card.Stack.type.array().optional(),
 		group: Group.type,
+	})
+	export const typeZod = zod.object({
+		action: Action.typeZod,
+		name: zod.string(),
+		description: zod.string().optional(),
+		organization: zod.string().optional(),
+		stacks: zod.array(Card.Stack.typeZod).optional(),
+		group: Group.typeZod,
 	})
 }

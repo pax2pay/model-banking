@@ -3,6 +3,7 @@ import { isly } from "isly"
 import { Card } from "../../Card"
 import { Merchant } from "../../Merchant"
 import { Realm } from "../../Realm"
+import { zod } from "../../zod"
 import { Action as MCCAction } from "./Action"
 import { Creatable as MccCreatable } from "./Creatable"
 import { Group as MCCGroup } from "./Group"
@@ -25,6 +26,12 @@ export namespace Mcc {
 		realm: Realm.type,
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		updated: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
+	})
+	export const typeZod = Creatable.typeZod.extend({
+		id: zod.string(),
+		realm: Realm.typeZod,
+		created: zod.string().refine(isoly.DateTime.is),
+		updated: zod.string().refine(isoly.DateTime.is),
 	})
 	export function match(policy: Mcc, transaction: TransactionInput): boolean {
 		const stack = transaction.preset ? Card.Preset.presets[transaction.preset] : undefined
