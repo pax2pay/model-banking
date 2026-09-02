@@ -8,5 +8,5 @@ export namespace Category {
 		"Merchant.Category",
 		(value: any): value is Category => typeof value === "string" && /^\d{4}$/.test(value)
 	)
-	export const typeZod = zod.string().regex(/^\d{4}$/)
+	export const typeZod: zod.ZodType<Category> = zod.string().regex(/^\d{4}$/)
 }
