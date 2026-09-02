@@ -75,7 +75,7 @@ export namespace Settlement {
 		entries: Settlement.Entry.Summary.type,
 		warnings: Settlement.Warning.type.array().optional(),
 	})
-	export const typeZod = SettlementCreatable.typeZod.extend({
+	export const typeZod: zod.ZodType<Settlement> = SettlementCreatable.typeZod.extend({
 		id: zod.union([SettlementIdentifier.typeZod, zod.string()]),
 		by: zod.string().optional(),
 		created: zod.string().refine(isoly.DateTime.is),

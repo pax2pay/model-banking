@@ -24,7 +24,7 @@ export namespace Succeeded {
 			}),
 			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		})
-	export const typeZod = Creatable.Base.typeZod.omit({ card: true, transaction: true }).extend({
+	export const typeZod: zod.ZodType<Succeeded> = Creatable.Base.typeZod.omit({ card: true, transaction: true }).extend({
 		type: zod.enum(["capture", "refund"]),
 		status: zod.literal("succeeded"),
 		card: Rail.Address.Card.typeZod,
