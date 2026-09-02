@@ -62,20 +62,20 @@ export namespace Creatable {
 	}
 	export namespace Capture {
 		export const type = Base.type.extend<Capture>({ type: isly.string("capture") })
-		export const typeZod = Base.typeZod.extend({ type: zod.literal("capture") })
+		export const typeZod: zod.ZodType<Capture> = Base.typeZod.extend({ type: zod.literal("capture") })
 	}
 	export interface Refund extends Base {
 		type: "refund"
 	}
 	export namespace Refund {
 		export const type = Base.type.extend<Refund>({ type: isly.string("refund") })
-		export const typeZod = Base.typeZod.extend({ type: zod.literal("refund") })
+		export const typeZod: zod.ZodType<Refund> = Base.typeZod.extend({ type: zod.literal("refund") })
 	}
 	export type Known = Capture | Refund
 
 	export namespace Known {
 		export const type = isly.union(Capture.type, Refund.type)
-		export const typeZod = zod.union([Capture.typeZod, Refund.typeZod])
+		export const typeZod: zod.ZodType<Known> = zod.union([Capture.typeZod, Refund.typeZod])
 	}
 	export interface Unknown extends Partial<Base> {
 		type: "unknown"
@@ -89,11 +89,11 @@ export namespace Creatable {
 			type: isly.string("unknown"),
 			data: isly.record<Record<string, unknown>>(isly.string(), isly.any()),
 		})
-		export const typeZod = Base.typeZod.partial().extend({
+		export const typeZod: zod.ZodType<Unknown> = Base.typeZod.partial().extend({
 			type: zod.literal("unknown"),
 			data: zod.record(zod.string(), zod.any()),
 		})
 	}
 	export const type = isly.union(Known.type, Unknown.type)
-	export const typeZod = zod.union([Known.typeZod, Unknown.typeZod])
+	export const typeZod: zod.ZodType<Creatable> = zod.union([Known.typeZod, Unknown.typeZod])
 }
