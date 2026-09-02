@@ -9,14 +9,14 @@ export namespace Balance {
 	export namespace Reserve {
 		export const values = ["incoming", "outgoing", "buffer"] as const
 		export const type = isly.string<Reserve>(values)
-		export const typeZod = zod.enum(values)
+		export const typeZod: zod.ZodType<Reserve> = zod.enum(values)
 	}
 	export type Reserved = Partial<Record<Balance.Reserve, number>>
 	export const type = isly.object<Balance>({
 		available: isly.number().optional(),
 		reserved: isly.record<Reserved>(Balance.Reserve.type, isly.number().optional()).optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Balance> = zod.object({
 		available: zod.number().optional(),
 		reserved: zod.partialRecord(Balance.Reserve.typeZod, zod.number().optional()).optional(),
 	})
@@ -26,10 +26,10 @@ export namespace Balance {
 		export namespace Entry {
 			export const values = ["actual", "incomingReserved", "outgoingReserved", "bufferReserved"] as const
 			export const type = isly.string<Entry>(values)
-			export const typeZod = zod.enum(values)
+			export const typeZod: zod.ZodType<Entry> = zod.enum(values)
 		}
 		export const type = isly.record<Legacy>(Entry.type, isly.number())
-		export const typeZod = zod.partialRecord(Entry.typeZod, zod.number())
+		export const typeZod: zod.ZodType<Legacy> = zod.partialRecord(Entry.typeZod, zod.number())
 	}
 	export type MaybeLegacy = Balance | Legacy
 	export namespace MaybeLegacy {
@@ -38,7 +38,7 @@ export namespace Balance {
 	export type Extended = Balance & Legacy
 	export namespace Extended {
 		export const type = isly.intersection<Extended, Balance, Legacy>(Balance.type, Legacy.type)
-		export const typeZod = Balance.typeZod.extend({
+		export const typeZod: zod.ZodType<Extended> = Balance.typeZod.extend({
 			actual: zod.number().optional(),
 			incomingReserved: zod.number().optional(),
 			outgoingReserved: zod.number().optional(),

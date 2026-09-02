@@ -6,5 +6,5 @@ export type Status = (typeof Status.values)[number]
 export namespace Status {
 	export const values = ["pending", "success", "failed"] as const
 	export const type = isly.string(values)
-	export const typeZod = zod.enum(values)
+	export const typeZod: zod.ZodType<Status> = zod.enum(values)
 }

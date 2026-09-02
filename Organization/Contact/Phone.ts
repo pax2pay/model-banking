@@ -11,7 +11,7 @@ export namespace Phone {
 		number: isly.string(/^\d+$/),
 		code: isly.fromIs("CallingCode", isoly.CallingCode.is),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Phone> = zod.object({
 		number: zod.string().regex(/^\d+$/),
 		code: zod.custom<isoly.CallingCode>(isoly.CallingCode.is),
 	})

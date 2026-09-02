@@ -12,7 +12,7 @@ export namespace Charge {
 	export import Merchant = ChargeMerchant
 	export import Fx = ChargeFx
 	export const type = isly.object<Charge>({ merchant: ChargeMerchant.type.optional(), fx: ChargeFx.type.optional() })
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Charge> = zod.object({
 		merchant: ChargeMerchant.typeZod.optional(),
 		fx: ChargeFx.typeZod.optional(),
 	})

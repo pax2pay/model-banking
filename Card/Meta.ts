@@ -16,5 +16,5 @@ export namespace Meta {
 			typeof value == "boolean"
 		)
 	}
-	export const typeZod = zod.any().refine(Meta.is)
+	export const typeZod: zod.ZodType<Meta> = zod.any().refine(Meta.is)
 }

@@ -18,7 +18,7 @@ export namespace Authorization {
 		reference: isly.object<{ reference: string }>({ reference: isly.string() }),
 		approvalCode: isly.string().optional(),
 	})
-	export const typeZod = Base.typeZod.extend({
+	export const typeZod: zod.ZodType<Authorization> = Base.typeZod.extend({
 		type: zod.literal("authorization"),
 		account: Rail.Address.Card.typeZod.pick({ id: true, type: true }),
 		counterpart: Rail.Address.Card.Counterpart.typeZod,

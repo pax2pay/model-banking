@@ -18,7 +18,7 @@ export namespace Iban {
 		institution: isly.string().optional(),
 		transactor: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Iban> = zod.object({
 		type: zod.literal("iban"),
 		iban: zod.string(),
 		holder: zod.string(),

@@ -8,7 +8,6 @@ export interface Change<T extends Change.Operand = Change.Operand> {
 	status: Status
 	result?: number
 }
-
 export namespace Change {
 	export const operand = ["add", "subtract"] as const
 	export type Operand = (typeof operand)[number]
@@ -18,7 +17,7 @@ export namespace Change {
 		status: Status.type,
 		result: isly.number().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Change> = zod.object({
 		type: zod.enum(operand),
 		amount: zod.number(),
 		status: Status.typeZod,

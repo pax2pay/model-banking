@@ -18,7 +18,7 @@ export namespace Internal {
 		identifier: isly.union(isly.fromIs("Identifier", cryptly.Identifier.is), Operation.Changes.Entry.type),
 		organization: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Internal> = zod.object({
 		type: zod.literal("internal"),
 		name: zod.string().optional(),
 		identifier: zod.string(),

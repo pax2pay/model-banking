@@ -5,6 +5,7 @@ import * as zod from "zod/v4"
 import { $strip } from "zod/v4/core"
 
 export namespace zodHelper {
+	export type Shape<Type> = { [K in keyof Type]: zod.ZodType<Type[K]> }
 	type ExtraKeys<Schema, Type> = Exclude<keyof Schema, keyof Type> // Checks for extra keys in schema not defined in the model
 	type ThrowIfExtraKeys<Schema, Type> = ExtraKeys<Schema, Type> extends never ? unknown : { [key: string]: never } // If there are extra keys, raise a type error
 	export function fromType<Type>() {

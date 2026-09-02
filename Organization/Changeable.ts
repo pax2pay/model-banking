@@ -11,7 +11,7 @@ export namespace Changeable {
 		name: isly.string().optional(),
 		contact: Contact.Creatable.type.optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Changeable> = zod.object({
 		name: zod.string().optional(),
 		contact: Contact.Creatable.typeZod.optional(),
 	})

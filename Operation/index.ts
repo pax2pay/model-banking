@@ -35,7 +35,7 @@ export namespace Operation {
 	export import Creatable = OperationCreatable
 	export import Changes = OperationChanges
 	export import Change = OperationChange
-	export const typeZod = Creatable.typeZod.extend({
+	export const typeZod: zod.ZodType<Operation> = Creatable.typeZod.extend({
 		transaction: zod.string(),
 		counter: zod.number(),
 		created: zod.string().refine(isoly.DateTime.is),

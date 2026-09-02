@@ -17,7 +17,7 @@ export namespace Details {
 		reference: isly.string().optional(),
 		addresses: Rail.Address.type.array(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Details> = zod.object({
 		supplier: Supplier.typeZod,
 		currencies: zod.array(zod.enum(isoly.Currency.values)),
 		reference: zod.string().optional(),
@@ -32,7 +32,7 @@ export namespace Details {
 			supplier: Supplier.type,
 			currency: isly.string(isoly.Currency.values),
 		})
-		export const typeZod = zod.object({
+		export const typeZod: zod.ZodType<Creatable> = zod.object({
 			supplier: Supplier.typeZod,
 			currency: zod.enum(isoly.Currency.values),
 		})

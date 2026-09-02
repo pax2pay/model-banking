@@ -95,7 +95,7 @@ export namespace Address {
 		AddressScan.type,
 		AddressBic.type
 	)
-	export const typeZod = zod.union([
+	export const typeZod: zod.ZodType<Address> = zod.union([
 		AddressCard.typeZod,
 		AddressCard.Counterpart.typeZod,
 		AddressIban.typeZod,

@@ -9,7 +9,7 @@ export type Merchant = (typeof Merchant.values)[number]
 export namespace Merchant {
 	export const values = typedly.Object.keys(merchants)
 	export const type = isly.string<Merchant>(values)
-	export const typeZod = zod.enum(values)
+	export const typeZod: zod.ZodType<Merchant> = zod.enum(values)
 	export function check(merchant: Merchant, counterpart: Rail.Address.Card.Counterpart): boolean {
 		const attribute: Attribute = merchants[merchant]
 		let result: boolean

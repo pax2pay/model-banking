@@ -3,12 +3,12 @@ import { isly } from "isly"
 import { Supplier as modelSupplier } from "./Supplier"
 import { zod } from "./zod"
 
-export type Realm = zod.infer<typeof Realm.typeZod>
+export type Realm = (typeof Realm.realms)[number]
 
 export namespace Realm {
 	export const realms = ["test", "uk", "eea"] as const
 	export const type = isly.string<Realm>(realms)
-	export const typeZod = zod.enum(realms)
+	export const typeZod: zod.ZodType<Realm> = zod.enum(realms)
 	export function toString(): string {
 		return realms.toString().replaceAll(",", ", ") + "."
 	}

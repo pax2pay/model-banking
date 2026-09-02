@@ -25,7 +25,7 @@ export namespace Incoming {
 		rail: Rail.type.optional(),
 		reference: TransactionReference.type.optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Incoming> = zod.object({
 		account: Rail.Address.typeZod,
 		counterpart: Rail.Address.typeZod,
 		currency: zod.enum(isoly.Currency.values),

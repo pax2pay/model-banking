@@ -28,5 +28,5 @@ export namespace Operation {
 				}
 	}
 	export const type = isly.union(Card.type, OperationAuthorization.type)
-	export const typeZod = zod.union([Card.typeZod, OperationAuthorization.typeZod])
+	export const typeZod: zod.ZodType<Operation> = zod.union([Card.typeZod, OperationAuthorization.typeZod])
 }

@@ -18,7 +18,7 @@ export namespace Status {
 		mode: isly.string<Mode>(Mode.values),
 		reason: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Status> = zod.object({
 		mode: zod.enum(Mode.values),
 		reason: zod.string().optional(),
 	})

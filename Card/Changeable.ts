@@ -8,13 +8,12 @@ export type Changeable = {
 	limit?: Amount
 	meta?: Meta
 }
-
 export namespace Changeable {
 	export const type = isly.object<Changeable>({
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()).optional(),
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Changeable> = zod.object({
 		limit: Amount.typeZod.optional(),
 		meta: Meta.typeZod.optional(),
 	})

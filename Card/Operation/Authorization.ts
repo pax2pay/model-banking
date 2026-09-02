@@ -19,7 +19,7 @@ export namespace Authorization {
 		reason: isly.string().optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Authorization> = zod.object({
 		type: zod.literal("authorization"),
 		id: zod.string(),
 		status: zod.enum(statuses),

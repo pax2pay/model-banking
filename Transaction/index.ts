@@ -86,7 +86,7 @@ export namespace Transaction {
 		risk: isly.number().optional(),
 		state: isly.any().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Transaction> = zod.object({
 		counterpart: Rail.Address.typeZod,
 		currency: zod.enum(isoly.Currency.values),
 		amount: Amount.typeZod,
@@ -130,10 +130,6 @@ export namespace Transaction {
 	export interface Legacy extends Omit<Transaction, "amount"> {
 		amount: number
 	}
-	export namespace Legacy {
-		export const type = Transaction.type.omit<"amount">(["amount"]).extend<Legacy>({ amount: isly.number() })
-		export const typeZod = Transaction.typeZod.omit({ amount: true }).extend({ amount: zod.number() })
-	}
 	export function fromLegacy(transaction: Transaction | Legacy): Transaction {
 		return {
 			...transaction,
@@ -158,9 +154,6 @@ export namespace Transaction {
 	}
 	export type Event = Omit<Transaction, "state">
 	export namespace Event {
-		export const type = Transaction.type.omit(["state"])
-		export const typeZod = Transaction.typeZod.omit({ state: true })
-
 		export function from(transaction: Transaction): Event {
 			return (({ state, ...event }) => event)(transaction)
 		}
@@ -413,9 +406,11 @@ export namespace Transaction {
 			account: Rail.Address.Card.type,
 			counterpart: Rail.Address.Card.Counterpart.type,
 		})
-		export const typeZod = Transaction.typeZod.omit({ account: true, counterpart: true }).extend({
-			account: Rail.Address.Card.typeZod,
-			counterpart: Rail.Address.Card.Counterpart.typeZod,
-		})
+		export const typeZod: zod.ZodType<CardTransaction> = Transaction.typeZod
+			.omit({ account: true, counterpart: true })
+			.extend({
+				account: Rail.Address.Card.typeZod,
+				counterpart: Rail.Address.Card.Counterpart.typeZod,
+			})
 	}
 }

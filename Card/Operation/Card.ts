@@ -19,7 +19,7 @@ export namespace Card {
 		from: Changeable.type.optional(),
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Card> = zod.object({
 		type: zod.literal("card"),
 		status: zod.enum(statuses),
 		from: Changeable.typeZod.optional(),

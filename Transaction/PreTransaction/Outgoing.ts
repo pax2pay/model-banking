@@ -5,5 +5,5 @@ export interface Outgoing extends Base {
 	type: "outgoing"
 }
 export namespace Outgoing {
-	export const typeZod = Base.typeZod.extend({ type: zod.literal("outgoing") })
+	export const typeZod: zod.ZodType<Outgoing> = Base.typeZod.extend({ type: zod.literal("outgoing") })
 }

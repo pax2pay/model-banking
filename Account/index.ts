@@ -4,7 +4,7 @@ import { isly } from "isly"
 import { Balances } from "../Balances"
 import { Rail } from "../Rail"
 import { Rule } from "../Rule"
-import { zod } from "../zod"
+import { zod, zodHelper } from "../zod"
 import { Charge as AccountCharge } from "./Charge"
 import { Creatable as AccountCreatable } from "./Creatable"
 import { Details as AccountDetails } from "./Details"
@@ -43,7 +43,7 @@ export namespace Account {
 		status: AccountStatus.type,
 		type: Type.type,
 	})
-	export const typeZod = Creatable.typeZod.extend({
+	export const typeZod: zod.ZodObject<zodHelper.Shape<Account>> = Creatable.typeZod.extend({
 		id: zod.string(),
 		created: zod.string().refine(isoly.DateTime.is),
 		organization: zod.string(),
@@ -59,3 +59,4 @@ export namespace Account {
 		return cryptly.Identifier.is(value, 8)
 	}
 }
+const a = Account.typeZod.parse({})

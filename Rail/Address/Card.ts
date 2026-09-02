@@ -29,7 +29,7 @@ namespace CardCounterpart {
 		present: isly.boolean().optional(),
 		approvalCode: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<CardCounterpart> = zod.object({
 		type: zod.literal("card"),
 		acquirer: Acquirer.typeZod,
 		merchant: Merchant.typeZod,
@@ -48,7 +48,7 @@ export namespace Card {
 		expiry: ModelCard.Expiry.type,
 		holder: isly.string(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Card> = zod.object({
 		type: zod.literal("card"),
 		scheme: ModelCard.Scheme.typeZod,
 		id: zod.string(),

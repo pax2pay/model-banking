@@ -14,7 +14,7 @@ export namespace SE {
 		city: isly.string(),
 		street: isly.string(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<SE> = zod.object({
 		countryCode: zod.literal("SE"),
 		zipCode: zod.string(),
 		city: zod.string(),

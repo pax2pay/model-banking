@@ -11,7 +11,7 @@ type Month = (typeof month)[number]
 export type Expiry = [Year, Month]
 export namespace Expiry {
 	export const type = isly.tuple<Expiry>(isly.number([...year]), isly.number([...month])) // Deconstructing to remove readonly.
-	export const typeZod = zod.tuple([zod.literal([...year]), zod.literal([...month])])
+	export const typeZod: zod.ZodType<Expiry> = zod.tuple([zod.literal([...year]), zod.literal([...month])])
 	export function toDateTime(expiry: Expiry): isoly.DateTime {
 		return isoly.DateTime.nextMonth(
 			"20" + expiry[0].toString() + "-" + expiry[1].toString().padStart(2, "0") + "-01T00:00:01.000Z"

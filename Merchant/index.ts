@@ -25,7 +25,7 @@ export namespace Merchant {
 		state: isly.string().optional(),
 		country: isly.string(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Merchant> = zod.object({
 		name: zod.string(),
 		id: zod.string(),
 		category: zod.string(),
@@ -33,6 +33,6 @@ export namespace Merchant {
 		city: zod.string(),
 		zip: zod.string(),
 		state: zod.string().optional(),
-		country: zod.string(),
+		country: zod.enum(isoly.CountryCode.Alpha2.values),
 	})
 }

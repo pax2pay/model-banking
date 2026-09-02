@@ -20,7 +20,7 @@ export namespace Reference {
 		instruction: isly.string().optional(),
 		network: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Reference> = zod.object({
 		supplier: Supplier.typeZod.optional(),
 		reference: zod.string().optional(),
 		returnId: zod.string().optional(),

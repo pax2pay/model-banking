@@ -22,6 +22,6 @@ export namespace Rail {
 		"rix-inst",
 	] as const
 	export const type = isly.string<Rail>(rails)
-	export const typeZod = zod.enum(rails)
+	export const typeZod: zod.ZodType<Rail> = zod.enum(rails)
 	export import Address = RailAddress
 }

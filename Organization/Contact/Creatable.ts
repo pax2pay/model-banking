@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Addresses } from "./Addresses"
 import { Name } from "./Name"
 import { Phone } from "./Phone"
@@ -19,7 +19,7 @@ export namespace Creatable {
 		phone: Phone.type,
 		owners: Name.type.array({ criteria: "minLength", value: 1 }),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodObject<zodHelper.Shape<Creatable>> = zod.object({
 		address: Addresses.typeZod,
 		email: zod.string().regex(/^\S+@\S+\.\S+$/),
 		name: Name.typeZod,

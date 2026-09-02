@@ -28,7 +28,7 @@ export namespace Scan {
 		holder: isly.string(),
 		institution: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Scan> = zod.object({
 		type: zod.literal("scan"),
 		sort: zod.string(),
 		account: zod.string(),

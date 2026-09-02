@@ -1,7 +1,7 @@
 import { isly } from "isly"
 import type { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
-import { zod } from "../zod"
+import { zod, zodHelper } from "../zod"
 import { Contact } from "./Contact"
 import { Fx } from "./Fx"
 import { Risk } from "./Risk"
@@ -25,7 +25,7 @@ export namespace Creatable {
 		groups: isly.string().array().optional(),
 		fx: Fx.type.optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodObject<zodHelper.Shape<Creatable>> = zod.object({
 		name: zod.string(),
 		code: zod.string().regex(/^[A-Za-z0-9\-_]+$/),
 		risk: Risk.typeZod,

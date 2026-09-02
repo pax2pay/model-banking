@@ -10,5 +10,5 @@ export namespace Amount {
 		return !amount ? {} : Object.fromEntries<number>([amount])
 	}
 	export const type = isly.tuple<Amount>(isly.string(isoly.Currency.values), isly.number())
-	export const typeZod = zod.tuple([zod.enum(isoly.Currency.values), zod.number()])
+	export const typeZod: zod.ZodType<Amount> = zod.tuple([zod.enum(isoly.Currency.values), zod.number()])
 }

@@ -3,7 +3,7 @@ import { isly } from "isly"
 import { Amount } from "../Amount"
 import type { Rule } from "../Rule"
 import { type as ruleType } from "../Rule/type"
-import { zod } from "../zod"
+import { zod, zodHelper } from "../zod"
 import { Expiry } from "./Expiry"
 import { Meta } from "./Meta"
 import { Preset } from "./Preset"
@@ -23,7 +23,6 @@ export interface Creatable {
 	key?: isoly.Date | string
 	restricted?: { to?: Restriction }
 }
-
 export namespace Creatable {
 	export const type = isly.object<Creatable>({
 		account: isly.string(),
@@ -36,7 +35,7 @@ export namespace Creatable {
 		key: isly.string().optional(),
 		restricted: isly.object<Required<Creatable>["restricted"]>({ to: Restriction.type.optional() }).optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodObject<zodHelper.Shape<Creatable>> = zod.object({
 		account: zod.string(),
 		number: zod.string().optional(),
 		preset: Preset.typeZod,

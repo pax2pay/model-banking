@@ -14,5 +14,9 @@ export namespace PreTransaction {
 	export import Authorization = PreTransactionAuthorization
 	export import Incoming = PreTransactionIncoming
 	export import Outgoing = PreTransactionOutgoing
-	export const typeZod = zod.union([Outgoing.typeZod, Authorization.typeZod, Incoming.typeZod])
+	export const typeZod: zod.ZodType<PreTransaction> = zod.union([
+		Outgoing.typeZod,
+		Authorization.typeZod,
+		Incoming.typeZod,
+	])
 }

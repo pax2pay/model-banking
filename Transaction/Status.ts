@@ -28,5 +28,8 @@ export namespace Status {
 		Success,
 		isly.tuple<[Fail, Status.Reason]>(Fail, Reason)
 	)
-	export const typeZod = zod.union([zod.enum(successes), zod.tuple([zod.enum(failures), zod.enum(reasons)])])
+	export const typeZod: zod.ZodType<Status> = zod.union([
+		zod.enum(successes),
+		zod.tuple([zod.enum(failures), zod.enum(reasons)]),
+	])
 }

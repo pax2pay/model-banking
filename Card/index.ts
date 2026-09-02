@@ -76,7 +76,7 @@ export namespace Card {
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 		restricted: isly.object<Required<Card>["restricted"]>({ to: CardRestriction.type.optional() }).optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Card> = zod.object({
 		id: zod.string(),
 		number: zod.string().optional(),
 		created: zod.string().refine(isoly.DateTime.is),

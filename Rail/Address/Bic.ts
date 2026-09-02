@@ -17,7 +17,7 @@ export namespace Bic {
 		holder: isly.string(),
 		transactor: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Bic> = zod.object({
 		type: zod.literal("bic"),
 		account: zod.string(),
 		institution: zod.string(),

@@ -20,7 +20,7 @@ export namespace Amount {
 		total: isly.number(),
 		exchange: Exchange.type.optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Amount> = zod.object({
 		original: zod.number(),
 		charge: zod.number(),
 		charges: Amount.Charge.typeZod.optional(),

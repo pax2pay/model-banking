@@ -17,10 +17,10 @@ export namespace Acquirer {
 		retrievalReferenceNumber: isly.string().optional(),
 		systemTraceAuditNumber: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Acquirer> = zod.object({
 		id: zod.string(),
 		number: zod.string(),
-		country: zod.string().refine(isoly.CountryCode.Alpha2.is).optional(),
+		country: zod.enum(isoly.CountryCode.Alpha2.values).optional(),
 		retrievalReferenceNumber: zod.string().optional(),
 		systemTraceAuditNumber: zod.string().optional(),
 	})

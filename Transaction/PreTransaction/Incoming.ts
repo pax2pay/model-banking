@@ -27,7 +27,7 @@ export namespace Incoming {
 		rail: Rail.type.optional(),
 		reference: TransactionReference.type.optional(),
 	})
-	export const typeZod = Base.typeZod.extend({
+	export const typeZod: zod.ZodType<Incoming> = Base.typeZod.extend({
 		type: zod.literal("incoming"),
 		account: Rail.Address.typeZod,
 		currency: zod.enum(isoly.Currency.values),

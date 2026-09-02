@@ -20,8 +20,8 @@ export namespace Default {
 		street: isly.string(),
 		zipCode: isly.string(),
 	})
-	export const typeZod = zod.object({
-		countryCode: zod.string(),
+	export const typeZod: zod.ZodType<Default> = zod.object({
+		countryCode: zod.enum(isoly.CountryCode.Alpha2.values).exclude(["GB", "SE"]),
 		state: zod.string().optional(),
 		county: zod.string().optional(),
 		city: zod.string(),

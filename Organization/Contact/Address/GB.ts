@@ -19,7 +19,7 @@ export namespace GB {
 		building: isly.string(),
 		zipCode: isly.string(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<GB> = zod.object({
 		countryCode: zod.literal("GB"),
 		city: zod.string(),
 		street: zod.string(),
