@@ -28,5 +28,5 @@ export namespace Creatable {
 		organization: zod.string().optional(),
 		stacks: zod.array(Card.Stack.typeZod).optional(),
 		group: Group.typeZod,
-	})
+	}) satisfies zod.ZodType<Creatable>
 }

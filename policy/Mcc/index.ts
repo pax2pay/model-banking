@@ -27,7 +27,7 @@ export namespace Mcc {
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		updated: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
-	export const typeZod = Creatable.typeZod.extend({
+	export const typeZod: zod.ZodType<Mcc> = Creatable.typeZod.extend({
 		id: zod.string(),
 		realm: Realm.typeZod,
 		created: zod.string().refine(isoly.DateTime.is),
