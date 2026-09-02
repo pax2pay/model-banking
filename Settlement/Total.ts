@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Supplier } from "../Supplier"
+import { zod } from "../zod"
 import { Amount } from "./Amount"
 
 export interface Total {
@@ -19,8 +20,16 @@ export namespace Total {
 				fee: isly.string().optional(),
 				supplier: Supplier.type.optional(),
 			})
+			export const typeZod: zod.ZodType<Transaction> = zod.object({
+				net: zod.string(),
+				fee: zod.string().optional(),
+				supplier: Supplier.typeZod.optional(),
+			})
 		}
 		export const type = isly.object<Collected>({ transactions: isly.union(Transaction.type, Transaction.type.array()) })
+		export const typeZod: zod.ZodType<Collected> = zod.object({
+			transactions: zod.union([Transaction.typeZod, zod.array(Transaction.typeZod)]),
+		})
 	}
 	export type Settled = { net: number; transactions: string[]; fee?: string }
 	export const Settled = isly.object<Settled>({
@@ -28,11 +37,22 @@ export namespace Total {
 		transactions: isly.string().array(),
 		fee: isly.string().optional(),
 	})
+	export const SettledZod: zod.ZodType<Settled> = zod.object({
+		net: zod.number(),
+		transactions: zod.array(zod.string()),
+		fee: zod.string().optional(),
+	})
 	export const type = isly.object<Total>({
 		expected: Amount.type,
 		outcome: Amount.type.optional(),
 		collected: Collected.type.optional(),
 		settled: Settled.optional(),
+	})
+	export const typeZod: zod.ZodType<Total> = zod.object({
+		expected: Amount.typeZod,
+		outcome: Amount.typeZod.optional(),
+		collected: Collected.typeZod.optional(),
+		settled: SettledZod.optional(),
 	})
 	export function create(): Total {
 		return { expected: { net: 0, fee: { other: 0 } } }

@@ -1,11 +1,13 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../zod"
 import { Entry } from "./Entry"
 import { Total } from "./Total"
 
 export type Totals = Partial<Record<isoly.Currency, Total>>
 export namespace Totals {
 	export const type = isly.record<isoly.Currency, Total>(isly.string(isoly.Currency.values), Total.type)
+	export const typeZod: zod.ZodType<Totals> = zod.partialRecord(zod.enum(isoly.Currency.values), Total.typeZod)
 	export function addEntry(totals: Totals, entry: Entry): Totals {
 		const result = { ...totals }
 		if (entry.status == "succeeded" && (entry.type == "capture" || entry.type == "refund")) {

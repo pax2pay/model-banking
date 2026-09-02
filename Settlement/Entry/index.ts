@@ -8,7 +8,7 @@ import { Failed as EntryFailed } from "./Failed"
 import { fromCreatable } from "./fromCreatable"
 import { Succeeded as EntrySucceeded } from "./Succeeded"
 import { Summary as EntrySummary } from "./Summary"
-import { type as entryType } from "./type"
+import { type as entryType, typeZod as entryTypeZod } from "./type"
 
 export type Entry = EntrySucceeded | EntryFailed
 export namespace Entry {
@@ -23,6 +23,7 @@ export namespace Entry {
 	export import Succeeded = EntrySucceeded
 	export import Summary = EntrySummary
 	export const type = entryType
+	export const typeZod = entryTypeZod
 	export const from = fromCreatable
 	export function charge(
 		counterpart: Rail.Address.Card.Counterpart,

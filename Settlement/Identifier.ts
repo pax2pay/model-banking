@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Card } from "../Card"
+import { zod } from "../zod"
 
 //(date without dashes)(stack.Character)(single digit number representing batch)
 //20200102a3
@@ -16,6 +17,7 @@ export namespace Identifier {
 		return Card.Stack.Character.toStack(getCharacter(identifier))
 	}
 	export const type = isly.string()
+	export const typeZod: zod.ZodType<Identifier> = zod.string()
 	export function create(date: isoly.Date, stack: Card.Stack, order: number): Identifier {
 		return date.replace(/-/g, "") + Card.Stack.Character.from(stack) + order
 	}

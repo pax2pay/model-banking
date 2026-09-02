@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../zod"
 
 export interface Issue {
 	link: string
@@ -9,6 +10,10 @@ export namespace Issue {
 	export const type = isly.object<Issue>({
 		link: isly.string(),
 		status: isly.string(["closed", "open"]),
+	})
+	export const typeZod: zod.ZodType<Issue> = zod.object({
+		link: zod.string(),
+		status: zod.enum(["closed", "open"]),
 	})
 	export interface Creatable {
 		type: string
@@ -22,6 +27,12 @@ export namespace Issue {
 			currency: isly.fromIs("Currency", isoly.Currency.is),
 			resource: isly.string().optional(),
 			issue: Issue.type,
+		})
+		export const typeZod: zod.ZodType<Creatable> = zod.object({
+			type: zod.string(),
+			currency: zod.enum(isoly.Currency.values),
+			resource: zod.string().optional(),
+			issue: Issue.typeZod,
 		})
 	}
 }

@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../../zod"
 import { MissingFile as MissingFileWarning } from "./MissingFile"
 import { NegativeAmount as NegativeAmountWarning } from "./NegativeAmount"
 import { UnknownEntry as UnknownEntryWarning } from "./UnknownEntry"
@@ -14,4 +15,9 @@ export namespace Settlement {
 		MissingFile.type,
 		UnknownEntry.type
 	)
+	export const typeZod: zod.ZodType<Settlement> = zod.union([
+		NegativeAmount.typeZod,
+		MissingFile.typeZod,
+		UnknownEntry.typeZod,
+	])
 }
