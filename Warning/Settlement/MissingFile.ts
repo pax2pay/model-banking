@@ -2,6 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Identifier } from "../../Settlement/Identifier"
 import { Totals } from "../../Settlement/Totals"
+import { zod } from "../../zod"
 import { Base } from "../Base"
 
 export interface MissingFile extends Base {
@@ -17,6 +18,12 @@ export namespace MissingFile {
 		resource: Identifier.type,
 		cycle: isly.string().optional(),
 		totals: Totals.type.optional(),
+	})
+	export const typeZod: zod.ZodType<MissingFile> = Base.typeZod.extend({
+		type: zod.literal("missing-file"),
+		resource: Identifier.typeZod,
+		cycle: zod.string().optional(),
+		totals: Totals.typeZod.optional(),
 	})
 	export function create(id: string, cycle: string, date: isoly.Date): MissingFile {
 		return {

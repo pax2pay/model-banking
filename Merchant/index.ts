@@ -33,6 +33,6 @@ export namespace Merchant {
 		city: zod.string(),
 		zip: zod.string(),
 		state: zod.string().optional(),
-		country: zod.string(),
+		country: zod.enum(isoly.CountryCode.Alpha2.values),
 	})
 }

@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../zod"
 
 export type Amount = {
 	net: number
@@ -11,6 +12,10 @@ export namespace Amount {
 	export const type = isly.object<Amount>({
 		net: isly.number(),
 		fee: isly.object<Amount["fee"]>({ other: isly.number() }),
+	})
+	export const typeZod: zod.ZodType<Amount> = zod.object({
+		net: zod.number(),
+		fee: zod.object({ other: zod.number() }),
 	})
 	export function sum(currency: isoly.Currency, amount: Amount | undefined): number {
 		return isoly.Currency.add(currency, amount?.net ?? 0, amount?.fee.other ?? 0)

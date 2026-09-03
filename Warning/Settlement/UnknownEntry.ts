@@ -5,6 +5,7 @@ import { Authorization } from "../../Authorization"
 import { Entry } from "../../Settlement/Entry"
 import { Identifier } from "../../Settlement/Identifier"
 import { Transaction } from "../../Transaction"
+import { zod } from "../../zod"
 import { Base } from "../Base"
 
 export interface UnknownEntry extends Base {
@@ -20,6 +21,12 @@ export namespace UnknownEntry {
 		resource: Identifier.type,
 		authorization: isly.fromIs("Authorization.id", cryptly.Identifier.is).optional(),
 		transaction: isly.string().optional(),
+	})
+	export const typeZod: zod.ZodType<UnknownEntry> = Base.typeZod.extend({
+		type: zod.literal("unknown-entry"),
+		resource: Identifier.typeZod,
+		authorization: zod.string().refine(cryptly.Identifier.is).optional(),
+		transaction: zod.string().optional(),
 	})
 	export function create(entry: Extract<Entry.Failed, { type: "unknown" }>, resource: Identifier): UnknownEntry {
 		return {

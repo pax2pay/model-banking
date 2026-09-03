@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Rail } from "../../Rail"
+import { zod } from "../../zod"
 import { Creatable } from "./Creatable"
 
 export interface Succeeded extends Omit<Creatable.Known, "transaction" | "card"> {
@@ -23,4 +24,15 @@ export namespace Succeeded {
 			}),
 			created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		})
+	export const typeZod: zod.ZodType<Succeeded> = Creatable.Base.typeZod.omit({ card: true, transaction: true }).extend({
+		type: zod.enum(["capture", "refund"]),
+		status: zod.literal("succeeded"),
+		card: Rail.Address.Card.typeZod,
+		transaction: zod.object({
+			id: zod.string(),
+			posted: zod.string().refine(isoly.DateTime.is),
+			description: zod.string(),
+		}),
+		created: zod.string().refine(isoly.DateTime.is),
+	})
 }

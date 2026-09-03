@@ -2,13 +2,14 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amounts } from "../Amounts"
 import { Settlement as SettlementWarning } from "../Warning/Settlement"
+import { zod } from "../zod"
 import { Amount as SettlementAmount } from "./Amount"
 import { Batch as SettlementBatch } from "./Batch"
 import { Creatable as SettlementCreatable } from "./Creatable"
 import { Entry as SettlementEntry } from "./Entry"
 import { Fee as SettlementFee } from "./Fee"
 import { Identifier as SettlementIdentifier } from "./Identifier"
-import { Status } from "./Status"
+import { Status as SettlementStatus } from "./Status"
 import { Total as SettlementTotal } from "./Total"
 import { Totals as SettlementTotals } from "./Totals"
 
@@ -16,7 +17,7 @@ export interface Settlement extends Settlement.Creatable {
 	id: SettlementIdentifier | string // string is deprecated and there for legacy reasons
 	by?: string
 	created: isoly.DateTime
-	status: Status
+	status: SettlementStatus
 	entries: Settlement.Entry.Summary
 	warnings?: Settlement.Warning[]
 }
@@ -25,6 +26,7 @@ export namespace Settlement {
 	export import Total = SettlementTotal
 	export import Totals = SettlementTotals
 	export import Amount = SettlementAmount
+	export import Status = SettlementStatus
 	export import Fee = SettlementFee
 	export import Creatable = SettlementCreatable
 	export import Entry = SettlementEntry
@@ -72,5 +74,13 @@ export namespace Settlement {
 		status: Status.type,
 		entries: Settlement.Entry.Summary.type,
 		warnings: Settlement.Warning.type.array().optional(),
+	})
+	export const typeZod: zod.ZodType<Settlement> = SettlementCreatable.typeZod.extend({
+		id: zod.union([SettlementIdentifier.typeZod, zod.string()]),
+		by: zod.string().optional(),
+		created: zod.string().refine(isoly.DateTime.is),
+		status: Status.typeZod,
+		entries: Settlement.Entry.Summary.typeZod,
+		warnings: zod.array(Settlement.Warning.typeZod).optional(),
 	})
 }
