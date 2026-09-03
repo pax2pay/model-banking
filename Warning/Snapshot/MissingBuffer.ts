@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Treasury } from "../../Treasury"
+import { zod } from "../../zod"
 import { Base } from "../Base"
 
 export interface MissingBuffer extends Base {
@@ -17,6 +18,13 @@ export namespace MissingBuffer {
 		currency: isly.string(),
 		minimum: isly.number(),
 		balance: isly.number(),
+	})
+	export const typeZod: zod.ZodType<MissingBuffer> = Base.typeZod.extend({
+		type: zod.literal("missing-buffer"),
+		severity: zod.literal("high").optional(),
+		currency: zod.enum(isoly.Currency.values),
+		minimum: zod.number(),
+		balance: zod.number(),
 	})
 	export function create(account: Treasury.Account): MissingBuffer[] {
 		const result: MissingBuffer[] = []
