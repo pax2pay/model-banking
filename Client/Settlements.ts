@@ -40,7 +40,7 @@ export class Settlements {
 	async addPayoutTransactions(settlement: string, transactions: string[]): Promise<Settlement | gracely.Error> {
 		return this.client.patch<Settlement>(`/settlement/${settlement}/settled`, transactions)
 	}
-	async downloadFile(stack: Card.Stack, reference: string): Promise<string | gracely.Error> {
-		return this.client.get<string>(`/processor/${stack}/file/${reference}`)
+	async downloadFile(stack: Card.Stack, reference: string): Promise<string | object | gracely.Error> {
+		return this.client.get<string | object>(`/processor/${stack}/file/${reference}`)
 	}
 }
