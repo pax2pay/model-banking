@@ -25,9 +25,9 @@ export namespace BankFeedIntegrity {
 				code: zod.string(),
 				reference: zod.string(),
 				supplier: zod.string(),
-				opening: zod.object({ at: zod.string(), balance: zod.number() }).optional(),
+				opening: zod.object({ at: zod.string().refine(isoly.DateTime.is), balance: zod.number() }).optional(),
 				transaction: zod.object({ balance: zod.number() }).optional(),
-				closing: zod.object({ at: zod.string(), balance: zod.number() }),
+				closing: zod.object({ at: zod.string().refine(isoly.DateTime.is), balance: zod.number() }),
 				timestamp: zod.string(),
 				result: Result.typeZod,
 			})
