@@ -19,7 +19,10 @@ export namespace Account {
 	export type Opening = { at: isoly.DateTime; balance: number }
 	export namespace Opening {
 		export const type = isly.object<Opening>({ at: isly.string(), balance: isly.number() })
-		export const typeZod: zod.ZodType<Opening> = zod.object({ at: zod.string(), balance: zod.number() })
+		export const typeZod: zod.ZodType<Opening> = zod.object({
+			at: zod.string().refine(isoly.DateTime.is),
+			balance: zod.number(),
+		})
 	}
 	export type Closing = Opening
 	export namespace Closing {
