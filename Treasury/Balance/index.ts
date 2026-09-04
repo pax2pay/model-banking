@@ -1,5 +1,4 @@
 import { Amounts } from "../../Amounts"
-import { zod } from "../../zod"
 
 export type Balance = Amounts
 
