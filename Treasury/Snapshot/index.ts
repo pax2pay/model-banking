@@ -3,6 +3,7 @@ import { Balance } from "../../Balance"
 import { Supplier } from "../../Supplier"
 import { Transaction } from "../../Transaction"
 import { Warning } from "../../Warning"
+import { zod } from "../../zod"
 import { Account as SnapshotAccount } from "./Account"
 import { Check as SnapshotCheck } from "./Check"
 import { Emoney as SnapshotEmoney } from "./Emoney"
@@ -35,10 +36,38 @@ export namespace Snapshot {
 		ledger?: { change: number }
 		closing: { at: isoly.DateTime; balance: number }
 	}
+	export namespace EmoneyAccounts {
+		export const typeZod = zod.object({
+			id: zod.string(),
+			organization: zod.string(),
+			opening: zod.object({ at: zod.string(), balance: zod.number() }).optional(),
+			ledger: zod.object({ change: zod.number() }).optional(),
+			closing: zod.object({ at: zod.string(), balance: zod.number() }),
+		}) satisfies zod.ZodType<EmoneyAccounts>
+	}
 	export import funding = snapshotFunding
 	export import Check = SnapshotCheck
 	export type Reconciliation = SnapshotReconciliation
 	export type Emoney = SnapshotEmoney
 	export type Fiat = SnapshotFiat
 	export import Account = SnapshotAccount
+	export const typeZod: zod.ZodType<Snapshot> = zod.object({
+		version: zod.literal(version),
+		emoney: Balance.Extended.typeZod.extend({
+			total: zod.number().optional(),
+			accounts: zod.array(EmoneyAccounts.typeZod),
+		}),
+		created: zod.string(),
+		currency: zod.enum(isoly.Currency.values),
+		supplier: Supplier.typeZod,
+		fiat: zod.object({
+			total: zod.number(),
+			accounts: zod.array(Account.typeZod),
+		}),
+		counterbalance: zod.number().optional(),
+		notes: zod.array(Transaction.Note.typeZod),
+		checks: zod.array(Check.typeZod),
+		result: Check.Result.typeZod,
+		warnings: zod.array(Warning.Snapshot.typeZod).optional(),
+	})
 }

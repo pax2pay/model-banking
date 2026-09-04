@@ -1,4 +1,5 @@
 import { isoly } from "isoly"
+import { zod } from "../../../zod"
 import { Base } from "./Base"
 import { Result } from "./Result"
 
@@ -16,4 +17,20 @@ export interface BankFeedIntegrity extends Base {
 	}[]
 }
 
-export namespace BankFeedIntegrity {}
+export namespace BankFeedIntegrity {
+	export const typeZod: zod.ZodType<BankFeedIntegrity> = Base.typeZod.extend({
+		check: zod.literal("bank feed integrity"),
+		accounts: zod.array(
+			zod.object({
+				code: zod.string(),
+				reference: zod.string(),
+				supplier: zod.string(),
+				opening: zod.object({ at: zod.string(), balance: zod.number() }).optional(),
+				transaction: zod.object({ balance: zod.number() }).optional(),
+				closing: zod.object({ at: zod.string(), balance: zod.number() }),
+				timestamp: zod.string(),
+				result: Result.typeZod,
+			})
+		),
+	})
+}

@@ -1,5 +1,8 @@
+import { zod } from "../../../zod"
+
 export type Result = "passed" | "failed" | "incomplete"
 export namespace Result {
+	export const typeZod: zod.ZodType<Result> = zod.enum(["passed", "failed", "incomplete"])
 	export const precedence: Record<Result, number> = {
 		failed: 3,
 		incomplete: 2,

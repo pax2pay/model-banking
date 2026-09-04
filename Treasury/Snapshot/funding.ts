@@ -1,5 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import { zod } from "../../zod"
 import { Transaction } from "../Transaction"
 
 export namespace funding {
@@ -8,6 +9,10 @@ export namespace funding {
 		export const type = isly.object<Cursor>({
 			cursor: isly.string(),
 			amount: isly.number(),
+		})
+		export const typeZod: zod.ZodType<Cursor> = zod.object({
+			cursor: zod.string(),
+			amount: zod.number(),
 		})
 		export function fromTransaction(transaction: Transaction): string {
 			return `${transaction.currency}|${isoly.DateTime.invert(transaction.created)}|${transaction.reference}`
@@ -19,6 +24,7 @@ export namespace funding {
 	export type Cursors = Partial<Record<isoly.Currency, Cursor>>
 	export namespace Cursors {
 		export const type = isly.record<Cursors>(isly.fromIs("isoly.Currency", isoly.Currency.is), Cursor.type)
+		export const typeZod: zod.ZodType<Cursors> = zod.partialRecord(zod.enum(isoly.Currency.values), Cursor.typeZod)
 		export function updateAmount(settlement: Transaction, cursors: Cursors): Cursors {
 			const cursor = cursors[settlement.currency]
 			if (!cursor) {

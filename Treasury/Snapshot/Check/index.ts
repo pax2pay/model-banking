@@ -1,3 +1,4 @@
+import { zod } from "../../../zod"
 import { BankFeedIntegrity as CheckBankFeedIntegrity } from "./BankFeedIntegrity"
 import { Checks as CheckChecks } from "./Checks"
 import { ExternalReconciliation as CheckExternalReconciliation } from "./ExternalReconciliation"
@@ -26,4 +27,13 @@ export namespace Check {
 	export type Overdraft = CheckOverdraft
 	export type TransactionMatch = CheckTransactionMatch
 	export type UnidentifiedFunds = CheckUnidentifiedFunds
+	export const typeZod: zod.ZodType<Check> = zod.union([
+		CheckBankFeedIntegrity.typeZod,
+		CheckExternalReconciliation.typeZod,
+		CheckInternalReconciliation.typeZod,
+		CheckLedgerIntegrity.typeZod,
+		CheckOverdraft.typeZod,
+		CheckTransactionMatch.typeZod,
+		CheckUnidentifiedFunds.typeZod,
+	])
 }

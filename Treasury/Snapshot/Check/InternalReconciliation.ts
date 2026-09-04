@@ -1,3 +1,4 @@
+import { zod } from "../../../zod"
 import { Base as ResultBase } from "./Base"
 
 export interface InternalReconciliation extends ResultBase {
@@ -6,4 +7,11 @@ export interface InternalReconciliation extends ResultBase {
 	emoney: number
 	discrepancy: number
 }
-export namespace InternalReconciliation {}
+export namespace InternalReconciliation {
+	export const typeZod: zod.ZodType<InternalReconciliation> = ResultBase.typeZod.extend({
+		check: zod.literal("internal reconciliation"),
+		counterbalance: zod.number(),
+		emoney: zod.number(),
+		discrepancy: zod.number(),
+	})
+}
