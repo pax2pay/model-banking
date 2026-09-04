@@ -2,6 +2,7 @@ import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Rail } from "../../Rail"
+import { zod } from "../../zod"
 import { Creatable as TransactionCreatable } from "./Creatable"
 
 export interface Transaction extends TransactionCreatable {
@@ -20,5 +21,11 @@ export namespace Transaction {
 		created: isly.string(),
 		debtor: Rail.Address.type,
 		id: isly.string().optional(),
+	})
+	export const typeZod: zod.ZodType<Transaction> = Creatable.typeZod.extend({
+		reference: zod.string().refine(cryptly.Identifier.is),
+		created: zod.string(),
+		debtor: Rail.Address.typeZod,
+		id: zod.string().optional(),
 	})
 }

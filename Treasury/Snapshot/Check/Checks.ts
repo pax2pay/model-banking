@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../../../zod"
 
 export type Checks = (typeof Checks.value)[number]
 export namespace Checks {
@@ -12,4 +13,5 @@ export namespace Checks {
 		"unidentified funds", // Flags any received money not yet assigned to a customer
 	] as const
 	export const type = isly.string(value)
+	export const typeZod: zod.ZodType<Checks> = zod.enum(value)
 }
