@@ -16,10 +16,10 @@ export namespace Emoney {
 	export const typeZod: zod.ZodType<Emoney> = zod.object({
 		organization: zod.string(),
 		account: zod.string(),
-		created: zod.string().optional(),
+		created: zod.string().refine(isoly.DateTime.is).optional(),
 		supplier: Supplier.typeZod.optional(),
 		currencies: zod.array(zod.enum(isoly.Currency.values)).optional(),
-		timestamp: zod.string(),
+		timestamp: zod.string().refine(isoly.DateTime.is),
 		balances: Balances.typeZod,
 	})
 }
