@@ -1,4 +1,5 @@
 import { isly } from "isly"
+import { zod } from "../../zod"
 import { DeltaFiat as WarningDeltaFiat } from "./DeltaFiat"
 import { MissingBuffer as WarningMissingBuffer } from "./MissingBuffer"
 import { MissingEmoney as WarningMissingEmoney } from "./MissingEmoney"
@@ -38,4 +39,14 @@ export namespace Snapshot {
 		Reconciliation.type,
 		StaleFiat.type
 	)
+	export const typeZod: zod.ZodType<Snapshot> = zod.union([
+		DeltaFiat.typeZod,
+		MissingBuffer.typeZod,
+		MissingEmoney.typeZod,
+		MissingFiat.typeZod,
+		MissingTransaction.typeZod,
+		Overdraft.typeZod,
+		Reconciliation.typeZod,
+		StaleFiat.typeZod,
+	])
 }
