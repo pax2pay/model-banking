@@ -18,7 +18,7 @@ export namespace Fiat {
 	export const typeZod: zod.ZodType<Fiat> = zod.object({
 		supplier: Supplier.typeZod,
 		account: zod.string(),
-		timestamp: zod.string(),
+		timestamp: zod.string().refine(isoly.DateTime.is),
 		type: zod.enum(["safeguarded", "unsafe", "other", "buffer"]),
 		balances: Balance.typeZod,
 		conditions: zod.object({ minimum: Balance.typeZod.optional() }).optional(),
