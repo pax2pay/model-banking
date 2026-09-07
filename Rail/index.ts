@@ -20,6 +20,7 @@ export namespace Rail {
 		"sepa-instant",
 		"rix-rtgs",
 		"rix-inst",
+		"swift",
 	] as const
 	export const type = isly.string<Rail>(rails)
 	export const typeZod = zod.enum(rails)
