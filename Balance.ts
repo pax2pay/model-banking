@@ -42,7 +42,7 @@ export namespace Balance {
 	export type Extended = Balance & Legacy
 	export namespace Extended {
 		export const type = isly.intersection<Extended, Balance, Legacy>(Balance.type, Legacy.type)
-		export const typeZod: zod.ZodType<Extended> = Balance.typeZod
+		export const typeZod = Balance.typeZod
 			.extend({
 				actual: zod.number().optional(),
 				incomingReserved: zod.number().optional(),
