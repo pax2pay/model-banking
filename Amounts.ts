@@ -3,7 +3,6 @@ import { isly } from "isly"
 import { zod, zodHelper } from "./zod"
 
 export type Amounts = Partial<Record<isoly.Currency, number>>
-
 export namespace Amounts {
 	export function add(addendee: Amounts, addend: Amounts): Amounts {
 		return (Object.entries(addend) as [isoly.Currency, number][]).reduce(
@@ -20,5 +19,7 @@ export namespace Amounts {
 		)
 	}
 	export const type = isly.record<Amounts>(isly.string(isoly.Currency.values), isly.number())
-	export const typeZod: zod.ZodType<Amounts> = zod.partialRecord(zodHelper.currency, zod.number())
+	export const typeZod: zod.ZodType<Amounts> = zod
+		.partialRecord(zodHelper.currency, zod.number())
+		.meta({ id: "Amounts" })
 }

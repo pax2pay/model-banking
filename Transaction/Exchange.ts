@@ -15,10 +15,12 @@ export namespace Exchange {
 		from: Amount.type.optional(),
 		quote: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
-		rate: zod.number(),
-		to: Amount.typeZod.optional(),
-		from: Amount.typeZod.optional(),
-		quote: zod.string().optional(),
-	})
+	export const typeZod: zod.ZodType<Exchange> = zod
+		.object({
+			rate: zod.number(),
+			to: Amount.typeZod.optional(),
+			from: Amount.typeZod.optional(),
+			quote: zod.string().optional(),
+		})
+		.meta({ id: "Transaction.Exchange" })
 }
