@@ -18,12 +18,14 @@ export namespace Change {
 		status: Status.type,
 		result: isly.number().optional(),
 	})
-	export const typeZod = zod.object({
-		type: zod.enum(operand),
-		amount: zod.number(),
-		status: Status.typeZod,
-		result: zod.number().optional(),
-	})
+	export const typeZod = zod
+		.object({
+			type: zod.enum(operand),
+			amount: zod.number(),
+			status: Status.typeZod,
+			result: zod.number().optional(),
+		})
+		.meta({ id: "Operation.Change" })
 	export namespace Add {
 		export const type = Change.type.extend<Change<"add">>({
 			type: isly.string("add"),

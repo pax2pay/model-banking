@@ -18,11 +18,13 @@ export namespace GB {
 		building: isly.string(),
 		zipCode: isly.string(),
 	})
-	export const typeZod: zod.ZodType<GB> = zod.object({
-		countryCode: zod.literal("GB"),
-		city: zod.string(),
-		street: zod.string(),
-		building: zod.string(),
-		zipCode: zod.string(),
-	})
+	export const typeZod: zod.ZodType<GB> = zod
+		.object({
+			countryCode: zod.literal("GB"),
+			city: zod.string(),
+			street: zod.string(),
+			building: zod.string(),
+			zipCode: zod.string(),
+		})
+		.meta({ id: "Organization.Contact.Address.GB" })
 }

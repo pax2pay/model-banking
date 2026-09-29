@@ -51,23 +51,22 @@ export namespace Snapshot {
 	export import Emoney = SnapshotEmoney
 	export import Fiat = SnapshotFiat
 	export import Account = SnapshotAccount
-	export const typeZod: zod.ZodType<Snapshot> = zod.object({
-		version: zod.literal(version),
-		emoney: Balance.Extended.typeZod.extend({
-			total: zod.number().optional(),
-			accounts: zod.array(EmoneyAccounts.typeZod),
-		}),
-		created: zod.string().refine(isoly.DateTime.is),
-		currency: zodHelper.currency,
-		supplier: Supplier.typeZod,
-		fiat: zod.object({
-			total: zod.number(),
-			accounts: zod.array(Account.typeZod),
-		}),
-		counterbalance: zod.number().optional(),
-		notes: zod.array(Transaction.Note.typeZod),
-		checks: zod.array(Check.typeZod),
-		result: Check.Result.typeZod,
-		warnings: zod.array(Warning.Snapshot.typeZod).optional(),
-	})
+	export const typeZod: zod.ZodType<Snapshot> = zod
+		.object({
+			version: zod.literal(version),
+			emoney: Balance.Extended.typeZod.extend({
+				total: zod.number().optional(),
+				accounts: zod.array(EmoneyAccounts.typeZod),
+			}),
+			created: zod.string().refine(isoly.DateTime.is),
+			currency: zodHelper.currency,
+			supplier: Supplier.typeZod,
+			fiat: zod.object({ total: zod.number(), accounts: zod.array(Account.typeZod) }),
+			counterbalance: zod.number().optional(),
+			notes: zod.array(Transaction.Note.typeZod),
+			checks: zod.array(Check.typeZod),
+			result: Check.Result.typeZod,
+			warnings: zod.array(Warning.Snapshot.typeZod).optional(),
+		})
+		.meta({ id: "Treasury.Snapshot" })
 }

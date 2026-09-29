@@ -27,13 +27,15 @@ export namespace Check {
 	export import Overdraft = CheckOverdraft
 	export import TransactionMatch = CheckTransactionMatch
 	export import UnidentifiedFunds = CheckUnidentifiedFunds
-	export const typeZod: zod.ZodType<Check> = zod.union([
-		CheckBankFeedIntegrity.typeZod,
-		CheckExternalReconciliation.typeZod,
-		CheckInternalReconciliation.typeZod,
-		CheckLedgerIntegrity.typeZod,
-		CheckOverdraft.typeZod,
-		CheckTransactionMatch.typeZod,
-		CheckUnidentifiedFunds.typeZod,
-	])
+	export const typeZod: zod.ZodType<Check> = zod
+		.union([
+			CheckBankFeedIntegrity.typeZod,
+			CheckExternalReconciliation.typeZod,
+			CheckInternalReconciliation.typeZod,
+			CheckLedgerIntegrity.typeZod,
+			CheckOverdraft.typeZod,
+			CheckTransactionMatch.typeZod,
+			CheckUnidentifiedFunds.typeZod,
+		])
+		.meta({ id: "Treasury.Snapshot.Check" })
 }

@@ -13,5 +13,5 @@ export namespace Checks {
 		"unidentified funds", // Flags any received money not yet assigned to a customer
 	] as const
 	export const type = isly.string(value)
-	export const typeZod: zod.ZodType<Checks> = zod.enum(value)
+	export const typeZod: zod.ZodType<Checks> = zod.enum(value).meta({ id: "Treasury.Snapshot.Checks" })
 }

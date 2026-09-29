@@ -7,5 +7,7 @@ export interface Updatable extends Creatable {
 }
 export namespace Updatable {
 	export const type = Creatable.type.extend<Updatable>({ id: isly.string() })
-	export const typeZod: zod.ZodType<Updatable> = Creatable.typeZod.extend({ id: zod.string() })
+	export const typeZod: zod.ZodType<Updatable> = Creatable.typeZod
+		.extend({ id: zod.string() })
+		.meta({ id: "policy.Mcc.Updatable" })
 }

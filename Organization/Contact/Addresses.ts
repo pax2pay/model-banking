@@ -15,10 +15,12 @@ export namespace Addresses {
 		delivery: Address.type.optional(),
 		visit: Address.type.optional(),
 	})
-	export const typeZod: zod.ZodType<Addresses> = zod.object({
-		primary: Address.typeZod,
-		billing: Address.typeZod.optional(),
-		delivery: Address.typeZod.optional(),
-		visit: Address.typeZod.optional(),
-	})
+	export const typeZod: zod.ZodType<Addresses> = zod
+		.object({
+			primary: Address.typeZod,
+			billing: Address.typeZod.optional(),
+			delivery: Address.typeZod.optional(),
+			visit: Address.typeZod.optional(),
+		})
+		.meta({ id: "Organization.Contact.Addresses" })
 }
