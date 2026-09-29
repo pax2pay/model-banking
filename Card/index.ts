@@ -76,31 +76,33 @@ export namespace Card {
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 		restricted: isly.object<Required<Card>["restricted"]>({ to: CardRestriction.type.optional() }).optional(),
 	})
-	export const typeZod: zod.ZodType<Card> = zod.object({
-		id: zod.string(),
-		number: zod.string().optional(),
-		created: zod.string().refine(isoly.DateTime.is),
-		organization: zod.string(),
-		realm: Realm.typeZod,
-		account: zod.string(),
-		preset: CardPreset.typeZod,
-		scheme: CardScheme.typeZod,
-		reference: zod.string(),
-		details: zod.object({
-			iin: zod.string(),
-			last4: zod.string(),
-			expiry: CardExpiry.typeZod,
-			holder: zod.string(),
-			token: zod.string().optional(),
-		}),
-		limit: Amount.typeZod,
-		spent: Amount.typeZod,
-		status: zod.enum(["active", "cancelled"]),
-		history: CardOperation.typeZod.array(),
-		rules: zod.any().array(),
-		meta: CardMeta.typeZod.optional(),
-		restricted: zod.object({ to: CardRestriction.typeZod.optional() }).optional(),
-	})
+	export const typeZod: zod.ZodType<Card> = zod
+		.object({
+			id: zod.string(),
+			number: zod.string().optional(),
+			created: zod.string().refine(isoly.DateTime.is),
+			organization: zod.string(),
+			realm: Realm.typeZod,
+			account: zod.string(),
+			preset: CardPreset.typeZod,
+			scheme: CardScheme.typeZod,
+			reference: zod.string(),
+			details: zod.object({
+				iin: zod.string(),
+				last4: zod.string(),
+				expiry: CardExpiry.typeZod,
+				holder: zod.string(),
+				token: zod.string().optional(),
+			}),
+			limit: Amount.typeZod,
+			spent: Amount.typeZod,
+			status: zod.enum(["active", "cancelled"]),
+			history: CardOperation.typeZod.array(),
+			rules: zod.any().array(),
+			meta: CardMeta.typeZod.optional(),
+			restricted: zod.object({ to: CardRestriction.typeZod.optional() }).optional(),
+		})
+		.meta({ id: "Card" })
 	const csvMap: Record<string, (card: Card) => string | number | undefined> = {
 		id: card => card.id,
 		created: card => readableDate(card.created),
