@@ -39,7 +39,7 @@ export namespace Account {
 		rails: Rail.Address.type.array(),
 		details: Details.type.optional(),
 		charges: AccountCharge.type.optional(),
-		rules: Rule.type.array().optional(),
+		rules: isly.any().array().optional(),
 		status: AccountStatus.type,
 		type: Type.type,
 	})
@@ -48,10 +48,10 @@ export namespace Account {
 		created: zod.string().refine(isoly.DateTime.is),
 		organization: zod.string(),
 		balances: Balances.typeZod,
-		rails: zod.array(Rail.Address.typeZod),
+		rails: Rail.Address.typeZod.array(),
 		details: Details.typeZod.optional(),
 		charges: AccountCharge.typeZod.optional(),
-		rules: zod.array(zod.never()).optional(),
+		rules: zod.any().array().optional(),
 		status: AccountStatus.typeZod,
 		type: Type.typeZod,
 	})

@@ -2,7 +2,7 @@ import { isly } from "isly"
 import { State as RuleState } from "./State"
 import { type as ruleType } from "./type"
 
-export type Rule = never
+export type Rule = any
 export namespace Rule {
 	export import State = RuleState
 	export type Kind = (typeof Kind.values)[number]

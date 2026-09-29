@@ -71,12 +71,12 @@ export namespace Card {
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		spent: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
 		status: isly.union(isly.string("active"), isly.string("cancelled")),
-		history: isly.array(CardOperation.type),
+		history: CardOperation.type.array(),
 		rules: ruleType.array(),
 		meta: isly.fromIs("Card.Meta", CardMeta.is).optional(),
 		restricted: isly.object<Required<Card>["restricted"]>({ to: CardRestriction.type.optional() }).optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Card> = zod.object({
 		id: zod.string(),
 		number: zod.string().optional(),
 		created: zod.string().refine(isoly.DateTime.is),
@@ -96,8 +96,8 @@ export namespace Card {
 		limit: Amount.typeZod,
 		spent: Amount.typeZod,
 		status: zod.enum(["active", "cancelled"]),
-		history: zod.array(CardOperation.typeZod),
-		rules: zod.array(zod.never()),
+		history: CardOperation.typeZod.array(),
+		rules: zod.any().array(),
 		meta: CardMeta.typeZod.optional(),
 		restricted: zod.object({ to: CardRestriction.typeZod.optional() }).optional(),
 	})

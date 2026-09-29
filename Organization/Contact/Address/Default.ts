@@ -10,7 +10,6 @@ export interface Default {
 	zipCode: string
 	street: string
 }
-
 export namespace Default {
 	export const type = isly.object<Default>({
 		countryCode: isly.string(),
@@ -20,8 +19,8 @@ export namespace Default {
 		street: isly.string(),
 		zipCode: isly.string(),
 	})
-	export const typeZod = zod.object({
-		countryCode: zod.string(),
+	export const typeZod: zod.ZodType<Default> = zod.object({
+		countryCode: zod.string() as any,
 		state: zod.string().optional(),
 		county: zod.string().optional(),
 		city: zod.string(),

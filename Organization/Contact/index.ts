@@ -26,11 +26,11 @@ export namespace Contact {
 		phone: Phone.type,
 		owners: Name.type.array().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Contact> = zod.object({
 		address: Addresses.typeZod,
 		email: zod.string().regex(/^\S+@\S+\.\S+$/),
 		name: Name.typeZod,
 		phone: Phone.typeZod,
-		owners: zod.array(Name.typeZod).optional(),
+		owners: Name.typeZod.array().optional(),
 	})
 }
