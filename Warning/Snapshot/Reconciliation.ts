@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Base } from "../Base"
 
 export interface Reconciliation extends Base {
@@ -21,7 +21,7 @@ export namespace Reconciliation {
 	export const typeZod: zod.ZodType<Reconciliation> = Base.typeZod.extend({
 		type: zod.literal("reconciliation"),
 		severity: zod.literal("high").optional(),
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		delta: zod.object({ account: zod.number(), operation: zod.number() }),
 		account: zod.string(),
 	})

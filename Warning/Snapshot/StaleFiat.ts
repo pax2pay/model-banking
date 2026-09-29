@@ -2,7 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Holidays } from "../../Holidays"
 import { Treasury } from "../../Treasury"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Base } from "../Base"
 
 export interface StaleFiat extends Base {
@@ -21,7 +21,7 @@ export namespace StaleFiat {
 	export const typeZod: zod.ZodType<StaleFiat> = Base.typeZod.extend({
 		type: zod.literal("stale-fiat"),
 		severity: zod.literal("low").optional(),
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		transaction: zod.object({ id: zod.string(), created: zod.string() }),
 	})
 	export function create(account: Treasury.Account, transactions: Treasury.Transaction[]): StaleFiat[] {

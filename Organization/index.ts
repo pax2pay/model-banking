@@ -40,19 +40,19 @@ export namespace Organization {
 		fx: OrganizationFx.type.optional(),
 		type: Type.type,
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Organization> = zod.object({
 		name: zod.string(),
 		code: zod.string().regex(/^[A-Za-z0-9\-_]+$/),
 		realm: Realm.typeZod,
-		rules: zod.array(zod.never()),
+		rules: zod.any().array(),
 		status: zod.enum(["active", "inactive"]),
 		risk: Organization.Risk.typeZod,
 		contact: Contact.typeZod.optional(),
-		groups: zod.array(zod.string()).optional(),
+		groups: zod.string().array().optional(),
 		fx: OrganizationFx.typeZod.optional(),
 		type: Type.typeZod,
 	})
 	export function from(creatable: Creatable, realm: Realm): Organization {
-		return { ...creatable, realm, rules: creatable.rules ?? [], status: "active", type: "emoney" }
+		return { ...creatable, realm, rules: [], status: "active", type: "emoney" }
 	}
 }

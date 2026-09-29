@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Base } from "../Base"
 
 export interface DeltaFiat extends Base {
@@ -17,6 +17,6 @@ export namespace DeltaFiat {
 	export const typeZod: zod.ZodType<DeltaFiat> = Base.typeZod.extend({
 		type: zod.literal("delta-fiat"),
 		severity: zod.enum(["high", "medium"]).optional(),
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 	})
 }

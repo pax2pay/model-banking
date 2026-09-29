@@ -9,7 +9,6 @@ export interface GB {
 	building: string
 	zipCode: string
 }
-
 export namespace GB {
 	export const name = isoly.CountryCode.Name.en.from("GB")
 	export const type = isly.object<GB>({
@@ -19,7 +18,7 @@ export namespace GB {
 		building: isly.string(),
 		zipCode: isly.string(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<GB> = zod.object({
 		countryCode: zod.literal("GB"),
 		city: zod.string(),
 		street: zod.string(),

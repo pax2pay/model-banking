@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Rail } from "../../Rail"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Exchange } from "../Exchange"
 
 export interface Base {
@@ -24,7 +24,7 @@ export namespace Base {
 	export const typeZod = zod.object({
 		type: zod.enum(["outgoing", "incoming", "authorization"]),
 		counterpart: Rail.Address.typeZod,
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		amount: zod.number(),
 		description: zod.string(),
 		exchange: Exchange.typeZod.optional(),

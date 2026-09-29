@@ -15,7 +15,7 @@ export namespace Addresses {
 		delivery: Address.type.optional(),
 		visit: Address.type.optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Addresses> = zod.object({
 		primary: Address.typeZod,
 		billing: Address.typeZod.optional(),
 		delivery: Address.typeZod.optional(),

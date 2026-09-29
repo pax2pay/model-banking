@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Rail } from "../Rail"
-import { zod } from "../zod"
+import { zod, zodHelper } from "../zod"
 import { Reference as TransactionReference } from "./Reference"
 
 export interface Incoming {
@@ -28,7 +28,7 @@ export namespace Incoming {
 	export const typeZod = zod.object({
 		account: Rail.Address.typeZod,
 		counterpart: Rail.Address.typeZod,
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		amount: zod.number(),
 		description: zod.string(),
 		posted: zod.string(),

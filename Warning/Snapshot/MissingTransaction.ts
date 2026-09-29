@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Base } from "../Base"
 
 export interface MissingTransaction extends Base {
@@ -17,6 +17,6 @@ export namespace MissingTransaction {
 	export const typeZod: zod.ZodType<MissingTransaction> = Base.typeZod.extend({
 		type: zod.literal("missing-transaction"),
 		severity: zod.literal("high").optional(),
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 	})
 }

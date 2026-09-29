@@ -7,7 +7,7 @@ import { Rail } from "../Rail"
 import { Report } from "../Report"
 import type { Rule } from "../Rule"
 import { Settlement } from "../Settlement"
-import { zod } from "../zod"
+import { zod, zodHelper } from "../zod"
 import { Amount as TransactionAmount } from "./Amount"
 import { Creatable as TransactionCreatable } from "./Creatable"
 import { Exchange as TransactionExchange } from "./Exchange"
@@ -88,7 +88,7 @@ export namespace Transaction {
 	})
 	export const typeZod = zod.object({
 		counterpart: Rail.Address.typeZod,
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		amount: Amount.typeZod,
 		description: zod.string(),
 		organization: zod.string(),

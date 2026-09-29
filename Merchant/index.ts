@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "../zod"
+import { zod, zodHelper } from "../zod"
 import { Category as MerchantCategory } from "./Category"
 
 export interface Merchant {
@@ -33,6 +33,6 @@ export namespace Merchant {
 		city: zod.string(),
 		zip: zod.string(),
 		state: zod.string().optional(),
-		country: zod.enum(isoly.CountryCode.Alpha2.values),
+		country: zodHelper.countryCode,
 	})
 }

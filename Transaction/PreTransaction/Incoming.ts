@@ -2,7 +2,7 @@ import { isoly } from "isoly"
 import { isly } from "isly"
 import { Rail } from "../../Rail"
 import { Settlement } from "../../Settlement"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Reference as TransactionReference } from "../Reference"
 import { Base } from "./Base"
 
@@ -30,7 +30,7 @@ export namespace Incoming {
 	export const typeZod = Base.typeZod.extend({
 		type: zod.literal("incoming"),
 		account: Rail.Address.typeZod,
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		amount: zod.number(),
 		description: zod.string(),
 		posted: zod.string(),

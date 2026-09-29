@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "../zod"
+import { zod, zodHelper } from "../zod"
 
 export interface Acquirer {
 	id: string
@@ -17,10 +17,10 @@ export namespace Acquirer {
 		retrievalReferenceNumber: isly.string().optional(),
 		systemTraceAuditNumber: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Acquirer> = zod.object({
 		id: zod.string(),
 		number: zod.string(),
-		country: zod.string().refine(isoly.CountryCode.Alpha2.is).optional(),
+		country: zodHelper.countryCode.optional(),
 		retrievalReferenceNumber: zod.string().optional(),
 		systemTraceAuditNumber: zod.string().optional(),
 	})

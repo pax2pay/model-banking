@@ -1,8 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amount } from "../Amount"
-import type { Rule } from "../Rule"
-import { type as ruleType } from "../Rule/type"
 import { zod } from "../zod"
 import { Expiry } from "./Expiry"
 import { Meta } from "./Meta"
@@ -18,7 +16,6 @@ export interface Creatable {
 		holder: string
 	}
 	limit: Amount
-	rules?: Rule[]
 	meta?: Meta
 	key?: isoly.Date | string
 	restricted?: { to?: Restriction }
@@ -31,18 +28,16 @@ export namespace Creatable {
 		preset: Preset.type,
 		details: isly.object({ expiry: Expiry.type, holder: isly.string() }),
 		limit: isly.tuple(isly.fromIs("isoly.Currency", isoly.Currency.is), isly.number()),
-		rules: ruleType.array().optional(),
 		meta: isly.fromIs("Card.Meta", Meta.is).optional(),
 		key: isly.string().optional(),
 		restricted: isly.object<Required<Creatable>["restricted"]>({ to: Restriction.type.optional() }).optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Creatable> = zod.object({
 		account: zod.string(),
 		number: zod.string().optional(),
 		preset: Preset.typeZod,
 		details: zod.object({ expiry: Expiry.typeZod, holder: zod.string() }),
 		limit: Amount.typeZod,
-		rules: zod.array(zod.never()).optional(),
 		meta: Meta.typeZod.optional(),
 		key: zod.string().optional(),
 		restricted: zod.object({ to: Restriction.typeZod.optional() }).optional(),
