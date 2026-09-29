@@ -2,7 +2,7 @@ import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Settlement } from "../Settlement"
-import { zod } from "../zod"
+import { zod, zodHelper } from "../zod"
 import { Changes } from "./Changes"
 
 export interface Creatable {
@@ -40,7 +40,7 @@ export namespace Creatable {
 	})
 	export const typeZod = zod.object({
 		account: zod.string(),
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		changes: Changes.typeZod,
 		type: zod.enum(types),
 		counterbalance: zod.string().optional(),

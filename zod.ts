@@ -1,10 +1,14 @@
 // re-export zod so that it can be auto imported as
 // import { zod } from "zod"
 export * as zod from "zod"
+import { isoly } from "isoly"
 import * as zod from "zod/v4"
 import { $strip } from "zod/v4/core"
 
 export namespace zodHelper {
+	export const currency = zod.enum(isoly.Currency.values).meta({ id: "Currency" })
+	export const countryCode = zod.enum(isoly.CountryCode.Alpha2.values).meta({ id: "CountryCode" })
+	export const callingCode = zod.enum(isoly.CallingCode.values).meta({ id: "CallingCode" })
 	type ExtraKeys<Schema, Type> = Exclude<keyof Schema, keyof Type> // Checks for extra keys in schema not defined in the model
 	type ThrowIfExtraKeys<Schema, Type> = ExtraKeys<Schema, Type> extends never ? unknown : { [key: string]: never } // If there are extra keys, raise a type error
 	export function fromType<Type>() {

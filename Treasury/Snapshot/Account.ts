@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Warning } from "../../Warning"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Transaction } from "../Transaction"
 
 export interface Account {
@@ -53,7 +53,7 @@ export namespace Account {
 		label: zod.string(),
 		reference: zod.string(),
 		description: zod.string().optional(),
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		opening: Opening.typeZod.optional(),
 		closing: Closing.typeZod,
 		delta: Delta.typeZod,

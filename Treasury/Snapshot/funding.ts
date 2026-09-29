@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Transaction } from "../Transaction"
 
 export namespace funding {
@@ -24,7 +24,7 @@ export namespace funding {
 	export type Cursors = Partial<Record<isoly.Currency, Cursor>>
 	export namespace Cursors {
 		export const type = isly.record<Cursors>(isly.fromIs("isoly.Currency", isoly.Currency.is), Cursor.type)
-		export const typeZod: zod.ZodType<Cursors> = zod.partialRecord(zod.enum(isoly.Currency.values), Cursor.typeZod)
+		export const typeZod: zod.ZodType<Cursors> = zod.partialRecord(zodHelper.currency, Cursor.typeZod)
 		export function updateAmount(settlement: Transaction, cursors: Cursors): Cursors {
 			const cursor = cursors[settlement.currency]
 			if (!cursor) {

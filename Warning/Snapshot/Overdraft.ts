@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Base } from "../Base"
 
 export interface Overdraft extends Base {
@@ -21,6 +21,6 @@ export namespace Overdraft {
 		type: zod.literal("overdraft"),
 		severity: zod.literal("medium").optional(),
 		organization: zod.string(),
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 	})
 }

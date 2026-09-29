@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 
 export interface Phone {
 	number: string
@@ -13,6 +13,6 @@ export namespace Phone {
 	})
 	export const typeZod: zod.ZodType<Phone> = zod.object({
 		number: zod.string().regex(/^\d+$/),
-		code: zod.enum(isoly.CallingCode.values),
+		code: zodHelper.callingCode,
 	})
 }

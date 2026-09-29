@@ -3,7 +3,7 @@ import { isly } from "isly"
 import { typedly } from "typedly"
 import { Identifier } from "../../Settlement/Identifier"
 import { Totals } from "../../Settlement/Totals"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Base } from "../Base"
 
 export interface NegativeAmount extends Base {
@@ -24,7 +24,7 @@ export namespace NegativeAmount {
 		type: zod.literal("negative-amount"),
 		resource: Identifier.typeZod,
 		value: zod.number(),
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 	})
 	export function create(resource: Identifier, totals: Totals): NegativeAmount[] {
 		const warnings: NegativeAmount[] = []

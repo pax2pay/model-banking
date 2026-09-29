@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "./zod"
+import { zod, zodHelper } from "./zod"
 
 export type Amounts = Partial<Record<isoly.Currency, number>>
 
@@ -20,5 +20,5 @@ export namespace Amounts {
 		)
 	}
 	export const type = isly.record<Amounts>(isly.string(isoly.Currency.values), isly.number())
-	export const typeZod: zod.ZodType<Amounts> = zod.partialRecord(zod.enum(isoly.Currency.values), zod.number())
+	export const typeZod: zod.ZodType<Amounts> = zod.partialRecord(zodHelper.currency, zod.number())
 }

@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Amounts } from "./Amounts"
-import { zod } from "./zod"
+import { zod, zodHelper } from "./zod"
 
 export type Amount = [isoly.Currency, number]
 
@@ -10,5 +10,5 @@ export namespace Amount {
 		return !amount ? {} : Object.fromEntries<number>([amount])
 	}
 	export const type = isly.tuple<Amount>(isly.string(isoly.Currency.values), isly.number())
-	export const typeZod = zod.tuple([zod.enum(isoly.Currency.values), zod.number()])
+	export const typeZod: zod.ZodType<Amount> = zod.tuple([zodHelper.currency, zod.number()])
 }

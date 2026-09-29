@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Rail } from "../../Rail"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 
 export interface Creatable {
 	creditor: Rail.Address
@@ -20,7 +20,7 @@ export namespace Creatable {
 	})
 	export const typeZod = zod.object({
 		creditor: Rail.Address.typeZod,
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		amount: zod.number(),
 		description: zod.string(),
 		external: zod.string().optional(),

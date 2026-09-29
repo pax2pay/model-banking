@@ -3,7 +3,7 @@ import { Balance } from "../../Balance"
 import { Supplier } from "../../Supplier"
 import { Transaction } from "../../Transaction"
 import { Warning } from "../../Warning"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Account as SnapshotAccount } from "./Account"
 import { Check as SnapshotCheck } from "./Check"
 import { Emoney as SnapshotEmoney } from "./Emoney"
@@ -58,7 +58,7 @@ export namespace Snapshot {
 			accounts: zod.array(EmoneyAccounts.typeZod),
 		}),
 		created: zod.string().refine(isoly.DateTime.is),
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		supplier: Supplier.typeZod,
 		fiat: zod.object({
 			total: zod.number(),

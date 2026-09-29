@@ -3,7 +3,7 @@ import { isly } from "isly"
 import { Account } from "../Account"
 import { Preset } from "../Card/Preset"
 import { Rail } from "../Rail"
-import { zod } from "../zod"
+import { zod, zodHelper } from "../zod"
 import { Amount } from "./Amount"
 import { Exchange } from "./Exchange"
 
@@ -27,7 +27,7 @@ export namespace Creatable {
 	})
 	export const typeZod = zod.object({
 		counterpart: Rail.Address.typeZod,
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		amount: zod.number(),
 		description: zod.string(),
 		exchange: Exchange.typeZod.optional(),

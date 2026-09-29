@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { Balances } from "../../Balances"
 import { Supplier } from "../../Supplier"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 
 export interface Emoney {
 	organization: string
@@ -18,7 +18,7 @@ export namespace Emoney {
 		account: zod.string(),
 		created: zod.string().refine(isoly.DateTime.is).optional(),
 		supplier: Supplier.typeZod.optional(),
-		currencies: zod.array(zod.enum(isoly.Currency.values)).optional(),
+		currencies: zod.array(zodHelper.currency).optional(),
 		timestamp: zod.string().refine(isoly.DateTime.is),
 		balances: Balances.typeZod,
 	})

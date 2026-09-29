@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { Treasury } from "../../Treasury"
-import { zod } from "../../zod"
+import { zod, zodHelper } from "../../zod"
 import { Base } from "../Base"
 
 export interface MissingBuffer extends Base {
@@ -22,7 +22,7 @@ export namespace MissingBuffer {
 	export const typeZod: zod.ZodType<MissingBuffer> = Base.typeZod.extend({
 		type: zod.literal("missing-buffer"),
 		severity: zod.literal("high").optional(),
-		currency: zod.enum(isoly.Currency.values),
+		currency: zodHelper.currency,
 		minimum: zod.number(),
 		balance: zod.number(),
 	})
