@@ -5,11 +5,12 @@ import { Balance as BalancesBalance } from "./Balance"
 import { zod, zodHelper } from "./zod"
 
 export type Balances = Partial<Record<isoly.Currency, Balances.Balance.Extended>>
-
 export namespace Balances {
 	export import Balance = BalancesBalance
 	export const type = isly.record<Balances>(isly.fromIs("isoly.Currency", isoly.Currency.is), Balances.Balance.type)
-	export const typeZod = zod.partialRecord(zodHelper.currency, Balances.Balance.Extended.typeZod)
+	export const typeZod: zod.ZodType<Balances> = zod
+		.partialRecord(zodHelper.currency, Balances.Balance.Extended.typeZod)
+		.meta({ id: "Balances" })
 	export function update(balances: Balances): Balances {
 		const result: Balances = {}
 		for (const [currency, balance] of Object.entries(balances)) {
