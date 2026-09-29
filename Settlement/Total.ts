@@ -48,12 +48,14 @@ export namespace Total {
 		collected: Collected.type.optional(),
 		settled: Settled.optional(),
 	})
-	export const typeZod: zod.ZodType<Total> = zod.object({
-		expected: Amount.typeZod,
-		outcome: Amount.typeZod.optional(),
-		collected: Collected.typeZod.optional(),
-		settled: SettledZod.optional(),
-	})
+	export const typeZod: zod.ZodType<Total> = zod
+		.object({
+			expected: Amount.typeZod,
+			outcome: Amount.typeZod.optional(),
+			collected: Collected.typeZod.optional(),
+			settled: SettledZod.optional(),
+		})
+		.meta({ id: "Settlement.Total" })
 	export function create(): Total {
 		return { expected: { net: 0, fee: { other: 0 } } }
 	}
