@@ -15,7 +15,7 @@ export namespace Group {
 		export const type = isly.object<Range>({ from: Merchant.Category.type, to: Merchant.Category.type })
 		export const typeZod: zod.ZodType<Range> = zod
 			.object({ from: Merchant.Category.typeZod, to: Merchant.Category.typeZod })
-			.meta({ id: "policy.Mcc.Range" })
+			.meta({ id: "policy.Mcc.Group.Range" })
 	}
 	export const type = isly.object<Group>({ values: Merchant.Category.type.array(), ranges: Range.type.array() })
 	export const typeZod: zod.ZodType<Group> = zod

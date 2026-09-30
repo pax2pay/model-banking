@@ -13,5 +13,5 @@ export namespace Changeable {
 	})
 	export const typeZod = zod
 		.object({ name: zod.string().optional(), contact: Contact.Creatable.typeZod.optional() })
-		.meta({ id: "policy.Organization.Changeable" })
+		.meta({ id: "Organization.Changeable" })
 }
