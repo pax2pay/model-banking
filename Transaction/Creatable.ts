@@ -25,14 +25,16 @@ export namespace Creatable {
 		exchange: Exchange.type.optional(),
 		reference: isly.object<{ reference?: string }>({ reference: isly.string().optional() }).optional(),
 	})
-	export const typeZod = zod.object({
-		counterpart: Rail.Address.typeZod,
-		currency: zodHelper.currency,
-		amount: zod.number(),
-		description: zod.string(),
-		exchange: Exchange.typeZod.optional(),
-		reference: zod.object({ reference: zod.string().optional() }).optional(),
-	})
+	export const typeZod = zod
+		.object({
+			counterpart: Rail.Address.typeZod,
+			currency: zodHelper.currency,
+			amount: zod.number(),
+			description: zod.string(),
+			exchange: Exchange.typeZod.optional(),
+			reference: zod.object({ reference: zod.string().optional() }).optional(),
+		})
+		.meta({ id: "Transaction.Creatable" })
 	export interface CardTransaction extends Creatable {
 		account: Pick<Rail.Address.Card, "id" | "type">
 		accountId: string
@@ -48,13 +50,15 @@ export namespace Creatable {
 			reference: isly.object<{ reference: string }>({ reference: isly.string() }),
 			approvalCode: isly.string().optional(),
 		})
-		export const typeZod = Creatable.typeZod.extend({
-			account: Rail.Address.Card.typeZod.pick({ id: true, type: true }),
-			accountId: zod.string(),
-			counterpart: Rail.Address.Card.Counterpart.typeZod,
-			reference: zod.object({ reference: zod.string() }),
-			approvalCode: zod.string().optional(),
-		})
+		export const typeZod = Creatable.typeZod
+			.extend({
+				account: Rail.Address.Card.typeZod.pick({ id: true, type: true }),
+				accountId: zod.string(),
+				counterpart: Rail.Address.Card.Counterpart.typeZod,
+				reference: zod.object({ reference: zod.string() }),
+				approvalCode: zod.string().optional(),
+			})
+			.meta({ id: "Transaction.Creatable.CardTransaction" })
 		export function charge(creatable: CardTransaction, preset: Preset, charges?: Account.Charge): Amount.Charge {
 			return Account.Charge.evaluate(
 				creatable.counterpart,

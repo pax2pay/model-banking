@@ -43,18 +43,20 @@ export namespace Account {
 		status: AccountStatus.type,
 		type: Type.type,
 	})
-	export const typeZod = Creatable.typeZod.extend({
-		id: zod.string(),
-		created: zod.string().refine(isoly.DateTime.is),
-		organization: zod.string(),
-		balances: Balances.typeZod,
-		rails: Rail.Address.typeZod.array(),
-		details: Details.typeZod.optional(),
-		charges: AccountCharge.typeZod.optional(),
-		rules: zod.any().array().optional(),
-		status: AccountStatus.typeZod,
-		type: Type.typeZod,
-	})
+	export const typeZod = Creatable.typeZod
+		.extend({
+			id: zod.string(),
+			created: zod.string().refine(isoly.DateTime.is),
+			organization: zod.string(),
+			balances: Balances.typeZod,
+			rails: Rail.Address.typeZod.array(),
+			details: Details.typeZod.optional(),
+			charges: AccountCharge.typeZod.optional(),
+			rules: zod.any().array().optional(),
+			status: AccountStatus.typeZod,
+			type: Type.typeZod,
+		})
+		.meta({ id: "Account" })
 	export function isIdentifier(value: cryptly.Identifier | any): value is cryptly.Identifier {
 		return cryptly.Identifier.is(value, 8)
 	}

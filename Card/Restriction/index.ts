@@ -9,7 +9,9 @@ export interface Restriction {
 export namespace Restriction {
 	export import Merchant = RestrictionsMerchant
 	export const type = isly.object<Restriction>({ merchants: Merchant.type.array().optional() })
-	export const typeZod = zod.object({ merchants: zod.array(Merchant.typeZod).optional() })
+	export const typeZod: zod.ZodType<Restriction> = zod
+		.object({ merchants: Merchant.typeZod.array().optional() })
+		.meta({ id: "Card.Restriction" })
 	export function check(
 		restrictions: Restriction,
 		transaction: Transaction.Creatable.CardTransaction | Transaction.PreTransaction.Authorization

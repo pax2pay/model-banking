@@ -32,14 +32,16 @@ export namespace Creatable {
 		key: isly.string().optional(),
 		restricted: isly.object<Required<Creatable>["restricted"]>({ to: Restriction.type.optional() }).optional(),
 	})
-	export const typeZod: zod.ZodType<Creatable> = zod.object({
-		account: zod.string(),
-		number: zod.string().optional(),
-		preset: Preset.typeZod,
-		details: zod.object({ expiry: Expiry.typeZod, holder: zod.string() }),
-		limit: Amount.typeZod,
-		meta: Meta.typeZod.optional(),
-		key: zod.string().optional(),
-		restricted: zod.object({ to: Restriction.typeZod.optional() }).optional(),
-	})
+	export const typeZod: zod.ZodType<Creatable> = zod
+		.object({
+			account: zod.string(),
+			number: zod.string().optional(),
+			preset: Preset.typeZod,
+			details: zod.object({ expiry: Expiry.typeZod, holder: zod.string() }),
+			limit: Amount.typeZod,
+			meta: Meta.typeZod.optional(),
+			key: zod.string().optional(),
+			restricted: zod.object({ to: Restriction.typeZod.optional() }).optional(),
+		})
+		.meta({ id: "Card.Creatable" })
 }

@@ -13,10 +13,9 @@ export namespace Amount {
 		net: isly.number(),
 		fee: isly.object<Amount["fee"]>({ other: isly.number() }),
 	})
-	export const typeZod: zod.ZodType<Amount> = zod.object({
-		net: zod.number(),
-		fee: zod.object({ other: zod.number() }),
-	})
+	export const typeZod: zod.ZodType<Amount> = zod
+		.object({ net: zod.number(), fee: zod.object({ other: zod.number() }) })
+		.meta({ id: "Settlement.Amount" })
 	export function sum(currency: isoly.Currency, amount: Amount | undefined): number {
 		return isoly.Currency.add(currency, amount?.net ?? 0, amount?.fee.other ?? 0)
 	}

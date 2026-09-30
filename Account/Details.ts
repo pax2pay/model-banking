@@ -17,12 +17,14 @@ export namespace Details {
 		reference: isly.string().optional(),
 		addresses: Rail.Address.type.array(),
 	})
-	export const typeZod: zod.ZodType<Details> = zod.object({
-		supplier: Supplier.typeZod,
-		currencies: zodHelper.currency.array(),
-		reference: zod.string().optional(),
-		addresses: Rail.Address.typeZod.array(),
-	})
+	export const typeZod: zod.ZodType<Details> = zod
+		.object({
+			supplier: Supplier.typeZod,
+			currencies: zodHelper.currency.array(),
+			reference: zod.string().optional(),
+			addresses: Rail.Address.typeZod.array(),
+		})
+		.meta({ id: "Account.Details" })
 	export interface Creatable {
 		supplier: Supplier
 		currency: isoly.Currency
@@ -32,9 +34,8 @@ export namespace Details {
 			supplier: Supplier.type,
 			currency: isly.string(isoly.Currency.values),
 		})
-		export const typeZod: zod.ZodType<Creatable> = zod.object({
-			supplier: Supplier.typeZod,
-			currency: zodHelper.currency,
-		})
+		export const typeZod: zod.ZodType<Creatable> = zod
+			.object({ supplier: Supplier.typeZod, currency: zodHelper.currency })
+			.meta({ id: "Account.Details.Creatable" })
 	}
 }

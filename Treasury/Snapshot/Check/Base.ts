@@ -7,8 +7,5 @@ export interface Base {
 	result: Result
 }
 export namespace Base {
-	export const typeZod = zod.object({
-		check: Checks.typeZod,
-		result: Result.typeZod,
-	}) satisfies zod.ZodType<Base>
+	export const typeZod = zod.object({ check: Checks.typeZod, result: Result.typeZod }) satisfies zod.ZodType<Base>
 }

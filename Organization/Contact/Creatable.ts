@@ -19,11 +19,13 @@ export namespace Creatable {
 		phone: Phone.type,
 		owners: Name.type.array({ criteria: "minLength", value: 1 }),
 	})
-	export const typeZod = zod.object({
-		address: Addresses.typeZod,
-		email: zod.string().regex(/^\S+@\S+\.\S+$/),
-		name: Name.typeZod,
-		phone: Phone.typeZod,
-		owners: zod.array(Name.typeZod).min(1),
-	})
+	export const typeZod = zod
+		.object({
+			address: Addresses.typeZod,
+			email: zod.string().regex(/^\S+@\S+\.\S+$/),
+			name: Name.typeZod,
+			phone: Phone.typeZod,
+			owners: Name.typeZod.array().min(1),
+		})
+		.meta({ id: "Organization.Contact.Creatable" })
 }

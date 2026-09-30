@@ -21,12 +21,14 @@ export namespace Creatable {
 		stacks: Card.Stack.type.array().optional(),
 		group: Group.type,
 	})
-	export const typeZod = zod.object({
-		action: Action.typeZod,
-		name: zod.string(),
-		description: zod.string().optional(),
-		organization: zod.string().optional(),
-		stacks: zod.array(Card.Stack.typeZod).optional(),
-		group: Group.typeZod,
-	}) satisfies zod.ZodType<Creatable>
+	export const typeZod = zod
+		.object({
+			action: Action.typeZod,
+			name: zod.string(),
+			description: zod.string().optional(),
+			organization: zod.string().optional(),
+			stacks: zod.array(Card.Stack.typeZod).optional(),
+			group: Group.typeZod,
+		})
+		.meta({ id: "policy.Mcc.Creatable" }) satisfies zod.ZodType<Creatable>
 }

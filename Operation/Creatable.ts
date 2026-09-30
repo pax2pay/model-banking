@@ -38,13 +38,15 @@ export namespace Creatable {
 		type: isly.string(types),
 		counterbalance: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
-		account: zod.string(),
-		currency: zodHelper.currency,
-		changes: Changes.typeZod,
-		type: zod.enum(types),
-		counterbalance: zod.string().optional(),
-	})
+	export const typeZod = zod
+		.object({
+			account: zod.string(),
+			currency: zodHelper.currency,
+			changes: Changes.typeZod,
+			type: zod.enum(types),
+			counterbalance: zod.string().optional(),
+		})
+		.meta({ id: "Operation.Creatable" })
 	export function fromRefund(account: string, settlement: string, entry: Settlement.Entry.Creatable.Refund): Creatable {
 		// The Entry.Refund.Creatable has negative amount and fee
 		// The operation amounts should always be positive

@@ -7,7 +7,9 @@ import { Total } from "./Total"
 export type Totals = Partial<Record<isoly.Currency, Total>>
 export namespace Totals {
 	export const type = isly.record<isoly.Currency, Total>(isly.string(isoly.Currency.values), Total.type)
-	export const typeZod: zod.ZodType<Totals> = zod.partialRecord(zodHelper.currency, Total.typeZod)
+	export const typeZod: zod.ZodType<Totals> = zod
+		.partialRecord(zodHelper.currency, Total.typeZod)
+		.meta({ id: "Settlement.Totals" })
 	export function addEntry(totals: Totals, entry: Entry): Totals {
 		const result = { ...totals }
 		if (entry.status == "succeeded" && (entry.type == "capture" || entry.type == "refund")) {

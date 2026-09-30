@@ -18,5 +18,7 @@ export namespace Creatable {
 		export const typeZod = zod.enum(values)
 	}
 	export const type = isly.object<Creatable>({ name: isly.string(), location: Location.type.optional() })
-	export const typeZod = zod.object({ name: zod.string(), location: Location.typeZod.optional() })
+	export const typeZod = zod
+		.object({ name: zod.string(), location: Location.typeZod.optional() })
+		.meta({ id: "Account.Creatable" })
 }

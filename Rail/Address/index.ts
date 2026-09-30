@@ -95,16 +95,17 @@ export namespace Address {
 		AddressScan.type,
 		AddressBic.type
 	)
-	export const typeZod = zod.union([
-		AddressCard.typeZod,
-		AddressCard.Counterpart.typeZod,
-		AddressIban.typeZod,
-		AddressInternal.typeZod,
-		AddressPaxGiro.typeZod,
-		AddressScan.typeZod,
-		AddressBic.typeZod,
-	])
-
+	export const typeZod = zod
+		.union([
+			AddressCard.typeZod,
+			AddressCard.Counterpart.typeZod,
+			AddressIban.typeZod,
+			AddressInternal.typeZod,
+			AddressPaxGiro.typeZod,
+			AddressScan.typeZod,
+			AddressBic.typeZod,
+		])
+		.meta({ id: "Rail.Address" })
 	export import PaxGiro = AddressPaxGiro
 	export import Iban = AddressIban
 	export import Scan = AddressScan

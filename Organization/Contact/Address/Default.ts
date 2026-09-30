@@ -19,12 +19,14 @@ export namespace Default {
 		street: isly.string(),
 		zipCode: isly.string(),
 	})
-	export const typeZod: zod.ZodType<Default> = zod.object({
-		countryCode: zod.string() as any,
-		state: zod.string().optional(),
-		county: zod.string().optional(),
-		city: zod.string(),
-		zipCode: zod.string(),
-		street: zod.string(),
-	})
+	export const typeZod: zod.ZodType<Default> = zod
+		.object({
+			countryCode: zod.string() as any,
+			state: zod.string().optional(),
+			county: zod.string().optional(),
+			city: zod.string(),
+			zipCode: zod.string(),
+			street: zod.string(),
+		})
+		.meta({ id: "Organization.Contact.Address.Default" })
 }

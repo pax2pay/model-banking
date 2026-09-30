@@ -27,12 +27,14 @@ export namespace Mcc {
 		created: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 		updated: isly.fromIs("isoly.DateTime", isoly.DateTime.is),
 	})
-	export const typeZod: zod.ZodType<Mcc> = Creatable.typeZod.extend({
-		id: zod.string(),
-		realm: Realm.typeZod,
-		created: zod.string().refine(isoly.DateTime.is),
-		updated: zod.string().refine(isoly.DateTime.is),
-	})
+	export const typeZod: zod.ZodType<Mcc> = Creatable.typeZod
+		.extend({
+			id: zod.string(),
+			realm: Realm.typeZod,
+			created: zod.string().refine(isoly.DateTime.is),
+			updated: zod.string().refine(isoly.DateTime.is),
+		})
+		.meta({ id: "policy.Mcc" })
 	export function match(policy: Mcc, transaction: TransactionInput): boolean {
 		const stack = transaction.preset ? Card.Preset.presets[transaction.preset] : undefined
 		const stackMatches = !policy.stacks || (!!stack && policy.stacks.includes(stack))

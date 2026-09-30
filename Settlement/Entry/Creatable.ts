@@ -95,5 +95,7 @@ export namespace Creatable {
 		})
 	}
 	export const type = isly.union(Known.type, Unknown.type)
-	export const typeZod: zod.ZodType<Creatable> = zod.union([Known.typeZod, Unknown.typeZod])
+	export const typeZod: zod.ZodType<Creatable> = zod
+		.union([Known.typeZod, Unknown.typeZod])
+		.meta({ id: "Settlement.Entry.Creatable" })
 }

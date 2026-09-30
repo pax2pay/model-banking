@@ -86,32 +86,34 @@ export namespace Transaction {
 		risk: isly.number().optional(),
 		state: isly.any().optional(),
 	})
-	export const typeZod = zod.object({
-		counterpart: Rail.Address.typeZod,
-		currency: zodHelper.currency,
-		amount: Amount.typeZod,
-		description: zod.string(),
-		organization: zod.string(),
-		accountId: zod.string(),
-		accountName: zod.string().optional(),
-		account: Rail.Address.typeZod,
-		type: zod.enum(types).optional(),
-		direction: zod.enum(directions).optional(),
-		id: Identifier.typeZod,
-		reference: Reference.typeZod.optional(),
-		posted: zod.string().refine(isoly.DateTime.is),
-		transacted: zod.string().refine(isoly.DateTime.is).optional(),
-		by: zod.string().optional(),
-		balance: zod.object({ actual: zod.number(), available: zod.number(), reserved: zod.number() }),
-		operations: zod.array(Operation.typeZod).optional(),
-		status: Status.typeZod,
-		rail: Rail.typeZod.optional(),
-		flags: zod.array(zod.string()),
-		oldFlags: zod.array(zod.string()),
-		notes: zod.array(Note.typeZod),
-		risk: zod.number().optional(),
-		state: zod.any().optional(),
-	})
+	export const typeZod = zod
+		.object({
+			counterpart: Rail.Address.typeZod,
+			currency: zodHelper.currency,
+			amount: Amount.typeZod,
+			description: zod.string(),
+			organization: zod.string(),
+			accountId: zod.string(),
+			accountName: zod.string().optional(),
+			account: Rail.Address.typeZod,
+			type: zod.enum(types).optional(),
+			direction: zod.enum(directions).optional(),
+			id: Identifier.typeZod,
+			reference: Reference.typeZod.optional(),
+			posted: zod.string().refine(isoly.DateTime.is),
+			transacted: zod.string().refine(isoly.DateTime.is).optional(),
+			by: zod.string().optional(),
+			balance: zod.object({ actual: zod.number(), available: zod.number(), reserved: zod.number() }),
+			operations: zod.array(Operation.typeZod).optional(),
+			status: Status.typeZod,
+			rail: Rail.typeZod.optional(),
+			flags: zod.array(zod.string()),
+			oldFlags: zod.array(zod.string()),
+			notes: zod.array(Note.typeZod),
+			risk: zod.number().optional(),
+			state: zod.any().optional(),
+		})
+		.meta({ id: "Transaction" })
 	export function amountFromOperations(transaction: Transaction, operations: Operation[]): Amount {
 		const changes = Operation.sum(operations)
 		const reserved = isoly.Currency.add(
@@ -413,9 +415,9 @@ export namespace Transaction {
 			account: Rail.Address.Card.type,
 			counterpart: Rail.Address.Card.Counterpart.type,
 		})
-		export const typeZod = Transaction.typeZod.omit({ account: true, counterpart: true }).extend({
-			account: Rail.Address.Card.typeZod,
-			counterpart: Rail.Address.Card.Counterpart.typeZod,
-		})
+		export const typeZod = Transaction.typeZod
+			.omit({ account: true, counterpart: true })
+			.extend({ account: Rail.Address.Card.typeZod, counterpart: Rail.Address.Card.Counterpart.typeZod })
+			.meta({ id: "Transaction.CardTransaction" })
 	}
 }

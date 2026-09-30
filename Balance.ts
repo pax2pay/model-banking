@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import zod from "zod"
 import { Amount } from "./Amount"
-import { zod } from "./zod"
 
 export type Balance = { available?: number; reserved?: Balance.Reserved }
 export namespace Balance {
@@ -12,14 +12,18 @@ export namespace Balance {
 		export const typeZod = zod.enum(values)
 	}
 	export type Reserved = Partial<Record<Balance.Reserve, number>>
+	export namespace Reserved {
+		export const typeZod: zod.ZodType<Reserved> = zod
+			.partialRecord(Reserve.typeZod, zod.number())
+			.meta({ id: "Balance.Reserved" })
+	}
 	export const type = isly.object<Balance>({
 		available: isly.number().optional(),
-		reserved: isly.record<Reserved>(Balance.Reserve.type, isly.number().optional()).optional(),
+		reserved: isly.record<Reserved>(Reserve.type, isly.number().optional()).optional(),
 	})
-	export const typeZod = zod.object({
-		available: zod.number().optional(),
-		reserved: zod.partialRecord(Balance.Reserve.typeZod, zod.number().optional()).optional(),
-	})
+	export const typeZod = zod
+		.object({ available: zod.number().optional(), reserved: Reserved.typeZod.optional() })
+		.meta({ id: "Balance" })
 	export type Legacy = Partial<Record<Legacy.Entry, number>>
 	export namespace Legacy {
 		export type Entry = (typeof Entry.values)[number]
@@ -38,12 +42,14 @@ export namespace Balance {
 	export type Extended = Balance & Legacy
 	export namespace Extended {
 		export const type = isly.intersection<Extended, Balance, Legacy>(Balance.type, Legacy.type)
-		export const typeZod = Balance.typeZod.extend({
-			actual: zod.number().optional(),
-			incomingReserved: zod.number().optional(),
-			outgoingReserved: zod.number().optional(),
-			bufferReserved: zod.number().optional(),
-		})
+		export const typeZod = Balance.typeZod
+			.extend({
+				actual: zod.number().optional(),
+				incomingReserved: zod.number().optional(),
+				outgoingReserved: zod.number().optional(),
+				bufferReserved: zod.number().optional(),
+			})
+			.meta({ id: "Balance.Extended" })
 	}
 	export function update(currency: isoly.Currency, balance: MaybeLegacy): Extended {
 		const result: Extended = { ...balance }

@@ -23,7 +23,7 @@ export namespace Entry {
 	export import Succeeded = EntrySucceeded
 	export import Summary = EntrySummary
 	export const type = entryType
-	export const typeZod = entryTypeZod
+	export const typeZod = entryTypeZod.meta({ id: "Settlement.Entry" })
 	export const from = fromCreatable
 	export function charge(
 		counterpart: Rail.Address.Card.Counterpart,
