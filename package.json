@@ -20,6 +20,10 @@
 		".": {
 			"types": "./dist/mjs/index.d.ts",
 			"default": "./dist/mjs/index.js"
+		},
+		"./*": {
+			"types": "./dist/mjs/*.d.ts",
+			"default": "./dist/mjs/*.js"
 		}
 	},
 	"files": [
