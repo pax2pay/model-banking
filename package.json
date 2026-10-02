@@ -14,6 +14,19 @@
 	"homepage": "https://pax2pay.com",
 	"private": false,
 	"type": "module",
+	"module": "./dist/mjs/index.js",
+	"types": "./dist/mjs/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/mjs/index.d.ts",
+			"default": "./dist/mjs/index.js"
+		}
+	},
+	"files": [
+		"dist/mjs",
+		"**/*.ts",
+		"!**/*.spec.ts"
+	],
 	"git": {
 		"tagName": "v${version}"
 	},
@@ -24,7 +37,7 @@
 		"lint": "eslint --max-warnings=0 '**/*.{ts,tsx}'",
 		"fix": "eslint '**/*.{ts,tsx}' --fix",
 		"install": "npm i --min-release-age=0",
-		"build": "rimraf dist/* && tsc -p tsconfig.mjs.json && tsc -p tsconfig.cjs.json",
+		"build": "rimraf dist/* && tsc -p tsconfig.mjs.json",
 		"test": "vitest --run",
 		"coverage": "vitest --coverage",
 		"prepare": "npm run build",

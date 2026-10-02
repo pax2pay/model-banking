@@ -10,6 +10,7 @@
 		"noUncheckedIndexedAccess": true,
 		"moduleResolution": "node10",
 		"declaration": true,
+		"declarationMap": true,
 		"sourceMap": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
