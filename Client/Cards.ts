@@ -1,4 +1,5 @@
 import { gracely } from "gracely"
+import { isoly } from "isoly"
 import { http } from "cloudly-http"
 import { Card } from "../Card"
 
@@ -15,6 +16,8 @@ export class Cards {
 		account?: string
 		organization?: string
 		scheme?: Card.Scheme
+		start?: isoly.Date
+		end?: isoly.Date
 		limit?: number
 		cursor?: string
 	}): Promise<(Card[] & { cursor?: string }) | gracely.Error> {
