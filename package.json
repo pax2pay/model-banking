@@ -22,8 +22,8 @@
 			"default": "./dist/mjs/index.js"
 		},
 		"./*": {
-			"types": ["./dist/mjs/*.d.ts", "./dist/mjs/*/index.d.ts"],
-			"default": ["./dist/mjs/*.js", "./dist/mjs/*/index.js"]
+			"types": "./dist/mjs/*.d.ts",
+			"default": "./dist/mjs/*.js"
 		}
 	},
 	"files": [
