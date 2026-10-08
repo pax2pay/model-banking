@@ -12,10 +12,9 @@ export namespace Charge {
 	export import Merchant = ChargeMerchant
 	export import Fx = ChargeFx
 	export const type = isly.object<Charge>({ merchant: ChargeMerchant.type.optional(), fx: ChargeFx.type.optional() })
-	export const typeZod = zod.object({
-		merchant: ChargeMerchant.typeZod.optional(),
-		fx: ChargeFx.typeZod.optional(),
-	})
+	export const typeZod = zod
+		.object({ merchant: ChargeMerchant.typeZod.optional(), fx: ChargeFx.typeZod.optional() })
+		.meta({ id: "Account.Charge" })
 	export function evaluate(
 		counterpart: Rail.Address.Card.Counterpart,
 		currency: isoly.Currency,
@@ -27,10 +26,6 @@ export namespace Charge {
 		const merchant =
 			charges?.merchant && ChargeMerchant.evaluate(charges.merchant, currency, amount, counterpart, preset)
 		const fx = charges?.fx && ChargeFx.evaluate(charges.fx, currency, amount, preset, exchange)
-
-		return {
-			...(merchant && { merchant }),
-			...(fx && { fx }),
-		}
+		return { ...(merchant && { merchant }), ...(fx && { fx }) }
 	}
 }

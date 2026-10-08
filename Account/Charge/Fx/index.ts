@@ -5,7 +5,6 @@ import { Exchange } from "../../../Transaction/Exchange"
 import { Preset } from "../Preset"
 
 export type Fx = Preset
-
 export namespace Fx {
 	export const type = Preset.type
 	export const typeZod = Preset.typeZod

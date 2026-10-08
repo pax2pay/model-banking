@@ -18,8 +18,7 @@ export namespace Status {
 		mode: isly.string<Mode>(Mode.values),
 		reason: isly.string().optional(),
 	})
-	export const typeZod = zod.object({
-		mode: zod.enum(Mode.values),
-		reason: zod.string().optional(),
-	})
+	export const typeZod = zod
+		.object({ mode: zod.enum(Mode.values), reason: zod.string().optional() })
+		.meta({ id: "Account.Status" })
 }
