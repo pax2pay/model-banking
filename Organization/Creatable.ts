@@ -10,6 +10,7 @@ export interface Creatable {
 	risk: Risk
 	contact?: Contact.Creatable
 	fx?: Fx
+	integrator?: string
 }
 export namespace Creatable {
 	export const type = isly.object<Creatable>({
@@ -18,6 +19,7 @@ export namespace Creatable {
 		risk: Risk.type,
 		contact: Contact.Creatable.type.optional(),
 		fx: Fx.type.optional(),
+		integrator: isly.string().optional(),
 	})
 	export const typeZod: zod.ZodType<Creatable> = zod
 		.object({
@@ -26,6 +28,7 @@ export namespace Creatable {
 			risk: Risk.typeZod,
 			contact: Contact.Creatable.typeZod.optional(),
 			fx: Fx.typeZod.optional(),
+			integrator: zod.string().optional(),
 		})
 		.meta({ id: "Organization.Creatable" })
 }

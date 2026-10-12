@@ -21,6 +21,7 @@ export interface Organization {
 	groups?: string[]
 	fx?: OrganizationFx
 	type: Type
+	integrator?: string
 }
 export namespace Organization {
 	export import Creatable = OrganizationCreatable
@@ -39,6 +40,7 @@ export namespace Organization {
 		groups: isly.string().array().optional(),
 		fx: OrganizationFx.type.optional(),
 		type: Type.type,
+		integrator: isly.string().optional(),
 	})
 	export const typeZod: zod.ZodType<Organization> = zod
 		.object({
@@ -52,6 +54,7 @@ export namespace Organization {
 			groups: zod.string().array().optional(),
 			fx: OrganizationFx.typeZod.optional(),
 			type: Type.typeZod,
+			integrator: zod.string().optional(),
 		})
 		.meta({ id: "Organization" })
 	export function from(creatable: Creatable, realm: Realm): Organization {
