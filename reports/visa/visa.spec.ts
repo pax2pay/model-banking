@@ -42,7 +42,7 @@ describe("VisaComponent", () => {
 	})
 	it("should make visa csv", () => {
 		expect(pax2pay.reports.visa.toCsv(data)).toMatchInlineSnapshot(`
-			"Product Local Name|Visa IDX - 45672555|Visa IDX  - 4567255|Visa IDX 1.4% - 45672557|Total Visa IDX products|Visa Business Prepaid - 44260108|Visa Corporate Deferred Debit  - 49359119|Visa Business Immediate Debit - BIN: 45672554
+			"Product Local Name|Visa IDX - 45672555|Visa IDX  - 45672556|Visa IDX 1.4% - 45672557|Total Visa IDX products|Visa Business Prepaid - 44260108|Visa Corporate Deferred Debit  - 49359119|Visa Business Immediate Debit - BIN: 45672554
 			On-Us Payments Count - Month 1|0|0|0|0|0|0|0
 			On-Us Payments Count - Month 2|0|0|0|0|0|0|0
 			On-Us Payments Count - Month 3|0|0|0|0|0|0|0
