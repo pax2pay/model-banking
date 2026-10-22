@@ -1,0 +1,155 @@
+[
+	{
+		"name": "Cork Airport Car Park",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"cork airport"
+		]
+	},
+	{
+		"name": "Dublin Airport Car Park",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"dublin airport"
+		]
+	},
+	{
+		"name": "Edinburgh Airport Parking",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"edinburgh airport"
+		]
+	},
+	{
+		"name": "Heathrow Airport Parking",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"heathrow airport"
+		]
+	},
+	{
+		"name": "Isles of Scilly Parking",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"isles of scilly",
+			"i o s parking"
+		]
+	},
+	{
+		"name": "Marco Polo Park",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"marco polo park"
+		]
+	},
+	{
+		"name": "ParkCloud",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"parkcloud",
+			"parkvia"
+		]
+	},
+	{
+		"name": "Parkingo",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"parkingo"
+		]
+	},
+	{
+		"name": "SAGAT",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"s.a.g.a.t",
+			"sagat"
+		]
+	},
+	{
+		"name": "ADR Roma",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"adr.it"
+		]
+	},
+	{
+		"name": "Southampton Cruise Parking",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"southamptoncruisepark"
+		]
+	},
+	{
+		"name": "Garage 2000",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"garage2000"
+		]
+	},
+	{
+		"name": "Cruise Parking",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"cruiseparking"
+		]
+	},
+	{
+		"name": "JustPark",
+		"mccs": [
+			7523
+		],
+		"category": "Car Parking",
+		"contains": [
+			"justpark"
+		]
+	},
+	{
+		"name": "PARKWING",
+		"mccs": [
+			4582
+		],
+		"category": "Car Parking",
+		"startsWith": [
+			"PARKWING"
+		]
+	}
+]

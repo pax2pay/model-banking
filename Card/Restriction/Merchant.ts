@@ -15,14 +15,11 @@ export namespace Merchant {
 		let result: boolean
 		if (attribute?.unambiguousMcc == counterpart.merchant.category) {
 			result = true
-		} else if (attribute.contains && attribute.mccs) {
+		} else if ((attribute.contains || attribute.startsWith) && attribute.mccs) {
 			result =
 				attribute.mccs.some(mcc => mcc == counterpart.merchant.category) &&
-				attribute.contains.some(n => counterpart.merchant.name.includes(n))
-		} else if (attribute.startsWith && attribute.mccs) {
-			result =
-				attribute.mccs.some(mcc => mcc == counterpart.merchant.category) &&
-				attribute.startsWith.some(n => counterpart.merchant.name.startsWith(n))
+				((attribute.contains?.some(n => counterpart.merchant.name.includes(n)) ?? false) ||
+					(attribute.startsWith?.some(n => counterpart.merchant.name.startsWith(n)) ?? false))
 		} else {
 			result = false
 		}

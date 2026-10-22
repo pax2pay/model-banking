@@ -84,7 +84,13 @@
 	{
 		"name": "Royal Air Maroc",
 		"unambiguousMcc": 3048,
-		"category": "Flight"
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"ram"
+		]
 	},
 	{
 		"name": "Qatar Air",
@@ -93,7 +99,10 @@
 	},
 	{
 		"name": "Blue Island",
-		"mccs": 4511,
+		"mccs": [
+			4511,
+			4722
+		],
 		"category": "Flight",
 		"startsWith": "blue island"
 	},
@@ -114,7 +123,10 @@
 	},
 	{
 		"name": "Aegean Airlines",
-		"mccs": 4511,
+		"mccs": [
+			4511,
+			3031
+		],
 		"category": "Flight",
 		"startsWith": "aegean"
 	},
@@ -136,7 +148,10 @@
 	},
 	{
 		"name": "Air Serbia",
-		"mccs": 4511,
+		"mccs": [
+			4511,
+			3190
+		],
 		"category": "Flight",
 		"startsWith": [
 			"Air Serbia"
@@ -219,7 +234,10 @@
 			4511
 		],
 		"category": "Flight",
-		"startsWith": "flyone"
+		"startsWith": [
+			"flyone",
+			"fly one"
+		]
 	},
 	{
 		"name": "Avianca",
@@ -353,20 +371,24 @@
 	{
 		"name": "Corendon Airlines",
 		"category": "Flight",
-		"mccs": 4511,
+		"mccs": [
+			4511,
+			4722
+		],
 		"contains": "CORENDON"
 	},
 	{
 		"name": "Uganda Airlines",
 		"mccs": 4511,
 		"category": "Flight",
-		"startsWith": "uganda airlines"
+		"startsWith": "uganda"
 	},
 	{
 		"name": "Freebird Airlines",
 		"mccs": [
 			4511,
-			7399
+			7399,
+			4789
 		],
 		"category": "Flight",
 		"contains": [
@@ -408,7 +430,10 @@
 	},
 	{
 		"name": "Flybe",
-		"mccs": 4511,
+		"mccs": [
+			4511,
+			3302
+		],
 		"category": "Flight",
 		"startsWith": [
 			"flybe"
@@ -416,7 +441,10 @@
 	},
 	{
 		"name": "Bulgaria Air",
-		"mccs": 4511,
+		"mccs": [
+			4511,
+			4722
+		],
 		"category": "Flight",
 		"startsWith": [
 			"bulgaria air"
@@ -529,6 +557,9 @@
 			4722
 		],
 		"category": "Flight",
+		"contains": [
+			"airasia"
+		],
 		"startsWith": [
 			"airasia",
 			"air asia",
@@ -588,7 +619,11 @@
 		"name": "Sun Express",
 		"mccs": 4511,
 		"category": "Flight",
-		"contains": "sunexpress"
+		"contains": [
+			"sunexpress",
+			"sun express"
+		],
+		"startsWith": "GUNES EKSPR"
 	},
 	{
 		"name": "Spirit Air",
@@ -641,7 +676,8 @@
 		"category": "Flight",
 		"startsWith": [
 			"A.N.A AIR",
-			"A.N.A. AIR"
+			"A.N.A. AIR",
+			"ALL NIPPON"
 		]
 	},
 	{
@@ -746,18 +782,12 @@
 	{
 		"name": "China Airlines",
 		"unambiguousMcc": 3078,
-		"category": "Flight",
-		"startsWith": [
-			"CHINA AIR"
-		]
+		"category": "Flight"
 	},
 	{
 		"name": "China Eastern Airlines",
 		"unambiguousMcc": 3206,
-		"category": "Flight",
-		"startsWith": [
-			"CHINAEAST"
-		]
+		"category": "Flight"
 	},
 	{
 		"name": "EVA Air",
@@ -773,10 +803,7 @@
 	{
 		"name": "Jetstar Airways",
 		"unambiguousMcc": 3079,
-		"category": "Flight",
-		"startsWith": [
-			"JETSTAR"
-		]
+		"category": "Flight"
 	},
 	{
 		"name": "KM Malta Airlines",
@@ -896,18 +923,12 @@
 	{
 		"name": "GOL Airlines",
 		"unambiguousMcc": 3247,
-		"category": "Flight",
-		"startsWith": [
-			"GOL AIR"
-		]
+		"category": "Flight"
 	},
 	{
 		"name": "Azul Brazilian Airlines",
 		"unambiguousMcc": 3300,
-		"category": "Flight",
-		"startsWith": [
-			"AZUL AIR"
-		]
+		"category": "Flight"
 	},
 	{
 		"name": "FlySafair",
@@ -922,18 +943,12 @@
 	{
 		"name": "Air Mauritius",
 		"unambiguousMcc": 3298,
-		"category": "Flight",
-		"startsWith": [
-			"AIRMAURITIUS"
-		]
+		"category": "Flight"
 	},
 	{
 		"name": "Alaska Airlines",
 		"unambiguousMcc": 3256,
-		"category": "Flight",
-		"startsWith": [
-			"ALASKA AIR"
-		]
+		"category": "Flight"
 	},
 	{
 		"name": "Allegiant Air",
@@ -969,10 +984,7 @@
 	{
 		"name": "Caribbean Airlines",
 		"unambiguousMcc": 3234,
-		"category": "Flight",
-		"startsWith": [
-			"CARIBBEAN AI"
-		]
+		"category": "Flight"
 	},
 	{
 		"name": "Vietnam Air",
@@ -982,6 +994,284 @@
 		"category": "Flight",
 		"startsWith": [
 			"VIETNAM AIR"
+		]
+	},
+	{
+		"name": "Air Algerie",
+		"unambiguousMcc": 3021,
+		"category": "Flight"
+	},
+	{
+		"name": "Aeroitalia",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"Aeroitalia"
+		]
+	},
+	{
+		"name": "Southwest Airlines",
+		"unambiguousMcc": 3066,
+		"category": "Flight"
+	},
+	{
+		"name": "Sun Country Airlines",
+		"unambiguousMcc": 3069,
+		"category": "Flight"
+	},
+	{
+		"name": "Luxair",
+		"unambiguousMcc": 3146,
+		"category": "Flight"
+	},
+	{
+		"name": "Air Arabia",
+		"unambiguousMcc": 3236,
+		"category": "Flight"
+	},
+	{
+		"name": "Tarom",
+		"unambiguousMcc": 3297,
+		"category": "Flight"
+	},
+	{
+		"name": "Wideroe",
+		"unambiguousMcc": 3299,
+		"category": "Flight"
+	},
+	{
+		"name": "Blue Air",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"blue air"
+		]
+	},
+	{
+		"name": "Flyr",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"flyr"
+		]
+	},
+	{
+		"name": "Air Transat",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"air transat"
+		]
+	},
+	{
+		"name": "VietJet",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"vietjet"
+		]
+	},
+	{
+		"name": "Volaris",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"volaris"
+		]
+	},
+	{
+		"name": "Uzbekistan Airways",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"uzbekistan"
+		]
+	},
+	{
+		"name": "Trans Anguilla Airways",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"trans anguilla"
+		]
+	},
+	{
+		"name": "Paranair",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"paranair"
+		]
+	},
+	{
+		"name": "Binter Canarias",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"binter"
+		]
+	},
+	{
+		"name": "Braathens",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"braathens",
+			"bra sverige"
+		]
+	},
+	{
+		"name": "Danish Air Transport",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"danish air transport",
+			"dat.dk"
+		]
+	},
+	{
+		"name": "Jambojet",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"jambojet"
+		]
+	},
+	{
+		"name": "Air Albania",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"air albania"
+		]
+	},
+	{
+		"name": "IndiGo",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"indigo",
+			"interglobe aviation"
+		]
+	},
+	{
+		"name": "Neos",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"neos"
+		]
+	},
+	{
+		"name": "Nouvelair",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"nouvelair"
+		]
+	},
+	{
+		"name": "Pobeda",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"pobeda"
+		]
+	},
+	{
+		"name": "Salam Air",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"salam air"
+		]
+	},
+	{
+		"name": "SpiceJet",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"spicejet"
+		]
+	},
+	{
+		"name": "HiSky",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"hisky"
+		]
+	},
+	{
+		"name": "Olympic Air",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"olympic"
+		]
+	},
+	{
+		"name": "Airlink",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"contains": [
+			"air link"
+		]
+	},
+	{
+		"name": "Thomas Cook Airlines",
+		"mccs": [
+			4511
+		],
+		"category": "Flight",
+		"startsWith": [
+			"thomas co"
 		]
 	}
 ]

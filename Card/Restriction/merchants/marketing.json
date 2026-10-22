@@ -1,0 +1,59 @@
+[
+	{
+		"name": "Google Ads",
+		"mccs": [
+			7311,
+			5818
+		],
+		"contains": [
+			"google ads",
+			"google *ad",
+			"GOOGLE*ADS",
+			"googleadwords"
+		],
+		"category": "Marketing"
+	},
+	{
+		"name": "Facebook Ads",
+		"mccs": [
+			7311,
+			5818,
+			7999
+		],
+		"contains": [
+			"FACEBK",
+			"facebook"
+		],
+		"category": "Marketing"
+	},
+	{
+		"name": "ILSA WEB",
+		"mccs": [
+			4112
+		],
+		"category": "Marketing",
+		"contains": [
+			"ILSA WEB"
+		]
+	},
+	{
+		"name": "Jewish News",
+		"mccs": [
+			7311
+		],
+		"category": "Marketing",
+		"contains": [
+			"jewish news"
+		]
+	},
+	{
+		"name": "Travel Weekly Group",
+		"mccs": [
+			4722
+		],
+		"category": "Marketing",
+		"contains": [
+			"travel weekly"
+		]
+	}
+]

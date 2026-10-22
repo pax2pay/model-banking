@@ -1,0 +1,389 @@
+[
+	{
+		"name": "Aman at Sea",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"aman at sea"
+		]
+	},
+	{
+		"name": "AmaWaterways",
+		"mccs": [
+			4411,
+			4722
+		],
+		"category": "Cruise",
+		"contains": [
+			"amawaterways"
+		]
+	},
+	{
+		"name": "Atlas Ocean Voyages",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"atlas ocean"
+		]
+	},
+	{
+		"name": "Aurora Expeditions",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"aurora expeditions"
+		]
+	},
+	{
+		"name": "Azamara",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"azamara"
+		]
+	},
+	{
+		"name": "Carnival Cruise Line",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"carnival"
+		]
+	},
+	{
+		"name": "Celebrity Cruises",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"celebrity"
+		]
+	},
+	{
+		"name": "Celestyal Cruises",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"celestyal"
+		]
+	},
+	{
+		"name": "Crystal Cruises",
+		"mccs": [
+			4722
+		],
+		"category": "Cruise",
+		"contains": [
+			"crystal cruises"
+		]
+	},
+	{
+		"name": "Cunard",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"cunard"
+		]
+	},
+	{
+		"name": "Disney Cruise Line",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"disney cruise",
+			"dcl cruise"
+		]
+	},
+	{
+		"name": "Explora Journeys",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"explora journeys"
+		],
+		"startsWith": [
+			"explora sa"
+		]
+	},
+	{
+		"name": "Hebridean Island Cruises",
+		"mccs": [
+			4722
+		],
+		"category": "Cruise",
+		"contains": [
+			"ilixium*hebridean",
+			"hebridean island"
+		]
+	},
+	{
+		"name": "Holland America Line",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"holland america"
+		],
+		"startsWith": [
+			"hal gbp passage"
+		]
+	},
+	{
+		"name": "Hurtigruten",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"hurtigruten"
+		]
+	},
+	{
+		"name": "HX Hurtigruten Expeditions",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"startsWith": [
+			"hx group"
+		]
+	},
+	{
+		"name": "MSC Cruises",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"msc cruise"
+		]
+	},
+	{
+		"name": "Noble Caledonia",
+		"mccs": [
+			4722
+		],
+		"category": "Cruise",
+		"contains": [
+			"noble caledonia"
+		]
+	},
+	{
+		"name": "Norwegian Cruise Line",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"norwegian cruise"
+		]
+	},
+	{
+		"name": "Oceania Cruises",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"oceania cruise"
+		]
+	},
+	{
+		"name": "P&O Cruises",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"p&o cruise",
+			"p o cruise",
+			"p&o gbp passage",
+			"p o gbp passage"
+		]
+	},
+	{
+		"name": "Ponant",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"ponant"
+		]
+	},
+	{
+		"name": "Princess Cruises",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"princess cruise",
+			"princess gbp passage"
+		]
+	},
+	{
+		"name": "Quark Expeditions",
+		"mccs": [
+			4722
+		],
+		"category": "Cruise",
+		"contains": [
+			"quark expeditions"
+		]
+	},
+	{
+		"name": "Regent Seven Seas Cruises",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"regent seven seas"
+		]
+	},
+	{
+		"name": "Ritz-Carlton Yacht Collection",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"ritz-carlton yacht",
+			"ritz carlton yacht"
+		]
+	},
+	{
+		"name": "Scenic",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"startsWith": [
+			"scenic tours"
+		]
+	},
+	{
+		"name": "Seabourn",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"seabourn"
+		]
+	},
+	{
+		"name": "SeaDream Yacht Club",
+		"mccs": [
+			5499,
+			7991
+		],
+		"category": "Cruise",
+		"contains": [
+			"seadream yach"
+		]
+	},
+	{
+		"name": "Silversea",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"silversea"
+		]
+	},
+	{
+		"name": "Swan Hellenic",
+		"mccs": [
+			4722
+		],
+		"category": "Cruise",
+		"contains": [
+			"swan hellenic"
+		]
+	},
+	{
+		"name": "Uniworld",
+		"mccs": [
+			4722
+		],
+		"category": "Cruise",
+		"contains": [
+			"uniworld"
+		]
+	},
+	{
+		"name": "Viking",
+		"mccs": [
+			4722
+		],
+		"category": "Cruise",
+		"startsWith": [
+			"viking"
+		]
+	},
+	{
+		"name": "Virgin Voyages",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"virgin voyages",
+			"virgin cruises"
+		]
+	},
+	{
+		"name": "Windstar Cruises",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"windstar cruise"
+		]
+	},
+	{
+		"name": "Royal Caribbean",
+		"mccs": [
+			4411
+		],
+		"category": "Cruise",
+		"contains": [
+			"royal caribbean"
+		]
+	},
+	{
+		"name": "MyTrip Fred Olsen",
+		"mccs": [
+			4722
+		],
+		"category": "Cruise",
+		"contains": [
+			"fred.olsen",
+			"fred olsen"
+		]
+	}
+]
