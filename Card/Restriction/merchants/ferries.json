@@ -1,0 +1,168 @@
+[
+	{
+		"name": "Brittany Ferries",
+		"mccs": [
+			4411,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"brittany ferrie"
+		]
+	},
+	{
+		"name": "Isle of Sark Shipping",
+		"mccs": [
+			4411,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"isle of sark",
+			"sarkshipping"
+		]
+	},
+	{
+		"name": "Seajets",
+		"mccs": [
+			4411,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"seajets"
+		]
+	},
+	{
+		"name": "Ferryhopper",
+		"mccs": [
+			4411,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"ferryhopper"
+		]
+	},
+	{
+		"name": "Grimaldi Lines",
+		"mccs": [
+			4411,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"grimaldi"
+		]
+	},
+	{
+		"name": "SNAV",
+		"mccs": [
+			4411,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"snav"
+		]
+	},
+	{
+		"name": "Alilauro",
+		"mccs": [
+			4411,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"alilauro"
+		]
+	},
+	{
+		"name": "Caronte & Tourist",
+		"mccs": [
+			4411,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"caronte"
+		]
+	},
+	{
+		"name": "Laziomar",
+		"mccs": [
+			4411,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"laziomar"
+		]
+	},
+	{
+		"name": "Navigazione Libera del Golfo",
+		"mccs": [
+			4411,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"navigazione libera"
+		]
+	},
+	{
+		"name": "Condor Ferries",
+		"mccs": [
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"condor"
+		]
+	},
+	{
+		"name": "Jadrolinija",
+		"mccs": [
+			4411,
+			4722,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"jadrolinija"
+		]
+	},
+	{
+		"name": "Lauro",
+		"mccs": [
+			4411,
+			4722,
+			4789
+		],
+		"category": "Ferry",
+		"contains": [
+			"lauro.it"
+		]
+	},
+	{
+		"name": "Direct Ferries",
+		"mccs": [
+			4111,
+			4411
+		],
+		"category": "Ferry",
+		"startsWith": [
+			"DIRECTF"
+		]
+	},
+	{
+		"name": "GrandiNavi Booking",
+		"mccs": [
+			4722
+		],
+		"category": "Ferry",
+		"contains": [
+			"grandinav"
+		]
+	}
+]

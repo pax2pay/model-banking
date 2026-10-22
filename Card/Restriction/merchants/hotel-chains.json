@@ -1,0 +1,449 @@
+[
+	{
+		"name": "InterContinental",
+		"mccs": [
+			3512,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"intercontinental",
+			"inter-continental",
+			"inter continental"
+		]
+	},
+	{
+		"name": "Days Inn",
+		"mccs": [
+			3510,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"days inn"
+		]
+	},
+	{
+		"name": "Super 8",
+		"mccs": [
+			3709,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"super 8"
+		]
+	},
+	{
+		"name": "Wyndham",
+		"mccs": [
+			3722,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"wyndham"
+		]
+	},
+	{
+		"name": "Wingate",
+		"mccs": [
+			3722,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"wingate"
+		]
+	},
+	{
+		"name": "Hawthorn Suites",
+		"mccs": [
+			3722,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"hawthorn"
+		]
+	},
+	{
+		"name": "Ramada",
+		"mccs": [
+			3637,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"ramada"
+		]
+	},
+	{
+		"name": "Howard Johnson",
+		"mccs": [
+			3638,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"howard johnson"
+		]
+	},
+	{
+		"name": "Baymont",
+		"mccs": [
+			3834,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"baymont"
+		]
+	},
+	{
+		"name": "AmericInn",
+		"mccs": [
+			3614,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"americinn"
+		]
+	},
+	{
+		"name": "Microtel",
+		"mccs": [
+			3613,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"microtel"
+		]
+	},
+	{
+		"name": "Travelodge",
+		"mccs": [
+			3615,
+			3722,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"travelodge",
+			"travel lodge"
+		]
+	},
+	{
+		"name": "Hotel Indigo",
+		"mccs": [
+			3813,
+			3750,
+			3535,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"indigo"
+		]
+	},
+	{
+		"name": "Element Hotels",
+		"mccs": [
+			3807
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"element"
+		]
+	},
+	{
+		"name": "Staybridge Suites",
+		"mccs": [
+			3791,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"staybridge"
+		]
+	},
+	{
+		"name": "Homewood Suites",
+		"mccs": [
+			3751,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"homewood"
+		]
+	},
+	{
+		"name": "Candlewood Suites",
+		"mccs": [
+			3559,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"candlewood"
+		]
+	},
+	{
+		"name": "Millennium Hotels",
+		"mccs": [
+			3741,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"millennium",
+			"copthorne"
+		]
+	},
+	{
+		"name": "Conrad",
+		"mccs": [
+			3721,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"conrad"
+		]
+	},
+	{
+		"name": "Hampton by Hilton",
+		"mccs": [
+			3665,
+			3535,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"hampton"
+		]
+	},
+	{
+		"name": "Embassy Suites",
+		"mccs": [
+			3652,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"embassy"
+		]
+	},
+	{
+		"name": "Steigenberger",
+		"mccs": [
+			3643,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"steigenberger"
+		]
+	},
+	{
+		"name": "Sofitel",
+		"mccs": [
+			3641,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"sofitel"
+		]
+	},
+	{
+		"name": "Rotana",
+		"mccs": [
+			3640,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"rotana"
+		]
+	},
+	{
+		"name": "Aloft",
+		"mccs": [
+			3619,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"aloft"
+		]
+	},
+	{
+		"name": "Movenpick",
+		"mccs": [
+			3612,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"movenpick"
+		]
+	},
+	{
+		"name": "Park Inn",
+		"mccs": [
+			3553,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"park inn"
+		]
+	},
+	{
+		"name": "Melia",
+		"mccs": [
+			3548,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"melia"
+		]
+	},
+	{
+		"name": "TRYP",
+		"mccs": [
+			3548,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"tryp"
+		]
+	},
+	{
+		"name": "Sol Hotels",
+		"mccs": [
+			3548
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"hotel sol"
+		]
+	},
+	{
+		"name": "Shangri-La",
+		"mccs": [
+			3545,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"shangri"
+		]
+	},
+	{
+		"name": "Hotel Jen",
+		"mccs": [
+			3545,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"hoteljen"
+		]
+	},
+	{
+		"name": "W Hotels",
+		"mccs": [
+			3544
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"w "
+		]
+	},
+	{
+		"name": "Pullman",
+		"mccs": [
+			3533,
+			3519,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"pullman"
+		]
+	},
+	{
+		"name": "Renaissance Hotels",
+		"mccs": [
+			3530,
+			3509,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"renaissance"
+		]
+	},
+	{
+		"name": "Le Meridien",
+		"mccs": [
+			3520,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"meridien"
+		]
+	},
+	{
+		"name": "Westin",
+		"mccs": [
+			3513,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"westin"
+		]
+	},
+	{
+		"name": "Bulgari Hotels",
+		"mccs": [
+			3509,
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"bulgari"
+		]
+	},
+	{
+		"name": "Quality Inn",
+		"mccs": [
+			3687,
+			3508,
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"quality"
+		]
+	},
+	{
+		"name": "Eurostars Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"eurostars"
+		]
+	}
+]

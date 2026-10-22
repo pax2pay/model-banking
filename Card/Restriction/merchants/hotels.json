@@ -110,6 +110,9 @@
 			3740
 		],
 		"category": "Lodging",
+		"contains": [
+			"marriott"
+		],
 		"startsWith": [
 			"MARRIOTT"
 		]
@@ -124,8 +127,12 @@
 			5812
 		],
 		"category": "Lodging",
+		"contains": [
+			"sheraton"
+		],
 		"startsWith": [
-			"SHERATON"
+			"SHERATON",
+			"FOUR POINT"
 		]
 	},
 	{
@@ -165,8 +172,12 @@
 			3751
 		],
 		"category": "Lodging",
+		"contains": [
+			"hyatt"
+		],
 		"startsWith": [
-			"HYATT"
+			"HYATT",
+			"ANDAZ"
 		]
 	},
 	{
@@ -195,13 +206,16 @@
 			7011,
 			3501,
 			5812,
-			3637,
 			6513,
 			3655
 		],
 		"category": "Lodging",
+		"contains": [
+			"holiday inn"
+		],
 		"startsWith": [
-			"HOLIDAY INN"
+			"HOLIDAY INN",
+			"HIEX"
 		]
 	},
 	{
@@ -322,7 +336,9 @@
 		],
 		"category": "Lodging",
 		"startsWith": [
-			"BB *"
+			"BB *",
+			"BB HOTEL",
+			"B&B"
 		]
 	},
 	{
@@ -504,6 +520,71 @@
 		"category": "Lodging",
 		"startsWith": [
 			"COURTYARD"
+		]
+	},
+	{
+		"name": "Garner Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"Garner Hotel"
+		]
+	},
+	{
+		"name": "H Hotels",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"H+ Hotel",
+			"H2 Hotel",
+			"H4 Hotel",
+			"Hotel B3",
+			"Hotel B4"
+		]
+	},
+	{
+		"name": "Premier Inn",
+		"unambiguousMcc": 3811,
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"PREMIER INN"
+		]
+	},
+	{
+		"name": "Pestana Hotel Group",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"startsWith": [
+			"Pestana"
+		]
+	},
+	{
+		"name": "Hotel d'Angleterre",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"dangleterre.com"
+		]
+	},
+	{
+		"name": "Aquila Private Game Reserve",
+		"mccs": [
+			7011
+		],
+		"category": "Lodging",
+		"contains": [
+			"aquila private game"
 		]
 	}
 ]

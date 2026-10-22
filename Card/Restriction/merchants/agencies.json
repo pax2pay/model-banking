@@ -1,0 +1,502 @@
+[
+	{
+		"name": "Etraveli",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"mytrip",
+			"gotogate",
+			"etraveli"
+		]
+	},
+	{
+		"name": "BudgetAir",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"budgetair"
+		]
+	},
+	{
+		"name": "eDreams",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"edreams"
+		]
+	},
+	{
+		"name": "Club Med",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"club med"
+		]
+	},
+	{
+		"name": "Contiki",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"contiki"
+		]
+	},
+	{
+		"name": "Balkan Holidays",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"balkan holidays"
+		]
+	},
+	{
+		"name": "Crystal Holidays",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"crystal holidays"
+		]
+	},
+	{
+		"name": "Destinia",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"startsWith": [
+			"destinia"
+		]
+	},
+	{
+		"name": "Attraction Tickets",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"attractiontickets"
+		]
+	},
+	{
+		"name": "CitizenPlane",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"citizenplane"
+		]
+	},
+	{
+		"name": "ClickTrip",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"clicktrip"
+		]
+	},
+	{
+		"name": "Caribean Travel",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"caribean travel"
+		]
+	},
+	{
+		"name": "Disney Travel",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"disney travel"
+		]
+	},
+	{
+		"name": "DLT Viaggi",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"dlt viaggi"
+		]
+	},
+	{
+		"name": "Erna Low Travel",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"erna low"
+		]
+	},
+	{
+		"name": "Aviate Management",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"aviate management"
+		]
+	},
+	{
+		"name": "AOT Inbound",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"aot inbound"
+		]
+	},
+	{
+		"name": "Boleto de Vuelo",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"boletodevuelo"
+		]
+	},
+	{
+		"name": "Emviagem",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"emviagem"
+		]
+	},
+	{
+		"name": "Kiwi.com",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"kiwi.com"
+		]
+	},
+	{
+		"name": "Viator",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"viator"
+		]
+	},
+	{
+		"name": "Resorthoppa",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"resorthoppa"
+		]
+	},
+	{
+		"name": "12Go",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"startsWith": [
+			"12go"
+		]
+	},
+	{
+		"name": "Hotels.com",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"hotels.com",
+			"hotelscom"
+		]
+	},
+	{
+		"name": "Hotelbeds",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"hotelbeds"
+		]
+	},
+	{
+		"name": "Klook",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"klook"
+		]
+	},
+	{
+		"name": "Flight Network",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"flight network"
+		]
+	},
+	{
+		"name": "Flugladen",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"flugladen"
+		]
+	},
+	{
+		"name": "Gold Medal Travel",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"gold medal"
+		]
+	},
+	{
+		"name": "Globalia",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"globalia"
+		]
+	},
+	{
+		"name": "Go Global Travel",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"go global"
+		]
+	},
+	{
+		"name": "Euro Disney",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"euro disney"
+		]
+	},
+	{
+		"name": "Jumbo Tours",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"jumbotours"
+		]
+	},
+	{
+		"name": "Iceland Tours",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"iceland tours"
+		]
+	},
+	{
+		"name": "Hotelston",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"hotelston"
+		]
+	},
+	{
+		"name": "BJR Vacante",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"bjr vacante"
+		]
+	},
+	{
+		"name": "TravolGo",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"travolgo"
+		]
+	},
+	{
+		"name": "Oktay Tours & Travel",
+		"mccs": [
+			7011
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"oktaytour"
+		]
+	},
+	{
+		"name": "Abercrombie & Kent",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"abercrombie kent",
+			"abercrombie & kent"
+		]
+	},
+	{
+		"name": "G Adventures",
+		"mccs": [
+			4722,
+			7011
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"gadventures",
+			"g adventures"
+		]
+	},
+	{
+		"name": "Railbookers",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"railbookers"
+		]
+	},
+	{
+		"name": "RateHawk",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"ratehawk"
+		]
+	},
+	{
+		"name": "Emerging Travel Group",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"emerging travel"
+		]
+	},
+	{
+		"name": "Unforgettable Travel Company",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"unforgettable travel"
+		]
+	},
+	{
+		"name": "Intercruises",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"intercruise"
+		]
+	},
+	{
+		"name": "Traveloka",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"traveloka"
+		]
+	},
+	{
+		"name": "Cruiseline.co.uk",
+		"mccs": [
+			4411
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"cruiseline.co.uk"
+		]
+	},
+	{
+		"name": "Booking.com",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"contains": [
+			"booking.com"
+		],
+		"startsWith": [
+			"BKG*"
+		]
+	},
+	{
+		"name": "Expedia Group",
+		"mccs": [
+			4722
+		],
+		"category": "Travel Agency",
+		"startsWith": [
+			"EG*",
+			"Expedia"
+		]
+	}
+]

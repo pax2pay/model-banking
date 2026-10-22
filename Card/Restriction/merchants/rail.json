@@ -1,0 +1,332 @@
+[
+	{
+		"name": "Trenitalia",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"trenitalia"
+		]
+	},
+	{
+		"name": "Trenord",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"trenord"
+		]
+	},
+	{
+		"name": "SNCF",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"sncf",
+			"tgv.com"
+		]
+	},
+	{
+		"name": "SNCB-NMBS",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"sncb",
+			"nmbs"
+		]
+	},
+	{
+		"name": "Renfe",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"renfe"
+		]
+	},
+	{
+		"name": "Deutsche Bahn",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"db vertrieb"
+		]
+	},
+	{
+		"name": "Eurostar",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"eurostar"
+		]
+	},
+	{
+		"name": "Trainline",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"trainline",
+			"captain train"
+		]
+	},
+	{
+		"name": "Omio",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"startsWith": [
+			"omio"
+		]
+	},
+	{
+		"name": "LNER",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"startsWith": [
+			"lner"
+		]
+	},
+	{
+		"name": "ScotRail",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"scotrail"
+		]
+	},
+	{
+		"name": "Avanti West Coast",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"avanti"
+		]
+	},
+	{
+		"name": "Great Western Railway",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"gwr.com"
+		]
+	},
+	{
+		"name": "SJ",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"sj internetbokning",
+			"sj.se"
+		]
+	},
+	{
+		"name": "DSB",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"dsb netbutik"
+		]
+	},
+	{
+		"name": "VR",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"vr lippukauppa"
+		]
+	},
+	{
+		"name": "Vy",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"vy.no"
+		]
+	},
+	{
+		"name": "Korail",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"korail"
+		]
+	},
+	{
+		"name": "ONCF",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"oncf"
+		]
+	},
+	{
+		"name": "CP Comboios de Portugal",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"comboios"
+		]
+	},
+	{
+		"name": "Greater Anglia",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"greater anglia"
+		]
+	},
+	{
+		"name": "Polrail",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"polrail"
+		]
+	},
+	{
+		"name": "CD Ceske Drahy",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"cd.cz"
+		]
+	},
+	{
+		"name": "SBB",
+		"mccs": [
+			4112,
+			4789
+		],
+		"category": "Train",
+		"contains": [
+			"sbb cff ffs"
+		]
+	},
+	{
+		"name": "Thalys",
+		"mccs": [
+			4112,
+			4789
+		],
+		"category": "Train",
+		"contains": [
+			"thalys"
+		]
+	},
+	{
+		"name": "Amtrak",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"startsWith": [
+			"AMTRAK"
+		]
+	},
+	{
+		"name": "Italo Treno",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"contains": [
+			"ITALOTRENO",
+			"NTV SERVIZI"
+		]
+	},
+	{
+		"name": "Irish Rail",
+		"mccs": [
+			4789,
+			4112
+		],
+		"category": "Train",
+		"startsWith": [
+			"IRISH RAIL"
+		]
+	},
+	{
+		"name": "Österreichische Bundesbahnen",
+		"mccs": [
+			4111
+		],
+		"category": "Train",
+		"startsWith": [
+			"OEBB"
+		]
+	},
+	{
+		"name": "Rail Ninja",
+		"mccs": [
+			4722,
+			4789
+		],
+		"category": "Train",
+		"startsWith": [
+			"RailNinja"
+		]
+	},
+	{
+		"name": "Rail Europe",
+		"mccs": [
+			4722
+		],
+		"category": "Train",
+		"startsWith": [
+			"RAIL EUROPE",
+			"RAILEUR*"
+		]
+	},
+	{
+		"name": "Via Rail Canada",
+		"mccs": [
+			4112
+		],
+		"category": "Train",
+		"startsWith": [
+			"VIA RAIL"
+		]
+	}
+]

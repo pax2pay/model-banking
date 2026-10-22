@@ -1,0 +1,82 @@
+[
+	{
+		"name": "GetTransfer",
+		"mccs": [
+			4722
+		],
+		"category": "Transfers",
+		"contains": [
+			"gettransfer"
+		]
+	},
+	{
+		"name": "Holiday Taxis",
+		"mccs": [
+			4722
+		],
+		"category": "Transfers",
+		"contains": [
+			"holiday taxis"
+		]
+	},
+	{
+		"name": "Suntransfers",
+		"mccs": [
+			4722,
+			4789
+		],
+		"category": "Transfers",
+		"contains": [
+			"suntransfers"
+		]
+	},
+	{
+		"name": "Welcome Pickups",
+		"mccs": [
+			4722
+		],
+		"category": "Transfers",
+		"contains": [
+			"welcomepickups",
+			"welcome pickups"
+		]
+	},
+	{
+		"name": "Mozio",
+		"mccs": [
+			4789
+		],
+		"category": "Transfers",
+		"contains": [
+			"mozio"
+		]
+	},
+	{
+		"name": "Blacklane",
+		"mccs": [
+			4121
+		],
+		"category": "Transfers",
+		"startsWith": "BLACKLANE"
+	},
+	{
+		"name": "Onward Travel Solutions",
+		"mccs": [
+			4121
+		],
+		"category": "Transfers",
+		"contains": [
+			"onward travel solution"
+		]
+	},
+	{
+		"name": "Destino Iguassu",
+		"mccs": [
+			4722
+		],
+		"category": "Transfers",
+		"contains": [
+			"destino iguassu"
+		]
+	}
+]
