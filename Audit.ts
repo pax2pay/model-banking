@@ -74,6 +74,7 @@ export namespace Audit {
 			],
 			route: ["create"],
 			clearbank: ["assessmentFailed", "validationFailed"],
+			policy: ["create", "update", "remove"],
 		} as const
 		export const keys = Object.keys(value) as (keyof typeof value)[]
 		export const type = isly.string(keys)
