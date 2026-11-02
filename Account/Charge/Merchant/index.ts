@@ -8,16 +8,16 @@ import { Preset } from "../Preset"
 
 export interface Merchant {
 	destination: { account: string }
-	merchants: Partial<Record<Card.Restriction.Merchant, Preset>>
+	merchants: { [merchant: string]: Preset | undefined }
 }
 export namespace Merchant {
 	export const type = isly.object<Merchant>({
 		destination: isly.object({
 			account: isly.string(),
 		}),
-		merchants: isly.record<Card.Restriction.Merchant, Preset>(Card.Restriction.Merchant.type, Preset.type),
+		merchants: isly.record<string, Preset>(Card.Restriction.Merchant.type, Preset.type),
 	})
-	export const typeZod = zod
+	export const typeZod: zod.ZodType<Merchant> = zod
 		.object({
 			destination: zod.object({ account: zod.string() }),
 			merchants: zod.partialRecord(Card.Restriction.Merchant.typeZod, Preset.typeZod),

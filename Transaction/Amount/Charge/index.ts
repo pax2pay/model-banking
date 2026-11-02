@@ -42,7 +42,7 @@ export namespace Charge {
 				account: isly.string(),
 			}),
 		})
-		export const typeZod = zod.object({
+		export const typeZod: zod.ZodType<Merchant> = zod.object({
 			amount: zod.number(),
 			rate: zod.number(),
 			merchant: Card.Restriction.Merchant.typeZod,
@@ -57,7 +57,7 @@ export namespace Charge {
 		merchant: Charge.Merchant.type.optional(),
 		fx: Charge.Fx.type.optional(),
 	})
-	export const typeZod = zod.object({
+	export const typeZod: zod.ZodType<Charge> = zod.object({
 		merchant: Charge.Merchant.typeZod.optional(),
 		fx: Charge.Fx.typeZod.optional(),
 	})
