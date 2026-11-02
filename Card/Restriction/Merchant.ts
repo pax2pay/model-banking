@@ -5,11 +5,11 @@ import { zod } from "../../zod"
 import { merchants } from "./merchants"
 import { Merchant as Attribute } from "./merchants/Merchant"
 
-export type Merchant = (typeof Merchant.values)[number]
+export type Merchant = keyof typeof merchants
 export namespace Merchant {
-	export const values = typedly.Object.keys(merchants)
-	export const type = isly.string<Merchant>(values)
-	export const typeZod = zod.enum(values).meta({ id: "Card.Restriction.Merchant" })
+	export const values: Merchant[] = typedly.Object.keys(merchants)
+	export const type: isly.Type<Merchant> = isly.string<Merchant>(values)
+	export const typeZod: zod.ZodEnum<{ [M in Merchant]: M }> = zod.enum(values).meta({ id: "Card.Restriction.Merchant" })
 	export function check(merchant: Merchant, counterpart: Rail.Address.Card.Counterpart): boolean {
 		const attribute: Attribute = merchants[merchant]
 		let result: boolean
