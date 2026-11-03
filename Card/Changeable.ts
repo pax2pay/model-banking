@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Amount } from "../Amount"
-import { zod } from "../zod"
 import { Meta } from "./Meta"
 
 export type Changeable = {

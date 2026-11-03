@@ -1,6 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod, zodHelper } from "../zod"
+import * as zod from "zod"
+import { zodHelper } from "../zodHelper"
 import { Category as MerchantCategory } from "./Category"
 
 export interface Merchant {

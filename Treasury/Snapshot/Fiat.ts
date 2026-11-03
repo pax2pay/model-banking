@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
+import * as zod from "zod"
 import { Supplier } from "../../Supplier"
-import { zod } from "../../zod"
 import { Balance } from "../Balance"
 
 export interface Fiat {

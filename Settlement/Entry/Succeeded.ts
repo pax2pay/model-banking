@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Rail } from "../../Rail"
-import { zod } from "../../zod"
 import { Creatable } from "./Creatable"
 
 export interface Succeeded extends Omit<Creatable.Known, "transaction" | "card"> {

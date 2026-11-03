@@ -1,8 +1,8 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Balance as AccountBalance } from "../Balance"
 import type { Settlement } from "../Settlement"
-import { zod } from "../zod"
 import { Change } from "./Change"
 
 export type Changes = Partial<Record<Changes.Entry.Balance, Change>>

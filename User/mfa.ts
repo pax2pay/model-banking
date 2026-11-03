@@ -1,4 +1,4 @@
-import { zod } from "../zod"
+import * as zod from "zod"
 
 export namespace mfa {
 	export type Totp = zod.infer<typeof Totp.typeZod>

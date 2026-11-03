@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Realm } from "../Realm"
-import { zod } from "../zod"
 
 export type Supplier = (typeof Supplier.names)[number]
 export namespace Supplier {

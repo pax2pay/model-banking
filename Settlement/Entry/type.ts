@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { zod } from "../../zod"
+import * as zod from "zod"
 import type { Entry } from "."
 import { Failed } from "./Failed"
 import { Succeeded } from "./Succeeded"

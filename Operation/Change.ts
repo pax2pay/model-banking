@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { zod } from "../zod"
+import * as zod from "zod"
 import { Status } from "./Status"
 
 export interface Change<T extends Change.Operand = Change.Operand> {

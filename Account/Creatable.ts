@@ -1,6 +1,6 @@
 import { DurableObjectLocationHint } from "@cloudflare/workers-types" // TODO: REMOVE
 import { isly } from "isly"
-import { zod } from "../zod"
+import * as zod from "zod"
 
 export interface Creatable {
 	name: string

@@ -1,9 +1,9 @@
 import { isly } from "isly"
+import * as zod from "zod"
 import { Acquirer } from "../../Acquirer"
 import { Card as ModelCard } from "../../Card"
 import { Merchant } from "../../Merchant"
 import type { Rule } from "../../Rule"
-import { zod } from "../../zod"
 
 export interface Card {
 	type: "card"

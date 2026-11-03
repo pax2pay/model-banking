@@ -1,4 +1,4 @@
-import { zod } from "../../../zod"
+import * as zod from "zod"
 
 export type Result = "passed" | "failed" | "incomplete"
 export namespace Result {

@@ -1,6 +1,6 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "../../zod"
+import * as zod from "zod"
 import { Creatable } from "./Creatable"
 
 export type Failed = Creatable & {

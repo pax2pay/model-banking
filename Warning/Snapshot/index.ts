@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { zod } from "../../zod"
+import * as zod from "zod"
 import { DeltaFiat as WarningDeltaFiat } from "./DeltaFiat"
 import { MissingBuffer as WarningMissingBuffer } from "./MissingBuffer"
 import { MissingEmoney as WarningMissingEmoney } from "./MissingEmoney"

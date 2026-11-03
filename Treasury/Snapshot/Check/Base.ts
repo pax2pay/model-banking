@@ -1,4 +1,4 @@
-import { zod } from "../../../zod"
+import * as zod from "zod"
 import { Checks } from "./Checks"
 import { Result } from "./Result"
 

@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Supplier } from "../Supplier"
-import { zod } from "../zod"
 import { Amount } from "./Amount"
 
 export interface Total {

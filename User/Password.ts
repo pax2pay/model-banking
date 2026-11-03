@@ -2,7 +2,7 @@ import { cryptly } from "cryptly"
 import { gracely } from "gracely"
 import { isoly } from "isoly"
 import { isly } from "isly"
-import { zod } from "../zod"
+import * as zod from "zod"
 
 export interface Password {
 	hash: cryptly.Password.Hash

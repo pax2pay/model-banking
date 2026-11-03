@@ -74,6 +74,6 @@
 		"typedly": "0.0.27"
 	},
 	"peerDependencies": {
-		"zod": "^4.4.3"
+		"zod": "^4.6.7"
 	}
 }

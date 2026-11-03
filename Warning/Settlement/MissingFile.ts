@@ -1,8 +1,8 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Identifier } from "../../Settlement/Identifier"
 import { Totals } from "../../Settlement/Totals"
-import { zod } from "../../zod"
 import { Base } from "../Base"
 
 export interface MissingFile extends Base {

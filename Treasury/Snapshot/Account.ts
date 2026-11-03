@@ -1,7 +1,8 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Warning } from "../../Warning"
-import { zod, zodHelper } from "../../zod"
+import { zodHelper } from "../../zodHelper"
 import { Transaction } from "../Transaction"
 
 export interface Account {

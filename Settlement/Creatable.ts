@@ -1,6 +1,6 @@
 import { isly } from "isly"
+import * as zod from "zod"
 import { Card } from "../Card"
-import { zod } from "../zod"
 import { Batch } from "./Batch"
 import { Totals } from "./Totals"
 

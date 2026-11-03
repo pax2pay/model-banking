@@ -1,8 +1,9 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Amounts } from "./Amounts"
 import { Balance as BalancesBalance } from "./Balance"
-import { zod, zodHelper } from "./zod"
+import { zodHelper } from "./zodHelper"
 
 export type Balances = Partial<Record<isoly.Currency, Balances.Balance.Extended>>
 export namespace Balances {

@@ -1,9 +1,9 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import type { Card } from "../../Card"
 import type { Rail } from "../../Rail"
 import type { Transaction } from "../../Transaction"
-import { zod } from "../../zod"
 import { Fx as ChargeFx } from "./Fx"
 import { Merchant as ChargeMerchant } from "./Merchant"
 

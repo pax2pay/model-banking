@@ -1,5 +1,5 @@
+import * as zod from "zod"
 import { Rail } from "../../Rail"
-import { zod } from "../../zod"
 import { Authorization as PreTransactionAuthorization } from "./Authorization"
 import { Incoming as PreTransactionIncoming } from "./Incoming"
 import { Outgoing as PreTransactionOutgoing } from "./Outgoing"

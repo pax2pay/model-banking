@@ -1,7 +1,7 @@
 import { isly } from "isly"
 import { typedly } from "typedly"
+import * as zod from "zod"
 import { Rail } from "../../Rail"
-import { zod } from "../../zod"
 import { merchants } from "./merchants"
 import { Merchant as Attribute } from "./merchants/Merchant"
 

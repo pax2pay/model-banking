@@ -1,5 +1,5 @@
 import { isoly } from "isoly"
-import { zod } from "../../../zod"
+import * as zod from "zod"
 import { Base } from "./Base"
 import { Result } from "./Result"
 
