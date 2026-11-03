@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { zod } from "../zod"
+import * as zod from "zod"
 
 export type Status = Status.Success | [Status.Fail, Status.Reason]
 export namespace Status {

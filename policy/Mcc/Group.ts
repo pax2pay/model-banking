@@ -1,6 +1,6 @@
 import { isly } from "isly"
+import * as zod from "zod"
 import { Merchant } from "../../Merchant"
-import { zod } from "../../zod"
 
 export interface Group {
 	values: Merchant.Category[]

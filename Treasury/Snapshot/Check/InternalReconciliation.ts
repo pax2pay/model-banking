@@ -1,4 +1,4 @@
-import { zod } from "../../../zod"
+import * as zod from "zod"
 import { Base as ResultBase } from "./Base"
 
 export interface InternalReconciliation extends ResultBase {

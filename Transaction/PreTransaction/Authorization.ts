@@ -1,6 +1,6 @@
 import { isly } from "isly"
+import * as zod from "zod"
 import { Rail } from "../../Rail"
-import { zod } from "../../zod"
 import { Base } from "./Base"
 
 export interface Authorization extends Base {

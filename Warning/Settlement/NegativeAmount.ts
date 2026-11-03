@@ -1,9 +1,10 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
 import { typedly } from "typedly"
+import * as zod from "zod"
 import { Identifier } from "../../Settlement/Identifier"
 import { Totals } from "../../Settlement/Totals"
-import { zod, zodHelper } from "../../zod"
+import { zodHelper } from "../../zodHelper"
 import { Base } from "../Base"
 
 export interface NegativeAmount extends Base {

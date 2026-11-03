@@ -1,6 +1,6 @@
 import { isly } from "isly"
+import * as zod from "zod"
 import { Realm } from "../Realm"
-import { zod } from "../zod"
 import { Stack } from "./Stack"
 
 export type Preset = (typeof Preset.names)[number]

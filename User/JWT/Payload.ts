@@ -1,6 +1,6 @@
 import { isly } from "isly"
+import * as zod from "zod"
 import { Realm } from "../../Realm"
-import { zod } from "../../zod"
 import { Access } from "../Access"
 
 export type Payload = Payload.LongTerm | Payload.ShortTerm //zod.infer<typeof Payload.typeZod>

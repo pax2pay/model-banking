@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Card } from "../Card"
-import { zod } from "../zod"
 
 //(date without dashes)(stack.Character)(single digit number representing batch)
 //20200102a3

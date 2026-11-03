@@ -1,7 +1,8 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Rail } from "../../Rail"
-import { zod, zodHelper } from "../../zod"
+import { zodHelper } from "../../zodHelper"
 import { Exchange } from "../Exchange"
 
 export interface Base {

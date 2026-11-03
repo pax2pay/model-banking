@@ -1,8 +1,9 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Holidays } from "../../Holidays"
 import { Treasury } from "../../Treasury"
-import { zod, zodHelper } from "../../zod"
+import { zodHelper } from "../../zodHelper"
 import { Base } from "../Base"
 
 export interface StaleFiat extends Base {

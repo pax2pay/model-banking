@@ -1,9 +1,9 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Card } from "../../../Card"
 import { Rail } from "../../../Rail"
 import { Amount } from "../../../Transaction/Amount"
-import { zod } from "../../../zod"
 import { Preset } from "../Preset"
 
 export interface Merchant {

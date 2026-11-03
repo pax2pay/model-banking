@@ -1,6 +1,6 @@
 import { isly } from "isly"
+import * as zod from "zod"
 import { Realm } from "../../Realm"
-import { zod } from "../../zod"
 import { Bic as AddressBic } from "./Bic"
 import { Card as AddressCard } from "./Card"
 import { Iban as AddressIban } from "./Iban"

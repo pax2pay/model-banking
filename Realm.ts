@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Supplier as modelSupplier } from "./Supplier"
-import { zod } from "./zod"
 
 export type Realm = zod.infer<typeof Realm.typeZod>
 

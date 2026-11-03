@@ -1,11 +1,11 @@
 import { cryptly } from "cryptly"
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Authorization } from "../../Authorization"
 import { Entry } from "../../Settlement/Entry"
 import { Identifier } from "../../Settlement/Identifier"
 import { Transaction } from "../../Transaction"
-import { zod } from "../../zod"
 import { Base } from "../Base"
 
 export interface UnknownEntry extends Base {

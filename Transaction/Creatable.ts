@@ -1,9 +1,10 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Account } from "../Account"
 import { Preset } from "../Card/Preset"
 import { Rail } from "../Rail"
-import { zod, zodHelper } from "../zod"
+import { zodHelper } from "../zodHelper"
 import { Amount } from "./Amount"
 import { Exchange } from "./Exchange"
 

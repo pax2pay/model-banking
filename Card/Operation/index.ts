@@ -1,8 +1,8 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Authorization } from "../../Authorization"
 import { Entry } from "../../Settlement/Entry"
-import { zod } from "../../zod"
 import { Authorization as OperationAuthorization } from "./Authorization"
 import { Card } from "./Card"
 

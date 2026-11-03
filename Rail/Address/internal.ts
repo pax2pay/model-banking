@@ -1,8 +1,8 @@
 import { cryptly } from "cryptly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Operation } from "../../Operation"
 import { Realm } from "../../Realm"
-import { zod } from "../../zod"
 
 export interface Internal {
 	type: "internal"

@@ -1,6 +1,6 @@
 import { isly } from "isly"
+import * as zod from "zod"
 import type { Transaction } from "../../Transaction"
-import { zod } from "../../zod"
 import { Merchant as RestrictionsMerchant } from "./Merchant"
 
 export interface Restriction {

@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { zod } from "../../zod"
+import * as zod from "zod"
 import { Address } from "./Address"
 
 export interface Addresses {

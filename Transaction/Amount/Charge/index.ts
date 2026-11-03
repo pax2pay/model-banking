@@ -1,7 +1,7 @@
 import { isoly } from "isoly"
 import { isly } from "isly"
+import * as zod from "zod"
 import { Card } from "../../../Card"
-import { zod } from "../../../zod"
 
 export interface Charge {
 	merchant?: Charge.Merchant

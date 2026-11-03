@@ -1,5 +1,5 @@
 import { isly } from "isly"
-import { zod } from "../zod"
+import * as zod from "zod"
 
 export type Scheme = (typeof Scheme.schemes)[number]
 export namespace Scheme {

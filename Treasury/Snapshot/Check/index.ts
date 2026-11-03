@@ -1,4 +1,4 @@
-import { zod } from "../../../zod"
+import * as zod from "zod"
 import { BankFeedIntegrity as CheckBankFeedIntegrity } from "./BankFeedIntegrity"
 import { Checks as CheckChecks } from "./Checks"
 import { ExternalReconciliation as CheckExternalReconciliation } from "./ExternalReconciliation"

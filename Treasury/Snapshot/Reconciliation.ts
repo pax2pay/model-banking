@@ -1,4 +1,4 @@
-import { zod } from "../../zod"
+import * as zod from "zod"
 
 export interface Reconciliation {
 	correct: number

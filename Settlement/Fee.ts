@@ -1,6 +1,6 @@
 import { isly } from "isly"
+import * as zod from "zod"
 import { Amounts } from "../Amounts"
-import { zod } from "../zod"
 
 export interface Fee {
 	other: Amounts
