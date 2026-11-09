@@ -16,10 +16,11 @@ export namespace Merchant {
 		if (attribute?.unambiguousMcc == counterpart.merchant.category) {
 			result = true
 		} else if ((attribute.contains || attribute.startsWith) && attribute.mccs) {
+			const name = counterpart.merchant.name.toLowerCase()
 			result =
 				attribute.mccs.some(mcc => mcc == counterpart.merchant.category) &&
-				((attribute.contains?.some(n => counterpart.merchant.name.includes(n)) ?? false) ||
-					(attribute.startsWith?.some(n => counterpart.merchant.name.startsWith(n)) ?? false))
+				((attribute.contains?.some(n => name.includes(n.toLowerCase())) ?? false) ||
+					(attribute.startsWith?.some(n => name.startsWith(n.toLowerCase())) ?? false))
 		} else {
 			result = false
 		}
