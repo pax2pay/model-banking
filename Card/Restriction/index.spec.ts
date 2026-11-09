@@ -23,4 +23,20 @@ describe("Card.Restrictions", () => {
 	it("should allow empty restrictions", () => {
 		expect(pax2pay.Card.Restriction.check({}, transaction)).toBe(true)
 	})
+	it.each([
+		{ restriction: "splitmyfare", name: "SPLIT MY FARE", category: "4112", expected: true },
+		{ restriction: "splitmyfare", name: "split my fare", category: "4112", expected: true },
+		{ restriction: "splitmyfare", name: "SPLIT MY FARE", category: "3246", expected: false },
+	] as const)(
+		"should match $restriction case insensitively with $name ($category)",
+		({ restriction, name, category, expected }) => {
+			const merchant = { ...transaction.counterpart.merchant, name, category }
+			expect(
+				pax2pay.Card.Restriction.check(
+					{ merchants: [restriction] },
+					{ ...transaction, counterpart: { ...transaction.counterpart, merchant } }
+				)
+			).toBe(expected)
+		}
+	)
 })
