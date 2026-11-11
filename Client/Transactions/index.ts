@@ -51,5 +51,6 @@ export namespace Transactions {
 		references?: string[]
 		rail?: Rail
 		type?: Transaction.Types
+		status?: Transaction.Status.Success
 	}
 }
