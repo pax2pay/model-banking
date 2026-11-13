@@ -34,7 +34,7 @@ export interface Transaction {
 	posted: isoly.DateTime
 	transacted?: isoly.DateTime
 	by?: string
-	balance: { actual: number; reserved: number; available: number }
+	balance?: { actual: number; reserved: number; available: number }
 	operations?: Operation[]
 	status: Transaction.Status
 	rail?: Rail
@@ -73,11 +73,13 @@ export namespace Transaction {
 		posted: isly.string(),
 		transacted: isly.string().optional(),
 		by: isly.string().optional(),
-		balance: isly.object<Transaction["balance"]>({
-			actual: isly.number(),
-			available: isly.number(),
-			reserved: isly.number(),
-		}),
+		balance: isly
+			.object<Required<Transaction>["balance"]>({
+				actual: isly.number(),
+				available: isly.number(),
+				reserved: isly.number(),
+			})
+			.optional(),
 		operations: Operation.type.array().optional(),
 		status: Status.type,
 		rail: Rail.type.optional(),
@@ -104,7 +106,7 @@ export namespace Transaction {
 			posted: zod.string().refine(isoly.DateTime.is),
 			transacted: zod.string().refine(isoly.DateTime.is).optional(),
 			by: zod.string().optional(),
-			balance: zod.object({ actual: zod.number(), available: zod.number(), reserved: zod.number() }),
+			balance: zod.object({ actual: zod.number(), available: zod.number(), reserved: zod.number() }).optional(),
 			operations: zod.array(Operation.typeZod).optional(),
 			status: Status.typeZod,
 			rail: Rail.typeZod.optional(),
