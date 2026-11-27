@@ -47,18 +47,17 @@
 		"clean": "rimraf dist node_modules coverage"
 	},
 	"engines": {
-		"node": ">=24.0.0",
-		"npm": ">=11.10.0"
+		"node": ">=24.0.0"
 	},
 	"devEngines": {
 		"runtime": {
 			"name": "node",
-			"version": ">=24.0.0",
+			"version": ">=26.13.0",
 			"onFail": "error"
 		},
 		"packageManager": {
 			"name": "npm",
-			"version": ">=11.20.0",
+			"version": ">=12.0.0",
 			"onFail": "error"
 		}
 	},

@@ -21,6 +21,8 @@ jobs:
         with:
           node-version: 26.13
           package-manager-cache: false
+      - name: Setup npm
+        run: sfw --verbose npm install --global npm@12.2.3
       - name: Install
         run: sfw --verbose npm ci
       - name: Build
